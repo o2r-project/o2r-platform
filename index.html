@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	
+<!-- Libraries JavaScript -->
+<script src="lib/jquery-1.12.3.min.js"></script>
+<script src="lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+<script src="lib/angular.js"></script>
+<script src="lib/angular-route.min.js"></script>
+
+<!-- Libraries CSS -->
+<link rel="stylesheet" href="lib/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+
+<!-- Starter file -->
+<script src="js/app.js"></script>
+
+<!-- Services -->
+<script src="services/publications.js"></script>
+
+<body ng-app="starter" ng-controller="MainCtrl">
+        <header>
+            <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#/">o2r platform</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/reader"><i class="fa fa-home"></i> Reader</a></li>
+                    <li><a href="#/author"><i class="fa fa-shield"></i> Author</a></li>
+                </ul>
+            </div>
+            </nav>
+        </header>
+
+        <!-- Main content and injected views -->
+        <div id="main">
+			
+            <div ng-view></div>
+			
+        </div>
+</body>
+</html>
