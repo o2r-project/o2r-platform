@@ -1,41 +1,39 @@
- var app = angular.module('starter', ['ngRoute']);
+    var app = angular.module('starter', ["ui.router"]);
+    app.config(function($stateProvider, $urlRouterProvider){
+      
+      // For any unmatched url, send to /route1
+      $urlRouterProvider.otherwise("/home");
+      
+      $stateProvider
+        .state('home', {
+            url: "/home",
+            templateUrl: "templates/home.html"
+        })
 
-    // configure our routes
-    app.config(function($routeProvider) {
-        $routeProvider
-
-            // route for the home page
-            .when('/', {
-                templateUrl : 'templates/home.html',
-                controller  : 'HomeCtrl'
-            })
-
-            // route for the home page
-            .when('/reader', {
-                templateUrl : 'templates/reader.html',
-                controller  : 'ReaderCtrl'
-            })
-
-            // route for the about page
-            .when('/author', {
-                templateUrl : 'templates/author.html',
-                controller  : 'AuthorCtrl'
-            });
+        .state('reader', {
+            url: "/reader",
+            templateUrl: "templates/reader.html"
+        })
+          
+        .state('author', {
+            url: "/author/:id",
+            templateUrl: "templates/author.html",
+            controller: 'AuthorCtrl'
+        });
     });
     
-    app.controller('MainCtrl', function($scope){
-    	
-    });
-    
-    app.controller('HomeCtrl', function($scope){
-    	
-    });
-
-    app.controller('ReaderCtrl', function($scope) {
-
-    });
-
-    app.controller('AuthorCtrl', function($scope, publications) {
+app.controller('AuthorCtrl', function($scope, publications, pdf_files, $stateParams){
 		$scope.publications = publications.getPublications();
-    });
+		if ($stateParams.id != ""){
+			var currentPublication = pdf_files.showPDF(publications.getEntryById($stateParams.id).url);			
+		}
 
+});
+
+app.controller('ReaderCtrl', function($scope){
+	
+});
+
+app.controller('HomeCtrl', function($scope){
+	
+});

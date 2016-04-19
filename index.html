@@ -5,9 +5,12 @@
 <script src="lib/jquery-1.12.3.min.js"></script>
 <script src="lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 <script src="lib/angular.js"></script>
-<script src="lib/angular-route.min.js"></script>
+<script src="lib/angular-ui-router.min.js"></script>
+<script src="lib/pdfobject.min.js"></script>
+
 
 <!-- Libraries CSS -->
+<link rel="stylesheet" href="css/o2r.css">
 <link rel="stylesheet" href="lib/bootstrap-3.3.6-dist/css/bootstrap.min.css">
 
 <!-- Starter file -->
@@ -15,17 +18,18 @@
 
 <!-- Services -->
 <script src="services/publications.js"></script>
+<script src="services/pdffiles.js"></script>
 
-<body ng-app="starter" ng-controller="MainCtrl">
+<body ng-app="starter" >
         <header>
             <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#/">o2r platform</a>
+      				<a class="navbar-brand" href="#">o2r</a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#/reader"><i class="fa fa-home"></i> Reader</a></li>
-                    <li><a href="#/author"><i class="fa fa-shield"></i> Author</a></li>
+			        <li><a ui-sref="reader">Reader</a></li>
+			        <li><a ui-sref="author">Author</a></li>
                 </ul>
             </div>
             </nav>
@@ -34,8 +38,9 @@
         <!-- Main content and injected views -->
         <div id="main">
 			
-            <div ng-view></div>
+            <div ui-view></div>  
 			
         </div>
+
 </body>
 </html>
