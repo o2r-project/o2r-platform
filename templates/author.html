@@ -1,3 +1,12 @@
 <div>Author section: </div>
-<div ng-repeat="pub in publications"><a href="#/author/{{pub.id}}">{{pub.title}}</a></div>
-<div id="pdf"></div>
+<div ng-repeat="file in publications.content">
+	<a href="#/author/{{file.id}}">{{file.name}}</a>
+</div>
+
+<div class="author_content" ng-repeat="file in publications.content">
+	<div id="pdf" ng-show="file.show">
+		<img ng-src="{{file.url}}" />
+	</div>
+</div>
+
+
