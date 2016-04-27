@@ -67,18 +67,10 @@ app.factory("publications", function(){
 		return null;
 	};
 
-	var findEntry = function(searchedID){
-		for (publication in publications){
-			if (publications[publication].id == searchedID){
-				return publications[publication];
-			}
-		}
-		return null;
-	};
+
 	
 	return {
 		getPublications: get,
-		getEntryById: findEntry,
 		getAllContent: getAllContent,
 		getContentById: findContent
 	}; 		
