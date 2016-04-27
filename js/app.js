@@ -38,12 +38,12 @@ app.controller('AuthorCtrl', function($scope, publications, pdf_files, $statePar
             //
             switch(publications.getContentById($stateParams.id).type){
                 case '.pdf':
-                    _setAllFalse;
-                    var currentContent = pdf_files.showPDF(publications.getContentById($stateParams.id).url);
+                    _setAllFalse();
                     publications.getContentById($stateParams.id).show = true;
+                    var currentContent = pdf_files.showPDF(publications.getContentById($stateParams.id).url);
                     break;
                 case '.jpg':
-                    _setAllFalse;
+                    _setAllFalse();
                     var currentContent = publications.getContentById($stateParams.id).show = true;
                     break;
             }
@@ -52,7 +52,7 @@ app.controller('AuthorCtrl', function($scope, publications, pdf_files, $statePar
         }
 
         // sets .show-Attribute of all files to false
-        var _setAllFalse = function(){
+        function _setAllFalse(){
              for(file in publications.getPublications().content){
                         publications.getPublications().content[file].show = false;
                     }
