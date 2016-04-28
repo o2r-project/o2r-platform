@@ -22,27 +22,62 @@
         });
     });
     
-app.controller('AuthorCtrl', function($scope, publications, pdf_files, $stateParams){
+app.controller('AuthorCtrl', function($scope, publications, pdf_files, $stateParams, $http){
 		$scope.publications = publications.getPublications();
 
-        /*
-		if ($stateParams.id != ""){
-			var currentPublication = pdf_files.showPDF(publications.getEntryById($stateParams.id).url);			
-        }
-    */
-        // -----------NEW---------
+
+
+        // sets .show-Attribute of all files to false
+        var _setAllFalse = function(){
+             for(file in publications.getPublications().content){
+                        publications.getPublications().content[file].show = false;
+                    }
+        }; 
+
+        // sets param fileContent as input for scope.content
+        var _showFile = function(fileContent){
+            $scope.content = fileContent;
+        };
+        
+        
+        // calls http request for receiving content of file. Calls _showFile() to make fileContent visible
+        var _getFileContent= function(fileId){
+           /*
+            // data contains content of file as string
+            $http({
+                method: 'GET',
+                //Replace with real path
+                url: '/getMyDataAsString/:id'
+            }).then(function successCallback(response){
+                showFile(response.data);
+            }, function errorCallback(response){
+
+            });
+            */
+            data = 'Hello World \n Here is a new line \n and here are many spaces                               until here';
+            _showFile(data);
+        };
+        
+      
+        
         if($stateParams.id != ""){
-            
+            // defines which part of author.html should be used
             //
             // handles display of files regarding filetype peculiarities
             //
             switch(publications.getContentById($stateParams.id).type){
                 case '.pdf':
                     _setAllFalse();
-                    publications.getContentById($stateParams.id).show = true;
+                    publications.getContentById($stateParams.id).show = true;     
                     var currentContent = pdf_files.showPDF(publications.getContentById($stateParams.id).url);
                     break;
-                case '.jpg':
+    //------------------------------------------------------------------------------                 
+                case '.txt':
+                    _setAllFalse(); 
+                    _getFileContent($stateParams.id);
+                    publications.getContentById($stateParams.id).show = true;
+    //------------------------------------------------------------------------------
+                default:
                     _setAllFalse();
                     var currentContent = publications.getContentById($stateParams.id).show = true;
                     break;
@@ -51,12 +86,6 @@ app.controller('AuthorCtrl', function($scope, publications, pdf_files, $statePar
 
         }
 
-        // sets .show-Attribute of all files to false
-        function _setAllFalse(){
-             for(file in publications.getPublications().content){
-                        publications.getPublications().content[file].show = false;
-                    }
-        }; 
         
 
 });

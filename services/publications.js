@@ -46,6 +46,20 @@ app.factory("publications", function(){
 					name: 'DMI_conference.jpg',
 					url:'https://upload.wikimedia.org/wikipedia/commons/d/dc/DMI_conference.jpg',
 					show: false
+				},
+				{
+					id: 7,
+					type: '.png',
+					name: 'fb_schild_rosenstrasse.png',
+					url: 'https://www.uni-muenster.de/imperia/md/images/philologie/2014/gebaeude/fb_schild_rosenstrasse_9_2_1_746x374.png',
+					show: false
+				},
+				{
+					id: 8,
+					type: '.txt',
+					name: 'my text.txt',
+					url: 'putUrlHere',
+					show: false
 				}
 			]	
 	};

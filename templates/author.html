@@ -3,10 +3,24 @@
 	<a href="#/author/{{file.id}}">{{file.name}}</a>
 </div>
 
-<div class="author_content" ng-repeat="file in publications.content">
-	<div id="pdf" ng-show="file.show">
-		<img ng-src="{{file.url}}" />
-	</div>
+
+
+<!-- Display of .pdf -->
+<div class="author_content">
+	<div id="pdf"></div>
 </div>
 
+
+
+
+
+<!-- Display of images and files -->
+<div class="author_content" ng-repeat="file in publications.content">
+	<div id="content" ng-show="file.show">
+			<div id="pdfs" ng-if="file.type == '.pdf'"></div>
+			<img ng-src="{{file.url}}" ng-if="(file.type == '.jpg') || (file.type == '.png')">
+			<pre ng-if ="file.type == '.txt'" >{{content}}</pre>
+		
+	</div>
+</div>
 
