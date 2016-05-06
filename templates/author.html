@@ -9,7 +9,7 @@
 <div class="row">
 	<div class="col-md-4">
 		<div class="panel panel-default">
-			<div class="panel-body">
+			<div class="panel-body" o2r-folder-tree>
 				<div ng-repeat="file in publications.content">
 					<a href="#/author/{{file.id}}">{{file.name}}</a>
 				</div>
@@ -27,16 +27,7 @@
 				<!-- Display of images and files -->
 
 				<div class="panel-body author_content">
-					<div id="content" o2r-display-files>
-					<!--
-							<object class="pdf" ng-attr-data="{{file.url}}" type="application/pdf" ng-show="file.type == '.pdf'"></object>
-							<img ng-src="{{file.url}}" ng-show="(file.type == '.jpg') || (file.type == '.png')">
-							<pre ng-show ="file.type == '.txt'" >{{content}}</pre>
-					-->
-						<!--
-							<o2r-display-files ng-src="{{file.url}}" type={{file.type}} index={{file.content}}></o2r-display-files>
-						-->
-					</div>
+					<div id="content" o2r-display-files></div>
 				</div>
 			
 		</div>

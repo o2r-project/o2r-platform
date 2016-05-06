@@ -1,0 +1,20 @@
+{
+  "name": "o2r-platform",
+  "homepage": "https://github.com/o2r-project/o2r-platform",
+  "authors": [
+    "jansule <j_sule02@wwu.de>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "GPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
