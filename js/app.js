@@ -59,7 +59,7 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
         };
         
       
-        
+        /*
         if($stateParams.id != ""){
             // defines which part of author.html should be used
             //
@@ -68,8 +68,7 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             switch(publications.getContentById($stateParams.id).type){
                 case '.pdf':
                     _setAllFalse();
-                    publications.getContentById($stateParams.id).show = true;     
-                    //var currentContent = pdf_files.showPDF(publications.getContentById($stateParams.id).url);
+                    publications.getContentById($stateParams.id).show = true;
                     break;
     //------------------------------------------------------------------------------                 
                 case '.txt':
@@ -85,6 +84,8 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             
 
         }
+
+        */
 
         
 

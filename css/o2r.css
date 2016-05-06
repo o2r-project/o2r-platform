@@ -1,18 +1,17 @@
-.pdfobject-container {
-	width: 100%;
-	max-width: 800px;
-	height: 800px;
-	margin: 2em 0;
-	position: absolute;
-	right:1%;
-	top:5%;
-}
-
-.pdfobject { border: solid 1px #666; }
-
 .author_content{
 	margin: 2em 0;
 	position: relative;
 	right:1%;
 	top:5%;
+}
+
+.pdf{
+	min-height: 90em;
+	min-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.vis-hidden{
+	visibility: hidden;
 }
