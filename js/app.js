@@ -22,7 +22,7 @@
         });
     });
     
-app.controller('AuthorCtrl', function($scope, publications, pdf_files, $stateParams, $http){
+app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
 		$scope.publications = publications.getPublications();
 
 
@@ -69,7 +69,7 @@ app.controller('AuthorCtrl', function($scope, publications, pdf_files, $statePar
                 case '.pdf':
                     _setAllFalse();
                     publications.getContentById($stateParams.id).show = true;     
-                    var currentContent = pdf_files.showPDF(publications.getContentById($stateParams.id).url);
+                    //var currentContent = pdf_files.showPDF(publications.getContentById($stateParams.id).url);
                     break;
     //------------------------------------------------------------------------------                 
                 case '.txt':
