@@ -22,33 +22,18 @@
 
 	
 	<div class="col-md-8">
-		<div class="panel panel-default">
-			<div class="panel-body">
-
-				<!-- 
-				<object ng-attr-data="{{publications.content[0].url}}" type="application/pdf" width="500px" height="500px"></object>
-				-->
+		<div class="panel panel-default contentview">
 
 				<!-- Display of images and files -->
 
-				<div class="author_content" ng-repeat="file in publications.content">
+				<div class="panel-body author_content" ng-repeat="file in publications.content">
 					<div id="content" ng-show="file.show">
-					
-							<object ng-attr-data="{{file.url}}" type="application/pdf" ng-if="file.type == '.pdf'" width="500px" height="500px"></object>
-
-							
-							
+							<object class="pdf" ng-attr-data="{{file.url}}" type="application/pdf" ng-if="file.type == '.pdf'"></object>
 							<img style="position: relative;" ng-src="{{file.url}}" ng-if="(file.type == '.jpg') || (file.type == '.png')">
 							<pre ng-if ="file.type == '.txt'" >{{content}}</pre>
-							<!--
-							<o2r-pdf src="{{file.url}}" ng-if="file.type == '.pdf'"></o2r-pdf>
-							<embed ng-if="file.type == '.pdf'" ng-src="https://statistics.stanford.edu/sites/default/files/EFS%20NSF%20474.pdf" type="application/pdf" style="width: 300px; height: 500px;">
-							-->
-							
-							
 					</div>
 				</div>
-			</div>
+			
 		</div>
 	</div>
 </div>
