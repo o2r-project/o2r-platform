@@ -2,7 +2,8 @@
   "name": "o2r-platform",
   "homepage": "https://github.com/o2r-project/o2r-platform",
   "authors": [
-    "jansule <j_sule02@wwu.de>"
+    "Markus Konkol",
+    "Jan Suleiman"
   ],
   "description": "",
   "main": "",
@@ -15,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "bootstrap-treeview": "^1.2.0"
   }
 }
