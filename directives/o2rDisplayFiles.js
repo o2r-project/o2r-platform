@@ -14,15 +14,15 @@ app.directive('o2rDisplayFiles', ['publications', function(publications){
 
 			switch (mime){
 				case 'application':
-					var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.url +  '"</object>');
+					var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.path +  '"</object>');
 					iElement.append(object);
 					break;
 				case 'image':
-					var object = angular.element('<img src="' + file.url + '">');
+					var object = angular.element('<img src="' + file.path + '">');
 					iElement.append(object);
 					break;
 				default: 
-					var object = angular.element('<pre>' + file.url + '</pre>');
+					var object = angular.element('<pre>' + file.path + '</pre>');
 					iElement.append(object);
 			}
 

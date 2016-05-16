@@ -5,31 +5,16 @@
 	</div>
 </div>
 
-<!-- 
-##################
-####Test Row###### 
-##################
--->
-<div class="row">
-	<div class="col-md-5">
-		<h3>Folder</h3>
-		<div id="tree"></div>
-		<h3>End Folder</h3>
-	</div>
-	<div class="col-md-7"></div>
-</div>
-<!-- 
-####End Test Row ####
---> 
+
 
 
 <div class="row">
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<div ng-repeat="file in publications.content">
-					<a href="#/author/{{file.id}}">{{file.name}}</a>
-				</div>
+				<ul class="list-group" data-toggle="collapse" data-target=".folder_"> {{publications.content.name}}
+					<li class="list-group-item collapse folder_" ng-repeat="node in publications.content.children" ng-include="'templates/folderTree.html'"></li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -44,87 +29,10 @@
 				<!-- Display of images and files -->
 
 				<div class="panel-body author_content">
-					<div id="content" o2r-display-files></div>
+					<div id="content" o2r-display-files=""></div>
 				</div>
 			
 		</div>
 	</div>
 </div>
 
-<script>
-	function getTree(){
-		var tree = [{
-		path: 'xy',
-		name: 'root',
-		type: 'folder',
-		id: 1,
-		children: [
-			{
-				path: 'xxy',
-				name: 'subfolder 1',
-				type: 'folder',
-				id: 2,
-				children: [
-					{
-						path: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Alte_Herrenh%C3%A4user_Stra%C3%9Fe_10_Hannover_Hardenbergsches_Haus_S%C3%BCdfront.jpg',
-						name: 'Altes_Herrenhaus.jpg',
-						type: 'image/jpg',
-						id: 3,
-						children: []
-					},
-					{
-						path: 'http://infoscience.epfl.ch/record/136640/files/VandewalleKV09.pdf',
-						name: 'VandewalleKV09.pdf',
-						type: 'application/pdf',
-						id: 4,
-						children: []
-					}
-				]
-			}, {
-				path: 'xyx',
-				name: 'subfolder2',
-				type: 'folder',
-				id: 5,
-				children: [
-					{
-						path: 'xxxy',
-						name: 'subfolder3',
-						type: 'folder',
-						id: 6,
-						children: [
-							{
-								path: 'https://upload.wikimedia.org/wikipedia/commons/d/dc/DMI_conference.jpg',
-								name: 'DMI_conference.jpg',
-								type: 'image/jpg',
-								id: 7,
-								children: []
-							}
-						]
-					}, {
-				path: 'http://www.math.usu.edu/~corcoran/classes/14spring6550/handouts/reproducible_research.pdf',
-				name: 'reproducible_research.pdf',
-				type: 'application/pdf',
-				id: 8,
-				children: []
-			}
-				]
-			}, {
-				path: 'putUrlHere',
-				name: 'myText.txt',
-				type: 'text/plain',
-				id: 9,
-				children: []
-			}
-		]
-	}];
-	return tree;
-	}
-
-	
-	$('#tree').treeview({
-		data: getTree(),
-		showBorder: false
-
-	});
-
-</script>

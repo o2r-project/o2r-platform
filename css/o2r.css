@@ -15,3 +15,15 @@
 .vis-hidden{
 	visibility: hidden;
 }
+
+.folderLi{
+	list-style-type: none;
+}
+
+ul {
+	border: none !important;
+}
+
+li {
+	border: none !important;
+}

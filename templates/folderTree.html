@@ -1,0 +1,5 @@
+<div ng-if="this.node.children.length != 0">{{this.node.name}}</div>
+<a ng-if="this.node.children.length == 0" href="#/author/{{this.node.id}}">{{this.node.name}}</a>
+<ul class="list-group" ng-if="this.node.children.length != 0">
+	<li class="list-group-item" ng-repeat="node in this.node.children" ng-include="'templates/folderTree.html'"></li>
+</ul>

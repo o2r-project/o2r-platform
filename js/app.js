@@ -23,8 +23,8 @@
     });
     
 app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
-		$scope.publications = publications.getPublications();
-
+        $scope.publications = publications.getPublications();
+        $scope.template = {name: 'folderTree.html', url: 'templates/folderTree.html'};
 
 
         // sets .show-Attribute of all files to false
@@ -53,41 +53,12 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             }, function errorCallback(response){
 
             });
-            */
+        */
             data = 'Hello World \n Here is a new line \n and here are many spaces                               until here';
             _showFile(data);
         };
-        
-      
-        /*
-        if($stateParams.id != ""){
-            // defines which part of author.html should be used
-            //
-            // handles display of files regarding filetype peculiarities
-            //
-            switch(publications.getContentById($stateParams.id).type){
-                case '.pdf':
-                    _setAllFalse();
-                    publications.getContentById($stateParams.id).show = true;
-                    break;
-    //------------------------------------------------------------------------------                 
-                case '.txt':
-                    _setAllFalse(); 
-                    _getFileContent($stateParams.id);
-                    publications.getContentById($stateParams.id).show = true;
-    //------------------------------------------------------------------------------
-                default:
-                    _setAllFalse();
-                    var currentContent = publications.getContentById($stateParams.id).show = true;
-                    break;
-            }
-            
 
-        }
-
-        */
-
-        
+       
 
 });
 
