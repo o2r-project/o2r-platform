@@ -1,4 +1,4 @@
-    var app = angular.module('starter', ["ui.router"]);
+    var app = angular.module('starter', ["treeControl", "ui.router"]);
     app.config(function($stateProvider, $urlRouterProvider){
       
       // For any unmatched url, send to /route1
@@ -25,6 +25,18 @@
 app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
         $scope.publications = publications.getPublications();
         $scope.template = {name: 'folderTree.html', url: 'templates/folderTree.html'};
+
+        $scope.treeOptions = {
+            nodeChildren: 'children',
+            dirSelectable: false
+        };
+
+        $scope.id;
+        $scope.setId = function(number){
+            $scope.id = number;
+            console.log($scope.id);
+        };
+
 
 
         // sets .show-Attribute of all files to false

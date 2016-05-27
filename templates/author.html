@@ -7,7 +7,7 @@
 
 
 
-
+<!--
 <div class="row">
 	<div class="col-md-4">
 		<div class="panel panel-default">
@@ -18,7 +18,16 @@
 			</div>
 		</div>
 	</div>
+-->
 
+<div class="row">
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<treecontrol class="tree-classic" tree-model="publications.content" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="setId(node.id)">{{node.name}}</span></treecontrol>
+			</div>
+		</div>
+	</div>
 
 
 

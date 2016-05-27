@@ -17,6 +17,8 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "bootstrap-treeview": "^1.2.0"
+    "angular-tree-control": "^0.2.26",
+    "jquery": "^2.2.4",
+    "angular": "1.5.5"
   }
 }
