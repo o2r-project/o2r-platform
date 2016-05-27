@@ -7,5 +7,9 @@ AngularJS
 Bootstrap
 
 
+### License
+
+GNU-GPLv3.0
+
 
 
