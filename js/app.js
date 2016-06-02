@@ -23,28 +23,30 @@
     });
     
 app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
-        $scope.publications = publications.getPublications();
-        $scope.template = {name: 'folderTree.html', url: 'templates/folderTree.html'};
 
+        // retrieves all metadata of publication
+        $scope.publications = publications.getPublications();
+
+        // options for folderTree
         $scope.treeOptions = {
             nodeChildren: 'children',
             dirSelectable: false
         };
 
+        // id of file in publication
         $scope.fileId;
+
+        // set fileId
         $scope.setId = function(number){
             $scope.fileId = number;
         };
 
 
-
-        // sets .show-Attribute of all files to false
-        var _setAllFalse = function(){
-             for(file in publications.getPublications().content){
-                        publications.getPublications().content[file].show = false;
-                    }
-        }; 
-
+        /*
+        ######################################################
+        ############## Delete from here ######################
+        ######################################################
+        */
         // sets param fileContent as input for scope.content
         var _showFile = function(fileContent){
             $scope.content = fileContent;
@@ -69,7 +71,11 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             _showFile(data);
         };
 
-       
+       /*
+        ####################################################
+        ############## Delete until here ###################
+        ####################################################
+       */
 
 });
 
