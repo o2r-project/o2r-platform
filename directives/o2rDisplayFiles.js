@@ -24,34 +24,48 @@ app.directive('o2rDisplayFiles', ['publications', function(publications){
 					$('o2r-display-files').empty();
 
 					//prepare mime type
-					var mime = file.type.split('/');
-					mime = mime[0];
+					var _mime = file.type.split('/');
+					_mime = _mime[0];
 
 					//create html-tags depending on mime type
-					switch (mime){
-						case 'application':
-							if(file.size < 1000){
-								var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.path +  '"</object>');
-							} else {
-								var object = angular.element('<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>'); 
+					var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>';
+					var _addContent = function(type){
+						if(file.size < 1000){
+							switch(type){
+								case 1:
+									var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.path +  '"</object>');
+									break;
+								case 2:
+									var object = angular.element('<img src="' + file.path + '">');
+									break;
+								case 3:
+									var object = angular.element('<audio controls><source src="' + file.path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
+									break;
+								case 4:
+									var object = angular.element('<video controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
+									break;
+								default:
+									var object = angular.element('<pre><code>' + file.path + '</code></pre>');
+									break;
 							}
-							iElement.append(object);
-							break;
-						case 'image':
-							if(file.size < 1000){
-								var object = angular.element('<img src="' + file.path + '">');
-							} else {
-								var object = angular.element('<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>');
-							}
-							iElement.append(object);
-							break;
-						default: 
-							if(file.size < 1000){
-								var object = angular.element('<pre><code>' + file.path + '</code></pre>');
-							} else {
-								var object = angular.element('<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>');
-							}
-							iElement.append(object);
+						} else {
+							var object = angular.element(_sizeError);
+						}
+						iElement.append(object);
+					}
+
+
+					// check mime type
+					if(file.type == 'application/pdf'){
+						_addContent(1);
+					} else if(_mime == 'image'){
+						_addContent(2);
+					} else if(_mime == 'audio'){
+						_addContent(3);
+					} else if(_mime == 'video'){
+						_addContent(4);
+					} else {
+						_addContent();
 					}
 				}
 			});
