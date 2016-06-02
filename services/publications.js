@@ -21,6 +21,7 @@ app.factory("publications", function(){
 								name: 'Altes_Herrenhaus.jpg',
 								type: 'image/jpg',
 								id: 3,
+								size: 300,
 								children: []
 							},
 							{
@@ -28,6 +29,7 @@ app.factory("publications", function(){
 								name: 'VandewalleKV09.pdf',
 								type: 'application/pdf',
 								id: 4,
+								size: 1000,
 								children: []
 							}
 						]
@@ -48,6 +50,7 @@ app.factory("publications", function(){
 										name: 'DMI_conference.jpg',
 										type: 'image/jpg',
 										id: 7,
+										size: 600,
 										children: []
 									}, {
 										path: 'xxxxy',
@@ -60,6 +63,7 @@ app.factory("publications", function(){
 												name: 'Just another image',
 												type: 'application/pdf',
 												id: 11,
+												size: 900,
 												children: []
 											}
 
@@ -71,6 +75,7 @@ app.factory("publications", function(){
 						name: 'reproducible_research.pdf',
 						type: 'application/pdf',
 						id: 8,
+						size: 953,
 						children: []
 					}
 						]
@@ -79,6 +84,7 @@ app.factory("publications", function(){
 						name: 'myText.txt',
 						type: 'text/plain',
 						id: 9,
+						size: 10,
 						children: []
 					}
 				]
