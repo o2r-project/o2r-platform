@@ -42,41 +42,6 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
         };
 
 
-        /*
-        ######################################################
-        ############## Delete from here ######################
-        ######################################################
-        */
-        // sets param fileContent as input for scope.content
-        var _showFile = function(fileContent){
-            $scope.content = fileContent;
-        };
-        
-        
-        // calls http request for receiving content of file. Calls _showFile() to make fileContent visible
-        var _getFileContent= function(fileId){
-           /*
-            // data contains content of file as string
-            $http({
-                method: 'GET',
-                //Replace with real path
-                url: '/getMyDataAsString/:id'
-            }).then(function successCallback(response){
-                showFile(response.data);
-            }, function errorCallback(response){
-
-            });
-        */
-            data = 'Hello World \n Here is a new line \n and here are many spaces                               until here';
-            _showFile(data);
-        };
-
-       /*
-        ####################################################
-        ############## Delete until here ###################
-        ####################################################
-       */
-
 });
 
 app.controller('ReaderCtrl', function($scope){

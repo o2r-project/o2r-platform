@@ -31,6 +31,15 @@ app.factory("publications", function(){
 								id: 4,
 								size: 1000,
 								children: []
+							},
+							{
+								//path: '<html><head></head><body><h1>hello world</h1></body></html>',
+								path: '# Hello World \n you can do things \n * here is a list \n * and here is another item',
+								name: 'Highlighttest.R',
+								type: 'text/html',
+								id: 12,
+								size: 400,
+								children: []
 							}
 						]
 					}, {
@@ -80,7 +89,7 @@ app.factory("publications", function(){
 					}
 						]
 					}, {
-						path: 'putUrlHere',
+						path: 'This is my content. \n Here starts a new line....',
 						name: 'myText.txt',
 						type: 'text/plain',
 						id: 9,
