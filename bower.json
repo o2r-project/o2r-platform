@@ -1,0 +1,24 @@
+{
+  "name": "o2r-platform",
+  "homepage": "https://github.com/o2r-project/o2r-platform",
+  "authors": [
+    "Markus Konkol",
+    "Jan Suleiman"
+  ],
+  "description": "",
+  "main": "",
+  "license": "GPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "angular-tree-control": "^0.2.26",
+    "jquery": "^2.2.4",
+    "angular": "1.5.5"
+  }
+}

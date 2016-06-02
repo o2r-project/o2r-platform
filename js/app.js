@@ -1,4 +1,4 @@
-    var app = angular.module('starter', ["ui.router"]);
+    var app = angular.module('starter', ["treeControl", "ui.router"]);
     app.config(function($stateProvider, $urlRouterProvider){
       
       // For any unmatched url, send to /route1
@@ -23,17 +23,30 @@
     });
     
 app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
-		$scope.publications = publications.getPublications();
+
+        // retrieves all metadata of publication
+        $scope.publications = publications.getPublications();
+
+        // options for folderTree
+        $scope.treeOptions = {
+            nodeChildren: 'children',
+            dirSelectable: false
+        };
+
+        // id of file in publication
+        $scope.fileId;
+
+        // set fileId
+        $scope.setId = function(number){
+            $scope.fileId = number;
+        };
 
 
-
-        // sets .show-Attribute of all files to false
-        var _setAllFalse = function(){
-             for(file in publications.getPublications().content){
-                        publications.getPublications().content[file].show = false;
-                    }
-        }; 
-
+        /*
+        ######################################################
+        ############## Delete from here ######################
+        ######################################################
+        */
         // sets param fileContent as input for scope.content
         var _showFile = function(fileContent){
             $scope.content = fileContent;
@@ -53,41 +66,16 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             }, function errorCallback(response){
 
             });
-            */
+        */
             data = 'Hello World \n Here is a new line \n and here are many spaces                               until here';
             _showFile(data);
         };
-        
-      
-        /*
-        if($stateParams.id != ""){
-            // defines which part of author.html should be used
-            //
-            // handles display of files regarding filetype peculiarities
-            //
-            switch(publications.getContentById($stateParams.id).type){
-                case '.pdf':
-                    _setAllFalse();
-                    publications.getContentById($stateParams.id).show = true;
-                    break;
-    //------------------------------------------------------------------------------                 
-                case '.txt':
-                    _setAllFalse(); 
-                    _getFileContent($stateParams.id);
-                    publications.getContentById($stateParams.id).show = true;
-    //------------------------------------------------------------------------------
-                default:
-                    _setAllFalse();
-                    var currentContent = publications.getContentById($stateParams.id).show = true;
-                    break;
-            }
-            
 
-        }
-
-        */
-
-        
+       /*
+        ####################################################
+        ############## Delete until here ###################
+        ####################################################
+       */
 
 });
 

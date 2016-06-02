@@ -4,64 +4,85 @@ app.factory("publications", function(){
 			title: 'Title 1',
 			author: 'Author 1',
 			year: '2016',
-			content: [
-				{
-					id: 1,
-					type: 'application/pdf',
-					name: 'EFS%20NSF%20474.pdf',
-					url: 'https://statistics.stanford.edu/sites/default/files/EFS%20NSF%20474.pdf',
-					show: false
-				},
-				{
-					id: 2,
-					type: 'image/jpg',
-					name: 'Alte_Herrenh%C3%A4user_Stra%C3%9Fe_10_Hannover_Hardenbergsches_Haus_S%C3%BCdfront.jpg',
-					url: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Alte_Herrenh%C3%A4user_Stra%C3%9Fe_10_Hannover_Hardenbergsches_Haus_S%C3%BCdfront.jpg',
-					show: false
-				},
-				{
-					id: 3,
-					type: 'application/pdf',
-					name: 'VandewalleKV09.pdf',
-					url: 'http://infoscience.epfl.ch/record/136640/files/VandewalleKV09.pdf',
-					show: false
-				},
-				{
-					id: 4,
-					type: 'application/pdf',
-					name: 'eos.pdf',
-					url: 'http://ifgi.uni-muenster.de/~epebe_01/eos.pdf',
-					show: false
-				},
-				{
-					id: 5,
-					type: 'application/pdf',
-					name: 'reproducible_research.pdf', 
-					url: 'http://www.math.usu.edu/~corcoran/classes/14spring6550/handouts/reproducible_research.pdf',
-					show: false
-				},
-				{
-					id: 6,
-					type: 'image/jpg',
-					name: 'DMI_conference.jpg',
-					url:'https://upload.wikimedia.org/wikipedia/commons/d/dc/DMI_conference.jpg',
-					show: false
-				},
-				{
-					id: 7,
-					type: 'application/png',
-					name: 'fb_schild_rosenstrasse.png',
-					url: 'https://www.uni-muenster.de/imperia/md/images/philologie/2014/gebaeude/fb_schild_rosenstrasse_9_2_1_746x374.png',
-					show: false
-				},
-				{
-					id: 8,
-					type: 'text/plain',
-					name: 'my text.txt',
-					url: 'putUrlHere',
-					show: false
-				}
-			]	
+			content: {
+				path: 'xy',
+				name: 'root',
+				type: 'folder',
+				id: 1,
+				children: [
+					{
+						path: 'xxy',
+						name: 'subfolder 1',
+						type: 'folder',
+						id: 2,
+						children: [
+							{
+								path: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Alte_Herrenh%C3%A4user_Stra%C3%9Fe_10_Hannover_Hardenbergsches_Haus_S%C3%BCdfront.jpg',
+								name: 'Altes_Herrenhaus.jpg',
+								type: 'image/jpg',
+								id: 3,
+								children: []
+							},
+							{
+								path: 'http://infoscience.epfl.ch/record/136640/files/VandewalleKV09.pdf',
+								name: 'VandewalleKV09.pdf',
+								type: 'application/pdf',
+								id: 4,
+								children: []
+							}
+						]
+					}, {
+						path: 'xyx',
+						name: 'subfolder2',
+						type: 'folder',
+						id: 5,
+						children: [
+							{
+								path: 'xxxy',
+								name: 'subfolder3',
+								type: 'folder',
+								id: 6,
+								children: [
+									{
+										path: 'https://upload.wikimedia.org/wikipedia/commons/d/dc/DMI_conference.jpg',
+										name: 'DMI_conference.jpg',
+										type: 'image/jpg',
+										id: 7,
+										children: []
+									}, {
+										path: 'xxxxy',
+										name: 'subfolder 4',
+										type: 'folder',
+										id: 10,
+										children: [
+											{
+												path: 'http://infoscience.epfl.ch/record/136640/files/VandewalleKV09.pdf',
+												name: 'Just another image',
+												type: 'application/pdf',
+												id: 11,
+												children: []
+											}
+
+										]
+									}
+								]
+							}, {
+						path: 'http://www.math.usu.edu/~corcoran/classes/14spring6550/handouts/reproducible_research.pdf',
+						name: 'reproducible_research.pdf',
+						type: 'application/pdf',
+						id: 8,
+						children: []
+					}
+						]
+					}, {
+						path: 'putUrlHere',
+						name: 'myText.txt',
+						type: 'text/plain',
+						id: 9,
+						children: []
+					}
+				]
+			}	
 	};
 	
 	var get = function(){
@@ -72,14 +93,36 @@ app.factory("publications", function(){
 		return publications.content;
 	};
 
-	var findContent = function(searchedId){
-		for(content in publications.content){
-			if(publications.content[content].id == searchedId){
-				return publications.content[content];
+
+	var pub = {};
+	var iterator = function (o, id){
+		var object = o;
+		var searchedId = id;
+
+		if(object.children.length != 0){
+			for(content in object.children){
+				iterator(object.children[content], searchedId);
+			}
+		} else {
+			if(object.id == searchedId){
+				pub = object;
+				return;
+			} else {
+				return;
 			}
 		}
-		return null;
+		
+
 	};
+
+	var findContent = function(searchedId){
+		var searchedObject = {};
+		iterator(publications.content, searchedId);
+		searchedObject = pub;
+		pub = {};
+		return searchedObject;
+	};
+
 
 
 	
