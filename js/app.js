@@ -31,10 +31,9 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             dirSelectable: false
         };
 
-        $scope.id;
+        $scope.fileId;
         $scope.setId = function(number){
-            $scope.id = number;
-            console.log($scope.id);
+            $scope.fileId = number;
         };
 
 
