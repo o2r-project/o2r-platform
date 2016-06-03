@@ -1,6 +1,9 @@
-    var app = angular.module('starter', ["treeControl", "ui.router"]);
-    app.config(function($stateProvider, $urlRouterProvider){
+    var app = angular.module('starter', ["treeControl", "ui.router", "hljs"]);
+    app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       
+      hljsServiceProvider.setOptions({
+        tabReplace: '    '
+      });
       // For any unmatched url, send to /route1
       $urlRouterProvider.otherwise("/home");
       
@@ -23,10 +26,8 @@
     });
     
 app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
-
         // retrieves all metadata of publication
         $scope.publications = publications.getPublications();
-
         // options for folderTree
         $scope.treeOptions = {
             nodeChildren: 'children',
