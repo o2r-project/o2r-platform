@@ -18,32 +18,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 				var file = publications.getContentById(value);
 
 
-				/*
-					IMPORTANT
-					#####################################################
-					#####################################################
-					If <div hljs hljs-include> works, _getFileContent can be deleted
-					#####################################################
-					#####################################################
-				*/
-				// Ajax call for retrieving data content
-				var _getFileContent = function(path){
-					var _filecontent;
-
-					_filecontent = fileContents.getContent(path);
-					/*
-					var _filecontent;
-					$http(·{
-						method: 'GET',
-						url: path
-					}).then(function successCallback(repsonse){
-						_filecontent = response.data;
-					}, function errorCallback(response){
-						console.log(response.status, response.statusText);
-					});
-					*/
-					return _filecontent;
-				};
+				
 
 				//check if found element is a file
 				if(typeof file.type !== "undefined"){
@@ -55,6 +30,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 					var _mime = file.type.split('/');
 					_mime = _mime[0];
 
+					var _temp = '/home/Jan/Documents/o2r-platform/testCompendium/data/Bagtainer.R';
 					//create html-tags depending on mime type
 					var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>';
 					var _addContent = function(type){
@@ -71,10 +47,6 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 									break;
 								case 4:
 									var object = angular.element('<video controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
-									break;
-								default:
-									var object = angular.element('<div hljs>' + _getFileContent(file.path) + '</div>');
-									//var object = angular.element('<div hljs hljs-include=\"\'' + file.path + '\'\"></div>');
 									break;
 							}
 						} else {

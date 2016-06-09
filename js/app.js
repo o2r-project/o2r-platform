@@ -42,7 +42,23 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             $scope.fileId = number;
         };
 
+        // finds a publication and returns it
+        $scope.getOne = function(number){
+            var p = publications.getContentById(number);
+            return p;
+        };
 
+        // checks for filesize and mimetype for displaying content of files
+        // returns true, if file is not too big and not of type of pdf, image, audio, video
+        $scope.displaySource = function(string){
+            if(typeof string == 'undefined'){ return; }
+            var result = true;
+            var _mime = string.split('/')[0];
+            if( (string == 'application/pdf') || (_mime == 'image') || (_mime == 'audio') || (_mime == 'video')){
+                        result = false;
+            }
+            return result;
+        };
 });
 
 app.controller('ReaderCtrl', function($scope){
