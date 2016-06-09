@@ -1,0 +1,41 @@
+<div class="row">
+	<div class="col-md-12">
+		<h3>Landingpage<button id="uploadbtn" class="btn btn-primary">Upload Compendium</button></h3>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-4">
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>List of Compendia</h4>
+			</div>
+			<div class="panel-body">
+				<div class="divPublist" ng-click="setId(pub.id)" ng-repeat="pub in allPubs">
+					<h4 class="pubList">{{pub.title}}</h4>
+					<hr>
+				</div>
+			</div>
+		</div>	
+			
+		
+	</div>
+	
+	<div class="col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>{{getOne(pubId).title}}</h4>
+			</div>
+			<div class="panel-body">
+				<div ng-repeat="(key, value) in getOne(pubId)">
+					<h4>{{caps(key)}}</h4>
+					{{value}}
+				</div>
+				<br/>
+				<button class="btn btn-default">Go To</button>
+			</div>
+		</div>
+	</div>
+</div>

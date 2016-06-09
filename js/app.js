@@ -22,10 +22,17 @@
             url: "/author/:id",
             templateUrl: "templates/author.html",
             controller: 'AuthorCtrl'
+        })
+
+        .state('author_landing', {
+            url: "/authorLanding/:authorid",
+            templateUrl: "templates/author_landingpage.html",
+            controller: 'AuthorLandingCtrl',
+            controllerAs: 'aLand'
         });
     });
     
-app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
+app.controller('AuthorCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
         // retrieves all metadata of publication
         $scope.publications = publications.getPublications();
         // options for folderTree
@@ -59,7 +66,34 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             }
             return result;
         };
-});
+}]);
+
+app.controller('AuthorLandingCtrl', ['$scope', '$stateParams', 'pubListMeta', function($scope, $stateParams, pubListMeta){
+    
+    var _checkPubId = function(){
+        if(typeof $scope.pubId == 'undefined') return false;
+        return true;
+    };
+
+    $scope.allPubs = pubListMeta.getPubMeta();
+    $scope.getOne = function(id){
+        if(_checkPubId()){
+            var pub = pubListMeta.getPubById(id);
+        } else {
+            var pub = pubListMeta.getPubMeta()[0];
+        }
+        return pub;
+    };
+    $scope.pubId;
+    $scope.setId = function(number){
+        $scope.pubId = number;
+    };
+    
+    $scope.caps = function(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+}]);
 
 app.controller('ReaderCtrl', function($scope){
 	
