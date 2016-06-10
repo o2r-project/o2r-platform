@@ -26,7 +26,8 @@
 						</th></tr>
 					</thead>
 					<tbody>
-						<tr class="a-land-tr" ng-repeat="pub in allPubs | orderBy:sortType:sortReverse" ng-click="setId(pub.id)"><td>{{pub.title}}</td><td>{{pub.date}}</td></tr>
+						<tr class="a-land-tr" ng-repeat="pub in allPubs | orderBy:sortType:sortReverse" ng-click="setId(pub.id)">
+						<td>{{pub.title}}</td><td>{{pub.date}}</td></tr>
 					</tbody>
 				</table>
 			</div>
@@ -46,7 +47,7 @@
 					{{value}}</span>
 				</div>
 				<br/>
-				<button class="btn btn-default">Go To</button>
+				<a ng-href="index.html#/erc/{{getOne(pubId).id}}"><button class="btn btn-default">Go To</button></a>
 			</div>
 		</div>
 	</div>

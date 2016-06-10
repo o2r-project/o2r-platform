@@ -69,12 +69,16 @@ app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', fu
 
 app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function($scope, $stateParams, pubListMeta){
     
+    // get all PublicationsMetadata
+    $scope.allPubs = pubListMeta.getPubMeta();
+
+    // checks if a publication was already selected. 
     var _checkPubId = function(){
         if(typeof $scope.pubId == 'undefined') return false;
         return true;
     };
 
-    $scope.allPubs = pubListMeta.getPubMeta();
+    // checks if a publication was already selected, if not the latest publication will be displayed
     $scope.getOne = function(id){
         if(_checkPubId()){
             var pub = pubListMeta.getPubById(id);
@@ -83,19 +87,27 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function(
         }
         return pub;
     };
+
     $scope.pubId;
+
+    // setter function for pubId
     $scope.setId = function(number){
         $scope.pubId = number;
     };
     
+    // Changes first letter of word into capital letter
     $scope.caps = function(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
+    // helper for sorting
     $scope.sortType = 'date';
     $scope.sortReverse = true;
 
+    // helper for contentfilter
     $scope.filterContent = 'content';
+
+    
 }]);
 
 app.controller('ReaderCtrl', function($scope){
