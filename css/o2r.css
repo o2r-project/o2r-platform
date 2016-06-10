@@ -1,3 +1,28 @@
+/************************
+   Start General
+*************************/
+html, body{
+	height: 100%;
+}
+
+#main{
+	padding: 2%;
+	height: 90%;
+}
+
+#ui-view{
+	height: 100%;
+}
+
+
+
+
+/************************
+   End General
+*************************/
+/***********************
+   Start Author view
+************************/
 .author_content{
 	margin: 2em 0;
 	position: relative;
@@ -5,38 +30,61 @@
 	top:5%;
 }
 
-.pdf{
+.author_pdf{
 	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.vis-hidden{
-	visibility: hidden;
-}
 
-.folderLi{
-	list-style-type: none;
-}
-
-ul {
-	border: none !important;
-}
-
-li {
-	border: none !important;
-}
-
-img{
+.author_img{
 	max-width: 100%;
 }
 
-video{
+.author_video{
 	width:;
 	height:;
 }
 
-#main{
-	padding: 2%;
+/***********************
+   End Author view
+************************/
+/***********************
+   Start Author-Landingpage view
+************************/
+
+#a-land-uploadbtn{
+	float: right;
 }
+
+.a-land-row-title{
+	height: 10%;
+}
+
+.a-land-row-content{
+	height: 90%;
+}
+
+.a-land{
+	height: 100%;
+}
+
+.a-land-panel-head{
+	height: 7%;
+	min-height: 50px;
+}
+
+.a-land-panel{
+	max-height: 91%;
+	overflow-y: auto;
+	margin-bottom: 10%;
+}
+
+.a-land-sorter, .a-land-tr{
+	cursor: pointer;
+}
+
+/***********************
+   End Author-Landingpage view
+************************/

@@ -18,21 +18,20 @@
             templateUrl: "templates/reader.html"
         })
           
-        .state('author', {
-            url: "/author/:id",
+        .state('erc', {
+            url: "/erc/:ercid",
             templateUrl: "templates/author.html",
-            controller: 'AuthorCtrl'
+            controller: 'ErcCtrl'
         })
 
-        .state('author_landing', {
-            url: "/authorLanding/:authorid",
+        .state('author', {
+            url: "/author/:authorid",
             templateUrl: "templates/author_landingpage.html",
-            controller: 'AuthorLandingCtrl',
-            controllerAs: 'aLand'
+            controller: 'AuthorCtrl',
         });
     });
     
-app.controller('AuthorCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
+app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
         // retrieves all metadata of publication
         $scope.publications = publications.getPublications();
         // options for folderTree
@@ -68,7 +67,7 @@ app.controller('AuthorCtrl', ['$scope', 'publications', '$stateParams', '$http',
         };
 }]);
 
-app.controller('AuthorLandingCtrl', ['$scope', '$stateParams', 'pubListMeta', function($scope, $stateParams, pubListMeta){
+app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function($scope, $stateParams, pubListMeta){
     
     var _checkPubId = function(){
         if(typeof $scope.pubId == 'undefined') return false;
@@ -93,6 +92,10 @@ app.controller('AuthorLandingCtrl', ['$scope', '$stateParams', 'pubListMeta', fu
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
+    $scope.sortType = 'date';
+    $scope.sortReverse = true;
+
+    $scope.filterContent = 'content';
 }]);
 
 app.controller('ReaderCtrl', function($scope){
