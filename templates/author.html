@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-12">
-		<h3>Author section: </h3>
+		<h3>ERC Details: </h3>
 	</div>
 </div>
 
@@ -21,12 +21,28 @@
 	<!-- Content -->
 	<div class="col-md-8">
 		<div class="panel panel-default contentview">
+				<div class="panel-heading"><h5>{{getOne(fileId).path}}</h5></div>
 				<div class="panel-body author_content">
 					<!-- Display of images and files-->
+	
 					<o2r-display-files id="content" o2rid="{{fileId}}"></o2r-display-files>
 					<hljs hljs-include="getOne(fileId).path" ng-if="displaySource(getOne(fileId).type) && (getOne(fileId).size < 1000)"></hljs>
 				</div>
 		</div>
 	</div>
+<!--
+
+Possible alternative	
+	<div class="col-md-8">
+		<div class="panel panel-default contentview">
+				<div class="panel-heading"><h5>{{getOne(fileId).path}}</h5></div>
+				
+					<! Display of images and files>
+					<o2r-display-files id="content" o2rid="{{fileId}}"></o2r-display-files>
+					<div hljs class="panel-body author_content" hljs-include="getOne(fileId).path" ng-if="displaySource(getOne(fileId).type) && (getOne(fileId).size < 1000)"></div>
+				
+		</div>
+	</div>
+-->
 </div>
 

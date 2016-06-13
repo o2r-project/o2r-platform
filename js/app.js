@@ -18,14 +18,20 @@
             templateUrl: "templates/reader.html"
         })
           
-        .state('author', {
-            url: "/author/:id",
+        .state('erc', {
+            url: "/erc/:ercid",
             templateUrl: "templates/author.html",
-            controller: 'AuthorCtrl'
+            controller: 'ErcCtrl'
+        })
+
+        .state('author', {
+            url: "/author/:authorid",
+            templateUrl: "templates/author_landingpage.html",
+            controller: 'AuthorCtrl',
         });
     });
     
-app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
+app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
         // retrieves all metadata of publication
         $scope.publications = publications.getPublications();
         // options for folderTree
@@ -59,7 +65,53 @@ app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http)
             }
             return result;
         };
-});
+}]);
+
+app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function($scope, $stateParams, pubListMeta){
+    
+    // get all PublicationsMetadata
+    $scope.allPubs = pubListMeta.getPubMeta();
+
+    $scope.pushId = function(){
+        console.log('pushed');
+    };
+    // checks if a publication was already selected. 
+    var _checkPubId = function(){
+        if(typeof $scope.pubId == 'undefined') return false;
+        return true;
+    };
+
+    // checks if a publication was already selected, if not the latest publication will be displayed
+    $scope.getOne = function(id){
+        if(_checkPubId()){
+            var pub = pubListMeta.getPubById(id);
+        } else {
+            var pub = pubListMeta.getPubMeta()[0];
+        }
+        return pub;
+    };
+
+    $scope.pubId;
+
+    // setter function for pubId
+    $scope.setId = function(number){
+        $scope.pubId = number;
+    };
+    
+    // Changes first letter of word into capital letter
+    $scope.caps = function(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    // helper for sorting
+    $scope.sortType = 'date';
+    $scope.sortReverse = true;
+
+    // helper for contentfilter
+    $scope.filterContent = 'content';
+
+    
+}]);
 
 app.controller('ReaderCtrl', function($scope){
 	

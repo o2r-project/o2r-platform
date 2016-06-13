@@ -30,23 +30,22 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 					var _mime = file.type.split('/');
 					_mime = _mime[0];
 
-					var _temp = '/home/Jan/Documents/o2r-platform/testCompendium/data/Bagtainer.R';
 					//create html-tags depending on mime type
 					var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>';
 					var _addContent = function(type){
 						if(file.size < 1000){
 							switch(type){
 								case 1:
-									var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.path +  '"</object>');
+									var object = angular.element('<object class="author_pdf" type="application/pdf" data="' + file.path +  '"</object>');
 									break;
 								case 2:
-									var object = angular.element('<img src="' + file.path + '">');
+									var object = angular.element('<img class="author_img" src="' + file.path + '">');
 									break;
 								case 3:
 									var object = angular.element('<audio controls><source src="' + file.path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
 									break;
 								case 4:
-									var object = angular.element('<video controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
+									var object = angular.element('<video class="author_video" controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
 									break;
 							}
 						} else {
