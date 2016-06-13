@@ -1,37 +1,75 @@
 "use strict";
 
-app.directive('o2rDisplayFiles', ['publications', function(publications){
+/*
+	Directive for displaying different file types.
+	This directive checks the mime type attribute of a publication.content.<element> to handle it differently considering its mime type.
+	Directive can only be used as Html-Element and expects an attribute o2rid.
+	Example: 
+	<o2r-display-files o2rid="7"></o2r-display-files>
+*/
+app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', function(publications, $http, fileContents){
 	return{
-		restrict: 'A',
+		restrict: 'E',
 		link: function(scope, iElement, attrs){
-			var index = window.location.href.split('/');
-			index = index[index.length - 1];
-			index = parseInt(index);
 
-			var file = publications.getContentById(index);
-
-			if(typeof file.type !== "undefined"){
-				var mime = file.type.split('/');
-				mime = mime[0];
+			//checks if o2rid-attribute changes
+			attrs.$observe('o2rid', function(value){
+				
+				var file = publications.getContentById(value);
 
 
-				switch (mime){
-					case 'application':
-						var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.path +  '"</object>');
+				
+
+				//check if found element is a file
+				if(typeof file.type !== "undefined"){
+
+					//remove existing content
+					$('o2r-display-files').empty();
+
+					//prepare mime type
+					var _mime = file.type.split('/');
+					_mime = _mime[0];
+
+					var _temp = '/home/Jan/Documents/o2r-platform/testCompendium/data/Bagtainer.R';
+					//create html-tags depending on mime type
+					var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>';
+					var _addContent = function(type){
+						if(file.size < 1000){
+							switch(type){
+								case 1:
+									var object = angular.element('<object class="pdf" type="application/pdf" data="' + file.path +  '"</object>');
+									break;
+								case 2:
+									var object = angular.element('<img src="' + file.path + '">');
+									break;
+								case 3:
+									var object = angular.element('<audio controls><source src="' + file.path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
+									break;
+								case 4:
+									var object = angular.element('<video controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
+									break;
+							}
+						} else {
+							var object = angular.element(_sizeError);
+						}
 						iElement.append(object);
-						break;
-					case 'image':
-						var object = angular.element('<img src="' + file.path + '">');
-						iElement.append(object);
-						break;
-					default: 
-						var object = angular.element('<pre>' + file.path + '</pre>');
-						iElement.append(object);
+					}
+
+
+					// check mime type
+					if(file.type == 'application/pdf'){
+						_addContent(1);
+					} else if(_mime == 'image'){
+						_addContent(2);
+					} else if(_mime == 'audio'){
+						_addContent(3);
+					} else if(_mime == 'video'){
+						_addContent(4);
+					} else {
+						_addContent();
+					}
 				}
-
-			}
-
-
+			});
 		}
 	}
 }]);

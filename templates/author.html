@@ -1,4 +1,3 @@
-
 <div class="row">
 	<div class="col-md-12">
 		<h3>Author section: </h3>
@@ -6,21 +5,9 @@
 </div>
 
 
-
-<!--
 <div class="row">
-	<div class="col-md-4">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<ul class="list-group" data-toggle="collapse" data-target=".folder_"> {{publications.content.name}}
-					<li class="list-group-item collapse folder_" ng-repeat="node in publications.content.children" ng-include="'templates/folderTree.html'"></li>
-				</ul>
-			</div>
-		</div>
-	</div>
--->
 
-<div class="row">
+	<!-- Folder Tree -->
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-body">
@@ -31,16 +18,14 @@
 
 
 
-	
+	<!-- Content -->
 	<div class="col-md-8">
 		<div class="panel panel-default contentview">
-
-				<!-- Display of images and files -->
-
 				<div class="panel-body author_content">
-					<div id="content" o2r-display-files=""></div>
+					<!-- Display of images and files-->
+					<o2r-display-files id="content" o2rid="{{fileId}}"></o2r-display-files>
+					<hljs hljs-include="getOne(fileId).path" ng-if="displaySource(getOne(fileId).type) && (getOne(fileId).size < 1000)"></hljs>
 				</div>
-			
 		</div>
 	</div>
 </div>

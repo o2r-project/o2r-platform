@@ -5,80 +5,100 @@ app.factory("publications", function(){
 			author: 'Author 1',
 			year: '2016',
 			content: {
-				path: 'xy',
+				path: '/home/Jan/Documents/o2r-platform/testCompendium/',
 				name: 'root',
 				type: 'folder',
 				id: 1,
 				children: [
 					{
-						path: 'xxy',
-						name: 'subfolder 1',
-						type: 'folder',
+						path: '/home/Jan/Documents/o2r-platform/testCompendium/data/',
+						name: 'data',
 						id: 2,
 						children: [
 							{
-								path: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Alte_Herrenh%C3%A4user_Stra%C3%9Fe_10_Hannover_Hardenbergsches_Haus_S%C3%BCdfront.jpg',
-								name: 'Altes_Herrenhaus.jpg',
-								type: 'image/jpg',
+								path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/',
+								name: 'wd',
 								id: 3,
+								children: [
+									{
+										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
+										name: 'ifgi.jpg',
+										type: 'image/jpg',
+										id: 4,
+										size: 400,
+										children: []
+									}, {
+										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
+										name: 'lab02-solution.pdf',
+										type: 'application/pdf',
+										id: 5,
+										size: 400,
+										children: []
+									}, {
+										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
+										name: 'lab02-solution.Rmd',
+										type: '',
+										id: 6,
+										size: 400,
+										children: []
+									}, {
+										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
+										name: 'meteo.RData',
+										type: '',
+										id: 7,
+										size: 400,
+										children: []
+									}
+								]
+							}, {
+								path: '/home/Jan/Documents/o2r-platform/testCompendium/data/Bagtainer.R',
+								name: 'Bagtainer.R',
+								type: '',
+								id: 8,
+								size: 800,
 								children: []
-							},
-							{
-								path: 'http://infoscience.epfl.ch/record/136640/files/VandewalleKV09.pdf',
-								name: 'VandewalleKV09.pdf',
-								type: 'application/pdf',
-								id: 4,
+							}, {
+								path: '/home/Jan/Documents/o2r-platform/testCompendium/data/Bagtainer.yml',
+								name: 'Bagtainer.yml',
+								type: '',
+								id: 9,
+								size: 400,
+								children: []
+							}, {
+								path: '/home/Jan/Documents/o2r-platform/testCompendium/data/Dockerfile',
+								name: 'Dockerfile',
+								type: '',
+								id: 10,
+								size: 400,
 								children: []
 							}
 						]
 					}, {
-						path: 'xyx',
-						name: 'subfolder2',
-						type: 'folder',
-						id: 5,
-						children: [
-							{
-								path: 'xxxy',
-								name: 'subfolder3',
-								type: 'folder',
-								id: 6,
-								children: [
-									{
-										path: 'https://upload.wikimedia.org/wikipedia/commons/d/dc/DMI_conference.jpg',
-										name: 'DMI_conference.jpg',
-										type: 'image/jpg',
-										id: 7,
-										children: []
-									}, {
-										path: 'xxxxy',
-										name: 'subfolder 4',
-										type: 'folder',
-										id: 10,
-										children: [
-											{
-												path: 'http://infoscience.epfl.ch/record/136640/files/VandewalleKV09.pdf',
-												name: 'Just another image',
-												type: 'application/pdf',
-												id: 11,
-												children: []
-											}
-
-										]
-									}
-								]
-							}, {
-						path: 'http://www.math.usu.edu/~corcoran/classes/14spring6550/handouts/reproducible_research.pdf',
-						name: 'reproducible_research.pdf',
-						type: 'application/pdf',
-						id: 8,
-						children: []
-					}
-						]
-					}, {
-						path: 'putUrlHere',
-						name: 'myText.txt',
+						path: '/home/Jan/Documents/o2r-platform/testCompendium/bag-info.txt',
+						name: 'bag-info.txt',
 						type: 'text/plain',
-						id: 9,
+						id: 11,
+						children: []
+							}, {
+						path: '/home/Jan/Documents/o2r-platform/testCompendium/bagit.txt',
+						name: 'bagit.txt',
+						type: 'text/plain',
+						id:12,
+						size: 953,
+						children: []
+					}, {
+						path: '/home/Jan/Documents/o2r-platform/testCompendium/manifest-md5.txt',
+						name: 'manifest-md5.txt',
+						type: 'text/plain',
+						id: 13,
+						size: 953,
+						children: []
+					}, {
+						path: '/home/Jan/Documents/o2r-platform/testCompendium/tagmanifest-md5.txt',
+						name: 'tagmanifest-md5.txt',
+						type: 'text/plain',
+						id: 14,
+						size: 953,
 						children: []
 					}
 				]

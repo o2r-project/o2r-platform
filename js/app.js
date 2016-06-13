@@ -1,6 +1,9 @@
-    var app = angular.module('starter', ["treeControl", "ui.router"]);
-    app.config(function($stateProvider, $urlRouterProvider){
+    var app = angular.module('starter', ["treeControl", "ui.router", "hljs"]);
+    app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       
+      hljsServiceProvider.setOptions({
+        tabReplace: '    '
+      });
       // For any unmatched url, send to /route1
       $urlRouterProvider.otherwise("/home");
       
@@ -23,55 +26,39 @@
     });
     
 app.controller('AuthorCtrl', function($scope, publications, $stateParams, $http){
+        // retrieves all metadata of publication
         $scope.publications = publications.getPublications();
-        $scope.template = {name: 'folderTree.html', url: 'templates/folderTree.html'};
-
+        // options for folderTree
         $scope.treeOptions = {
             nodeChildren: 'children',
             dirSelectable: false
         };
 
-        $scope.id;
+        // id of file in publication
+        $scope.fileId;
+
+        // set fileId
         $scope.setId = function(number){
-            $scope.id = number;
-            console.log($scope.id);
+            $scope.fileId = number;
         };
 
-
-
-        // sets .show-Attribute of all files to false
-        var _setAllFalse = function(){
-             for(file in publications.getPublications().content){
-                        publications.getPublications().content[file].show = false;
-                    }
-        }; 
-
-        // sets param fileContent as input for scope.content
-        var _showFile = function(fileContent){
-            $scope.content = fileContent;
-        };
-        
-        
-        // calls http request for receiving content of file. Calls _showFile() to make fileContent visible
-        var _getFileContent= function(fileId){
-           /*
-            // data contains content of file as string
-            $http({
-                method: 'GET',
-                //Replace with real path
-                url: '/getMyDataAsString/:id'
-            }).then(function successCallback(response){
-                showFile(response.data);
-            }, function errorCallback(response){
-
-            });
-        */
-            data = 'Hello World \n Here is a new line \n and here are many spaces                               until here';
-            _showFile(data);
+        // finds a publication and returns it
+        $scope.getOne = function(number){
+            var p = publications.getContentById(number);
+            return p;
         };
 
-       
-
+        // checks for filesize and mimetype for displaying content of files
+        // returns true, if file is not too big and not of type of pdf, image, audio, video
+        $scope.displaySource = function(string){
+            if(typeof string == 'undefined'){ return; }
+            var result = true;
+            var _mime = string.split('/')[0];
+            if( (string == 'application/pdf') || (_mime == 'image') || (_mime == 'audio') || (_mime == 'video')){
+                        result = false;
+            }
+            return result;
+        };
 });
 
 app.controller('ReaderCtrl', function($scope){

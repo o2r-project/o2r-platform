@@ -27,3 +27,12 @@ ul {
 li {
 	border: none !important;
 }
+
+img{
+	max-width: 100%;
+}
+
+video{
+	width:;
+	height:;
+}
