@@ -72,9 +72,16 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function(
     // get all PublicationsMetadata
     $scope.allPubs = pubListMeta.getPubMeta();
 
-    $scope.pushId = function(){
-        console.log('pushed');
-    };
+    /*$scope.pushId = function(id){
+        console.log(id);
+    };*/
+    
+    $scope.$watch('allPubs', function(pub) {
+ 		   for(var i = 0; i < pub.length; i++) {
+ 			console.log(pub[i].id);	
+   		}
+	}, true);    
+    
     // checks if a publication was already selected. 
     var _checkPubId = function(){
         if(typeof $scope.pubId == 'undefined') return false;
