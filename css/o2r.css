@@ -142,6 +142,15 @@ html, body{
 .search_searchinput{
 	padding-right: 0px !important;
 }
+
+.search_resTitle{
+	cursor: pointer;
+}
+
+.search_resTable{
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
 /***********************
    End Search view
 ************************/

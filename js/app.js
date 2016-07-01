@@ -119,9 +119,12 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListMet
     
 }]);
 
-app.controller('SearchCtrl', ['$scope', '$stateParams',function($scope, $stateParams){
+app.controller('SearchCtrl', ['$scope', '$stateParams', 'searchResults', function($scope, $stateParams, searchResults){
 	// reads term query from url
     $scope.searchTerm = $stateParams.term;
+
+    // get all PublicationsMetadata
+    $scope.allPubs = searchResults.getPubMeta(); 
     // id of clicked publication
     $scope.pubId;
     // sets pubId to id of clicked publication
@@ -134,9 +137,19 @@ app.controller('SearchCtrl', ['$scope', '$stateParams',function($scope, $statePa
         if(typeof $scope.pubId == 'undefined') return false;
         return true;  
     };
+    // Changes first letter of word into capital letter
+    $scope.caps = function(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
     // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
     $scope.submit = function(){
-        //implement here!!
+        var _url = '/erc/' + $scope.getOne($scope.pubId).id;
+        $location.path(_url);
+    };
+    // checks if a publication was already selected, if not the latest publication will be displayed
+    $scope.getOne = function(id){
+        var pub = searchResults.getPubById(id);
+        return pub;
     };
 }]);
 
