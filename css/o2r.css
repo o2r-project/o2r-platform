@@ -118,13 +118,15 @@ html, body{
 
 .home_search{
 	position: relative;
-	top: 30%;
+	top: 15%;
 }
 
-.home_h1{
-	text-align: center;
+#home_logo{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 	position: relative;
-	top: 27%;
+	top: 10%;
 }
 /***********************
    End Home view
