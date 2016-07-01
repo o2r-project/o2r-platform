@@ -10,24 +10,26 @@
       $stateProvider
         .state('home', {
             url: "/home",
-            templateUrl: "templates/home.html"
-        })
-
-        .state('reader', {
-            url: "/reader",
-            templateUrl: "templates/reader.html"
+            templateUrl: "templates/home.html",
+            controller: 'HomeCtrl'
         })
           
         .state('erc', {
             url: "/erc/:ercid",
-            templateUrl: "templates/author.html",
+            templateUrl: "templates/erc.html",
             controller: 'ErcCtrl'
         })
 
         .state('author', {
             url: "/author/:authorid",
-            templateUrl: "templates/author_landingpage.html",
+            templateUrl: "templates/author.html",
             controller: 'AuthorCtrl',
+        })
+
+        .state('search', {
+            url: "/search?term",
+            templateUrl: "templates/search.html",
+            controller: 'SearchCtrl'
         });
     });
     
@@ -67,20 +69,10 @@ app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', fu
         };
 }]);
 
-app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function($scope, $stateParams, pubListMeta){
+app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListMeta', function($scope, $stateParams, $location, pubListMeta){
     
     // get all PublicationsMetadata
-    $scope.allPubs = pubListMeta.getPubMeta();
-
-    /*$scope.pushId = function(id){
-        console.log(id);
-    };*/
-    
-    $scope.$watch('allPubs', function(pub) {
- 		   for(var i = 0; i < pub.length; i++) {
- 			console.log(pub[i].id);	
-   		}
-	}, true);    
+    $scope.allPubs = pubListMeta.getPubMeta(); 
     
     // checks if a publication was already selected. 
     var _checkPubId = function(){
@@ -117,13 +109,42 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListMeta', function(
     // helper for contentfilter
     $scope.filterContent = 'content';
 
+    // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
+    $scope.submit = function(){
+        var _url = '/erc/' + $scope.getOne($scope.pubId).id;
+        $location.path(_url);
+
+    };
+
     
 }]);
 
-app.controller('ReaderCtrl', function($scope){
-	
-});
+app.controller('SearchCtrl', ['$scope', '$stateParams',function($scope, $stateParams){
+	// reads term query from url
+    $scope.searchTerm = $stateParams.term;
+    // id of clicked publication
+    $scope.pubId;
+    // sets pubId to id of clicked publication
+    $scope.setId = function(id){
+        $scope.pubId = id;
+    };
+    // checks if a publication has been clicked
+    // returns true if a publication has been clicked
+    $scope.checkPubId = function(){
+        if(typeof $scope.pubId == 'undefined') return false;
+        return true;  
+    };
+    // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
+    $scope.submit = function(){
+        //implement here!!
+    };
+}]);
 
-app.controller('HomeCtrl', function($scope){
-	
-});
+app.controller('HomeCtrl', ['$scope', '$location', function($scope, $location){
+    
+    $scope.submit = function(){
+        var _query = $scope.searchModel.replace(/ /g, "+");
+       // $location.path('/search').search('term=' + _query);
+        $location.path('/search');
+    };	
+}]);

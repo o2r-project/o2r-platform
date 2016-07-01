@@ -23,14 +23,14 @@ html, body{
 /***********************
    Start Author view
 ************************/
-.author_content{
+.erc_content{
 	margin: 2em 0;
 	position: relative;
 	right:1%;
 	top:5%;
 }
 
-.author_pdf{
+.erc_pdf{
 	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
@@ -38,16 +38,16 @@ html, body{
 }
 
 
-.author_img{
+.erc_img{
 	max-width: 100%;
 }
 
-.author_video{
+.erc_video{
 	width:;
 	height:;
 }
 
-.author_jumboImg{
+.erc_jumboImg{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -59,29 +59,29 @@ html, body{
    Start Author-Landingpage view
 ************************/
 
-#a-land-uploadbtn{
+#author-uploadbtn{
 	float: right;
 }
 
-.a-land-row-title{
+.author-row-title{
 	height: 10%;
 }
 
-.a-land-row-content{
+.author-row-content{
 	height: 90%;
 }
 
-.a-land{
+.author{
 	height: 100%;
 }
 
-.a-land-panel-head{
+.author-panel-head{
 	height: 7%;
 	min-height: 50px;
 }
 
 
-.a-land-panel{
+.author-panel{
 	max-height: calc(100% - 50px - 15px);
 	/*
 	margin-bottom: 10%;
@@ -89,7 +89,7 @@ html, body{
 	overflow-y: auto;
 }
 
-.a-land-sorter, .a-land-tr{
+.author-sorter, .author-tr{
 	cursor: pointer;
 }
 
@@ -102,4 +102,44 @@ html, body{
 
 /***********************
    End Author-Landingpage view
+************************/
+
+/***********************
+   Start Home view
+************************/
+
+.home_searchinput{
+	padding-right: 0px !important;
+}
+
+.home_div{
+	height: 100%;
+}
+
+.home_search{
+	position: relative;
+	top: 30%;
+}
+
+.home_h1{
+	text-align: center;
+	position: relative;
+	top: 27%;
+}
+/***********************
+   End Home view
+************************/
+
+/***********************
+   Start Search view
+************************/
+.search_searchbtn{
+	float: right;
+}
+
+.search_searchinput{
+	padding-right: 0px !important;
+}
+/***********************
+   End Search view
 ************************/

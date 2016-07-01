@@ -36,21 +36,21 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 						if(file.size < 1000){
 							switch(type){
 								case 1:
-									var object = angular.element('<object class="author_pdf" type="application/pdf" data="' + file.path +  '"</object>');
+									var object = angular.element('<object class="erc_pdf" type="application/pdf" data="' + file.path +  '"</object>');
 									break;
 								case 2:
-									var object = angular.element('<img class="author_img" src="' + file.path + '">');
+									var object = angular.element('<img class="erc_img" src="' + file.path + '">');
 									break;
 								case 3:
 									var object = angular.element('<audio controls><source src="' + file.path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
 									break;
 								case 4:
-									var object = angular.element('<video class="author_video" controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
+									var object = angular.element('<video class="erc_video" controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
 									break;
 							}
 						} else {
 							if(type == 2){
-								var object = angular.element('<div class="jumbotron"><img class="author_jumboImg" src="' + file.path + '?width=140&height=140"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>');
+								var object = angular.element('<div class="jumbotron"><img class="erc_jumboImg" src="' + file.path + '?width=140&height=140"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>');
 							} else {
 							var object = angular.element(_sizeError);
 							}
