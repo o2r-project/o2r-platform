@@ -80,15 +80,25 @@ html, body{
 	min-height: 50px;
 }
 
+
 .a-land-panel{
-	max-height: 91%;
-	overflow-y: auto;
+	max-height: calc(100% - 50px - 15px);
+	/*
 	margin-bottom: 10%;
+	*/
+	overflow-y: auto;
 }
 
 .a-land-sorter, .a-land-tr{
 	cursor: pointer;
 }
+
+/*
+.a-test{
+	height: calc(100% - 15px);
+	overflow-y: auto;
+}
+*/
 
 /***********************
    End Author-Landingpage view
