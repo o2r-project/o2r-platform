@@ -32,7 +32,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 
 					//create html-tags depending on mime type
 					var _addContent = function(type){
-						var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>';
+						var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="' + file.path + '" download>Download</a> file to see its content</p></center></div>';
 						if(file.size < 1000){
 							switch(type){
 								case 1:
@@ -50,7 +50,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 							}
 						} else {
 							if(type == 2){
-								var object = angular.element('<div class="jumbotron"><img class="erc_jumboImg" src="' + file.path + '?width=140&height=140"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>');
+								var object = angular.element('<div class="jumbotron"><img class="erc_jumboImg" src="' + file.path + '?width=140&height=140"><center><h2>Filesize is too big to display</h2><p><a href="' + file.path + '" download>Download</a> file to see its content</p></center></div>');
 							} else {
 							var object = angular.element(_sizeError);
 							}
