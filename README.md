@@ -6,6 +6,13 @@ AngularJS
 
 Bootstrap
 
+### Dependencies
+
+  - [bower](https://bower.io/)
+
+### Install
+
+	bower install
 
 ### License
 
