@@ -1,4 +1,4 @@
-app.factory("publications", function(){
+app.factory("publications", ['$http', function($http){
 	var publications = {
 			id: 1,
 			title: 'Title 1',
@@ -79,6 +79,27 @@ app.factory("publications", function(){
 				]
 			}	
 	};
+
+	/**
+	* @Desc Ajax call for getting publication metadata  
+	* 		 GET /api/v1/compendium/:id
+	* @Param id - compendium id
+	*/
+	var httpRequest = function(compId){
+		/*
+		$http({
+			method: 'GET',
+			url: '/api/v1/compendium/' + compId
+		}).then(function successCallback(response){
+			publications = response.data;
+		}, function errorCallback(response){
+			console.log(response.statusText);
+		});
+		*/
+		console.log('placeholder for ajax call');
+	};
+	
+
 	
 	var get = function(){
 		return publications;
@@ -122,8 +143,9 @@ app.factory("publications", function(){
 
 	
 	return {
+		httpGET: httpRequest,
 		getPublications: get,
 		getAllContent: getAllContent,
 		getContentById: findContent
 	}; 		
-});
+}]);

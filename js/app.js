@@ -34,6 +34,10 @@
     });
     
 app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
+        
+        publications.httpGET($stateParams.ercid);
+
+
         // retrieves all metadata of publication
         $scope.publications = publications.getPublications();
         // options for folderTree
