@@ -25,26 +25,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -116,26 +112,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -207,26 +199,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -296,26 +284,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -385,26 +369,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -474,26 +454,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -563,26 +539,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -652,26 +624,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -741,26 +709,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -830,26 +794,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -919,26 +879,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
@@ -1008,26 +964,22 @@ app.factory('pubListMeta', function(){
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/ifgi.jpg',
 										name: 'ifgi.jpg',
 										type: 'image/jpg',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.pdf',
 										name: 'lab02-solution.pdf',
 										type: 'application/pdf',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/lab02-solution.Rmd',
 										name: 'lab02-solution.Rmd',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}, {
 										path: '/home/Jan/Documents/o2r-platform/testCompendium/data/wd/meteo.RData',
 										name: 'meteo.RData',
 										type: '',
-										size: 400,
-										children: []
+										size: 400
 									}
 								]
 							}, {
