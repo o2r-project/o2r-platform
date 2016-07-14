@@ -46,13 +46,13 @@ app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', fu
         $scope.fileId;
 
         // set fileId
-        $scope.setId = function(number){
-            $scope.fileId = number;
+        $scope.setId = function(path){
+            $scope.fileId = path;
         };
 
         // finds a publication and returns it
-        $scope.getOne = function(number){
-            var p = publications.getContentById(number);
+        $scope.getOne = function(path){
+            var p = publications.getContentById(path);
             return p;
         };
 
@@ -93,8 +93,8 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListMet
     $scope.pubId;
 
     // setter function for pubId
-    $scope.setId = function(number){
-        $scope.pubId = number;
+    $scope.setId = function(id){
+        $scope.pubId = id;
     };
     
     // Changes first letter of word into capital letter
