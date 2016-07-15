@@ -1,6 +1,6 @@
 "use strict";
 
-app.factory('pubListMeta', function(){
+app.factory('pubListAuthor', function(){
 	var list = [
 		{
 			id: 1,
@@ -1030,6 +1030,21 @@ app.factory('pubListMeta', function(){
 			}
 		}];
 
+
+
+	var httpRequest = function(author_id){
+		/*
+		$http({
+			method: 'GET',
+			url: '/api/v1/compendium?author=' + author_id
+		}).then(function successCallback(response){
+			list = response.data;
+		}, function errorCallback(response){
+			console.log(response.statusText);
+		});
+		*/
+		console.log('placeholder for httpGET: /api/v1/compendium?author=<authorid>');
+	}
 	var getAll = function(){
 		return list;
 	};
@@ -1043,6 +1058,7 @@ app.factory('pubListMeta', function(){
 	};
 
 	return {
+		httpGET: httpRequest,
 		getPubMeta: getAll,
 		getPubById: getOne
 	};

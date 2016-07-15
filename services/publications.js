@@ -96,7 +96,7 @@ app.factory("publications", ['$http', function($http){
 			console.log(response.statusText);
 		});
 		*/
-		console.log('placeholder for ajax call');
+		console.log('placeholder for httpGET: /api/v1/compendium/:id');
 	};
 	
 

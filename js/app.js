@@ -35,6 +35,7 @@
     
 app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
         
+        // httpRequest for retrieving all metadata of one compendium
         publications.httpGET($stateParams.ercid);
 
 
@@ -73,10 +74,14 @@ app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', fu
         };
 }]);
 
-app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListMeta', function($scope, $stateParams, $location, pubListMeta){
+app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListAuthor', function($scope, $stateParams, $location, pubListAuthor){
     
+    // httpRequest for retrieving all compendia from one author
+    pubListAuthor.httpGET($stateParams.authorid);
+    
+
     // get all PublicationsMetadata
-    $scope.allPubs = pubListMeta.getPubMeta(); 
+    $scope.allPubs = pubListAuthor.getPubMeta(); 
     
     // checks if a publication was already selected. 
     var _checkPubId = function(){
@@ -87,9 +92,9 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListMet
     // checks if a publication was already selected, if not the latest publication will be displayed
     $scope.getOne = function(id){
         if(_checkPubId()){
-            var pub = pubListMeta.getPubById(id);
+            var pub = pubListAuthor.getPubById(id);
         } else {
-            var pub = pubListMeta.getPubMeta()[0];
+            var pub = pubListAuthor.getPubMeta()[0];
         }
         return pub;
     };
