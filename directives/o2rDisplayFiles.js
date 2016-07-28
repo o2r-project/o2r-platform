@@ -16,7 +16,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 			attrs.$observe('o2rid', function(value){
 				
 				var file = publications.getContentById(value);
-
+				
 
 				
 

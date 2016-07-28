@@ -7,19 +7,24 @@
 
 <div class="row">
 
-	<!-- Folder Tree -->
+	<!-- left side -->
 	<div class="col-md-4">
+		<!-- folder Tree -->
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<treecontrol class="tree-classic" tree-model="publications.content" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="setId(node.path)">{{node.name}}</span></treecontrol>
+				<treecontrol class="tree-classic" tree-model="publication.files" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="setId(node.path)">{{node.name}}</span></treecontrol>
 			</div>
 		</div>
+
+
+		<button type="button" class="btn btn-primary" ng-click="execJob()" ng-disabled="jobDone">Run analysis</button>{{execStatus}}
 	</div>
 
 
 
-	<!-- Content -->
+	<!-- right side -->
 	<div class="col-md-8">
+		<!-- Content -->
 		<div class="panel panel-default contentview">
 				<div class="panel-heading"><h5>{{getOne(fileId).path}}</h5></div>
 				<div class="panel-body erc_content">

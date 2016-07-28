@@ -1,6 +1,6 @@
 "use strict";
 
-app.factory('pubListAuthor', function(){
+app.factory('pubListAuthor', ['$http', function($http){
 	var list = [
 		{
 			id: 1,
@@ -1033,16 +1033,24 @@ app.factory('pubListAuthor', function(){
 
 
 	var httpRequest = function(author_id){
-		/*
+		
 		$http({
 			method: 'GET',
-			url: '/api/v1/compendium?author=' + author_id
+			// true url
+			//url: '/api/v1/compendium?author=' + author_id
+
+			// wrong url, just for testing
+			url: 'http://ubsvirt148.uni-muenster.de:8080/api/v1/compendium'
 		}).then(function successCallback(response){
-			list = response.data;
+			// true action
+			//list = response.data;
+
+			// wrong action, just for testing
+			console.log(response.data);
 		}, function errorCallback(response){
 			console.log(response.statusText);
 		});
-		*/
+		
 		console.log('placeholder for httpGET: /api/v1/compendium?author=<authorid>');
 	}
 	var getAll = function(){
@@ -1062,4 +1070,4 @@ app.factory('pubListAuthor', function(){
 		getPubMeta: getAll,
 		getPubById: getOne
 	};
-});
+}]);
