@@ -1,13 +1,13 @@
-<div class="panel panel-default a-land">
+<div class="panel panel-default a-land" ng-controller="MetadataCtrl as meta">
 	<div class="panel-heading a-land-panel-head">
-		<h4>{{getOne(pubId).title}}</h4>
+		<h4>{{compMeta.title}}</h4>
 	</div>
 	<div class="panel-body a-land-panel">
-		<div ng-repeat="(key, value) in getOne(pubId)">
-			<span ng-hide="key == 'content'"><h4>{{caps(key)}}</h4>
+		<div ng-repeat="(key, value) in compMeta">
+			<span ng-hide="key == 'files'"><h4>{{caps(key)}}</h4>
 			{{value}}</span>
 		</div>
 		<br/>
-		<a ng-href="index.html#/erc/{{getOne(pubId).id}}"><button class="btn btn-default" ng-click="submit()">Go To</button></a>
+		<button class="btn btn-default" ng-click="submit()">Go To</button>
 	</div>
 </div>

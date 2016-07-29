@@ -1,4 +1,5 @@
     var app = angular.module('starter', ["treeControl", "ui.router", "hljs"]);
+    app.constant('url', 'http://ubsvirt148.uni-muenster.de:8080/api/v1');
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       
       hljsServiceProvider.setOptions({
@@ -33,63 +34,52 @@
         });
     });
     
-app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', function($scope, publications, $stateParams, $http){
-        var url = 'http://ubsvirt148.uni-muenster.de:8080/api/v1';
+app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', 'url', function($scope, publications, $stateParams, $http, url){
+        // id of compendium
         var ercId = $stateParams.ercid;
-
+        // callback function for publications.getRequest()
         var success = function(){
-
             $scope.publication = publications.getPublications();
-
-                $scope.getOne = function(path){
-                    var p = publications.getContentById(path);
-                    return p;
-                };
-
-                // checks for filesize and mimetype for displaying content of files
-                // returns true, if file is not too big and not of type of pdf, image, audio, video
-                $scope.displaySource = function(string){
-                    if(typeof string == 'undefined'){ return; }
-                    var result = true;
-                    var _mime = string.split('/')[0];
-                    if( (string == 'application/pdf') || (_mime == 'image') || (_mime == 'audio') || (_mime == 'video')){
-                        result = false;
-                    }
-                    return result;
-                };
-
+            $scope.getOne = function(path){
+                var p = publications.getContentById(path);
+                return p;
+            };
+            // checks for filesize and mimetype for displaying content of files
+            // returns true, if file is not too big and not of type of pdf, image, audio, video
+            $scope.displaySource = function(string){
+                if(typeof string == 'undefined'){ return; }
+                var result = true;
+                var _mime = string.split('/')[0];
+                if( (string == 'application/pdf') || (_mime == 'image') || (_mime == 'audio') || (_mime == 'video')){
+                    result = false;
+                }
+                return result;
+            };
         };
 
-        // real
-        //publications.getRequest(url + '/compendium/' + ercId, success);
-        //test
-        publications.getRequest(url + '/compendium/RjWMR', success);
-        // real
-        //$http.get(url + '/job?compendium_id=' + ercId)
-        //test
-        $http.get(url + '/job?compendium_id=RjWMR')
+        // httpRequest for retrieving all metadata of a compendium
+        publications.getRequest(url + '/compendium/' + ercId, success);
+        // httpRequest for getting information about a job status
+        $http.get(url + '/job?compendium_id=' + ercId)
             .then(function successCallback(response){
                 getJobStatus(response.data.results[response.data.results.length-1]);
             }, function errorCallback(response){
                 console.log(response);
             });
-
         // options for folderTree
         $scope.treeOptions = {
             nodeChildren: 'children',
             dirSelectable: false
         };
-
         // id of file in publication
         $scope.fileId;
-
         // set fileId
         $scope.setId = function(path){
             $scope.fileId = path;
         };
-
-
+        // function for handling the job status
         var getJobStatus = function(job_id){
+            //httpRequest for getting information about job status
             $http.get(url + '/job/' + job_id)
                         .then(function successCallback(res){
                             var status = {};
@@ -123,11 +113,10 @@ app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', fu
         };
         $scope.jobDone = true;
         $scope.execStatus = {};
+        //function for executing a new job
         $scope.execJob = function(){
-            //real
-            //$http.post('http://ubsvirt148.uni-muenster.de:8080/api/v1/job', {compendium_id: ercId})
-            //test
-            $http.post(url + '/job', {compendium_id: 'RjWMR'})
+            // httpRequest for executing a new job
+            $http.post('http://ubsvirt148.uni-muenster.de:8080/api/v1/job', {compendium_id: ercId})
                 .then(function successCallback(response){
                     console.log(response);
                     getJobStatus(response.data.job_id);
@@ -139,93 +128,43 @@ app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', fu
        
 }]);
 
-app.controller('AuthorCtrl', ['$scope', '$stateParams', '$location', 'pubListAuthor', function($scope, $stateParams, $location, pubListAuthor){
-    
+app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListAuthor', 'metadata', function($scope, $stateParams, pubListAuthor, metadata){
+    // id from author
     var authorId = $stateParams.authorid;
+    // function is called in asynchronous response from metadata.callMetadata_author()
+    var getMeta_author = function(meta_author){
+        //allPubs will be set to comp_meta from metadata factory
+        $scope.allPubs = meta_author;
+        // setter function for comp_id
+        $scope.setId = function(id){
+            metadata.setComp_id(id);
+        };  
+    };
     // httpRequest for retrieving all compendia from one author
-    pubListAuthor.httpGET(authorId);
-    
-
-    // get all PublicationsMetadata
-    $scope.allPubs = pubListAuthor.getPubMeta(); 
-    
-    // checks if a publication was already selected. 
-    var _checkPubId = function(){
-        if(typeof $scope.pubId == 'undefined') return false;
-        return true;
-    };
-
-    // checks if a publication was already selected, if not the latest publication will be displayed
-    $scope.getOne = function(id){
-        if(_checkPubId()){
-            var pub = pubListAuthor.getPubById(id);
-        } else {
-            var pub = pubListAuthor.getPubMeta()[0];
-        }
-        return pub;
-    };
-
-    $scope.pubId;
-
-    // setter function for pubId
-    $scope.setId = function(id){
-        $scope.pubId = id;
-    };
-    
-    // Changes first letter of word into capital letter
-    $scope.caps = function(string){
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
+    metadata.callMetadata_author(authorId, getMeta_author);
     // helper for sorting
     $scope.sortType = 'date';
     $scope.sortReverse = true;
-
     // helper for contentfilter
     $scope.filterContent = 'content';
-
-    // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
-    $scope.submit = function(){
-        var _url = '/erc/' + $scope.getOne($scope.pubId).id;
-        $location.path(_url);
-
-    };
-
-    
 }]);
 
-app.controller('SearchCtrl', ['$scope', '$stateParams', 'searchResults', function($scope, $stateParams, searchResults){
+app.controller('SearchCtrl', ['$scope', '$stateParams', 'metadata', function($scope, $stateParams, metadata){
 	// reads term query from url
-    $scope.searchTerm = $stateParams.term;
+    var searchTerm = $stateParams.term;
 
-    // get all PublicationsMetadata
-    $scope.allPubs = searchResults.getPubMeta(); 
-    // id of clicked publication
-    $scope.pubId;
-    // sets pubId to id of clicked publication
-    $scope.setId = function(id){
-        $scope.pubId = id;
+    // function is called in asynchronous response from metadata.callMetadata_search()
+    var getMeta_search = function(meta_search){
+        $scope.allPubs = meta_search;
+        // setter function for comp_id
+        $scope.setId = function(id){
+            metadata.setComp_id(id);
+        };  
     };
-    // checks if a publication has been clicked
-    // returns true if a publication has been clicked
-    $scope.checkPubId = function(){
-        if(typeof $scope.pubId == 'undefined') return false;
-        return true;  
-    };
-    // Changes first letter of word into capital letter
-    $scope.caps = function(string){
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-    // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
-    $scope.submit = function(){
-        var _url = '/erc/' + $scope.getOne($scope.pubId).id;
-        $location.path(_url);
-    };
-    // checks if a publication was already selected, if not the latest publication will be displayed
-    $scope.getOne = function(id){
-        var pub = searchResults.getPubById(id);
-        return pub;
-    };
+   
+   // httpRequest for retrieving all compendia fitting search parameters
+    metadata.callMetadata_search(searchTerm, getMeta_search);
+
 }]);
 
 app.controller('HomeCtrl', ['$scope', '$location', function($scope, $location){
@@ -235,4 +174,34 @@ app.controller('HomeCtrl', ['$scope', '$location', function($scope, $location){
        // $location.path('/search').search('term=' + _query);
         $location.path('/search');
     };	
+}]);
+
+app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($scope, $location, metadata){
+    //Controller starts when previous httpRequest is finished
+    $scope.$on('loadedAllComps', function(){
+        $scope.compMeta = metadata.getLatestComp();
+        metadata.callJobStatus($scope.compMeta.id, getJobMeta);
+    });
+
+    //function is called in asynchronous response from metadata.callJobStatus()
+    var getJobMeta = function(meta){
+        $scope.compMeta.status = meta;
+    };
+    
+    //watch if comp_id changes in factory
+    $scope.$on('changedComp_id', function(event, data){
+        $scope.compMeta = metadata.getOneComp(data);
+        metadata.callJobStatus($scope.compMeta.id, getJobMeta);
+    });
+    
+    // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
+    $scope.submit = function(){
+        var _url = '/erc/' + $scope.compMeta.id;
+        $location.path(_url);
+    };
+
+    // Changes first letter of word into capital letter
+    $scope.caps = function(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
 }]);
