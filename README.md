@@ -15,9 +15,9 @@ Bootstrap
 	bower install
 
 ### Running own server
-If you want to run your own server, the constant `url` in [app.js line 2](https://github.com/o2r-project/o2r-platform/blob/kompendiumsliste/js/app.js#L2) has to be changed to your own server adress.
+If you want to run your own server, the constant `url` in [app.js line 2](https://github.com/o2r-project/o2r-platform/blob/kompendiumsliste/js/app.js#L2) has to be changed to your own server address.
 
-	app.constant('url', 'http://your.server.adress')
+	app.constant('url', 'http://your.server.address')
 
 
 ### License
