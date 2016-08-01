@@ -1,5 +1,5 @@
     var app = angular.module('starter', ["treeControl", "ui.router", "hljs"]);
-    app.constant('url', 'http://ubsvirt148.uni-muenster.de:8080/api/v1');
+    app.constant('url', 'http://ubsvirt148.uni-muenster.de/api/v1');
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       
       hljsServiceProvider.setOptions({
@@ -34,101 +34,55 @@
         });
     });
     
-app.controller('ErcCtrl', ['$scope', 'publications', '$stateParams', '$http', 'url', function($scope, publications, $stateParams, $http, url){
-        // id of compendium
-        var ercId = $stateParams.ercid;
-        // callback function for publications.getRequest()
-        var success = function(){
-            $scope.publication = publications.getPublications();
-            $scope.getOne = function(path){
-                var p = publications.getContentById(path);
-                return p;
-            };
-            // checks for filesize and mimetype for displaying content of files
-            // returns true, if file is not too big and not of type of pdf, image, audio, video
-            $scope.displaySource = function(string){
-                if(typeof string == 'undefined'){ return; }
-                var result = true;
-                var _mime = string.split('/')[0];
-                if( (string == 'application/pdf') || (_mime == 'image') || (_mime == 'audio') || (_mime == 'video')){
-                    result = false;
-                }
-                return result;
-            };
-        };
+app.controller('ErcCtrl', ['$scope', '$stateParams','publications', 'ercView', 'httpRequests', 'url', function($scope, $stateParams, publications, ercView, httpRequests, url){
+    // id of compendium
+    var ercId = $stateParams.ercid;
 
-        // httpRequest for retrieving all metadata of a compendium
-        publications.getRequest(url + '/compendium/' + ercId, success);
-        // httpRequest for getting information about a job status
-        $http.get(url + '/job?compendium_id=' + ercId)
-            .then(function successCallback(response){
-                getJobStatus(response.data.results[response.data.results.length-1]);
-            }, function errorCallback(response){
-                console.log(response);
-            });
-        // options for folderTree
-        $scope.treeOptions = {
-            nodeChildren: 'children',
-            dirSelectable: false
+    // httpRequest for retrieving all metadata of a compendium
+    publications.getRequest(ercId, function(){
+        $scope.publication = publications.getPublications();
+        $scope.getOne = function(path){
+            var p = publications.getContentById(path);
+            return p;
         };
-        // id of file in publication
-        $scope.fileId;
-        // set fileId
-        $scope.setId = function(path){
-            $scope.fileId = path;
+        // checks for filesize and mimetype for displaying content of files
+        // returns true, if file is not too big and not of type of pdf, image, audio, video
+        $scope.displaySource = function(string){
+            ercView.checkDisplayType(string);
         };
-        // function for handling the job status
-        var getJobStatus = function(job_id){
-            //httpRequest for getting information about job status
-            $http.get(url + '/job/' + job_id)
-                        .then(function successCallback(res){
-                            var status = {};
-                            status.val_bag = res.data.steps.validate_bag.status;
-                            status.val_comp = res.data.steps.validate_compendium.status;
-                            status.val_docker = res.data.steps.validate_dockerfile.status;
-                            status.img_bld = res.data.steps.image_build.status;
-                            status.img_exec = res.data.steps.image_execute.status;
-                            status.cleanup = res.data.steps.cleanup.status;
-                            $scope.execStatus = status;
+    });
 
-                            var _checkStatus = function(object){
-                                var success = true;
-                                var fail = false;
-                                
-                                for(step in object){
-                                    if(object[step] != 'success') success = false;
-                                    if(object[step] == 'failure') fail = true;
-                                }
-                                var done = success || fail;
-                                return done;
-                            }
+    // getting job status  
+    ercView.callJobs(ercId);
 
-                            if(_checkStatus(status)){
-                                $scope.jobDone = false;
-                            }
+    // options for folderTree
+    $scope.treeOptions = {
+        nodeChildren: 'children',
+        dirSelectable: false
+    };
 
-                        }, function errorCallback(res){
-                            console.log(res);
-                        });
-        };
-        $scope.jobDone = true;
-        $scope.execStatus = {};
-        //function for executing a new job
-        $scope.execJob = function(){
-            // httpRequest for executing a new job
-            $http.post('http://ubsvirt148.uni-muenster.de:8080/api/v1/job', {compendium_id: ercId})
-                .then(function successCallback(response){
-                    console.log(response);
-                    getJobStatus(response.data.job_id);
-                    
-                }, function errorCallback(response){
-                    console.log(response.statusText);
-            });
-        };
-       
+    // id of file in publication
+    $scope.fileId;
+
+    // set fileId
+    $scope.setId = function(path){
+        $scope.fileId = path;
+    };
+
+    $scope.execJob = ercView.executeJob(ercId);
+    $scope.execStatus = ercView.getExecStatus();
+    $scope.jobDone = true;
+    
+    $scope.$on('execStatus', function(){
+        $scope.execStatus = ercView.getExecStatus();
+    });
+
+    $scope.$on('changedJobDone', function(){
+        $scope.jobDone = ercView.getJobDone();
+    });
 }]);
 
-app.controller('AuthorCtrl', ['$scope', '$stateParams', 'pubListAuthor', 'metadata', function($scope, $stateParams, pubListAuthor, metadata){
+app.controller('AuthorCtrl', ['$scope', '$stateParams', 'metadata', function($scope, $stateParams, metadata){
     // id from author
     var authorId = $stateParams.authorid;
     // function is called in asynchronous response from metadata.callMetadata_author()

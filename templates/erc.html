@@ -17,7 +17,9 @@
 		</div>
 
 
-		<button type="button" class="btn btn-primary" ng-click="execJob()" ng-disabled="jobDone">Run analysis</button>{{execStatus}}
+		<button type="button" class="btn btn-primary" ng-click="execJob()" ng-disabled="jobDone">Run analysis</button>
+		<br/>
+		<span ng-repeat="(key, value) in execStatus">{{key}}:<strong>{{value.status}}</strong><br/></span>
 	</div>
 
 

@@ -1,6 +1,6 @@
 "use strict";
 
-app.factory('metadata', ['$http', '$rootScope', 'url', function($http, $rootScope, url){
+app.factory('metadata', ['$http', '$rootScope', 'httpRequests', 'url', function($http, $rootScope, httpRequests, url){
 	// contains all metadata from all requested compendia
 	var comp_meta = [];
 	
@@ -30,27 +30,18 @@ app.factory('metadata', ['$http', '$rootScope', 'url', function($http, $rootScop
 	var callMetadata_author = function(authorid, callback){
 		var counter = 0;
 		comp_meta = [];
-		//real
-		//$http.get(url + '/compendium?author=' + authorid)
-		//test
-		$http.get(url + '/compendium/')
-			.then(function successCallback(response){
-				for(var index in response.data.results){
-					$http.get(url + '/compendium/' + response.data.results[index])
-						.then(function successCallback(res){
-							comp_meta.push(res.data);
-							counter += 1;
-							if(counter == response.data.results.length){
-								callback(getComp_meta());
-								$rootScope.$broadcast('loadedAllComps');
-							}
-						}, function errorCallback(res){
-							console.log(res);
-						});
-				}
-			}, function errorCallback(response){
-				console.log(response);
-			});
+		httpRequests.listCompendia({'author': authorid}, function(response){
+			for(var index in response.data.results){
+				httpRequests.singleCompendium(response.data.results[index], function(res){
+					comp_meta.push(res.data);
+					counter += 1;
+					if(counter == response.data.results.length){
+						callback(getComp_meta());
+						$rootScope.$broadcast('loadedAllComps');
+					}
+				});
+			}
+		});
 	};
 
 	var callMetadata_search = function(){
@@ -59,18 +50,17 @@ app.factory('metadata', ['$http', '$rootScope', 'url', function($http, $rootScop
 	// httpRequest for Metadata of one job
 	// calls getJobMeta() for sending data to MetadataCtrl
 	var callJobStatus = function(id, callback){
-		$http.get(url + '/job?compendium_id=' + id)
-			.then(function successCallback(response){
-				var jobId = response.data.results[response.data.results.length-1];
-				$http.get(url + '/job/' + jobId)
-					.then(function successCallback(res){
-						callback(res.data);
-					}, function errorCallback(res){
-						console.log(res);
-					});
-			}, function errorCallback(response){
-				callback('No Jobs finished yet.');
-			});
+		httpRequests.listJobs({'compendium_id': id}, function(response){
+			if(typeof response === 'string'){
+				callback(response);
+			} else{
+				var jobId = response.results[response.results.length-1];
+				httpRequests.listSingleJob(jobId, function(res){
+					callback(res);
+				});
+			}
+		});
+
 	};
 
 	// id of last clicked compendium
