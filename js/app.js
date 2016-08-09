@@ -1,5 +1,4 @@
     var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload"]);
-    app.constant('url', 'http://ubsvirt148.uni-muenster.de/api/v1');
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       
       hljsServiceProvider.setOptions({
@@ -160,7 +159,7 @@ app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($sco
     };
 }]);
 
-app.controller('UploadCtrl', ['$scope', 'Upload', 'url', function($scope, Upload, url){
+app.controller('UploadCtrl', ['$scope', 'Upload', 'url', 'xApiKey', function($scope, Upload, url, xApiKey){
     $scope.submit = function(){
         if($scope.form.file.$valid && $scope.file){
             $scope.upload($scope.file);
@@ -172,7 +171,7 @@ app.controller('UploadCtrl', ['$scope', 'Upload', 'url', function($scope, Upload
             url: url + '/compendium',
             data: {compendium: file, 'content_type': 'compendium_v1'},
             headers: {
-                'X-API-key': //HIER API-KEY EINTRAGEN
+                'X-API-key': xApiKey
             }
         }).then(function(response){
             console.log('success');

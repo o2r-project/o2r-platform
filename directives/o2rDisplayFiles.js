@@ -16,6 +16,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 			attrs.$observe('o2rid', function(value){
 				
 				var file = publications.getContentById(value);
+				var sizeRestriction = 10000000;
 				
 
 				
@@ -33,13 +34,13 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 					//create html-tags depending on mime type
 					var _addContent = function(type){
 						var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="' + file.path + '" download>Download</a> file to see its content</p></center></div>';
-						if(file.size < 1000){
+						if(file.size < sizeRestriction){
 							switch(type){
 								case 1:
 									var object = angular.element('<object class="erc_pdf" type="application/pdf" data="' + file.path +  '"</object>');
 									break;
 								case 2:
-									var object = angular.element('<img class="erc_img" src="' + file.path + '">');
+									var object = angular.element('<img class="erc_img" src="o2r.uni-muenster.de' + file.path + '">');
 									break;
 								case 3:
 									var object = angular.element('<audio controls><source src="' + file.path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
