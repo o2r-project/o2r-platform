@@ -1,6 +1,6 @@
     var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload"]);
+    app.constant('url', 'http://ubsvirt148.uni-muenster.de/api/v1');
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
-      
       hljsServiceProvider.setOptions({
         tabReplace: '    '
       });

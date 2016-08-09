@@ -1,6 +1,10 @@
 # ignore dependencies
 bower_components/
 
+# ignore x-api-key
+x-api-key.js
+
+#ignore testfiles
 icons/
 testFiles/
 
