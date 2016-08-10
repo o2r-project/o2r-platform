@@ -22,6 +22,7 @@ If you want to run your own server, the constant `url` in [app.js line 2](https:
 
 ### License
 
-GNU-GPLv3.0
+o2r-platform is licensed under Apache License, Version 2.0, see file LICENSE.
+Copyright &copy; 2016 - o2r project.
 
 

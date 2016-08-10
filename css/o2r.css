@@ -154,3 +154,43 @@ html, body{
 /***********************
    End Search view
 ************************/
+
+/***********************
+   Start UploadModal
+   credits for .drop-box and .drop-box.dragover to https://angular-file-upload.appspot.com/common.css
+************************/
+
+.upmod-dropbox {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 170px;
+    text-align: center;
+    padding: 50px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.upmod-dropbox.dragover {
+    border: 5px dashed blue;
+}
+
+.upmod-dropbox:hover{
+	border: 5px dashed blue;
+}
+
+.upmod-progress {
+	padding-top: 10px;
+	margin-left: 10px;
+    width: 170px;
+}
+
+.upmod-glyph {
+	padding-right: 5px;
+}
+
+.upmod-msg {
+	padding-left: 5px;
+}
+/***********************
+   End UploadModal
+************************/

@@ -1,5 +1,6 @@
-    var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload"]);
-    app.constant('url', 'http://ubsvirt148.uni-muenster.de/api/v1');
+    var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload", 'ngAnimate', 'ui.bootstrap']);
+    app.constant('url', 'http://o2r.uni-muenster.de/api/v1');
+    app.constant('sizeRestriction', 10000000);
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       hljsServiceProvider.setOptions({
         tabReplace: '    '
@@ -33,10 +34,10 @@
         });
     });
     
-app.controller('ErcCtrl', ['$scope', '$stateParams','publications', 'ercView', 'httpRequests', 'url', function($scope, $stateParams, publications, ercView, httpRequests, url){
+app.controller('ErcCtrl', ['$scope', '$stateParams','publications', 'ercView', 'httpRequests', 'url', 'sizeRestriction', function($scope, $stateParams, publications, ercView, httpRequests, url, sizeRestriction){
     // id of compendium
     var ercId = $stateParams.ercid;
-
+    $scope.sizeRestrict = sizeRestriction;
     // httpRequest for retrieving all metadata of a compendium
     publications.getRequest(ercId, function(){
         $scope.publication = publications.getPublications();
@@ -47,7 +48,7 @@ app.controller('ErcCtrl', ['$scope', '$stateParams','publications', 'ercView', '
         // checks for filesize and mimetype for displaying content of files
         // returns true, if file is not too big and not of type of pdf, image, audio, video
         $scope.displaySource = function(string){
-            ercView.checkDisplayType(string);
+            return ercView.checkDisplayType(string);
         };
     });
 
@@ -81,13 +82,16 @@ app.controller('ErcCtrl', ['$scope', '$stateParams','publications', 'ercView', '
     });
 }]);
 
-app.controller('AuthorCtrl', ['$scope', '$stateParams', 'metadata', function($scope, $stateParams, metadata){
+app.controller('AuthorCtrl', ['$scope', '$stateParams', '$uibModal', 'metadata', function($scope, $stateParams, $uibModal, metadata){
     // id from author
     var authorId = $stateParams.authorid;
     // function is called in asynchronous response from metadata.callMetadata_author()
     var getMeta_author = function(meta_author){
         //allPubs will be set to comp_meta from metadata factory
-        $scope.allPubs = meta_author;
+        $scope.$on('loadedAllComps', function(){
+            $scope.allPubs = metadata.getComp_meta();
+        });
+
         // setter function for comp_id
         $scope.setId = function(id){
             metadata.setComp_id(id);
@@ -100,6 +104,20 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', 'metadata', function($sc
     $scope.sortReverse = true;
     // helper for contentfilter
     $scope.filterContent = 'content';
+
+    // handle Modal
+    $scope.open = function(){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'templates/uploadModal.html',
+            controller: 'ModalInstanceCtrl',
+            resolve: {
+                author: function(){
+                    return authorId;
+                }
+            }
+        });
+    };
 }]);
 
 app.controller('SearchCtrl', ['$scope', '$stateParams', 'metadata', function($scope, $stateParams, metadata){
@@ -159,7 +177,24 @@ app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($sco
     };
 }]);
 
-app.controller('UploadCtrl', ['$scope', 'Upload', 'url', 'xApiKey', function($scope, Upload, url, xApiKey){
+app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url', 'xApiKey', function($scope, $uibModalInstance, metadata, Upload, author, url, xApiKey){
+    $scope.checkUpload = false;
+    $scope.doneButton = false;
+
+    $scope.ok = function(){
+        $uibModalInstance.close();
+        $scope.doneButton = false;
+    };
+
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+        $scope.doneButton = false;
+    };
+
+    $scope.selected = function(file){
+        $scope.f = file;
+    };
+
     $scope.submit = function(){
         if($scope.form.file.$valid && $scope.file){
             $scope.upload($scope.file);
@@ -174,11 +209,16 @@ app.controller('UploadCtrl', ['$scope', 'Upload', 'url', 'xApiKey', function($sc
                 'X-API-key': xApiKey
             }
         }).then(function(response){
-            console.log('success');
-            console.log(response);
+            $scope.doneButton = true;
+            $scope.checkUpload = true;
+            metadata.callMetadata_author(author, function(){
+                return;
+            });
         }, function(response){
-            console.log('error');
-            console.log(response);
+            $scope.doneButton = true;
+            $scope.checkUpload = false;
+        }, function(evt){
+            file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));
         });
     };
 }]);

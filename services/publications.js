@@ -16,7 +16,7 @@ app.factory("publications", ['httpRequests', function(httpRequests){
 		var searchedFile = path;
 
 		if(typeof object.children != 'undefined'){
-			for(content in object.children){
+			for(var content in object.children){
 				iterator(object.children[content], searchedFile);
 			}
 		} else {
