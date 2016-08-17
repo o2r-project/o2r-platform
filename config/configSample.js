@@ -1,0 +1,1 @@
+app.constant('url', /*put url as string here*/);

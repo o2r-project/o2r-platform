@@ -1,5 +1,4 @@
     var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload", 'ngAnimate', 'ui.bootstrap']);
-    app.constant('url', 'http://o2r.uni-muenster.de/api/v1');
     app.constant('sizeRestriction', 10000000);
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       hljsServiceProvider.setOptions({
@@ -121,7 +120,7 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$uibModal', 'metadata',
 }]);
 
 app.controller('SearchCtrl', ['$scope', '$stateParams', 'metadata', function($scope, $stateParams, metadata){
-	// reads term query from url
+    // reads term query from url
     var searchTerm = $stateParams.term;
 
     // function is called in asynchronous response from metadata.callMetadata_search()
