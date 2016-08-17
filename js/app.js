@@ -86,6 +86,7 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$uibModal', 'metadata',
     var authorId = $stateParams.authorid;
     // function is called in asynchronous response from metadata.callMetadata_author()
     var getMeta_author = function(meta_author){
+        $scope.$broadcast('getLatestComp');
         //allPubs will be set to comp_meta from metadata factory
         $scope.$on('loadedAllComps', function(){
             $scope.allPubs = metadata.getComp_meta();
@@ -125,7 +126,11 @@ app.controller('SearchCtrl', ['$scope', '$stateParams', 'metadata', function($sc
 
     // function is called in asynchronous response from metadata.callMetadata_search()
     var getMeta_search = function(meta_search){
-        $scope.allPubs = meta_search;
+        $scope.$broadcast('getFirstComp');
+        $scope.$on('loadedAllComps', function(){
+            $scope.allPubs = metadata.getComp_meta();
+        });
+
         // setter function for comp_id
         $scope.setId = function(id){
             metadata.setComp_id(id);
@@ -149,10 +154,15 @@ app.controller('HomeCtrl', ['$scope', '$location', function($scope, $location){
 app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($scope, $location, metadata){
     //Controller starts when previous httpRequest is finished
     $scope.$on('loadedAllComps', function(){
-        $scope.compMeta = metadata.getLatestComp();
         metadata.callJobStatus($scope.compMeta.id, getJobMeta);
     });
 
+    $scope.$on('getLatestComp', function(){
+        $scope.compMeta = metadata.getLatestComp();
+    });
+    $scope.$on('getFirstComp', function(){
+        $scope.compMeta = metadata.getFirstComp();
+    });
     //function is called in asynchronous response from metadata.callJobStatus()
     var getJobMeta = function(meta){
         $scope.compMeta.status = meta;

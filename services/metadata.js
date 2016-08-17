@@ -24,6 +24,16 @@ app.factory('metadata', ['$http', '$rootScope', 'httpRequests', 'url', function(
 		return comp_meta[comp_meta.length-1];
 	};
 
+	var getFirstComp = function(){
+		return comp_meta[0];
+	};
+
+	var sortByDate = function(array){
+		array.sort(function(a,b){
+			return new Date(a.created).getTime() - new Date(b.created).getTime();
+		});
+	};
+
 	// httpRequest for Metadata of all compendia of one author
 	// calls getMeta_author() for sending results to AuthorCtrl
 	// calls initMetadataCtrl() for sending results to MetadataCtrl
@@ -34,8 +44,9 @@ app.factory('metadata', ['$http', '$rootScope', 'httpRequests', 'url', function(
 			for(var index in response.data.results){
 				httpRequests.singleCompendium(response.data.results[index], function(res){
 					comp_meta.push(res.data);
-					counter += 1;
+					counter ++;
 					if(counter == response.data.results.length){
+						sortByDate(comp_meta);
 						callback(getComp_meta());
 						$rootScope.$broadcast('loadedAllComps');
 					}
@@ -44,8 +55,21 @@ app.factory('metadata', ['$http', '$rootScope', 'httpRequests', 'url', function(
 		});
 	};
 
-	var callMetadata_search = function(){
-		//TODO
+	var callMetadata_search = function(searchTerm, callback){
+		var counter = 0;
+		comp_meta = [];
+		httpRequests.listCompendia(null, function(response){
+			for(var index in response.data.results){
+				httpRequests.singleCompendium(response.data.results[index], function(res){
+					comp_meta.push(res.data);
+					counter++;
+					if(counter == response.data.results.length){
+						callback(getComp_meta());
+						$rootScope.$broadcast('loadedAllComps');
+					}
+				});
+			}
+		});
 	};
 	// httpRequest for Metadata of one job
 	// calls getJobMeta() for sending data to MetadataCtrl
@@ -78,6 +102,7 @@ app.factory('metadata', ['$http', '$rootScope', 'httpRequests', 'url', function(
 		getComp_meta: getComp_meta,
 		getOneComp: getOneComp,
 		getLatestComp: getLatestComp,
+		getFirstComp: getFirstComp,
 		callJobStatus: callJobStatus,
 		callMetadata_author: callMetadata_author,
 		callMetadata_search: callMetadata_search
