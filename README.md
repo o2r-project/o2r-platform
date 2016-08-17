@@ -19,7 +19,8 @@ bower install
 
 ## Running own server
 
-If you want to run your own server, the constant `url` in [app.js line 2](https://github.com/o2r-project/o2r-platform/blob/kompendiumsliste/js/app.js#L2) has to be changed to your own server address.
+If you want to run your own server, create a `config/config.js` according to [configSampel.js](https://github.com/o2r-project/o2r-platform/blob/kompendiumsliste/config/configSample.js).
+
 
 ```JavaScript
 app.constant('url', 'http://your.server.address')
