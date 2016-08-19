@@ -52,6 +52,18 @@ html, body{
 	margin-left: auto;
 	margin-right: auto;
 }
+
+treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
+    background: url("../icons/folder-2.png") no-repeat !important;
+}
+
+treecontrol.tree-classic li.tree-collapsed i.tree-branch-head {
+    background: url("../icons/folder-closed-2.png") no-repeat !important;
+}
+
+treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
+    background: url("../icons/file-2.png") no-repeat !important;
+}
 /***********************
    End Author view
 ************************/
