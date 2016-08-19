@@ -20,7 +20,7 @@ app.factory('httpRequests', ['$http', 'url', function($http, url){
 				param = '&';
 			}
 			if(typeof query.author !== 'undefined') {
-				_url += param + 'author=' + query.author;
+				_url += param + 'user=' + query.author;
 				param = '&';
 			}
 		}
