@@ -26,7 +26,7 @@ app.factory('ercView', ['$rootScope', 'httpRequests', function($rootScope, httpR
 	    httpRequests.listJobs({'compendium_id': id}, function(response){
 	        if(response.error){
 	            setExecStatus({'Information': {'status': 'No jobs executed yet'}});
-                setJobDone(false);
+                setJobDone(true);
 	        } else {
 	            httpRequests.listSingleJob(response.results[response.results.length-1], function(res){
 	                getJobStatus(res.steps);
