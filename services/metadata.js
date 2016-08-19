@@ -75,8 +75,8 @@ app.factory('metadata', ['$http', '$rootScope', 'httpRequests', 'url', function(
 	// calls getJobMeta() for sending data to MetadataCtrl
 	var callJobStatus = function(id, callback){
 		httpRequests.listJobs({'compendium_id': id}, function(response){
-			if(typeof response === 'string'){
-				callback(response);
+			if(response.error){
+				callback('No jobs executed yet');
 			} else{
 				var jobId = response.results[response.results.length-1];
 				httpRequests.listSingleJob(jobId, function(res){

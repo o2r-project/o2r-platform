@@ -24,8 +24,9 @@ app.factory('ercView', ['$rootScope', 'httpRequests', function($rootScope, httpR
     */
     var callJobs = function(id){
 	    httpRequests.listJobs({'compendium_id': id}, function(response){
-	        if(typeof response === 'string'){
-	            setExecStatus({'Information': {'status': response}});
+	        if(response.error){
+	            setExecStatus({'Information': {'status': 'No jobs executed yet'}});
+                setJobDone(false);
 	        } else {
 	            httpRequests.listSingleJob(response.results[response.results.length-1], function(res){
 	                getJobStatus(res.steps);
@@ -40,19 +41,20 @@ app.factory('ercView', ['$rootScope', 'httpRequests', function($rootScope, httpR
     */
     var getJobStatus = function(status){
         var _checkStatus = function(object){
-            var success = true;
-            var fail = false;
+            var allSuccess = true;
+            var oneFail = false;
             for(var step in object){
-                if(object[step].status != 'success') success = false;
-                if(object[step].status == 'failure') fail = true;
+                if(object[step].status != 'success') allSuccess = false;
+                if(object[step].status == 'failure') oneFail = true;
             }
-            var done = success || fail;
-            return done;
+            if(allSuccess) return true;
+            if(oneFail) return true;
+            return false;
         };
-        console.log(status);
         setExecStatus(status);
-        console.log(status);
         if(_checkStatus(status)){
+            setJobDone(true);
+        } else {
             setJobDone(false);
         }
     };

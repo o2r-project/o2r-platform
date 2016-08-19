@@ -68,11 +68,14 @@ app.controller('ErcCtrl', ['$scope', '$stateParams','publications', 'ercView', '
         $scope.fileId = path;
     };
 
-    $scope.execJob = ercView.executeJob(ercId);
+    var ex = function(){
+        ercView.executeJob(ercId);
+    };
+    $scope.execJob = ex;
     $scope.execStatus = ercView.getExecStatus();
     $scope.jobDone = true;
     
-    $scope.$on('execStatus', function(){
+    $scope.$on('changedExecStatus', function(){
         $scope.execStatus = ercView.getExecStatus();
     });
 
@@ -221,7 +224,6 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 
                 return;
             });
         }, function(response){
-            console.log(response);
             $scope.doneButton = true;
             $scope.checkUpload = false;
         }, function(evt){
