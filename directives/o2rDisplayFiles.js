@@ -7,7 +7,7 @@
 	Example: 
 	<o2r-display-files o2rid="7"></o2r-display-files>
 */
-app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', function(publications, $http, fileContents){
+app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', 'sizeRestriction', function(publications, $http, fileContents, sizeRestriction){
 	return{
 		restrict: 'E',
 		link: function(scope, iElement, attrs){
@@ -16,7 +16,8 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 			attrs.$observe('o2rid', function(value){
 				
 				var file = publications.getContentById(value);
-
+				//var _url = url.slice(0, 33);
+				
 
 				
 
@@ -30,26 +31,32 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', funct
 					var _mime = file.type.split('/');
 					_mime = _mime[0];
 
+					var path = file.path;
+
 					//create html-tags depending on mime type
-					var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="">Download</a> file to see its content</p></center></div>';
 					var _addContent = function(type){
-						if(file.size < 1000){
+						var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="' + path + '" download>Download</a> file to see its content</p></center></div>';
+						if(file.size < sizeRestriction){
 							switch(type){
 								case 1:
-									var object = angular.element('<object class="author_pdf" type="application/pdf" data="' + file.path +  '"</object>');
+									var object = angular.element('<object class="erc_pdf" type="application/pdf" data="' + path +  '"</object>');
 									break;
 								case 2:
-									var object = angular.element('<img class="author_img" src="' + file.path + '">');
+									var object = angular.element('<img class="erc_img" src="' + path + '">');
 									break;
 								case 3:
-									var object = angular.element('<audio controls><source src="' + file.path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
+									var object = angular.element('<audio controls><source src="' + path + '" type="' + file.type + '"></source>Your browser does not support audio element.</audio>');
 									break;
 								case 4:
-									var object = angular.element('<video class="author_video" controls><source src="' + file.path + '"></source>Your browser does not support the video tag.</video>');
+									var object = angular.element('<video class="erc_video" controls><source src="' + path + '"></source>Your browser does not support the video tag.</video>');
 									break;
 							}
 						} else {
+							if(type == 2){
+								var object = angular.element('<div class="jumbotron"><img class="erc_jumboImg" src="' + path + '?width=140&height=140"><center><h2>Filesize is too big to display</h2><p><a href="' + path + '" download>Download</a> file to see its content</p></center></div>');
+							} else {
 							var object = angular.element(_sizeError);
+							}
 						}
 						iElement.append(object);
 					}

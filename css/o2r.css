@@ -23,14 +23,14 @@ html, body{
 /***********************
    Start Author view
 ************************/
-.author_content{
+.erc_content{
 	margin: 2em 0;
 	position: relative;
 	right:1%;
 	top:5%;
 }
 
-.author_pdf{
+.erc_pdf{
 	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
@@ -38,15 +38,20 @@ html, body{
 }
 
 
-.author_img{
+.erc_img{
 	max-width: 100%;
 }
 
-.author_video{
+.erc_video{
 	width:;
 	height:;
 }
 
+.erc_jumboImg{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 /***********************
    End Author view
 ************************/
@@ -54,37 +59,138 @@ html, body{
    Start Author-Landingpage view
 ************************/
 
-#a-land-uploadbtn{
+#author-uploadbtn{
 	float: right;
 }
 
-.a-land-row-title{
+.author-row-title{
 	height: 10%;
 }
 
-.a-land-row-content{
+.author-row-content{
 	height: 90%;
 }
 
-.a-land{
+.author{
 	height: 100%;
 }
 
-.a-land-panel-head{
+.author-panel-head{
 	height: 7%;
 	min-height: 50px;
 }
 
-.a-land-panel{
-	max-height: 91%;
-	overflow-y: auto;
+
+.author-panel{
+	max-height: calc(100% - 50px - 15px);
+	/*
 	margin-bottom: 10%;
+	*/
+	overflow-y: auto;
 }
 
-.a-land-sorter, .a-land-tr{
+.author-sorter, .author-tr{
 	cursor: pointer;
 }
 
+/*
+.a-test{
+	height: calc(100% - 15px);
+	overflow-y: auto;
+}
+*/
+
 /***********************
    End Author-Landingpage view
+************************/
+
+/***********************
+   Start Home view
+************************/
+
+.home_searchinput{
+	padding-right: 0px !important;
+}
+
+.home_div{
+	height: 100%;
+}
+
+.home_search{
+	position: relative;
+	top: 15%;
+}
+
+#home_logo{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: 10%;
+}
+/***********************
+   End Home view
+************************/
+
+/***********************
+   Start Search view
+************************/
+.search_searchbtn{
+	float: right;
+}
+
+.search_searchinput{
+	padding-right: 0px !important;
+}
+
+.search_resTitle{
+	cursor: pointer;
+}
+
+.search_resTable{
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+/***********************
+   End Search view
+************************/
+
+/***********************
+   Start UploadModal
+   credits for .drop-box and .drop-box.dragover to https://angular-file-upload.appspot.com/common.css
+************************/
+
+.upmod-dropbox {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 170px;
+    text-align: center;
+    padding: 50px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.upmod-dropbox.dragover {
+    border: 5px dashed blue;
+}
+
+.upmod-dropbox:hover{
+	border: 5px dashed blue;
+}
+
+.upmod-progress {
+	padding-top: 10px;
+	margin-left: 10px;
+    width: 170px;
+}
+
+.upmod-glyph {
+	padding-right: 5px;
+}
+
+.upmod-msg {
+	padding-left: 5px;
+}
+/***********************
+   End UploadModal
 ************************/

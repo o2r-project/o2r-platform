@@ -1,1 +1,18 @@
-<h1>home section</h1>
+<div class="row home_div">
+	<div class="col-md-8 col-md-offset-2 home_div">
+		<div class="row home_div">
+			<img src="./images/logo-transparent.png" alt="o2r-logo" id="home_logo"/>
+			<div class="home_search">
+				<div class="col-md-11 home_searchinput">
+					<form class="form-inline" ng-submit="submit()">
+						<div class="input-group input-group-lg col-md-10">
+							<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+				  			<input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchModel"/>
+						</div>
+						<button type="submit" class="btn btn-primary btn-lg">Search</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

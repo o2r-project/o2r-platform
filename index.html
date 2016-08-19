@@ -3,15 +3,15 @@
 <head>	
 <!-- Libraries JavaScript -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="lib/angular.js"></script>
-<script src="lib/angular-ui-router.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
-
-
-
-
-
+<script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+<script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <!-- Libraries CSS -->
 <link rel="stylesheet" href="css/o2r.css">
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -21,14 +21,22 @@
 <!-- Starter file -->
 <script src="js/app.js"></script>
 
+<!-- X-Api-Key -->
+<script src="x-api-key.js"></script>
+
 <!-- Services -->
+<script src="services/httpRequests.js"></script>
 <script src="services/publications.js"></script>
 <script src="services/fileContents.js"></script>
-<script src="services/listedPubMeta.js"></script>
+<script src="services/pubListAuthor.js"></script>
+<script src="services/searchResults.js"></script>
+<script src="services/metadata.js"></script>
+<script src="services/ercView.js"></script>
 
 <!-- Directives -->
 <script src="directives/o2rDisplayFiles.js"></script>
 
+<!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
 <script src="lib/highlight/highlight.pack.js"></script>
 <script src="bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
@@ -43,8 +51,7 @@
       				<a class="navbar-brand" href="#">o2r</a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-			        <li><a ui-sref="reader">Reader</a></li>
-			        <li><a ui-sref="author">Author</a></li>
+			        <li><a ui-sref="author">Profile</a></li>
                 </ul>
             </div>
             </nav>

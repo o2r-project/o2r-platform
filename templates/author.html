@@ -1,48 +1,55 @@
-<div class="row">
+<div class="row a-author-row-title">
 	<div class="col-md-12">
-		<h3>ERC Details: </h3>
+		<h3>Landingpage <button type="button" class="btn btn-default" ng-click="open()">Upload Compendium</button></h3>
+		<!--
+		<ng-include src="'templates/uploadModal.html'"></ng-include>
+		-->
+
+    	
+
+
+
+
 	</div>
 </div>
 
+<div class="row author-row-content">
 
-<div class="row">
 
-	<!-- Folder Tree -->
-	<div class="col-md-4">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<treecontrol class="tree-classic" tree-model="publications.content" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="setId(node.id)">{{node.name}}</span></treecontrol>
+	<!-- List of compendia -->
+	<div class="col-md-4 author">
+		
+		<div class="panel panel-default author">
+			<div class="panel-heading author-panel-head">
+				<h4>List of Compendia</h4>
 			</div>
-		</div>
+
+
+			<div class="panel-body author-panel">
+			
+				<table class="table table-hover author-table">
+					<thead>
+						<tr><th class="author-sorter" ng-click="sortType = 'title'; sortReverse = !sortReverse">Title
+							<span class="glyphicon glyphicon-triangle-bottom" ng-show="sortType == 'title' && sortReverse"></span>
+							<span class="glyphicon glyphicon-triangle-top" ng-show="sortType == 'title' && !sortReverse"></span>
+						</th><th class="author-sorter" ng-click="sortType = 'date'; sortReverse = !sortReverse">Date
+							<span class="glyphicon glyphicon-triangle-bottom" ng-show="sortType == 'date' && sortReverse"></span>
+							<span class="glyphicon glyphicon-triangle-top" ng-show="sortType == 'date' && !sortReverse"></span>
+						</th></tr>
+					</thead>
+					<tbody>
+						<tr class="author-tr" ng-repeat="pub in allPubs | orderBy:sortType:sortReverse" ng-click="setId(pub.id)">
+						<td>{{pub.id}}</td><td>{{pub.date}}</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>	
+			
+		
 	</div>
-
-
-
-	<!-- Content -->
-	<div class="col-md-8">
-		<div class="panel panel-default contentview">
-				<div class="panel-heading"><h5>{{getOne(fileId).path}}</h5></div>
-				<div class="panel-body author_content">
-					<!-- Display of images and files-->
 	
-					<o2r-display-files id="content" o2rid="{{fileId}}"></o2r-display-files>
-					<hljs hljs-include="getOne(fileId).path" ng-if="displaySource(getOne(fileId).type) && (getOne(fileId).size < 1000)"></hljs>
-				</div>
-		</div>
+	<!-- Metadata panel -->
+	<div class="col-md-8 a-land">
+		<ng-include src="'templates/metadata_panel.html'"></ng-include>
 	</div>
-<!--
-
-Possible alternative	
-	<div class="col-md-8">
-		<div class="panel panel-default contentview">
-				<div class="panel-heading"><h5>{{getOne(fileId).path}}</h5></div>
-				
-					<! Display of images and files>
-					<o2r-display-files id="content" o2rid="{{fileId}}"></o2r-display-files>
-					<div hljs class="panel-body author_content" hljs-include="getOne(fileId).path" ng-if="displaySource(getOne(fileId).type) && (getOne(fileId).size < 1000)"></div>
-				
-		</div>
-	</div>
--->
 </div>
-
