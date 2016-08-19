@@ -187,6 +187,21 @@ app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($sco
     $scope.caps = function(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
+
+    $scope.isSpecial = function(key){
+        var special;
+        switch(key){
+            case 'files':
+                special = true;
+                break;
+            case 'status':
+                special = true;
+                break;
+            default:
+                special = false;
+        }
+        return special;
+    };
 }]);
 
 app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url', function($scope, $uibModalInstance, metadata, Upload, author, url, xApiKey){

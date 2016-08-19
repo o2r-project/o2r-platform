@@ -92,7 +92,6 @@ app.factory('httpRequests', ['$http', 'url', function($http, url){
 		}
 		$http.get(_url)
 			.success(function(data){
-				console.log('in listJobs success');
 				callback(data);
 			})
 			.error(function(error, status){
@@ -109,8 +108,6 @@ app.factory('httpRequests', ['$http', 'url', function($http, url){
 		var _url = url + '/job/' + id;
 		$http.get(_url)
 			.success(function (data){
-				console.log('in listSingleJob success');
-				console.log(data);
 				callback(data);
 			});
 	};

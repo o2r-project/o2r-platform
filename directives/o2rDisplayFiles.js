@@ -33,6 +33,7 @@ app.directive('o2rDisplayFiles', ['publications', '$http', 'fileContents', 'size
 
 					var path = file.path;
 
+
 					//create html-tags depending on mime type
 					var _addContent = function(type){
 						var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="' + path + '" download>Download</a> file to see its content</p></center></div>';
