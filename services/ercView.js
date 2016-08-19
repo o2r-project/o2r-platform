@@ -49,7 +49,9 @@ app.factory('ercView', ['$rootScope', 'httpRequests', function($rootScope, httpR
             var done = success || fail;
             return done;
         };
+        console.log(status);
         setExecStatus(status);
+        console.log(status);
         if(_checkStatus(status)){
             setJobDone(false);
         }

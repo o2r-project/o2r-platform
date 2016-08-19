@@ -4,6 +4,9 @@ bower_components/
 # ignore x-api-key
 x-api-key.js
 
+#ignore config.js
+config/config.js
+
 #ignore testfiles
 icons/
 testFiles/

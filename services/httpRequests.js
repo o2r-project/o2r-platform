@@ -112,12 +112,22 @@ app.factory('httpRequests', ['$http', 'url', function($http, url){
 			});
 	};
 
+	var getLoggedUser = function(callback){
+		var _url = url + '/auth/whoami';
+		$http.get(_url).then(function(response){
+			callback(response.data);
+		}, function(response){
+			console.log(response);
+		});
+	};
+
 	return{
 		listCompendia : listCompendia,
 		singleCompendium: singleCompendium,
 		listRelatedJobs: listRelatedJobs,
 		newJob: newJob,
 		listJobs: listJobs,
-		listSingleJob: listSingleJob
+		listSingleJob: listSingleJob,
+		getLoggedUser: getLoggedUser
 	};
 }]);

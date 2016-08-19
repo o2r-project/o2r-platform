@@ -1,5 +1,4 @@
     var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload", 'ngAnimate', 'ui.bootstrap']);
-    app.constant('url', 'http://o2r.uni-muenster.de/api/v1');
     app.constant('sizeRestriction', 10000000);
     app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
       hljsServiceProvider.setOptions({
@@ -87,6 +86,7 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$uibModal', 'metadata',
     var authorId = $stateParams.authorid;
     // function is called in asynchronous response from metadata.callMetadata_author()
     var getMeta_author = function(meta_author){
+        $scope.$broadcast('getLatestComp');
         //allPubs will be set to comp_meta from metadata factory
         $scope.$on('loadedAllComps', function(){
             $scope.allPubs = metadata.getComp_meta();
@@ -121,12 +121,16 @@ app.controller('AuthorCtrl', ['$scope', '$stateParams', '$uibModal', 'metadata',
 }]);
 
 app.controller('SearchCtrl', ['$scope', '$stateParams', 'metadata', function($scope, $stateParams, metadata){
-	// reads term query from url
+    // reads term query from url
     var searchTerm = $stateParams.term;
 
     // function is called in asynchronous response from metadata.callMetadata_search()
     var getMeta_search = function(meta_search){
-        $scope.allPubs = meta_search;
+        $scope.$broadcast('getFirstComp');
+        $scope.$on('loadedAllComps', function(){
+            $scope.allPubs = metadata.getComp_meta();
+        });
+
         // setter function for comp_id
         $scope.setId = function(id){
             metadata.setComp_id(id);
@@ -150,10 +154,15 @@ app.controller('HomeCtrl', ['$scope', '$location', function($scope, $location){
 app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($scope, $location, metadata){
     //Controller starts when previous httpRequest is finished
     $scope.$on('loadedAllComps', function(){
-        $scope.compMeta = metadata.getLatestComp();
         metadata.callJobStatus($scope.compMeta.id, getJobMeta);
     });
 
+    $scope.$on('getLatestComp', function(){
+        $scope.compMeta = metadata.getLatestComp();
+    });
+    $scope.$on('getFirstComp', function(){
+        $scope.compMeta = metadata.getFirstComp();
+    });
     //function is called in asynchronous response from metadata.callJobStatus()
     var getJobMeta = function(meta){
         $scope.compMeta.status = meta;
@@ -177,7 +186,7 @@ app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($sco
     };
 }]);
 
-app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url', 'xApiKey', function($scope, $uibModalInstance, metadata, Upload, author, url, xApiKey){
+app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url', function($scope, $uibModalInstance, metadata, Upload, author, url, xApiKey){
     $scope.checkUpload = false;
     $scope.doneButton = false;
 
@@ -204,10 +213,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 
     $scope.upload = function(file){
         Upload.upload({
             url: url + '/compendium',
-            data: {compendium: file, 'content_type': 'compendium_v1'},
-            headers: {
-                'X-API-key': xApiKey
-            }
+            data: {compendium: file, 'content_type': 'compendium_v1'}
         }).then(function(response){
             $scope.doneButton = true;
             $scope.checkUpload = true;
@@ -215,10 +221,25 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 
                 return;
             });
         }, function(response){
+            console.log(response);
             $scope.doneButton = true;
             $scope.checkUpload = false;
         }, function(evt){
             file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));
         });
     };
+}]);
+
+app.controller('LoginCtrl', ['$scope', 'login', function($scope, login){
+    
+    $scope.$on('setUser', function(){
+        $scope.user = login.getUser();
+        $scope.loggedIn = login.isLoggedIn();
+    });
+
+    login.getUserCall();
+
+
+
+    
 }]);
