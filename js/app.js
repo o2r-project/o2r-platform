@@ -186,7 +186,7 @@ app.controller('MetadataCtrl', ['$scope', '$location', 'metadata', function($sco
     };
 }]);
 
-app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url', 'xApiKey', function($scope, $uibModalInstance, metadata, Upload, author, url, xApiKey){
+app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url', function($scope, $uibModalInstance, metadata, Upload, author, url, xApiKey){
     $scope.checkUpload = false;
     $scope.doneButton = false;
 
@@ -213,10 +213,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 
     $scope.upload = function(file){
         Upload.upload({
             url: url + '/compendium',
-            data: {compendium: file, 'content_type': 'compendium_v1'},
-            headers: {
-                'X-API-key': xApiKey
-            }
+            data: {compendium: file, 'content_type': 'compendium_v1'}
         }).then(function(response){
             $scope.doneButton = true;
             $scope.checkUpload = true;
@@ -224,10 +221,25 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'metadata', 
                 return;
             });
         }, function(response){
+            console.log(response);
             $scope.doneButton = true;
             $scope.checkUpload = false;
         }, function(evt){
             file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));
         });
     };
+}]);
+
+app.controller('LoginCtrl', ['$scope', 'login', function($scope, login){
+    
+    $scope.$on('setUser', function(){
+        $scope.user = login.getUser();
+        $scope.loggedIn = login.isLoggedIn();
+    });
+
+    login.getUserCall();
+
+
+
+    
 }]);

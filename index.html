@@ -13,10 +13,10 @@
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <!-- Libraries CSS -->
-<link rel="stylesheet" href="css/o2r.css">
-<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/o2r.css">
+<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
-<link rel="stylesheet" href="bower_components/highlight/styles/default.css">
+<link rel="stylesheet" type="text/css" href="bower_components/highlight/styles/default.css">
 
 <!-- Starter file -->
 <script src="js/app.js"></script>
@@ -24,17 +24,14 @@
 <!-- config file -->
 <script src="config/config.js"></script>
 
-<!-- X-Api-Key -->
-<script src="x-api-key.js"></script>
-
 <!-- Services -->
 <script src="services/httpRequests.js"></script>
 <script src="services/publications.js"></script>
 <script src="services/fileContents.js"></script>
 <script src="services/pubListAuthor.js"></script>
-<script src="services/searchResults.js"></script>
 <script src="services/metadata.js"></script>
 <script src="services/ercView.js"></script>
+<script src="services/login.js"></script>
 
 <!-- Directives -->
 <script src="directives/o2rDisplayFiles.js"></script>
@@ -46,7 +43,7 @@
 
 
 </head>
-<body ng-app="starter" >
+<body ng-app="starter" ng-controller="LoginCtrl">
         <header>
             <nav class="navbar navbar-default">
             <div class="container">
@@ -54,7 +51,9 @@
       				<a class="navbar-brand" href="#">o2r</a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-			        <li><a ui-sref="author">Profile</a></li>
+			        <li ng-show="loggedIn"><a ui-sref="author({authorid: user.orcid})">{{user.name}}<br/><small>{{user.orcid}}</small></a></li>
+                    <li ng-show="loggedIn"><a href="/api/v1/auth/logout">Logout</a></li>
+                    <li ng-hide="loggedIn"><a href="/api/v1/auth/login">Login</a></li>
                 </ul>
             </div>
             </nav>
