@@ -30,6 +30,16 @@
             url: "/search?term",
             templateUrl: "templates/search.html",
             controller: 'SearchCtrl'
+        })
+
+        .state('impressum', {
+            url: "/impressum",
+            templateUrl: "templates/impressum.html"
+        })
+
+        .state('privacy', {
+            url: "/privacy",
+            templateUrl: "templates/privacy.html"
         });
     });
     
