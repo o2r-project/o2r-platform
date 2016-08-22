@@ -17,13 +17,13 @@ _Leveraging reproducible research_
 bower install
 ```
 
-## Running own server
+## Configure
 
-If you want to run your own server, create a `config/config.js` according to [configSampel.js](https://github.com/o2r-project/o2r-platform/blob/kompendiumsliste/config/configSample.js).
+Create a copy of the file `config/configSample.js` and name it `config/config.js`. You must configure the required application settings in this file, which is not part of the version control:
 
 
 ```JavaScript
-app.constant('url', 'http://your.server.address')
+app.constant('url', 'https://your.server.address')
 ```
 
 ## Development
@@ -35,7 +35,7 @@ If you run the o2r microservices locally, it is useful to run a local nginx to m
 docker run --rm --name o2r-platform -p 80:80 -v $(pwd)/test/nginx.conf:/etc/nginx/nginx.conf -v $(pwd):/etc/nginx/html nginx
 ```
 
-If you run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths.
+If you run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
 
 ## License
 
