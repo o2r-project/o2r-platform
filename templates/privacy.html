@@ -12,12 +12,20 @@ o2r stores following <strong>user data</strong> in its database:
 
 <h4 id="cookies">Cookies</h4>
 <p>
-	o2r uses a <strong>session cookie</strong>. This cookie stores a unique reference to a session (including auth details, if the user is autheticated via orcid).
+	o2r uses a <strong>session cookie</strong>. This cookie stores a unique reference to a session (including auth details, if the user is authenticated via orcid).
 </p>
+
 <h4 id="login">Login</h4>
 <p>
-	o2r uses OAUTH2 to provide a login via <strong>ORCID</strong>. More information about the ORCID privacy policy <a href="http://orcid.org/content/orcid-privacy-policy#Information_we_collect" target="_blank">here</a>.
+	o2r uses <a href="https://oauth.net/2/" title="About OAuth 2.0">OAuth 2.0</a> to provide a login via <strong><a href="http://orcid.org/" title="ORCID website">ORCID</a></strong>. More information about the ORCID privacy policy <a href="http://orcid.org/content/orcid-privacy-policy#Information_we_collect" target="_blank">here</a>.
 </p>
 <p>
 	ORCID is known to cause issues when using ghostery and other tacking control software. More information <a href="http://support.orcid.org/forums/175591-orcid-ideas-forum/suggestions/5534995-allow-login-to-orcid-org-without-google-analytics" target="_blank">here</a>.
 </p>
+
+<h4 id="tracking">Tracking</h4>
+<p>
+	We use our own <a href="https://piwik.org/" title="Piwik website">Piwik</a> server to collect anonymous user statistics in a configuration that is <a href="https://www.datenschutzzentrum.de/uploads/projekte/verbraucherdatenschutz/20110315-webanalyse-piwik.pdf" title="Datenschutzkonformes Webseitentracking mit Piwik">conform with German privacy laws</a>. If you do not want to be tracked, please use the option below. <em>If you are logged in</em>, we will store your user ID as part of the tracking data.
+</p>
+
+<iframe frameborder="no" width="600px" height="200px" src="http://o2r.uni-muenster.de/piwik/index.php?module=CoreAdminHome&action=optOut"></iframe>

@@ -21,12 +21,23 @@ bower install
 
 Create a copy of the file `config/configSample.js` and name it `config/config.js`. You must configure the required application settings in this file, which is not part of the version control:
 
-
 ```JavaScript
-app.constant('url', 'https://your.server.address')
+app.constant('url', 'https://your.server.address');
 ```
 
+There are more predefined settings in the file - please change with care.
+
 ## Development
+
+### Disable tracking
+
+During development it is reasonable to disable the user tracking in the config file.
+
+```JavaScript
+app.constant('disableTracking', true);
+```
+
+### Proxy for o2r microservices
 
 If you run the o2r microservices locally, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo. A nginx configuration file to achieve this is `test/nginx.conf`.
 

@@ -12,6 +12,8 @@
 <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+<script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
+<script type="text/javascript" src="bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
 <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -79,8 +81,8 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
 			        <li ng-show="loggedIn"><a ui-sref="author({authorid: user.orcid})">{{user.name}}<br/><small>{{user.orcid}}</small></a></li>
-                    <li ng-show="loggedIn"><a href="/api/v1/auth/logout">Logout</a></li>
-                    <li ng-hide="loggedIn"><a href="/api/v1/auth/login">Login</a></li>
+                    <li ng-show="loggedIn"><a href="/api/v1/auth/logout" analytics-category="user" analytics-on>Logout</a></li>
+                    <li ng-hide="loggedIn"><a href="/api/v1/auth/login" analytics-category="user" analytics-on>Login</a></li>
                 </ul>
             </div>
             </nav>
@@ -98,6 +100,21 @@
             <hr/>
             <span><a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a></span>
         </footer>
+
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            //_paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u=piwik.url;
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', '1']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+        <!-- End Piwik Code -->
 
 </body>
 </html>

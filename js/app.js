@@ -1,6 +1,9 @@
-    var app = angular.module('starter', ["treeControl", "ui.router", "hljs", "ngFileUpload", 'ngAnimate', 'ui.bootstrap']);
-    app.constant('sizeRestriction', 10000000);
-    app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider){
+    var app = angular.module('starter', ['treeControl', 'ui.router', 'hljs', 'ngFileUpload', 'ngAnimate', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
+    
+    app.config(function($stateProvider, $urlRouterProvider, hljsServiceProvider, $analyticsProvider, disableTracking){
+      $analyticsProvider.developerMode(disableTracking);
+      if(disableTracking) console.log("Tracking globally disabled!");
+        
       hljsServiceProvider.setOptions({
         tabReplace: '    '
       });
