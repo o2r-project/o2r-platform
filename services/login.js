@@ -1,10 +1,11 @@
 "use strict";
-app.factory('login', ['$rootScope', 'httpRequests', function($rootScope, httpRequests){
+app.factory('login', ['$rootScope', '$analytics', 'httpRequests', function($rootScope, $analytics, httpRequests){
 	var user = {};
 
 	var setUser = function(u){
 		user = u;
 		$rootScope.$broadcast('setUser');
+		$analytics.setUsername(u.orcid);
 	};
 
 	var getUser = function(){
