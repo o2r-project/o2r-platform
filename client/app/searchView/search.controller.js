@@ -18,10 +18,13 @@
             * Define submit function*/
         vm.submit = () => console.log('hello world');
 
-        metadata.callMetadata_search(searchTerm, getMeta_search); // httpRequest for retrieving all compendia fitting search parameters
-        
+        activate();
+
         //////////////
 
+        function activate(){
+            metadata.callMetadata_search(searchTerm, getMeta_search); // httpRequest for retrieving all compendia fitting search parameters
+        }
         // function is called in asynchronous response from metadata.callMetadata_search()
         function getMeta_search(meta_search){
             $scope.$broadcast('getFirstComp');

@@ -22,8 +22,7 @@
             dirSelectable: false
         };
 
-        publications.getRequest(ercId, callback); // httpRequest for retrieving all metadata of a compendium
-        ercView.callJobs(ercId); // getting job status
+        activate();
         
         $scope.$on('changedExecStatus', function(){
             vm.execStatus = ercView.getExecStatus();
@@ -34,6 +33,10 @@
 
         ///////////////
         
+        function activate(){
+            publications.getRequest(ercId, callback); // httpRequest for retrieving all metadata of a compendium
+            ercView.callJobs(ercId); // getting job status
+        }
         function callback(){
             vm.publication = publications.getPublications();
             vm.getOne = function(path){

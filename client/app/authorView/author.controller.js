@@ -16,10 +16,13 @@
             vm.filterContent = 'content'; // helper for contentfilter
             vm.open = openModal; // handle Modal
 
-            metadata.callMetadata_author(authorId, getMeta_author); // httpRequest for retrieving all compendia from one author
-           
+            activate();
+            
             //////////////////
 
+            function activate(){
+                metadata.callMetadata_author(authorId, getMeta_author); // httpRequest for retrieving all compendia from one author
+            }
             function openModal(){
                 var modalInstance = $uibModal.open({
                     animation: true,

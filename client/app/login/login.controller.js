@@ -13,11 +13,17 @@
         vm.user = {};
         vm.isLoggedIn;
 
-        login.getUserCall();
+        activate();
         
         $scope.$on('setUser', function(){
             vm.user = login.getUser();
             vm.loggedIn = login.isLoggedIn();
         });
+
+        ///////////
+
+        function activate(){
+            login.getUserCall();
+        }
     }
 })();

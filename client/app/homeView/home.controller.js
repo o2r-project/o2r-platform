@@ -11,6 +11,8 @@
         var vm = this;
         vm.submit = submitter;
         
+        ///////////
+        
         function submitter(){
             var _query = vm.searchModel.replace(/ /g, "+");
             $location.path('/search'); // $location.path('/search').search('term=' + _query);
