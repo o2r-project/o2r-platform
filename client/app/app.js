@@ -8,13 +8,17 @@
             "hljs", 
             "ngFileUpload", 
             'ngAnimate', 
-            'ui.bootstrap'])
-        .constant('sizeRestriction', 10000000)
+            'ui.bootstrap',
+            'angulartics', 
+            'angulartics.piwik'])
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', 'hljsServiceProvider'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', 'hljsServiceProvider', '$analyticsProvider', 'disableTracking'];
 
-    function config($stateProvider, $urlRouterProvider, hljsServiceProvider){
+    function config($stateProvider, $urlRouterProvider, hljsServiceProvider, $analyticsProvider, disableTracking){
+        $analyticsProvider.developerMode(disableTracking);
+        if(disableTracking) console.log("Tracking globally disabled!");
+
       hljsServiceProvider.setOptions({
         tabReplace: '    '
       });

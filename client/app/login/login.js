@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('login', login);
 		
-	login.$inject = ['$rootScope', 'httpRequests'];
+	login.$inject = ['$rootScope', '$analytics', 'httpRequests'];
 	
-	function login($rootScope, httpRequests){
+	function login($rootScope, $analytics, httpRequests){
 		var user = {};
 		var service = {
 			getUser: getUser,
@@ -22,6 +22,7 @@
 		function setUser(u){
 			user = u;
 			$rootScope.$broadcast('setUser');
+			$analytics.setUsername(u.orcid);
 		}
 
 		function getUser(){

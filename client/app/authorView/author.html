@@ -38,7 +38,7 @@
 						</th></tr>
 					</thead>
 					<tbody>
-						<tr class="author-tr" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)">
+						<tr class="author-tr" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
 						<td>{{pub.id}}</td><td>{{pub.created}}</td></tr>
 					</tbody>
 				</table>

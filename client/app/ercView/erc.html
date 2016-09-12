@@ -12,11 +12,11 @@
 		<!-- folder Tree -->
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="vm.setId(node.path)">{{node.name}}</span></treecontrol>
+				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="vm.setId(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span></treecontrol>
 			</div>
 		</div>
 
-		<button type="button" class="btn btn-primary" ng-click="vm.execJob()" ng-disabled="!vm.jobDone">Run analysis</button>
+		<button type="button" class="btn btn-primary" ng-click="vm.execJob()" ng-disabled="!vm.jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</button>
 		<br/>
 		<span ng-repeat="(key, value) in vm.execStatus">{{key}}:<strong>{{value.status}}</strong><br/></span>
 	</div>
