@@ -47,12 +47,12 @@ footer span{
 .erc_img{
 	max-width: 100%;
 }
-
+/*
 .erc_video{
 	width:;
 	height:;
 }
-
+*/
 .erc_jumboImg{
 	display: block;
 	margin-left: auto;
@@ -60,15 +60,15 @@ footer span{
 }
 
 treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
-    background: url("../icons/folder-2.png") no-repeat !important;
+    background: url("../img/o2r-folder.png") no-repeat !important;
 }
 
 treecontrol.tree-classic li.tree-collapsed i.tree-branch-head {
-    background: url("../icons/folder-closed-2.png") no-repeat !important;
+    background: url("../img/o2r-folder-closed.png") no-repeat !important;
 }
 
 treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
-    background: url("../icons/file-2.png") no-repeat !important;
+    background: url("../img/o2r-file.png") no-repeat !important;
 }
 /***********************
    End Author view

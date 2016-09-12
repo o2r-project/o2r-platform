@@ -19,22 +19,29 @@
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
 
 <!-- Starter file -->
-<script src="js/app.js"></script>
+<script src="app/app.js"></script>
 
 <!-- config file -->
-<script src="config/config.js"></script>
+<script src="app/config/config.js"></script>
 
 <!-- Services -->
-<script src="services/httpRequests.js"></script>
-<script src="services/publications.js"></script>
-<script src="services/fileContents.js"></script>
-<script src="services/pubListAuthor.js"></script>
-<script src="services/metadata.js"></script>
-<script src="services/ercView.js"></script>
-<script src="services/login.js"></script>
+<script src="app/services/httpRequests.js"></script>
+<script src="app/ercView/publications.js"></script>
+<script src="app/metadataPanel/metadata.js"></script>
+<script src="app/ercView/ercView.js"></script>
+<script src="app/login/login.js"></script>
+
+<!-- Controllers -->
+<script src="app/ercView/erc.controller.js"></script>
+<script src="app/authorView/author.controller.js"></script>
+<script src="app/searchView/search.controller.js"></script>
+<script src="app/homeView/home.controller.js"></script>
+<script src="app/metadataPanel/metadata.controller.js"></script>
+<script src="app/upload/modalInstance.controller.js"></script>
+<script src="app/login/login.controller.js"></script>
 
 <!-- Directives -->
-<script src="directives/o2rDisplayFiles.js"></script>
+<script src="app/ercView/o2rDisplayFiles.directive.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
@@ -49,17 +56,17 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
 <!-- End Cookie Consent plugin -->
 </head>
-<body ng-app="starter" ng-controller="LoginCtrl">
+<body ng-app="starter" ng-controller="LoginCtrl as vm">
         <header>
             <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-      				<a class="navbar-brand" href="#"><img src="/images/o2r-logo-only.svg" height="200%" alt="o2r-logo"></a></a>
+      				<a class="navbar-brand" href="#"><img src="img/o2r-logo-only.svg" height="100%" alt="o2r-logo"></a></a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-			        <li ng-show="loggedIn"><a ui-sref="author({authorid: user.orcid})">{{user.name}}<br/><small>{{user.orcid}}</small></a></li>
-                    <li ng-show="loggedIn"><a href="/api/v1/auth/logout">Logout</a></li>
-                    <li ng-hide="loggedIn"><a href="/api/v1/auth/login">Login</a></li>
+			        <li ng-show="vm.loggedIn"><a ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}}<br/><small>{{vm.user.orcid}}</small></a></li>
+                    <li ng-show="vm.loggedIn"><a href="/api/v1/auth/logout">Logout</a></li>
+                    <li ng-hide="vm.loggedIn"><a href="/api/v1/auth/login">Login</a></li>
                 </ul>
             </div>
             </nav>
