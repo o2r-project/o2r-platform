@@ -1,9 +1,16 @@
 # ignore dependencies
-bower_components/
+client/bower_components/
 
 #ignore config.js
-config/config.js
+client/app/config/config.js
 
 #ignore testfiles
 testFiles/
 
+#ignore node_modules
+node_modules/
+
+#ignore unit tests
+lib/
+spec/
+karma.conf.js

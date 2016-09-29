@@ -43,7 +43,7 @@ Start all required o2r microservices with just one command using `docker-compose
 
 ```bash
 
-CLIENT_ID=<...> CLIENT_SECRET=<...> AUTH_CALLBACK_URL=<...> docker-compose up
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose up
 ```
 
 The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/), and a adminMongo instance is running at http://localhost:1234. Create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database.

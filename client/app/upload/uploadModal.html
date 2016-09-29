@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h3 class="modal-title">Upload Compendium</h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<div class="col-md-4">
+			<form name="form">
+			<div 
+			class="upmod-dropbox" 
+			ngf-select="vm.selected($file)" 
+			ngf-drop="vm.selected($file)" 
+			ng-model="vm.file" 
+			name="file" 
+			ngf-pattern="'application/zip, .gz'" 
+			ngf-accept="'.zip, .gz'"><span ng-hide="vm.f.name">Click <br/ >or <br/> Drag 'n Drop</span><span ng-show="vm.f.name">{{vm.f.name}}</span></div>
+			</form>
+			<div class="upmod-progress" ng-if="vm.f.progress >= 0">	
+		    	<uib-progressbar value="vm.f.progress"><span style="color:white; white-space:nowrap;">{{vm.f.progress}}%</span></uib-progressbar>
+		    </div>
+	    </div>
+	    <div class="col-md-8">
+	    	<div class="upmod-msg" ng-if="vm.checkUpload && (vm.f.progress == 100)">
+		    	<h4><span class="glyphicon glyphicon-ok upmod-glyph" aria-hidden="true"></span>Compendium successfully uploaded</h4>
+	    	</div>
+	    	<div class="upmod-msg" ng-if="!vm.checkUpload && (vm.f.progress == 100)">
+		    	<h4><span class=" glyphicon glyphicon-exclamation-sign upmod-glyph" aria-hidden="true"></span>Upload failed</h4>
+	    	</div>
+	    </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+	<div ng-hide="vm.doneButton">
+    <button class="btn btn-primary" type="button" ng-click="vm.submit()">OK</button>
+    <button class="btn btn-default" type="button" ng-click="vm.cancel()">Cancel</button>
+ 	</div>
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()" ng-show="vm.doneButton">Done</button>
+</div>
+

@@ -1,0 +1,27 @@
+<div class="row">
+
+	<!-- search bar -->
+	<div class="col-md-6 search_searchinput">
+		<form class="form-inline" ng-submit="vm.submit()">
+			<div class="input-group col-md-10">
+				<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+	  			<input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchModel" ng-value="{{searchTerm}}"/>
+			</div>
+			<button type="submit" class="btn btn-primary">Search</button>
+		</form>
+		<table>
+			<tr ng-repeat="pub in vm.allPubs">
+				<td class="search_resTable">
+					<b class="search_resTitle"><a ng-click="vm.setId(pub.id)">{{pub.id}}</a></b><br/>
+					{{pub.files.path}} | {{pub.created}}
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+	<!-- Metadata -->
+	<div class="col-md-6" >
+		<ng-include src="'app/metadataPanel/metadata_panel.html'"></ng-include>
+	</div>
+</div>
