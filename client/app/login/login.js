@@ -30,11 +30,18 @@
 		}
 
 		function getUserCall(){
-			httpRequests.getLoggedUser(callback);
+			httpRequests
+				.getLoggedUser()
+				.then(callback)
+				.catch(errorHandler);
 			
 			function callback(user){
-				setUser(user);
-				return user;
+				console.log('getUserCall callback: %o', user);
+				setUser(user.data);
+				return;
+			}
+			function errorHandler(e){
+				console.log('getUserCall errorHandler: %o', e);
 			}
 		}
 

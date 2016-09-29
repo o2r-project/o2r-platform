@@ -9,31 +9,35 @@
 
     function MetadataCtrl($scope, $location, metadata){
         var vm = this;
-
+        
         vm.submit = submitter; // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
         vm.caps = caps; // Changes first letter of word into capital letter
         vm.isSpecial = isSpecial;
-        vm.compMeta;
+        vm.compMeta = metadata.getLatestComp();
         
+        console.log('MetadataCtrl, compMeta: %o', vm.compMeta);
+
         $scope.$on('loadedAllComps', function(){ //Controller starts when previous httpRequest is finished
-            metadata.callJobStatus(vm.compMeta.id, getJobMeta);
-        });
-        $scope.$on('getLatestComp', function(){
-            vm.compMeta = metadata.getLatestComp();
-        });
-        $scope.$on('getFirstComp', function(){
-            vm.compMeta = metadata.getFirstComp();
+            setCompStatus();
         });
         $scope.$on('changedComp_id', function(event, data){ //watch if comp_id changes in factory
+            console.log('changedComp_id');
             vm.compMeta = metadata.getOneComp(data);
-            metadata.callJobStatus(vm.compMeta.id, getJobMeta);
+            setCompStatus();
         });
 
+        activate()
         /////////////////
 
-        //function is called in asynchronous response from metadata.callJobStatus()
-        function getJobMeta(meta){
-            vm.compMeta.status = meta;
+        function activate(){
+            setCompStatus();
+        }
+        function setCompStatus (){
+            metadata.callJobStatus(vm.compMeta.id)
+                .then(function(res){
+                    vm.compMeta.status = res.data;
+                    console.log('MetadataCtrl, compMeta.status: %o', vm.compMeta.status);
+                });
         }
         function submitter(){
             var _url = '/erc/' + vm.compMeta.id;

@@ -19,7 +19,7 @@
 				restrict: 'E',
 				link: function(scope, iElement, attrs){
 					attrs.$observe('o2rid', function(value){ //checks if o2rid-attribute changes
-						var file = publications.getContentById(value);
+						var file = publications.getContentById(scope.vm.publication, value);
 						//var _url = url.slice(0, 33);
 						
 						if(typeof file.type !== "undefined"){ //check if found element is a file

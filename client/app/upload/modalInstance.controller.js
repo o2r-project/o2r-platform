@@ -9,7 +9,7 @@
 
     function ModalInstanceCtrl ($scope, $uibModalInstance, metadata, Upload, author, url){
         var vm = this;
-
+        
         vm.checkUpload = false;
         vm.doneButton = false;
         vm.selected = (file) => {vm.f = file;};
@@ -39,9 +39,7 @@
             function successCallback(response){
                 vm.doneButton = true;
                 vm.checkUpload = true;
-                metadata.callMetadata_author(author, function(){
-                    return;
-                });
+                metadata.callMetadata_author(author);
             }
             function errorCallback(response){
                 vm.doneButton = true;

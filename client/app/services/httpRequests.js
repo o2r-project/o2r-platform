@@ -25,9 +25,8 @@
 		/*
 		* @Desc httpRequest for retrieving a list of compendia
 		* @Param query, object with attributes author, start and limit to define queries
-		* @Param callback, function which will be called on response
 		*/
-		function listCompendia(query, callback){
+		function listCompendia(query){
 			var _url= url + '/compendium';
 			var param = '?';
 
@@ -45,55 +44,43 @@
 					param = '&';
 				}
 			}
-			$http.get(_url).then(function(response){
-				callback(response);
-			});
+			return $http.get(_url);
 		}
 
 		/*
 		* @Desc httpRequest for retrieving a single compendium
 		* @Param id, id of requested compendium
-		* @Param callback, function which will be called on response
 		*/
-		function singleCompendium(id, callback){
+		function singleCompendium(id){
 			var _url = url + '/compendium/' + id;
-			$http.get(_url).then(function(response){
-				callback(response);
-			});
+			return $http.get(_url);
 		}
 
 		/*
 		* @Desc httpRequest for retrieving a list of related jobs of a single compendium
 		* @Param id, id of compendium
-		* @Param callback, function which will be called on response
 		*/
-		function listRelatedJobs(id, callback){
+		function listRelatedJobs(id){
 			var _url = url + '/compendium/' + id + '/jobs';
-			$http.get(_url).then(function(response){
-				callback(response);
-			});
+			return $http.get(_url);
 		}	
 
 		/*
 		* @Desc httpRequest for executing a new job
 		* @Param body, object with attribute compendium_id, steps, inputs
 		*              attribute compendium_id is required
-		* @Param callback, function which will be called on response
 		*/
-		function newJob(body, callback){
+		function newJob(body){
 			var _url = url + '/job';
-			$http.post(_url, body).then(function(response){
-				callback(response);
-			});
+			return $http.post(_url, body);
 		}
 
 
 		/*
 		* @Desc httpRequest for retrieving a list of jobs
 		* @Param query, object with attributes compendium_id, start, limit
-		* @Param callback, function which will be called on response
 		*/
-		function listJobs(query, callback){
+		function listJobs(query){
 			var _url = url + '/job';
 			var param = '?';
 			if(query){
@@ -110,35 +97,24 @@
 					param = '&';
 				}
 			}
-			$http.get(_url)
-				.success(function(data){
-					callback(data);
-				})
-				.error(function(error, status){
-					callback(error);
-				});
+			return $http.get(_url);
 		}
 
 		/*
 		* @Desc httpRequest for retrieving a single job
 		* @Param id, id of job
-		* @Param callback, function which will be called on response
 		*/
-		function listSingleJob(id, callback){
+		function listSingleJob(id){
 			var _url = url + '/job/' + id;
-			$http.get(_url)
-				.success(function (data){
-					callback(data);
-				});
+			return $http.get(_url);
 		}
 
-		function getLoggedUser(callback){
+		/*
+		* @Desc httpRequest for retrieving information of the logged in user
+		*/
+		function getLoggedUser(){
 			var _url = url + '/auth/whoami';
-			$http.get(_url).then(function(response){
-				callback(response.data);
-			}, function(response){
-				console.log(response);
-			});
+			return $http.get(_url);
 		}
 	};
 })();

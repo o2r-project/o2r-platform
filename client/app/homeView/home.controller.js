@@ -15,7 +15,7 @@
         
         function submitter(){
             var _query = vm.searchModel.replace(/ /g, "+");
-            $location.path('/search'); // $location.path('/search').search('term=' + _query);
+            $location.path('/search').search('term=asdf'); // $location.path('/search').search('term=' + _query);
         };
     }
 })();

@@ -5,23 +5,28 @@
         .module('starter')
         .controller('AuthorCtrl', AuthorCtrl);
 
-        AuthorCtrl.$inject = ['$scope', '$stateParams', '$uibModal', 'metadata'];
+        AuthorCtrl.$inject = ['$scope', '$stateParams', '$uibModal', 'metadata', 'authorInfo'];
 
-        function AuthorCtrl($scope, $stateParams, $uibModal, metadata){
+        function AuthorCtrl($scope, $stateParams, $uibModal, metadata, authorInfo){
             var vm = this;
+           
             var authorId = $stateParams.authorid; // id from author
             
+            vm.allPubs = authorInfo;
+            vm.compExists = compExistence();
             vm.sortType = 'date'; // helper for sorting
             vm.sortReverse = true; // helper for sorting
             vm.filterContent = 'content'; // helper for contentfilter
             vm.open = openModal; // handle Modal
-
-            activate();
+            vm.setId = (id) => metadata.setComp_id(id);
+            
+            console.log('AuthorCtrl, vm.allPubs: %o',vm.allPubs);
+            //activate();
             
             //////////////////
 
             function activate(){
-                metadata.callMetadata_author(authorId, getMeta_author); // httpRequest for retrieving all compendia from one author
+                metadata.callMetadata_author(authorId); // httpRequest for retrieving all compendia from one author
             }
             function openModal(){
                 var modalInstance = $uibModal.open({
@@ -36,15 +41,22 @@
                     }
                 });
             }
+           
+            function compExistence(){
+                if(authorInfo.status === 404) return false;
+                return true;
+            }
+
+            $scope.$on('loadedAllComps', function(){ //allPubs will be set to comp_meta from metadata factory
+                vm.allPubs = metadata.getComp_meta();
+            });
             // function is called in asynchronous response from metadata.callMetadata_author()
+            /*
             function getMeta_author(meta_author){
-                $scope.$broadcast('getLatestComp');
-                $scope.$on('loadedAllComps', function(){ //allPubs will be set to comp_meta from metadata factory
-                    vm.allPubs = metadata.getComp_meta();
-                });
                 vm.setId = function(id){ // setter function for comp_id
                     metadata.setComp_id(id);
                 };  
             }
+            */
         }
 })();

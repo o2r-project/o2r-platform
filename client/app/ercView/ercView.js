@@ -44,8 +44,27 @@
         * @Param id, id of compendium
         */
         function callJobs(id){
-            httpRequests.listJobs({'compendium_id': id}, callback);
-
+            httpRequests
+                .listJobs({'compendium_id': id})
+                .then(callback1)
+                .then(callback2)
+                .catch(errorHandler);
+            
+            function callback1(joblist){
+                console.log('in callJobs callback1: %o', joblist);
+                return httpRequests.listSingleJob(joblist.data.results[joblist.data.results.length-1]);
+            }
+            function callback2(job){
+                console.log('in callJobs callback2: %o', job);
+                getJobStatus(job.data.steps);
+            }
+            function errorHandler(e){
+                console.log('in callJobs errorHandler: %o', e);
+                //TODO 
+                //Generate error message for the user
+                setJobDone(true);
+            }
+            /*
             function callback(response){
                 if(response.error){
                     setExecStatus({'Information': {'status': 'No jobs executed yet'}});
@@ -54,6 +73,7 @@
                     httpRequests.listSingleJob(response.results[response.results.length-1], (res) => {getJobStatus(res.steps);});
                 }
             }
+            */
         }
 
         /*
@@ -86,10 +106,22 @@
         * @Param id, id of compendium
         */
         function executeJob(id){
-            httpRequests.newJob({'compendium_id': id}, callback);
+            httpRequests.newJob({'compendium_id': id})
+                .then(callback1)
+                .then(callback2)
+                .catch(errorHandler);
 
-            function callback(response){
-                httpRequests.listSingleJob(response.data.job_id, (res) => {getJobStatus(res.steps);});
+            function callback1(response){
+                console.log('executeJob callback1: %o', response);
+                return httpRequests.listSingleJob(response.data.job_id);
+                //(res) => {getJobStatus(res.steps);});
+            }
+            function callback2(job){
+                console.log('executeJob callback2: %o', job);
+                getJobStatus(job.data.steps);
+            }
+            function errorHandler(e){
+                console.log('executeJob errorHandler: %o', e);
             }
         }
 

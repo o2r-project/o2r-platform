@@ -27,7 +27,7 @@
 
 			<div class="panel-body author-panel">
 			
-				<table class="table table-hover author-table">
+				<table class="table table-hover author-table" ng-if="vm.compExists">
 					<thead>
 						<tr><th class="author-sorter" ng-click="vm.sortType = 'title'; vm.sortReverse = !vm.sortReverse">Title
 							<span class="glyphicon glyphicon-triangle-bottom" ng-show="vm.sortType == 'title' && vm.sortReverse"></span>
@@ -42,6 +42,8 @@
 						<td>{{pub.id}}</td><td>{{pub.created}}</td></tr>
 					</tbody>
 				</table>
+
+				<div ng-if="!vm.compExists">No ERC uploaded yet.</div>
 			</div>
 		</div>	
 			
@@ -49,7 +51,7 @@
 	</div>
 	
 	<!-- Metadata panel -->
-	<div class="col-md-8 a-land">
+	<div class="col-md-8 a-land" ng-if="vm.compExists">
 		<ng-include src="'app/metadataPanel/metadata_panel.html'"></ng-include>
 	</div>
 </div>

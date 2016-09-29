@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('metadata', metadata);
 		
-	metadata.$inject = ['$http', '$rootScope', 'httpRequests', 'url'];
+	metadata.$inject = ['$http', '$rootScope','$q', 'httpRequests', 'url'];
 	
-	function metadata($http, $rootScope, httpRequests, url){
+	function metadata($http, $rootScope, $q, httpRequests, url){
 		var comp_meta = []; // contains all metadata from all requested compendia
 		var comp_id = ''; // id of last clicked compendium
 		var service = {
@@ -58,59 +58,103 @@
 		// httpRequest for Metadata of all compendia of one author
 		// calls getMeta_author() for sending results to AuthorCtrl
 		// calls initMetadataCtrl() for sending results to MetadataCtrl
-		function callMetadata_author(authorid, callback){
+		function callMetadata_author(authorid){
 			var counter = 0;
+			var deferred = $q.defer();
 			comp_meta = [];
-			httpRequests.listCompendia({'author': authorid}, cb);
+			httpRequests
+				.listCompendia({'author': authorid})
+				.then(cb1)
+				.catch(errorHandler);
 			
-			function cb(response){
+			return deferred.promise;
+			
+			function cb1(response){
 				for(var index in response.data.results){
-					httpRequests.singleCompendium(response.data.results[index], function(res){
-						comp_meta.push(res.data);
-						counter ++;
-						if(counter == response.data.results.length){
-							sortByDate(comp_meta);
-							callback(getComp_meta());
-							$rootScope.$broadcast('loadedAllComps');
-						}
-					});
+					console.log('callMetadata_author, cb1 %o', response);
+					httpRequests
+						.singleCompendium(response.data.results[index])
+						.then(cb2)
+						.catch(errorHandler);
 				}
+				function cb2(res){
+					comp_meta.push(res.data);
+					counter ++;
+					if(counter == response.data.results.length){
+						sortByDate(comp_meta);
+						$rootScope.$broadcast('loadedAllComps');
+						deferred.resolve(comp_meta);
+					}
+				}
+				
+			}
+			function errorHandler(e){
+				console.log('callMetadata_author errorHandler: %o',e);
+				deferred.resolve(e);
 			}
 		}
 
-		function callMetadata_search(searchTerm, callback){
+		function callMetadata_search(searchTerm){
 			var counter = 0;
+			var deferred = $q.defer();
 			comp_meta = [];
-			httpRequests.listCompendia(null, cb);
+			httpRequests
+				.listCompendia(null)
+				.then(cb1)
+				.catch(errorHandler);
 			
-			function cb(response){
+			return deferred.promise;
+			
+			function cb1(response){
 				for(var index in response.data.results){
-					httpRequests.singleCompendium(response.data.results[index], function(res){
-						comp_meta.push(res.data);
-						counter++;
-						if(counter == response.data.results.length){
-							callback(getComp_meta());
-							$rootScope.$broadcast('loadedAllComps');
-						}
-					});
+					console.log('callMetadata_search, cb1 %o', response);
+					httpRequests
+						.singleCompendium(response.data.results[index])
+						.then(cb2)
+						.catch(errorHandler);
 				}
+				function cb2(res){
+					comp_meta.push(res.data);
+					counter ++;
+					if(counter == response.data.results.length){
+						sortByDate(comp_meta);
+						$rootScope.$broadcast('loadedAllComps');
+						deferred.resolve(comp_meta);
+					}
+				}
+				
+			}
+			function errorHandler(e){
+				console.log('callMetadata_search errorHandler: %o',e);
+				deferred.resolve(e);
 			}
 		}
 
 		// httpRequest for Metadata of one job
 		// calls getJobMeta() for sending data to MetadataCtrl
-		function callJobStatus(id, callback){
-			httpRequests.listJobs({'compendium_id': id}, cb);
-			
-			function cb(response){
-				if(response.error){
-					callback('No jobs executed yet');
-				} else{
-					var jobId = response.results[response.results.length-1];
-					httpRequests.listSingleJob(jobId, (res) => {callback(res);});
-				}
-			}
+		function callJobStatus(id){
+			var deferred = $q.defer();
+			httpRequests
+				.listJobs({'compendium_id': id})
+				.then(callback1)
+				.then(callback2)
+				.catch(errorHandler);
 
+			return deferred.promise;
+
+			function callback1(joblist){
+				console.log('callJobStatus callback1: %o', joblist);
+				var jobId = joblist.data.results[joblist.data.results.length-1];
+				return httpRequests.listSingleJob(jobId);
+			}
+			function callback2(response){
+				console.log('callJobStatus callback2: %o', response);
+				deferred.resolve(response);
+			}
+			function errorHandler(e){
+				console.log('callJobStatus errorHandler: %o', e);
+				deferred.resolve({data: 'No jobs executed yet.'});
+			}
 		}
 
 		// setter method for comp_id

@@ -5,12 +5,18 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','publications', 'ercView', 'httpRequests', 'url', 'sizeRestriction'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','publications', 'ercView', 'url', 'sizeRestriction', 'compInfo'];
 
-    function ErcCtrl($scope, $stateParams, publications, ercView, httpRequests, url, sizeRestriction){
+    function ErcCtrl($scope, $stateParams, publications, ercView, url, sizeRestriction, compInfo){
         var vm = this;
         var ercId = $stateParams.ercid; // id of compendium
         
+        vm.publication = compInfo;
+        vm.getOne = function(path){
+            var p = publications.getContentById(vm.publication, path);
+            return p;
+        }
+        vm.displaySource = (str) => ercView.checkDisplayType(str);
         vm.sizeRestrict = sizeRestriction;
         vm.fileId; // id of file in publication
         vm.setId = setId;
@@ -22,7 +28,7 @@
             dirSelectable: false
         };
 
-        activate();
+        console.log('ErcCtrl, publication: %o', vm.publication);
         
         $scope.$on('changedExecStatus', function(){
             vm.execStatus = ercView.getExecStatus();
@@ -34,21 +40,10 @@
         ///////////////
         
         function activate(){
-            publications.getRequest(ercId, callback); // httpRequest for retrieving all metadata of a compendium
+            publications.getRequest(ercId); // httpRequest for retrieving all metadata of a compendium
             ercView.callJobs(ercId); // getting job status
         }
-        function callback(){
-            vm.publication = publications.getPublications();
-            vm.getOne = function(path){
-                var p = publications.getContentById(path);
-                return p;
-            };
-            // checks for filesize and mimetype for displaying content of files
-            // returns true, if file is not too big and not of type of pdf, image, audio, video
-            vm.displaySource = function(string){
-                return ercView.checkDisplayType(string);
-            };
-        }
+        
         function setId(path){  // set fileId
             vm.fileId = path;
         }

@@ -7,3 +7,10 @@ client/app/config/config.js
 #ignore testfiles
 testFiles/
 
+#ignore node_modules
+node_modules/
+
+#ignore unit tests
+lib/
+spec/
+karma.conf.js

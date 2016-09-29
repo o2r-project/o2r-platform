@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory("publications", publications);
 		
-	publications.$inject = ['httpRequests'];
+	publications.$inject = ['$q', 'httpRequests'];
 
-	function publications(httpRequests){
+	function publications($q, httpRequests){
 		var publications;
 		var pub = {};
 		var service = {
@@ -20,12 +20,23 @@
 
 		////////////
 
-		function getRequest(id, callback){
-			httpRequests.singleCompendium(id, cb);
+		function getRequest(id){
+			var deferred = $q.defer();
+			httpRequests
+				.singleCompendium(id)
+				.then(callback)
+				.catch(errorHandler);
 
-			function cb(response){
+			return deferred.promise;	
+
+			function callback(response){
+				console.log('getRequest callback: %o', response);
 				publications = response.data;
-				callback();
+				deferred.resolve(response.data);
+			}
+			function errorHandler(e){
+				console.log('getRequest errorHandler: %o', e);
+				deferred.resolve(e);
 			}
 		}
 
@@ -43,9 +54,9 @@
 			}
 		}
 
-		function findContent(searchedFile){
+		function findContent(compendium, searchedFile){
 			var searchedObject = {};
-			iterator(publications.files, searchedFile);
+			iterator(compendium.files, searchedFile);
 			searchedObject = pub;
 			pub = {};
 			return searchedObject;
