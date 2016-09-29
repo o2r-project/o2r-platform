@@ -42,6 +42,7 @@ services:
     image: o2rproject/o2r-muncher:latest
     depends_on:
       - mongodb
+      - mongodbconfig
     volumes:
       - storage:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
@@ -58,6 +59,7 @@ services:
     image: o2rproject/o2r-contentbutler:latest
     depends_on:
       - mongodb
+      - mongodbconfig
     volumes:
       - storage:/tmp/o2r
     links:
@@ -73,6 +75,7 @@ services:
     image: o2rproject/o2r-bouncer:latest
     depends_on:
       - mongodb
+      - mongodbconfig
     #env_file: .env
     environment:
       - BOUNCER_MONGODB=mongodb://mongodb
@@ -88,6 +91,7 @@ services:
     image: o2rproject/o2r-transportar:latest
     depends_on:
       - mongodb
+      - mongodbconfig
     volumes:
       - storage:/tmp/o2r
     links:
@@ -108,7 +112,7 @@ services:
       - transportar
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "../:/etc/nginx/html"
+      - "../client:/etc/nginx/html"
     ports:
       - "80:80"
 
@@ -117,6 +121,7 @@ services:
     image: adicom/admin-mongo
     depends_on:
       - mongodb
+      - mongodbconfig
     links:
       - "mongodb:db"
     environment:
