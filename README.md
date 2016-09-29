@@ -50,7 +50,7 @@ The services are available at http://localhost (or on Windows/with docker-machin
 
 You can remove the storage volume by running `docker-compose down -v`
 
-#### Configure adminMongo
+### adminMongo
 
 adminMongo can be reached via `localhost:1234`. If you run the o2r microservicese locally, the connection path has to be changed to 
 
