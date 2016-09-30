@@ -8,9 +8,8 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
@@ -19,9 +18,10 @@
 <script type="text/javascript" src="bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
-<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
+<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -68,6 +68,7 @@
 
 <!-- Directives -->
 <script src="app/ercView/o2rDisplayFiles.directive.js"></script>
+<script src="app/ercView/o2rErcDownload.directive.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
@@ -84,48 +85,48 @@
 
 
 </head>
-<body ng-app="starter" ng-controller="LoginCtrl as vm">
-        <header>
-            <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-      				<a class="navbar-brand" href="#"><img src="/img/o2r-logo-only.svg" height="100%" alt="o2r-logo"></a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-			        <li ng-show="vm.loggedIn"><a ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}}<br/><small>{{vm.user.orcid}}</small></a></li>
-                    <li ng-show="vm.loggedIn"><a href="/api/v1/auth/logout" analytics-category="user" analytics-on>Logout</a></li>
-                    <li ng-hide="vm.loggedIn"><a href="/api/v1/auth/login" analytics-category="user" analytics-on>Login</a></li>
-                </ul>
-            </div>
-            </nav>
-        </header>
-
-
-        <!-- Main content and injected views -->
-        <div id="main">
-			
-            <div id="ui-view" ui-view></div>  
-			
+<body ng-app="starter" ng-controller="LoginCtrl as vm" layout="column">
+    <!-- header -->
+    <md-toolbar class="md-hue1">
+        <div class="md-toolbar-tools">
+            <img src="img/o2r-logo-only.svg" alt="o2r-logo" id="navbar-logo" height="80%" ui-sref="home">
+            <span flex></span>
+            <md-button ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}}<br/><small>{{vm.user.orcid}}</small></md-button>
+            <md-button href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
+            <md-button href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
         </div>
+    </md-toolbar>
+    <!-- End header -->
 
-        <footer>
-            <hr/>
-            <span><a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a></span>
-        </footer>
+    <!-- Main content and injected views -->
+    <div id="main">
+        
+        <div id="ui-view" ui-view></div>  
+        
+    </div>
 
-        <!-- Piwik -->
-        <script type="text/javascript">
-            var _paq = _paq || [];
-            //_paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-                var u=piwik.url;
-                _paq.push(['setTrackerUrl', u+'piwik.php']);
-                _paq.push(['setSiteId', '1']);
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-            })();
-        </script>
-        <!-- End Piwik Code -->
+    <!-- footer -->
+    <md-toolbar class="md-hue1">
+        <div class="md-toolbar-tools">
+            <span flex></span>
+            <a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+
+    <!-- Piwik -->
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        //_paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u=piwik.url;
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', '1']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <!-- End Piwik Code -->
 </body>
 </html>

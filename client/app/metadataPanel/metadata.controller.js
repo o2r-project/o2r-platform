@@ -10,7 +10,6 @@
     function MetadataCtrl($scope, $location, metadata){
         var vm = this;
         
-        vm.submit = submitter; // triggered on GoTo Button. Gets the id of last clicked publication and calls url /erc/:ercid
         vm.caps = caps; // Changes first letter of word into capital letter
         vm.isSpecial = isSpecial;
         vm.compMeta = metadata.getLatestComp();
@@ -38,10 +37,6 @@
                     vm.compMeta.status = res.data;
                     console.log('MetadataCtrl, compMeta.status: %o', vm.compMeta.status);
                 });
-        }
-        function submitter(){
-            var _url = '/erc/' + vm.compMeta.id;
-            $location.path(_url);
         }
         function caps(string){
             return string.charAt(0).toUpperCase() + string.slice(1);

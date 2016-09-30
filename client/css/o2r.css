@@ -22,7 +22,9 @@ footer span{
 	padding-bottom: 10px;
 }
 
-
+#navbar-logo{
+	cursor: pointer;
+}
 /************************
    End General
 *************************/

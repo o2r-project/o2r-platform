@@ -8,20 +8,24 @@
             "hljs", 
             "ngFileUpload", 
             'ngAnimate', 
-            'ui.bootstrap',
+            'ngMaterial',
             'angulartics', 
             'angulartics.piwik'])
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', 'hljsServiceProvider', '$analyticsProvider', 'disableTracking'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', 'hljsServiceProvider', '$analyticsProvider', 'disableTracking'];
 
-    function config($stateProvider, $urlRouterProvider, hljsServiceProvider, $analyticsProvider, disableTracking){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, hljsServiceProvider, $analyticsProvider, disableTracking){
         $analyticsProvider.developerMode(disableTracking);
         if(disableTracking) console.log("Tracking globally disabled!");
 
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
+
+        $mdThemingProvider.theme('default')
+            .primaryPalette('blue-grey');
+            
         $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
         $stateProvider
             .state('home', {

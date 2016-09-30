@@ -1,43 +1,36 @@
-<div class="row">
-	<div class="col-md-12">
-		<h3>ERC Details: </h3>
+<div layout="column">
+	<div layou="row">
+		<o2r-erc-download fileid="{{vm.fileId}}"></o2r-erc-download>
 	</div>
-</div>
+	<div layout="row">
+		<!-- folder tree -->
+		<md-card flex="30">
+			<md-card-content>
+				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+					<span ng-click="vm.setId(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
+				</treecontrol>
+			</md-card-content>
+		</md-card>
 
-
-<div class="row">
-
-	<!-- left side -->
-	<div class="col-md-4">
-		<a href="/api/v1/compendium/{{vm.publication.id}}.zip" download><button type="button" class="btn btn-primary">Download .zip</button></a>
-		<a href="/api/v1/compendium/{{vm.publication.id}}.tar" download><button type="button" class="btn btn-primary">Download .tar</button></a>
-		<a href="/api/v1/compendium/{{vm.publication.id}}.tar.gz" download><button type="button" class="btn btn-primary">Download .tar.gz</button></a>		
-		<!-- folder Tree -->
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1"><span ng-click="vm.setId(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span></treecontrol>
-			</div>
-		</div>
-
-		<button type="button" class="btn btn-primary" ng-click="vm.execJob()" ng-disabled="!vm.jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</button>
-		<br/>
-		<span ng-repeat="(key, value) in vm.execStatus">{{key}}:<strong>{{value.status}}</strong><br/></span>
-	</div>
-
-
-
-	<!-- right side -->
-	<div class="col-md-8">
 		<!-- Content -->
-		<div class="panel panel-default contentview">
-				<div class="panel-heading"><h5>{{vm.getOne(vm.fileId).path}}</h5></div>
-				<div class="panel-body erc_content">
-					<!-- Display of images and files -->
-					<o2r-display-files id="content" o2rid="{{vm.fileId}}"></o2r-display-files>
-					
-					<hljs hljs-include="vm.getOne(vm.fileId).path" ng-if="vm.displaySource(vm.getOne(vm.fileId).type) && (vm.getOne(vm.fileId).size < vm.sizeRestrict)"></hljs>
-				</div>
-		</div>
+		<md-card flex="65" flex-offset="5">
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">{{vm.getOne(vm.fileId).path}}</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content>
+				<o2r-display-files o2rid="{{vm.fileId}}"></o2r-display-files>
+				<hljs hljs-include="vm.getOne(vm.fileId).path" ng-if="vm.displaySource(vm.getOne(vm.fileId).type) && (vm.getOne(vm.fileId).size < vm.sizeRestrict)"></hljs>
+			</md-card-content>
+		</md-card>
+	</div>
+	<div>
+		<md-card flex="30">
+			<md-card-content layout="column">
+				<md-button class="md-raised md-primary" ng-click="vm.execJob()" ng-disabled="!vm.jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
+				<span ng-repeat="(key, value) in vm.execStatus">{{key}}:<strong>{{value.status}}</strong><br/></span>
+			</md-card-content>
+		</md-card>
 	</div>
 </div>
-
