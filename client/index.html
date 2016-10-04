@@ -44,11 +44,12 @@
 <meta name="msapplication-TileImage" content="/mstile-144x144.png">
 <meta name="theme-color" content="#004288">
 
+<!-- config file -->
+<script src="app/config/config.js"></script>
+
 <!-- Starter file -->
 <script src="app/app.js"></script>
 
-<!-- config file -->
-<script src="app/config/config.js"></script>
 
 <!-- Services -->
 <script src="app/services/httpRequests.js"></script>
@@ -116,6 +117,9 @@
 
     <!-- Piwik -->
     <script type="text/javascript">
+        const piwik = {};
+        piwik.url = window.__env.piwik || "//o2r.uni-muenster.de/piwik/";
+        console.log(piwik.url);
         var _paq = _paq || [];
         //_paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);

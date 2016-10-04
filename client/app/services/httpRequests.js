@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', 'url'];
+	httpRequests.$inject = ['$http', 'env'];
 		
-	function httpRequests($http, url){
+	function httpRequests($http, env){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -27,7 +27,7 @@
 		* @Param query, object with attributes author, start and limit to define queries
 		*/
 		function listCompendia(query){
-			var _url= url + '/compendium';
+			var _url= env.api + '/compendium';
 			var param = '?';
 
 			if(query){
@@ -52,7 +52,7 @@
 		* @Param id, id of requested compendium
 		*/
 		function singleCompendium(id){
-			var _url = url + '/compendium/' + id;
+			var _url = env.api + '/compendium/' + id;
 			return $http.get(_url);
 		}
 
@@ -61,7 +61,7 @@
 		* @Param id, id of compendium
 		*/
 		function listRelatedJobs(id){
-			var _url = url + '/compendium/' + id + '/jobs';
+			var _url = env.api + '/compendium/' + id + '/jobs';
 			return $http.get(_url);
 		}	
 
@@ -71,7 +71,7 @@
 		*              attribute compendium_id is required
 		*/
 		function newJob(body){
-			var _url = url + '/job';
+			var _url = env.api + '/job';
 			return $http.post(_url, body);
 		}
 
@@ -81,7 +81,7 @@
 		* @Param query, object with attributes compendium_id, start, limit
 		*/
 		function listJobs(query){
-			var _url = url + '/job';
+			var _url = env.api + '/job';
 			var param = '?';
 			if(query){
 				if(typeof query.compendium_id !== 'undefined'){
@@ -105,7 +105,7 @@
 		* @Param id, id of job
 		*/
 		function listSingleJob(id){
-			var _url = url + '/job/' + id;
+			var _url = env.api + '/job/' + id;
 			return $http.get(_url);
 		}
 
@@ -113,7 +113,7 @@
 		* @Desc httpRequest for retrieving information of the logged in user
 		*/
 		function getLoggedUser(){
-			var _url = url + '/auth/whoami';
+			var _url = env.api + '/auth/whoami';
 			return $http.get(_url);
 		}
 	};

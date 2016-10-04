@@ -5,9 +5,9 @@
         .module('starter')
         .controller('ModalInstanceCtrl', ModalInstanceCtrl);
 
-    ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'url'];
+    ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'env'];
 
-    function ModalInstanceCtrl ($scope, $uibModalInstance, metadata, Upload, author, url){
+    function ModalInstanceCtrl ($scope, $uibModalInstance, metadata, Upload, author, env){
         var vm = this;
         
         vm.checkUpload = false;
@@ -32,7 +32,7 @@
 
         function uploader(file){
             Upload.upload({
-                url: url + '/compendium',
+                url: env.api + '/compendium',
                 data: {compendium: file, 'content_type': 'compendium_v1'}
             }).then(successCallback, errorCallback, progress);
             

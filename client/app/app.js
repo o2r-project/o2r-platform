@@ -1,6 +1,16 @@
 (function(){
     'use strict';
     
+    window.__env = window.__env || {};
+
+    var env = {
+        api: window.__env.api || 'o2r.uni-muenster.de/api/v1',
+        sizeRestriction: window.__env.sizeRestriction || 10000000,
+        disableTracking: window.__env.disableTracking || false,
+        enableDebug: window.__env.enableDebug || false
+    };
+        
+
     angular
         .module('starter', [
             "treeControl",
@@ -11,13 +21,16 @@
             'ngMaterial',
             'angulartics', 
             'angulartics.piwik'])
+        .constant('env', env)
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', 'hljsServiceProvider', '$analyticsProvider', 'disableTracking'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, hljsServiceProvider, $analyticsProvider, disableTracking){
-        $analyticsProvider.developerMode(disableTracking);
-        if(disableTracking) console.log("Tracking globally disabled!");
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider){
+        $analyticsProvider.developerMode(window.__env.disableTracking);
+        if(window.__env.disableTracking) console.log("Tracking globally disabled!");
+
+        $logProvider.debugEnabled(window.__env.enableDebug);
 
         hljsServiceProvider.setOptions({
             tabReplace: '    '
@@ -75,25 +88,25 @@
             });
     }
 
-    authorInfoService.$inject = ['$stateParams', 'metadata'];
-    function authorInfoService($stateParams, metadata){
+    authorInfoService.$inject = ['$stateParams', '$log', 'metadata'];
+    function authorInfoService($stateParams, $log, metadata){
         var id = $stateParams.authorid;
-        console.log('authorInfoService, authorid: ' + id);
+        $log.debug('authorInfoService, authorid: ' + id);
         return metadata.callMetadata_author(id);
     }
 
-    compInfoService.$inject = ['$stateParams', 'publications', 'ercView'];
-    function compInfoService($stateParams, publications, ercView){
+    compInfoService.$inject = ['$stateParams', '$log', 'publications', 'ercView'];
+    function compInfoService($stateParams, $log, publications, ercView){
         var ercId = $stateParams.ercid;
-        console.log('compInfoService, ercid: ' + ercId);
+        $log.debug('compInfoService, ercid: ' + ercId);
         ercView.callJobs(ercId);
         return publications.getRequest(ercId);
     }
 
-    searchResultsService.$inject = ['$stateParams', 'metadata'];
-    function searchResultsService($stateParams, metadata){
+    searchResultsService.$inject = ['$stateParams', '$log', 'metadata'];
+    function searchResultsService($stateParams, $log, metadata){
         var term = $stateParams.term;
-        console.log('searchResultsService, term: ' + term);
+        $log.debug('searchResultsService, term: ' + term);
         return metadata.callMetadata_search(term);
     }
 })();  

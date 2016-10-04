@@ -5,28 +5,28 @@
         .module('starter')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$scope', '$stateParams', 'metadata', 'searchResults'];
+    SearchCtrl.$inject = ['$scope', '$stateParams', '$log', 'metadata', 'searchResults'];
 
-    function SearchCtrl($scope, $stateParams, metadata, searchResults){
+    function SearchCtrl($scope, $stateParams, $log, metadata, searchResults){
         var vm = this;
         var searchTerm = $stateParams.term; // reads term query from url
 
         vm.allPubs = searchResults;
 
-        console.log('SearchCtrl, vm.allPubs %o', vm.allPubs);
+        $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
         vm.setId;
         //vm.allPubs = {};
         /*
         TODO 
             * Define submit function*/
-        vm.submit = () => console.log('hello world');
+        vm.submit = () => $log.debug('hello world');
 
        // activate();
 
         //////////////
 
         function activate(){
-            console.log(metadata.callMetadata_search('asdf'));
+            $log.debug(metadata.callMetadata_search('asdf'));
             return metadata.callMetadata_search('asdf'); // httpRequest for retrieving all compendia fitting search parameters
         }
         // function is called in asynchronous response from metadata.callMetadata_search()

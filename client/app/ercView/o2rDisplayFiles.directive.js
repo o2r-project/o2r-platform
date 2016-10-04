@@ -12,9 +12,9 @@
 		.module('starter')
 		.directive('o2rDisplayFiles', o2rDisplayFiles);
 		
-		o2rDisplayFiles.$inject = ['publications', '$http', 'sizeRestriction'];
+		o2rDisplayFiles.$inject = ['publications', '$http', 'env'];
 		
-		function o2rDisplayFiles(publications, $http, sizeRestriction){
+		function o2rDisplayFiles(publications, $http, env){
 			return{
 				restrict: 'E',
 				link: function(scope, iElement, attrs){
@@ -44,7 +44,7 @@
 							//create html-tags depending on mime type
 							function _addContent(type){
 								var _sizeError = '<div class="jumbotron"><center><h2>Filesize is too big to display</h2><p><a href="' + path + '" download>Download</a> file to see its content</p></center></div>';
-								if(file.size < sizeRestriction){
+								if(file.size < env.sizeRestriction){
 									switch(type){
 										case 1:
 											var object = angular.element('<object class="erc_pdf" type="application/pdf" data="' + path +  '"</object>');

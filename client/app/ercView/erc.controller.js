@@ -5,9 +5,9 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$mdDialog', 'publications', 'ercView', 'url', 'sizeRestriction', 'compInfo'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'env', 'compInfo'];
 
-    function ErcCtrl($scope, $stateParams, $mdDialog, publications, ercView, url, sizeRestriction, compInfo){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, env, compInfo){
         var vm = this;
         var ercId = $stateParams.ercid; // id of compendium
         var originatorEv;
@@ -18,7 +18,7 @@
             return p;
         }
         vm.displaySource = (str) => ercView.checkDisplayType(str);
-        vm.sizeRestrict = sizeRestriction;
+        vm.sizeRestrict = env.sizeRestriction;
         vm.fileId; // id of file in publication
         vm.setId = setId;
         vm.execJob = ex;
@@ -33,7 +33,7 @@
             dirSelectable: false
         };
 
-        console.log('ErcCtrl, publication: %o', vm.publication);
+        $log.debug('ErcCtrl, publication: %o', vm.publication);
         
         $scope.$on('changedExecStatus', function(){
             vm.execStatus = ercView.getExecStatus();

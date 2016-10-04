@@ -5,9 +5,9 @@
         .module('starter')
         .factory('ercView', ercView);
         
-    ercView.$inject = ['$rootScope', 'httpRequests'];
+    ercView.$inject = ['$rootScope', '$log', 'httpRequests'];
     
-    function ercView($rootScope, httpRequests){
+    function ercView($rootScope, $log, httpRequests){
         var executionStatus = {};
         var jobDone = true;
 
@@ -51,15 +51,15 @@
                 .catch(errorHandler);
             
             function callback1(joblist){
-                console.log('in callJobs callback1: %o', joblist);
+                $log.debug('in callJobs callback1: %o', joblist);
                 return httpRequests.listSingleJob(joblist.data.results[joblist.data.results.length-1]);
             }
             function callback2(job){
-                console.log('in callJobs callback2: %o', job);
+                $log.debug('in callJobs callback2: %o', job);
                 getJobStatus(job.data.steps);
             }
             function errorHandler(e){
-                console.log('in callJobs errorHandler: %o', e);
+                $log.debug('in callJobs errorHandler: %o', e);
                 //TODO 
                 //Generate error message for the user
                 setJobDone(true);
@@ -112,16 +112,16 @@
                 .catch(errorHandler);
 
             function callback1(response){
-                console.log('executeJob callback1: %o', response);
+                $log.debug('executeJob callback1: %o', response);
                 return httpRequests.listSingleJob(response.data.job_id);
                 //(res) => {getJobStatus(res.steps);});
             }
             function callback2(job){
-                console.log('executeJob callback2: %o', job);
+                $log.debug('executeJob callback2: %o', job);
                 getJobStatus(job.data.steps);
             }
             function errorHandler(e){
-                console.log('executeJob errorHandler: %o', e);
+                $log.debug('executeJob errorHandler: %o', e);
             }
         }
 

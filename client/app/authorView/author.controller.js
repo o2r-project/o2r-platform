@@ -5,9 +5,9 @@
         .module('starter')
         .controller('AuthorCtrl', AuthorCtrl);
 
-        AuthorCtrl.$inject = ['$scope', '$stateParams', '$uibModal', 'metadata', 'authorInfo'];
+        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$uibModal', 'metadata', 'authorInfo'];
 
-        function AuthorCtrl($scope, $stateParams, $uibModal, metadata, authorInfo){
+        function AuthorCtrl($scope, $stateParams, $log, $uibModal, metadata, authorInfo){
             var vm = this;
            
             var authorId = $stateParams.authorid; // id from author
@@ -20,7 +20,7 @@
             vm.open = openModal; // handle Modal
             vm.setId = (id) => metadata.setComp_id(id);
             
-            console.log('AuthorCtrl, vm.allPubs: %o',vm.allPubs);
+            $log.debug('AuthorCtrl, vm.allPubs: %o',vm.allPubs);
             //activate();
             
             //////////////////
