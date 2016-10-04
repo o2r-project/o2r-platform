@@ -9,9 +9,8 @@
 
     function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, env, compInfo){
         var vm = this;
-        var ercId = $stateParams.ercid; // id of compendium
-        var originatorEv;
         
+        vm.ercId = $stateParams.ercid; // id of compendium
         vm.publication = compInfo;
         vm.getOne = function(path){
             var p = publications.getContentById(vm.publication, path);
@@ -24,10 +23,6 @@
         vm.execJob = ex;
         vm.execStatus = ercView.getExecStatus();
         vm.jobDone = true;
-        vm.openMenu = function($mdOpenMenu, ev){
-            originatorEv = ev;
-            $mdOpenMenu(ev);
-        };
         vm.treeOptions = {  // options for folderTree
             nodeChildren: 'children',
             dirSelectable: false
@@ -45,8 +40,8 @@
         ///////////////
         
         function activate(){
-            publications.getRequest(ercId); // httpRequest for retrieving all metadata of a compendium
-            ercView.callJobs(ercId); // getting job status
+            publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
+            ercView.callJobs(vm.ercId); // getting job status
         }
         
         function setId(path){  // set fileId
@@ -54,7 +49,7 @@
         }
 
         function ex(){
-            ercView.executeJob(ercId);
+            ercView.executeJob(vm.ercId);
         }
     }
 })();

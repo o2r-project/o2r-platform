@@ -7,7 +7,8 @@
         api: window.__env.api || 'o2r.uni-muenster.de/api/v1',
         sizeRestriction: window.__env.sizeRestriction || 10000000,
         disableTracking: window.__env.disableTracking || false,
-        enableDebug: window.__env.enableDebug || false
+        enableDebug: window.__env.enableDebug || false,
+        version: window.__env.version || 'deployment'
     };
         
 
