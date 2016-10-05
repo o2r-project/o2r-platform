@@ -4,7 +4,7 @@
     angular
         .module('starter')
         .controller('ModalInstanceCtrl', ModalInstanceCtrl);
-
+/*
     ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'metadata', 'Upload', 'author', 'env'];
 
     function ModalInstanceCtrl ($scope, $uibModalInstance, metadata, Upload, author, env){
@@ -49,5 +49,16 @@
                 file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));
             }
         }
+    }
+    */
+    ModalInstanceCtrl.$inject= ['$scope', '$mdDialog'];
+
+    function ModalInstanceCtrl($scope, $mdDialog){
+        var vm = this;
+
+        vm.cancel = function(){
+            $mdDialog.cancel();
+        };
+
     }
 })();

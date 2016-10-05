@@ -5,9 +5,9 @@
 		</md-toolbar>
 		<md-card-content layout="column">
 			<div ng-repeat="(key, value) in vm.compMeta">
-				<span ng-hide="vm.isSpecial(key)"><h3>{{vm.caps(key)}}</h3>{{value}}</span>
+				<span ng-hide="vm.isSpecial(key)"><h3>{{key | upperCase}}</h3>{{value}}</span>
 				<span ng-show="vm.isSpecial(key) && key == 'status'">
-					<strong>{{vm.caps(key)}}</strong>
+					<h3>{{key | upperCase}}</h3>
 					<span ng-hide="value.steps">{{value}}</span>
 					<span ng-repeat="(key, value) in value.steps">
 						<strong>{{key}}: </strong>{{value.status}}<br/>

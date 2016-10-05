@@ -16,12 +16,15 @@
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
 <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -70,6 +73,10 @@
 <!-- Directives -->
 <script src="app/ercView/o2rDisplayFiles.directive.js"></script>
 <script src="app/ercView/o2rErcDownload.directive.js"></script>
+<script src="app/metadataPanel/o2rMetadata.directive.js"></script>
+
+<!-- Filters -->
+<script src="app/metadataPanel/upperCase.filter.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
@@ -86,13 +93,13 @@
 
 
 </head>
-<body ng-app="starter" ng-controller="LoginCtrl as vm" layout="column">
+<body ng-app="starter" ng-cloak ng-controller="LoginCtrl as vm" layout="column">
     <!-- header -->
     <md-toolbar class="md-hue1">
         <div class="md-toolbar-tools">
-            <img src="img/o2r-logo-only.svg" alt="o2r-logo" id="navbar-logo" height="80%" ui-sref="home">
+            <img class="o2r-pointer" src="img/o2r-logo-only.svg" alt="o2r-logo" height="80%" ui-sref="home">
             <span flex></span>
-            <md-button ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}}<br/><small>{{vm.user.orcid}}</small></md-button>
+            <md-button ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
         </div>
@@ -107,13 +114,18 @@
     </div>
 
     <!-- footer -->
-    <md-toolbar class="md-hue1">
+    <!--
+    <md-toolbar class="md-hue1 footer">
         <div class="md-toolbar-tools">
             <span flex></span>
             <a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a>
             <span flex></span>
         </div>
     </md-toolbar>
+-->
+    <footer>
+        <a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a>
+    </footer>
 
     <!-- Piwik -->
     <script type="text/javascript">

@@ -14,8 +14,7 @@
         vm.allPubs = searchResults;
 
         $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
-        vm.setId;
-        //vm.allPubs = {};
+        vm.setId = (id) => {metadata.setComp_id(id)};
         /*
         TODO 
             * Define submit function*/
@@ -39,9 +38,6 @@
 
             vm.setId = setId; // setter function for comp_id
         }
-        */
-        function setId(id){
-            metadata.setComp_id(id);
-        }  
+        */ 
     }
 })();

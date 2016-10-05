@@ -12,9 +12,9 @@
 	<div layout="row" flex="50">
 		<!-- search results -->
 		<div layout="column">
-			<md-card ng-repeat="pub in vm.allPubs">
+			<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs" ng-click="vm.setId(pub.id)">
 				<md-card-title>
-					<md-card-title-text ng-click="vm.setId(pub.id)">
+					<md-card-title-text >
 						<span class="md-headline">{{pub.id}}</span>
 					</md-card-title-text>
 				</md-card-title>
@@ -27,7 +27,7 @@
 
 		<!-- Metadata -->
 		<div flex="50" flex-offset="10">
-			<ng-include src="'app/metadataPanel/metadata_panel.html'"></ng-include>
+			<o2r-metadata></o2r-metadata>
 		</div>
 		<!-- End Metadata -->
 	</div>

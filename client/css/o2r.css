@@ -14,6 +14,7 @@ html, body{
 	height: 100%;
 }
 
+/*
 footer{
 	text-align: center;
 }
@@ -21,15 +22,16 @@ footer{
 footer span{
 	padding-bottom: 10px;
 }
+*/
 
-#navbar-logo{
+.o2r-pointer{
 	cursor: pointer;
 }
 /************************
    End General
 *************************/
 /***********************
-   Start Author view
+   Start ERC view
 ************************/
 .erc_content{
 	margin: 2em 0;
@@ -73,7 +75,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
     background: url("../img/o2r-file.png") no-repeat !important;
 }
 /***********************
-   End Author view
+   End ERC view
 ************************/
 /***********************
    Start Author-Landingpage view
@@ -109,10 +111,18 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	overflow-y: auto;
 }
 
+/*
 .author-sorter, .author-tr{
 	cursor: pointer;
 }
 
+.author_tableHover{
+	cursor: pointer;
+}
+*/
+.author_placeholder{
+	margin: 8px;
+}
 /*
 .a-test{
 	height: calc(100% - 15px);
@@ -162,7 +172,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .search_searchinput{
 	padding-right: 0px !important;
 }
-
+/*
 .search_resTitle{
 	cursor: pointer;
 }
@@ -171,6 +181,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
+*/
 /***********************
    End Search view
 ************************/

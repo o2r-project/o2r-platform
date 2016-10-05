@@ -10,7 +10,6 @@
     function MetadataCtrl($scope, $location, $log, metadata){
         var vm = this;
         
-        vm.caps = caps; // Changes first letter of word into capital letter
         vm.isSpecial = isSpecial;
         vm.compMeta = metadata.getLatestComp();
         
@@ -38,9 +37,7 @@
                     $log.debug('MetadataCtrl, compMeta.status: %o', vm.compMeta.status);
                 });
         }
-        function caps(string){
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+        
         function isSpecial(key){
             var special;
             switch(key){

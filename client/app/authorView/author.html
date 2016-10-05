@@ -1,3 +1,4 @@
+<!--
 <div class="row a-author-row-title">
 	<div class="col-md-12">
 		<h3>Landingpage <button type="button" class="btn btn-default" ng-click="vm.open()">Upload Compendium</button></h3>
@@ -9,7 +10,7 @@
 
 
 
-
+<!--
 	</div>
 </div>
 
@@ -17,7 +18,7 @@
 
 
 	<!-- List of compendia -->
-	<div class="col-md-4 author">
+<!--	<div class="col-md-4 author">
 		
 		<div class="panel panel-default author">
 			<div class="panel-heading author-panel-head">
@@ -51,7 +52,123 @@
 	</div>
 	
 	<!-- Metadata panel -->
-	<div class="col-md-8 a-land" ng-if="vm.compExists">
+<!--	<div class="col-md-8 a-land" ng-if="vm.compExists">
 		<ng-include src="'app/metadataPanel/metadata_panel.html'"></ng-include>
+	</div>
+</div>
+-->
+
+<!--
+<div layout="column">
+	<div layout="row">
+				<md-card flex="20">
+					<md-card-header>
+						<md-card-header-text>
+							Options
+						</md-card-header-text>
+					</md-card-header>
+					<md-card-content>
+						asdfasdf
+					</md-card-content>
+				</md-card>
+		
+
+		
+				<md-card flex="60">
+					<md-card-header>
+						<md-card-header-text>
+							List of Compendia
+						</md-card-header-text>
+					</md-card-header>
+					<md-card-content>
+						asdf
+					</md-card-content>
+				</md-card>
+		
+		
+	</div>
+	<div layout="row">
+		<span class="author_placeholder" flex="20"></span>
+		<md-card flex="30">
+			<md-card-header>
+				<md-card-header-text>
+					Metadata
+				</md-card-header-text>
+			</md-card-header>
+			<md-card-content>
+				asdf
+			</md-card-content>
+		</md-card>
+	</div>
+</div>
+-->
+<div layout="row">
+	<div layout="column" flex="20">
+		<md-card >
+			<md-card-content>
+				<md-button ng-click="vm.openDialog($event)">
+					<md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_upload_48px.svg"></md-icon>
+					Upload ERC
+				</md-button>
+				
+				<md-button>
+					Other Options
+				</md-button>
+				
+			</md-card-content>
+		</md-card>
+	</div>
+
+	<div layout="column" flex="60">
+		<md-card>
+			<md-card-header>
+				<md-card-header-text class="md-title">
+					Compendia
+				</md-card-header-text>
+			</md-card-header>
+			<md-card-content>
+				<!--
+				<table>
+					<thead>
+						<tr>
+							<th class="author-sorter" ng-click="vm.sortType = 'title'; vm.sortReverse = !vm.sortReverse">Title
+								<span ng-show="vm.sortType == 'title' && vm.sortReverse"></span>
+								<span ng-show="vm.sortType == 'title' && !vm.sortReverse"></span>
+							</th>
+							<th class="author-sorter" ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">Date
+								<span ng-show="vm.sortType == 'date' && vm.sortReverse"></span>
+								<span ng-show="vm.sortType == 'date' && !vm.sortReverse"></span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
+						<td>{{pub.id}}</td><td>{{pub.created}}</td></tr>
+					</tbody>
+				</table>
+				-->
+				{{vm.sortType}}
+				<md-table-container>
+					<table md-table md-row-select ng-model="vm.selected">
+						<thead md-head md-order="vm.sortType">
+							<tr md-row>
+								<th md-column md-order-by="title">Title</th>
+								<th md-column md-order-by="date">Date</th>
+							</tr>
+						</thead>
+						<tbody md-body>
+							<tr class="author_tableHover" md-row mdAutoSelect ng-repeat="pub in vm.allPubs | orderBy:vm.sortType" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
+								<td md-cell>{{pub.id}}</td>
+								<td md-cell>{{pub.created}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</md-table-container>
+			</md-card-content>
+		</md-card>
+	</div>
+
+	<div layout="column" flex="30">
+		<o2r-metadata></o2r-metadata>
 	</div>
 </div>

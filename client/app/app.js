@@ -21,7 +21,8 @@
             'ngAnimate', 
             'ngMaterial',
             'angulartics', 
-            'angulartics.piwik'])
+            'angulartics.piwik',
+            'md.data.table'])
         .constant('env', env)
         .config(config);
     
