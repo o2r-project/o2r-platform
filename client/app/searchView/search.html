@@ -12,7 +12,7 @@
 	<div layout="row" flex="50">
 		<!-- search results -->
 		<div layout="column">
-			<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs" ng-click="vm.setId(pub.id)">
+			<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs | orderBy:'-created'" ng-click="vm.setId(pub.id)">
 				<md-card-title>
 					<md-card-title-text >
 						<span class="md-headline">{{pub.id}}</span>

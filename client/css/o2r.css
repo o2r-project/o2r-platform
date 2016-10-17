@@ -1,32 +1,32 @@
 /************************
    Start General
 *************************/
-html, body{
-	height: 100%;
+body{
+	min-height: 100vh;
 }
 
 #main{
 	padding: 2%;
-	height: 90%;
+	
+	height: auto !important;
+	/*
+	min-height: 90%;
+	*/
 }
-
+/*
 #ui-view{
 	height: 100%;
-}
-
-/*
-footer{
-	text-align: center;
-}
-
-footer span{
-	padding-bottom: 10px;
 }
 */
 
 .o2r-pointer{
 	cursor: pointer;
 }
+
+.backgr_white{
+	background-color: white;
+}
+
 /************************
    End General
 *************************/
@@ -61,6 +61,11 @@ footer span{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+md-card-header-text{
+	width: 100%;
+	overflow-wrap: break-word;
 }
 
 treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
@@ -111,6 +116,9 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	overflow-y: auto;
 }
 
+.author-loc-header{
+	padding-left: 5%;
+}
 /*
 .author-sorter, .author-tr{
 	cursor: pointer;

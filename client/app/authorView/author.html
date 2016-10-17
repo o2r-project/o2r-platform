@@ -1,116 +1,24 @@
-<!--
-<div class="row a-author-row-title">
-	<div class="col-md-12">
-		<h3>Landingpage <button type="button" class="btn btn-default" ng-click="vm.open()">Upload Compendium</button></h3>
-		<!--
-		<ng-include src="'templates/uploadModal.html'"></ng-include>
-		-->
-
-    	
-
-
-
-<!--
-	</div>
-</div>
-
-<div class="row author-row-content">
-
-
-	<!-- List of compendia -->
-<!--	<div class="col-md-4 author">
-		
-		<div class="panel panel-default author">
-			<div class="panel-heading author-panel-head">
-				<h4>List of Compendia</h4>
-			</div>
-
-
-			<div class="panel-body author-panel">
-			
-				<table class="table table-hover author-table" ng-if="vm.compExists">
-					<thead>
-						<tr><th class="author-sorter" ng-click="vm.sortType = 'title'; vm.sortReverse = !vm.sortReverse">Title
-							<span class="glyphicon glyphicon-triangle-bottom" ng-show="vm.sortType == 'title' && vm.sortReverse"></span>
-							<span class="glyphicon glyphicon-triangle-top" ng-show="vm.sortType == 'title' && !vm.sortReverse"></span>
-						</th><th class="author-sorter" ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">Date
-							<span class="glyphicon glyphicon-triangle-bottom" ng-show="vm.sortType == 'date' && vm.sortReverse"></span>
-							<span class="glyphicon glyphicon-triangle-top" ng-show="vm.sortType == 'date' && !vm.sortReverse"></span>
-						</th></tr>
-					</thead>
-					<tbody>
-						<tr class="author-tr" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
-						<td>{{pub.id}}</td><td>{{pub.created}}</td></tr>
-					</tbody>
-				</table>
-
-				<div ng-if="!vm.compExists">No ERC uploaded yet.</div>
-			</div>
-		</div>	
-			
-		
-	</div>
-	
-	<!-- Metadata panel -->
-<!--	<div class="col-md-8 a-land" ng-if="vm.compExists">
-		<ng-include src="'app/metadataPanel/metadata_panel.html'"></ng-include>
-	</div>
-</div>
--->
-
-<!--
-<div layout="column">
-	<div layout="row">
-				<md-card flex="20">
-					<md-card-header>
-						<md-card-header-text>
-							Options
-						</md-card-header-text>
-					</md-card-header>
-					<md-card-content>
-						asdfasdf
-					</md-card-content>
-				</md-card>
-		
-
-		
-				<md-card flex="60">
-					<md-card-header>
-						<md-card-header-text>
-							List of Compendia
-						</md-card-header-text>
-					</md-card-header>
-					<md-card-content>
-						asdf
-					</md-card-content>
-				</md-card>
-		
-		
-	</div>
-	<div layout="row">
-		<span class="author_placeholder" flex="20"></span>
-		<md-card flex="30">
-			<md-card-header>
-				<md-card-header-text>
-					Metadata
-				</md-card-header-text>
-			</md-card-header>
-			<md-card-content>
-				asdf
-			</md-card-content>
-		</md-card>
-	</div>
-</div>
--->
 <div layout="row">
 	<div layout="column" flex="20">
 		<md-card >
-			<md-card-content>
+			<md-card-content layout="column">
 				<md-button ng-click="vm.openDialog($event)">
 					<md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_upload_48px.svg"></md-icon>
 					Upload ERC
 				</md-button>
-				
+				<md-divider></md-divider>
+				<md-subheader class="backgr_white">Order By</md-subheader>
+				<md-button ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">
+					Date
+					<md-icon ng-show="vm.sortType == 'date' && vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_downward_48px.svg"></md-icon>
+					<md-icon ng-show="vm.sortType == 'date' && !vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_upward_48px.svg"></md-icon>					
+				</md-button>
+				<md-button ng-click="vm.sortType = 'id'; vm.sortReverse = !vm.sortReverse">
+					Title
+					<md-icon ng-show="vm.sortType == 'id' && vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_downward_48px.svg"></md-icon>
+					<md-icon ng-show="vm.sortType == 'id' && !vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_upward_48px.svg"></md-icon>					
+				</md-button>
+				<md-divider></md-divider>
 				<md-button>
 					Other Options
 				</md-button>
@@ -121,49 +29,38 @@
 
 	<div layout="column" flex="60">
 		<md-card>
+			<!--
 			<md-card-header>
 				<md-card-header-text class="md-title">
 					Compendia
 				</md-card-header-text>
 			</md-card-header>
+			
+			<md-toolbar>
+				<md-toolbar-tools>
+					<h4 class="author-loc-header">List of Compendia</h4>
+				</md-toolbar-tools>
+			</md-toolbar>
+			-->
 			<md-card-content>
-				<!--
-				<table>
-					<thead>
-						<tr>
-							<th class="author-sorter" ng-click="vm.sortType = 'title'; vm.sortReverse = !vm.sortReverse">Title
-								<span ng-show="vm.sortType == 'title' && vm.sortReverse"></span>
-								<span ng-show="vm.sortType == 'title' && !vm.sortReverse"></span>
-							</th>
-							<th class="author-sorter" ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">Date
-								<span ng-show="vm.sortType == 'date' && vm.sortReverse"></span>
-								<span ng-show="vm.sortType == 'date' && !vm.sortReverse"></span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
-						<td>{{pub.id}}</td><td>{{pub.created}}</td></tr>
-					</tbody>
-				</table>
-				-->
-				{{vm.sortType}}
-				<md-table-container>
-					<table md-table md-row-select ng-model="vm.selected">
-						<thead md-head md-order="vm.sortType">
-							<tr md-row>
-								<th md-column md-order-by="title">Title</th>
-								<th md-column md-order-by="date">Date</th>
-							</tr>
-						</thead>
-						<tbody md-body>
-							<tr class="author_tableHover" md-row mdAutoSelect ng-repeat="pub in vm.allPubs | orderBy:vm.sortType" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
-								<td md-cell>{{pub.id}}</td>
-								<td md-cell>{{pub.created}}</td>
-							</tr>
-						</tbody>
-					</table>
-				</md-table-container>
+				<md-list>
+					<md-list-item class="md-2-line">
+						<div class="md-list-item-text" layout="row">
+							<h3 flex>TITLE</h3>
+							<h4 flex>CREATED ON</h4>
+							<p flex>USER</p>
+						</div>
+					</md-list-item>
+					<md-divider></md-divider>
+					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)">
+						<div class="md-list-item-text" layout="row">
+							<h3 flex>{{pub.id}}</h3>
+							<h4 flex>{{pub.created}}</h4>
+							<p flex>{{pub.user}}</p>
+						</div>
+						<md-divider ng-if="!($last)"></md-divider>
+					</md-list-item>
+				</md-list>
 			</md-card-content>
 		</md-card>
 	</div>

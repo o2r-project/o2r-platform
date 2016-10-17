@@ -60,9 +60,11 @@
             */
             function ModalInstanceCtrl($scope, $mdDialog, Upload, env){
 
-                $scope.cancel = () => $mdDialog.cancel();
+                $scope.cancel = () => {$mdDialog.cancel()};
                 $scope.selected = (file) => {$scope.f = file;};
                 $scope.onLoad = false;
+                $scope.doneButton = false;
+                $scope.fileSelected = false;
                 $scope.submit = function(){
                     if($scope.form.file.$valid && $scope.file){
                         $scope.onLoad = true;
@@ -70,7 +72,12 @@
                     }
                 };
 
-
+                $scope.$watch('file', function(news, old){
+                    if(typeof news !== 'undefined'){
+                        $log.debug('selected File: ', news);
+                        $scope.fileSelected = true;
+                    }
+                });
                 ////////
 
                 function uploader(file){
@@ -80,11 +87,12 @@
                     }).then(successCallback, errorCallback, progress);
                     
                     function successCallback(response){
+                        $scope.doneButton = true;
                         metadata.callMetadata_author(authorId);
                         $scope.cancel();
                     }
                     function errorCallback(response){
-                        vm.doneButton = true;
+                        $scope.doneButton = true;
                         vm.checkUpload = false;
                     }
                     function progress(evt){

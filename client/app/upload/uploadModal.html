@@ -70,8 +70,13 @@
 		</md-dialog-content>
 	
 		<md-dialog-actions layout="row">
-			<md-button ng-click="submit()">
+			<md-button class="md-primary md-raised" ng-click="submit()" ng-disabled="!fileSelected" ng-hide="doneButton">
 				Submit
 			</md-button>
+			
+			<md-button ng-click="cancel()" >
+				Done
+			</md-button>
+			
 		</md-dialog-actions>
 </md-dialog>

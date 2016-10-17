@@ -7,7 +7,7 @@
 		<div layout="column" flex="30">
 		<md-card>
 			<md-card-content>
-				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
 					<span ng-click="vm.setId(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
 				</treecontrol>
 			</md-card-content>
