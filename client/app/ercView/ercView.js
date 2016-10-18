@@ -12,7 +12,6 @@
         var jobDone = true;
 
         var service = {
-            checkDisplayType: checkDisplayType,
             callJobs: callJobs,
             getJobStatus: getJobStatus,
             executeJob: executeJob,
@@ -23,21 +22,6 @@
         return service;
 
         /////////////
-        
-        /*
-        * @Desc checks type of file to be displayed
-        * @Param string, MIME type of file
-        * @Return result, true if highlightjs should be used, false otherwise
-        */
-        function checkDisplayType(string){
-            if(typeof string == 'undefined') return;
-            var result = true;
-            var _mime = string.split('/')[0];
-            if( (string == 'application/pdf') || (_mime == 'image') || (_mime == 'audio') || (_mime == 'video')){
-                result = false;
-            }
-            return result;
-        }
 
         /*
         * @Desc httpRequest for getting information about a job status

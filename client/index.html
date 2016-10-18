@@ -95,13 +95,13 @@
 </head>
 <body ng-app="starter" ng-cloak ng-controller="LoginCtrl as vm" layout="column">
     <!-- header -->
-    <md-toolbar class="md-hue1">
+    <md-toolbar>
         <div class="md-toolbar-tools">
             <img class="o2r-pointer" src="img/o2r-logo-only.svg" alt="o2r-logo" height="80%" ui-sref="home">
             <span flex></span>
-            <md-button ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
-            <md-button href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
-            <md-button href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
+            <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
+            <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
+            <md-button class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
         </div>
     </md-toolbar>
     <!-- End header -->
@@ -114,10 +114,10 @@
     </div>
 
     <!-- footer -->
-    <md-toolbar class="md-hue1 footer">
-        <div class="md-toolbar-tools">
+    <md-toolbar class="footer">
+        <div class="md-toolbar-tools white-font">
             <span flex></span>
-            <a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a>
+            <a ui-sref="impressum"><small>Impressum</small></a>|<a ui-sref="privacy"><small>Privacy Policy</small></a>
             <span flex></span>
         </div>
     </md-toolbar>

@@ -23,10 +23,13 @@ body{
 	cursor: pointer;
 }
 
-.backgr_white{
+.backgr-white{
 	background-color: white;
 }
 
+.white-font{
+	color: white !important;
+}
 /************************
    End General
 *************************/
@@ -51,16 +54,15 @@ body{
 .erc_img{
 	max-width: 100%;
 }
-/*
-.erc_video{
-	width:;
-	height:;
-}
-*/
+
 .erc_jumboImg{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.erc-bigfile-par{
+	text-align: center;
 }
 
 md-card-header-text{
@@ -107,18 +109,27 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	min-height: 50px;
 }
 
-
 .author-panel{
 	max-height: calc(100% - 50px - 15px);
 	/*
 	margin-bottom: 10%;
 	*/
-	overflow-y: auto;
+	overflow-y: scroll;
 }
 
 .author-loc-header{
 	padding-left: 5%;
 }
+
+.author_placeholder{
+	margin: 8px;
+}
+
+#author-loc{
+	max-height: 85vh;
+	overflow-y: scroll;
+}
+
 /*
 .author-sorter, .author-tr{
 	cursor: pointer;
@@ -128,9 +139,6 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	cursor: pointer;
 }
 */
-.author_placeholder{
-	margin: 8px;
-}
 /*
 .a-test{
 	height: calc(100% - 15px);
@@ -202,27 +210,33 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .upmod-dropbox {
     background: #F8F8F8;
     border: 5px dashed #DDD;
-    width: 170px;
+    /*width: 170px;*/
+	width: 90%;
     text-align: center;
-    padding: 50px 10px;
-    margin-left: 10px;
+   	padding: 50px 10px;
+   /* margin-left: 10px;*/
     cursor: pointer;
 }
 
 .upmod-dropbox.dragover {
-    border: 5px dashed blue;
+    border: 5px dashed #004286;
 }
 
 .upmod-dropbox:hover{
-	border: 5px dashed blue;
+	border: 5px dashed #004286;
 }
 
-.upmod-progress {
+#upmod-progress {
 	padding-top: 10px;
-	margin-left: 10px;
-    width: 170px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
+#upmod-prog-text{
+	width: 70px;
+	text-align: center;
+	padding-top: 10px;	
+}
 .upmod-glyph {
 	padding-right: 5px;
 }

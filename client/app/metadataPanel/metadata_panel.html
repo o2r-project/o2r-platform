@@ -1,7 +1,9 @@
 <div layout="column" ng-controller="MetadataCtrl as vm">
 	<md-card>
 		<md-toolbar>
-			<h4>{{vm.compMeta.id}}</h4>
+			<div class="md-toolbar-tools">
+			<h4 class="white-font">{{vm.compMeta.id}}</h4>
+			</div>
 		</md-toolbar>
 		<md-card-content layout="column">
 			<div ng-repeat="(key, value) in vm.compMeta">
@@ -13,7 +15,7 @@
 						<strong>{{key}}: </strong>{{value.status}}<br/>
 					</span>
 			</div>
-			<md-button ui-sref="erc({ercid: vm.compMeta.id})">GoTo</md-button>
+			<md-button class="md-primary md-raised white-font" ui-sref="erc({ercid: vm.compMeta.id})">Go To</md-button>
 		</md-card-content>
 	</md-card>
 </div>

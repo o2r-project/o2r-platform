@@ -89,11 +89,11 @@
                     function successCallback(response){
                         $scope.doneButton = true;
                         metadata.callMetadata_author(authorId);
-                        $scope.cancel();
+                        $scope.checkUpload = true;
                     }
                     function errorCallback(response){
                         $scope.doneButton = true;
-                        vm.checkUpload = false;
+                        $scope.checkUpload = false;
                     }
                     function progress(evt){
                         file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));

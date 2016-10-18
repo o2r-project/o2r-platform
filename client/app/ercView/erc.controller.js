@@ -5,21 +5,15 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'env', 'compInfo'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, env, compInfo){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo){
         var vm = this;
         
         vm.ercId = $stateParams.ercid; // id of compendium
         vm.publication = compInfo;
-        vm.getOne = function(path){
-            var p = publications.getContentById(vm.publication, path);
-            return p;
-        }
-        vm.displaySource = (str) => ercView.checkDisplayType(str);
-        vm.sizeRestrict = env.sizeRestriction;
-        vm.fileId; // id of file in publication
-        vm.setId = setId;
+        vm.oneFile; // one file in publication
+        vm.setOne = setOne;
         vm.execJob = ex;
         vm.execStatus = ercView.getExecStatus();
         vm.jobDone = true;
@@ -43,9 +37,19 @@
             publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
             ercView.callJobs(vm.ercId); // getting job status
         }
-        
-        function setId(path){  // set fileId
-            vm.fileId = path;
+
+        function setOne(path){
+            var p = publications.getContentById(vm.publication, path);
+            $log.debug('clicked on file: ', p);
+            var isEmpty = true;
+            for(var att in p){
+                isEmpty = false;
+            }
+            if (isEmpty){
+                $log.debug('clicked on folder');
+                return;
+            }
+            vm.oneFile = p;
         }
 
         function ex(){
