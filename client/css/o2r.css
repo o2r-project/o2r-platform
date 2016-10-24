@@ -9,9 +9,9 @@ body{
 	padding: 2%;
 	
 	height: auto !important;
-	/*
-	min-height: 90%;
-	*/
+	
+	min-height: calc(100vh - 178px);
+	
 }
 /*
 #ui-view{
