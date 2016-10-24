@@ -22,7 +22,8 @@ bower install
 Create a copy of the file `client/app/config/configSample.js` and name it `client/app/config/config.js`. You must configure the required application settings in this file, which is not part of the version control:
 
 ```JavaScript
-    window.__env.api = /*String containing server adress*/;
+    window.__env.server = /*String containing server address*/;
+    window.__env.api = /*String containing base api*/;
     window.__env.sizeRestriction = /*integer*/;
     window.__env.disableTracking = /*true/false, default is false*/;
     window.__env.enableDebug = /*true/false, default is false*/;
