@@ -38,7 +38,7 @@ Create a copy of the file `client/app/config/configSample.js` and name it `clien
 During development it is reasonable to disable the user tracking in the config file.
 
 ```JavaScript
-app.constant('disableTracking', true);
+    window.__env.disableTracking = true;
 ```
 
 ### docker-compose
