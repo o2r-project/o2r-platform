@@ -76,7 +76,8 @@
 <script src="app/metadataPanel/o2rMetadata.directive.js"></script>
 
 <!-- Filters -->
-<script src="app/metadataPanel/upperCase.filter.js"></script>
+<script src="app/services/upperCase.filter.js"></script>
+<script src="app/services/cutPath.filter.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
@@ -97,7 +98,7 @@
     <!-- header -->
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <img class="o2r-pointer" src="img/o2r-logo-only.svg" alt="o2r-logo" height="80%" ui-sref="home">
+            <img class="o2r-pointer" src="img/o2r-logo-only-white-outline.svg" alt="o2r-logo" height="80%" ui-sref="home">
             <span flex></span>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>

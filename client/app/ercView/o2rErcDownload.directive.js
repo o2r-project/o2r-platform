@@ -17,7 +17,7 @@
             scope: {
                 ercId: '@ercId'
             },
-            templateUrl: 'app/ercView/ercDownload.template.html',
+            templateUrl: 'app/ercView/o2rErcDownload.template.html',
             link: link
         };
 

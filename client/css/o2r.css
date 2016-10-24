@@ -30,6 +30,11 @@ body{
 .white-font{
 	color: white !important;
 }
+
+.no-link{
+	color: 0, 0, 0, 0.87 !important;
+	text-decoration: none;
+}
 /************************
    End General
 *************************/

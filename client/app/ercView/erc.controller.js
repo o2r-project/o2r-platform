@@ -5,10 +5,11 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env){
         var vm = this;
+        var originatorEv;
         
         vm.ercId = $stateParams.ercid; // id of compendium
         vm.publication = compInfo;
@@ -17,9 +18,14 @@
         vm.execJob = ex;
         vm.execStatus = ercView.getExecStatus();
         vm.jobDone = true;
+        vm.server = env.server;
         vm.treeOptions = {  // options for folderTree
             nodeChildren: 'children',
             dirSelectable: false
+        };
+        vm.openMenu = function($mdOpenMenu, ev){
+            originatorEv = ev;
+            $mdOpenMenu(ev);
         };
 
         $log.debug('ErcCtrl, publication: %o', vm.publication);

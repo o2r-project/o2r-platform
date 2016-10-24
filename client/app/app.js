@@ -4,13 +4,14 @@
     window.__env = window.__env || {};
 
     var env = {
-        api: window.__env.api || 'o2r.uni-muenster.de/api/v1',
+        server : window.__env.server || 'o2r.uni-muenster.de',
+        c_api: window.__env.api || '/api/v1',
         sizeRestriction: window.__env.sizeRestriction || 10000000,
         disableTracking: window.__env.disableTracking || false,
         enableDebug: window.__env.enableDebug || false,
         version: window.__env.version || 'deployment'
     };
-        
+    env.api = env.server + env.c_api;
 
     angular
         .module('starter', [

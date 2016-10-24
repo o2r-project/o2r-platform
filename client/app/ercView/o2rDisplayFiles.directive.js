@@ -36,8 +36,15 @@
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
 					scope.file = JSON.parse(value);
-					var mime = scope.file.type.split('/');
-					scope.mime = mime[0];
+					var mime;
+					// if no mime type is defined hljs will be used for display
+					if(typeof scope.file.type !== 'undefined'){
+						mime = scope.file.type.split('/');
+						scope.mime = mime[0];
+					} else {
+						scope.mime = '';
+					}
+
 					scope.useHljs = useHljs();
 					
 					function useHljs(){
