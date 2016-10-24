@@ -5,9 +5,9 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'header'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, header){
         var vm = this;
         var originatorEv;
         
@@ -37,11 +37,13 @@
             vm.jobDone = ercView.getJobDone();
         });
 
+        activate();
         ///////////////
         
         function activate(){
-            publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
-            ercView.callJobs(vm.ercId); // getting job status
+            // publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
+            // ercView.callJobs(vm.ercId); // getting job status
+            header.setTitle('o2r - Compendium');
         }
 
         function setOne(path){

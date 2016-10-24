@@ -158,11 +158,15 @@
             })
             .state('impressum', {
                 url: "/impressum",
-                templateUrl: "app/templates/impressum.html"
+                templateUrl: "app/templates/impressum.html",
+                controller: 'ImpressumCtrl',
+                controllerAs: 'vm'
             })
             .state('privacy', {
                 url: "/privacy",
-                templateUrl: "app/templates/privacy.html"
+                templateUrl: "app/templates/privacy.html",
+                controller: 'PrivacyCtrl',
+                controllerAs: 'vm'
             })
             .state('404', {
                 url: "/404",

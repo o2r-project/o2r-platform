@@ -5,9 +5,9 @@
         .module('starter')
         .controller('AuthorCtrl', AuthorCtrl);
 
-        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'metadata', 'authorInfo', 'Upload', 'env'];
+        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'metadata', 'authorInfo', 'Upload', 'env', 'header'];
 
-        function AuthorCtrl($scope, $stateParams, $log, $mdDialog, metadata, authorInfo, Upload){
+        function AuthorCtrl($scope, $stateParams, $log, $mdDialog, metadata, authorInfo, Upload, env, header){
             var vm = this;
            
             var authorId = $stateParams.authorid; // id from author
@@ -22,12 +22,12 @@
             vm.openDialog = openDialog;
 
             $log.debug('AuthorCtrl, vm.allPubs: %o',vm.allPubs);
-            //activate();
+            activate();
             
             //////////////////
 
             function activate(){
-                metadata.callMetadata_author(authorId); // httpRequest for retrieving all compendia from one author
+                header.setTitle('o2r - Landingpage');
             }
             
             function compExistence(){
@@ -50,14 +50,7 @@
             $scope.$on('loadedAllComps', function(){ //allPubs will be set to comp_meta from metadata factory
                 vm.allPubs = metadata.getComp_meta();
             });
-            // function is called in asynchronous response from metadata.callMetadata_author()
-            /*
-            function getMeta_author(meta_author){
-                vm.setId = function(id){ // setter function for comp_id
-                    metadata.setComp_id(id);
-                };  
-            }
-            */
+            
             function ModalInstanceCtrl($scope, $mdDialog, Upload, env){
 
                 $scope.cancel = () => {$mdDialog.cancel()};

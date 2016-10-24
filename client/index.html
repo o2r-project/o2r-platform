@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderCtrl as vm">
 <head>	
 
+<title ng-bind="vm.page.title()"></title>
 
 
 <!-- Libraries JavaScript -->
@@ -60,6 +61,7 @@
 <script src="app/metadataPanel/metadata.js"></script>
 <script src="app/ercView/ercView.js"></script>
 <script src="app/login/login.js"></script>
+<script src="app/services/header.factory.js"></script>
 
 <!-- Controllers -->
 <script src="app/ercView/erc.controller.js"></script>
@@ -69,6 +71,9 @@
 <script src="app/metadataPanel/metadata.controller.js"></script>
 <script src="app/upload/modalInstance.controller.js"></script>
 <script src="app/login/login.controller.js"></script>
+<script src="app/headerView/header.controller.js"></script>
+<script src="app/templates/impressum.controller.js"></script>
+<script src="app/templates/privacy.controller.js"></script>
 
 <!-- Directives -->
 <script src="app/ercView/o2rDisplayFiles.directive.js"></script>
@@ -94,7 +99,7 @@
 
 
 </head>
-<body ng-app="starter" ng-cloak ng-controller="LoginCtrl as vm">
+<body ng-controller="LoginCtrl as vm">
     <!-- header -->
     <md-toolbar>
         <div class="md-toolbar-tools">
