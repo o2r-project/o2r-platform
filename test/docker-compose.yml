@@ -16,69 +16,93 @@
 ---
 version: '2'
 
-# Usage: CLIENT_ID=<...> CLIENT_SECRET=<...> AUTH_CALLBACK_URL=<...> docker-compose up
+#### Usage 
+# IMPORTANT: To use MongoDB with its replication feature, it is most feasible to start and run the container manually.
+# You can re-use that database container between runs.
+#
+# Once:
+# - run mongo:3.3                                 $ docker run --name o2rmongo --detach mongo:3.3 --replSet o2r
+# - run mongo inside the container                $ docker exec -it o2rmongo mongo
+# - configure replication                         $> rs.status();
+#                                                 $> rs.conf();
+#                                                 $> rs.initiate();
+#                                                 $> rs.slaveOk();
+#                                                 $> rs.status();
+# - stop the container                            $ docker stop o2rmongo
+# - alternatively, run all commands in 2nd shell  $ docker exec -it o2rmongo mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'
+#
+# Every time:
+# - run docker-compose w/ config parameters       $ CLIENT_ID=<...> CLIENT_SECRET=<...> AUTH_CALLBACK_URL=<...> docker-compose up
+# - run configured MongoDB joining the network    $ docker start --name o2rmongo --detach -p 27017:27017 --network o2rnet mongo:3.3 --replSet o2r
+
 
 volumes:
   # docker volume ls
-  # docker volume inspect o2r_storage
-  storage: {}
+  # docker volume inspect test_storage
+  o2r_test_storage: {}
+
+networks:
+  o2rnet:
+    driver: bridge
+
 services:
-  mongodb:
-    image: mongo:3.3
-    ports:
-      - "27017:27017"
-    command: "--replSet rso2r"
-    volumes:
-      - storage:/data/db
-  mongodbconfig:
-    image: mongo:3.3
-    depends_on:
-      - mongodb
-    links:
-      - "mongodb:db"
-    command: "mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+
 
   muncher:
-    image: o2rproject/o2r-muncher:latest
-    depends_on:
-      - mongodb
-      - mongodbconfig
+    image: muncher #o2rproject/o2r-muncher:latest
+    restart: unless-stopped
     volumes:
-      - storage:/tmp/o2r
+      - o2r_test_storage:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
-    links:
-      - mongodb
+    external_links:
+      - "o2rmongo:mongodb"
     environment:
-      - MUNCHER_MONGODB=mongodb://mongodb
+      - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
       - DEBUG=*
     ports:
-        - "8080:8080"
+      - "8080:8080"
+    networks:
+      - "o2rnet"
 
   contentbutler:
-    image: o2rproject/o2r-contentbutler:latest
-    depends_on:
-      - mongodb
-      - mongodbconfig
+    image: contentbutler # o2rproject/o2r-contentbutler:latest
+    restart: unless-stopped
     volumes:
-      - storage:/tmp/o2r
-    links:
-      - mongodb
+      - o2r_test_storage:/tmp/o2r
+    external_links:
+      - "o2rmongo:mongodb"
     environment:
-      - CONTENTBUTLER_MONGODB=mongodb://mongodb
+      - "CONTENTBUTLER_MONGODB=mongodb://mongodb"
       - CONTENTBUTLER_PORT=8081
       - DEBUG=*
     ports:
       - "8081:8081"
+    networks:
+      - "o2rnet"
+
+  informer:
+    image: informer # o2rproject/o2r-informer:latest
+    restart: unless-stopped
+    external_links:
+      - "o2rmongo:mongodb"
+    environment:
+      - "INFORMER_MONGODB=mongodb://mongodb"
+      - INFORMER_MONGODB_HOST=mongodb
+      - INFORMER_PORT=8082
+      - DEBUG=informer,
+    ports:
+      - "8082:8082"
+    networks:
+      - "o2rnet"
 
   bouncer:
-    image: o2rproject/o2r-bouncer:latest
-    depends_on:
-      - mongodb
-      - mongodbconfig
-    #env_file: .env
+    image: bouncer #o2rproject/o2r-bouncer:latest
+    restart: unless-stopped
+    external_links:
+      - "o2rmongo:mongodb"
     environment:
-      - BOUNCER_MONGODB=mongodb://mongodb
+      - "BOUNCER_MONGODB=mongodb://mongodb"
       - BOUNCER_PORT=8083
       - DEBUG=bouncer
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
@@ -86,22 +110,57 @@ services:
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
     ports:
       - "8083:8083"
+    networks:
+      - "o2rnet"
+
+  elasticsearch:
+    image: elasticsearch:5
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - o2r_test_storage:/data/es
+    networks:
+      - "o2rnet"
+
+  finder:
+    image: finder # o2rproject/o2r-finder:latest
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+    links:
+      - elasticsearch
+    external_links:
+      - "o2rmongo:mongodb"
+    environment:
+      - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
+      - FINDER_PORT=8084
+      - DEBUG=finder
+      - ELASTIC_SEARCH_URL=elasticsearch:9200
+      - "MONGO_DATA_URL=mongodb://mongodb/muncher"
+      - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
+      - BATCH_COUNT=20
+    ports:
+      - "8084:8084"
+    networks:
+      - "o2rnet"
 
   transportar:
-    image: o2rproject/o2r-transportar:latest
-    depends_on:
-      - mongodb
-      - mongodbconfig
+    image: transportar #o2rproject/o2r-transportar:latest
     volumes:
-      - storage:/tmp/o2r
-    links:
-      - mongodb
+      - o2r_test_storage:/tmp/o2r
+    external_links:
+      - "o2rmongo:mongodb"
     environment:
-      - TRANSPORTAR_MONGODB=mongodb://mongodb
+      - "TRANSPORTAR_MONGODB=mongodb://mongodb"
       - TRANSPORTAR_PORT=8086
       - DEBUG=transportar
     ports:
       - "8086:8086"
+    networks:
+      - "o2rnet"
 
   platform:
     image: nginx:latest
@@ -115,16 +174,18 @@ services:
       - "../client:/etc/nginx/html"
     ports:
       - "80:80"
+    networks:
+      - "o2rnet"
 
   # https://hub.docker.com/r/adicom/admin-mongo/
   mongoadmin:
     image: adicom/admin-mongo
-    depends_on:
-      - mongodb
-      - mongodbconfig
-    links:
-      - "mongodb:db"
+    external_links:
+      - "o2rmongo:db"
     environment:
       - DB_HOST=db
+      - CONN_NAME=o2rconn 
     ports:
       - "1234:1234"
+    networks:
+      - "o2rnet"
