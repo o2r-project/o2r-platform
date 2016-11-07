@@ -9,9 +9,9 @@
 	<span flex></span>
 	<!-- End search bar -->
 
-	<div layout="row" flex="50">
+	<div layout="row">
 		<!-- search results -->
-		<div layout="column">
+		<div layout="column" flex="50">
 			<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs | orderBy:'-created'" ng-click="vm.setId(pub.id)">
 				<md-card-title>
 					<md-card-title-text >
