@@ -179,6 +179,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	position: relative;
 	top: 10%;
 }
+
+#home-logo-box{
+	padding-top: 10%;
+}
 /***********************
    End Home view
 ************************/

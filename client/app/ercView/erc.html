@@ -18,7 +18,19 @@
 			<md-card>
 				<md-card-content layout="column">
 					<md-button class="md-raised" ng-click="vm.execJob()" ng-disabled="!vm.jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
-					<span ng-repeat="(key, value) in vm.execStatus">{{key}}:<strong>{{value.status}}</strong><br/></span>
+					<div>
+						<h3>Last finished analysis</h3>
+						<table>
+							<tr ng-repeat="(key, value) in vm.execStatus"><td>{{key}}:</td><td><strong>{{value.status}}</strong></td></td></tr>
+						</table>
+					</div>
+					<div ng-if="vm.gotSocket">
+						<md-divider></md-divider>
+						<h3>Currently running analysis</h3>
+						<table>
+							<tr ng-repeat="(key, value) in vm.steps"><td>{{key}}:</td><td><strong>{{value}}</strong></td></td></tr>
+						</table>
+					</div>
 				</md-card-content>
 			</md-card>
 		</div>

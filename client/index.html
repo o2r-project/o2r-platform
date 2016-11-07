@@ -7,6 +7,7 @@
 
 <!-- Libraries JavaScript -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
@@ -62,6 +63,9 @@
 <script src="app/ercView/ercView.js"></script>
 <script src="app/login/login.js"></script>
 <script src="app/services/header.factory.js"></script>
+
+<script src="app/sockets/socket.js"></script>
+
 
 <!-- Controllers -->
 <script src="app/ercView/erc.controller.js"></script>
@@ -127,11 +131,6 @@
             <span flex></span>
         </div>
     </md-toolbar>
-<!--
-    <footer>
-        <a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a>
-    </footer>
--->
 
     <!-- Piwik -->
     <script type="text/javascript">

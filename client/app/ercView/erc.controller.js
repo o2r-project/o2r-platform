@@ -5,9 +5,9 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'header'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'header', 'socket'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, header){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, header, socket){
         var vm = this;
         var originatorEv;
         
@@ -27,6 +27,8 @@
             originatorEv = ev;
             $mdOpenMenu(ev);
         };
+        vm.steps = {};
+        vm.gotSocket = false;
 
         $log.debug('ErcCtrl, publication: %o', vm.publication);
         
@@ -44,6 +46,43 @@
             // publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
             // ercView.callJobs(vm.ercId); // getting job status
             header.setTitle('o2r - Compendium');
+            
+            $log.debug(vm.execStatus);
+
+            socket.on('document', function(data){
+                vm.gotSocket = true;
+                stepUpdater(data, vm.steps);
+            });
+
+            socket.on('set', function(data){
+                vm.gotSocket = true;
+                stepUpdater(data, vm.steps);
+            });
+        }
+
+        function stepUpdater(data, o){
+                if(data.steps.cleanup){
+                    o.cleanup = data.steps.cleanup.status;
+                    $log.debug('updated cleanup');
+                } else if(data.steps.image_execute){
+                    o.image_execute = data.steps.image_execute.status;
+                    $log.debug('updated image_execute');
+                } else if(data.steps.image_build){
+                    if(data.steps.image_build.status){
+                        o.image_build = data.steps.image_build.status;
+                        $log.debug('updated image_build');
+                    }
+                } else if(data.steps.validate_bag){
+                    o.validate_bag = data.steps.validate_bag.status;
+                    $log.debug('updated validate_bag');
+                } else if(data.steps.validate_compendium){
+                    o.validate_compendium = data.steps.validate_compendium.status;
+                    $log.debug('updated validate_compendium');
+                } else if(data.steps.image_prepare){
+                    o.image_prepare = data.steps.image_prepare.status;
+                    $log.debug('updated image_prepare');
+                }
+            return;
         }
 
         function setOne(path){

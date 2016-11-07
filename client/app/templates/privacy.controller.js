@@ -16,4 +16,4 @@
             header.setTitle('o2r - Privacy');
         }
     }
-})(this);
+})();
