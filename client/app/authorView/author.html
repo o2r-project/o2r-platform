@@ -1,4 +1,5 @@
 <div layout="row">
+	<!-- left side navigation -->
 	<div layout="column" flex="20">
 		<md-card >
 			<md-card-content layout="column">
@@ -27,21 +28,9 @@
 		</md-card>
 	</div>
 
+	<!-- list of compendia -->
 	<div layout="column" flex="60">
-		<md-card>
-			<!--
-			<md-card-header>
-				<md-card-header-text class="md-title">
-					Compendia
-				</md-card-header-text>
-			</md-card-header>
-			
-			<md-toolbar>
-				<md-toolbar-tools>
-					<h4 class="author-loc-header">List of Compendia</h4>
-				</md-toolbar-tools>
-			</md-toolbar>
-			-->
+		<md-card ng-if="vm.allPubs">
 			<md-card-content id="author-loc">
 				<md-list>
 					<md-list-item class="md-2-line">
@@ -63,9 +52,18 @@
 				</md-list>
 			</md-card-content>
 		</md-card>
+		
+		<!-- Message if not a single compendium has been uploaded yet -->
+		<md-card ng-if="!vm.allPubs">
+			<md-card-content>
+				<span>No compendia uploaded yet.</span>
+			</md-card-content>
+		</md-card>
+
 	</div>
 
+	<!-- metadata panel -->
 	<div layout="column" flex="30">
-		<o2r-metadata></o2r-metadata>
+		<o2r-metadata ng-if="vm.allPubs"></o2r-metadata>
 	</div>
 </div>

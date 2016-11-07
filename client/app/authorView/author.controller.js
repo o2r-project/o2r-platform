@@ -12,7 +12,7 @@
            
             var authorId = $stateParams.authorid; // id from author
             
-            vm.allPubs = authorInfo;
+            vm.allPubs = getAuthorInfo();
             vm.compExists = compExistence();
             vm.sortType = 'date'; // helper for sorting
             vm.sortReverse = true; // helper for sorting
@@ -30,6 +30,13 @@
                 header.setTitle('o2r - Landingpage');
             }
             
+            function getAuthorInfo(){
+                if(authorInfo.status == 404){
+                    return false;
+                }
+                return authorInfo;
+            }
+
             function compExistence(){
                 if(authorInfo.status === 404) return false;
                 return true;

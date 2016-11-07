@@ -153,7 +153,7 @@
 			}
 			function errorHandler(e){
 				$log.debug('callJobStatus errorHandler: %o', e);
-				deferred.resolve({data: 'No jobs executed yet.'});
+				deferred.resolve({data: 'No analysis executed yet.'});
 			}
 		}
 

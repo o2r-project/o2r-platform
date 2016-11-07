@@ -29,6 +29,7 @@
         };
         vm.steps = {};
         vm.gotSocket = false;
+        vm.isEmpty = isEmpty;
 
         $log.debug('ErcCtrl, publication: %o', vm.publication);
         
@@ -101,6 +102,13 @@
 
         function ex(){
             ercView.executeJob(vm.ercId);
+        }
+
+        function isEmpty(obj){
+            for(var key in obj){
+                if(obj.hasOwnProperty(key)) return false;
+            }
+            return true;
         }
     }
 })();

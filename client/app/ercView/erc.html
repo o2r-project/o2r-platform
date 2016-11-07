@@ -20,9 +20,10 @@
 					<md-button class="md-raised" ng-click="vm.execJob()" ng-disabled="!vm.jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
 					<div>
 						<h3>Last finished analysis</h3>
-						<table>
+						<table ng-hide="vm.isEmpty(vm.execStatus)">
 							<tr ng-repeat="(key, value) in vm.execStatus"><td>{{key}}:</td><td><strong>{{value.status}}</strong></td></td></tr>
 						</table>
+						<span ng-show="vm.isEmpty(vm.execStatus)">No analysis executed yet.</span>
 					</div>
 					<div ng-if="vm.gotSocket">
 						<md-divider></md-divider>
