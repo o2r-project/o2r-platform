@@ -9,15 +9,8 @@ body{
 	padding: 2%;
 	padding-top: calc(64px + 1vh);
 	height: auto !important;
-	
 	min-height: calc(100vh - 178px + 32px);
-	
 }
-/*
-#ui-view{
-	height: 100%;
-}
-*/
 
 .o2r-pointer{
 	cursor: pointer;
@@ -31,11 +24,12 @@ body{
 	color: white !important;
 }
 
+/*
 .no-link{
 	color: 0, 0, 0, 0.87 !important;
 	text-decoration: none;
 }
-
+*/
 .o2r-fixed{
 	position: fixed;
 }
@@ -45,29 +39,19 @@ body{
 /***********************
    Start ERC view
 ************************/
-.erc_content{
-	margin: 2em 0;
-	position: relative;
-	right:1%;
-	top:5%;
-}
-
-.erc_pdf{
+.erc-pdf{
 	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-
-.erc_img{
+.erc-img{
 	max-width: 100%;
 }
 
-.erc_jumboImg{
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+.erc-video{
+
 }
 
 .erc-bigfile-par{
@@ -112,21 +96,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
    Start Home view
 ************************/
-
-.home_searchinput{
-	padding-right: 0px !important;
-}
-
-.home_div{
-	height: 100%;
-}
-
-.home_search{
-	position: relative;
-	top: 15%;
-}
-
-#home_logo{
+#home-logo{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -144,7 +114,6 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
    Start Search view
 ************************/
-
 .search-metadata{
 	width: 25vw;
 	right: 5vw;
@@ -158,15 +127,12 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
    Start UploadModal
    credits for .drop-box and .drop-box.dragover to https://angular-file-upload.appspot.com/common.css
 ************************/
-
 .upmod-dropbox {
     background: #F8F8F8;
     border: 5px dashed #DDD;
-    /*width: 170px;*/
 	width: 90%;
     text-align: center;
    	padding: 50px 10px;
-   /* margin-left: 10px;*/
     cursor: pointer;
 }
 
@@ -188,13 +154,6 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	width: 70px;
 	text-align: center;
 	padding-top: 10px;	
-}
-.upmod-glyph {
-	padding-right: 5px;
-}
-
-.upmod-msg {
-	padding-left: 5px;
 }
 /***********************
    End UploadModal
