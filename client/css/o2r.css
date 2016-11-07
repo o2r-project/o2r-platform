@@ -7,10 +7,10 @@ body{
 
 #main{
 	padding: 2%;
-	
+	padding-top: calc(64px + 1vh);
 	height: auto !important;
 	
-	min-height: calc(100vh - 178px);
+	min-height: calc(100vh - 178px + 32px);
 	
 }
 /*
@@ -34,6 +34,10 @@ body{
 .no-link{
 	color: 0, 0, 0, 0.87 !important;
 	text-decoration: none;
+}
+
+.o2r-fixed{
+	position: fixed;
 }
 /************************
    End General
@@ -92,65 +96,15 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
    Start Author-Landingpage view
 ************************/
-
-#author-uploadbtn{
-	float: right;
+.author-left-nav{
+	left: 1vw;
+	width: 15vw;
 }
 
-.author-row-title{
-	height: 10%;
+.author-metadata{
+	right: 1vw;
+	width: 25vw;
 }
-
-.author-row-content{
-	height: 90%;
-}
-
-.author{
-	height: 100%;
-}
-
-.author-panel-head{
-	height: 7%;
-	min-height: 50px;
-}
-
-.author-panel{
-	max-height: calc(100% - 50px - 15px);
-	/*
-	margin-bottom: 10%;
-	*/
-	overflow-y: scroll;
-}
-
-.author-loc-header{
-	padding-left: 5%;
-}
-
-.author_placeholder{
-	margin: 8px;
-}
-
-#author-loc{
-	max-height: 85vh;
-	overflow-y: scroll;
-}
-
-/*
-.author-sorter, .author-tr{
-	cursor: pointer;
-}
-
-.author_tableHover{
-	cursor: pointer;
-}
-*/
-/*
-.a-test{
-	height: calc(100% - 15px);
-	overflow-y: auto;
-}
-*/
-
 /***********************
    End Author-Landingpage view
 ************************/
@@ -190,23 +144,12 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
    Start Search view
 ************************/
-.search_searchbtn{
-	float: right;
+
+.search-metadata{
+	width: 25vw;
+	right: 5vw;
 }
 
-.search_searchinput{
-	padding-right: 0px !important;
-}
-/*
-.search_resTitle{
-	cursor: pointer;
-}
-
-.search_resTable{
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-*/
 /***********************
    End Search view
 ************************/
