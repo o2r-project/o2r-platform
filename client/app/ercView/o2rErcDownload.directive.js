@@ -10,8 +10,8 @@
         .module('starter')
         .directive('o2rErcDownload', o2rErcDownload);
 
-    o2rErcDownload.$inject = ['$mdDialog'];
-    function o2rErcDownload($mdDialog){
+    o2rErcDownload.$inject = ['$mdDialog', 'icons'];
+    function o2rErcDownload($mdDialog, icons){
         return{
             restrict: 'E',
             scope: {
@@ -22,6 +22,7 @@
         };
 
         function link(scope, attrs){
+            scope.icons = icons;
             scope.openMenu = function($mdOpenMenu, ev){
                 var originatorEv = ev;
                 $mdOpenMenu(ev);

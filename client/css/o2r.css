@@ -33,6 +33,10 @@ body{
 .o2r-fixed{
 	position: fixed;
 }
+
+.o2r-icon{
+	color: rgba(0, 0, 0, 0.54) !important;
+}
 /************************
    End General
 *************************/

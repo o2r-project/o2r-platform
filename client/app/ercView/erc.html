@@ -47,20 +47,20 @@
 					<!-- Menu for downloading single file or copying absolute path -->
 					<md-menu ng-if="vm.oneFile.path">
 						<md-button class="md-icon-button" aria-label="show file path or download file" ng-click="vm.openMenu($mdOpenMenu, $event)">
-							<md-icon md-menu-origin md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_menu_48px.svg"></md-icon>
+							<md-icon md-menu-origin md-svg-src="{{vm.icons.menu}}" class="o2r-icon"></md-icon>
 						</md-button>
 						<md-menu-content width="4">
 							<md-menu-item>
 								<md-input-container class="md-icon-float md-block">
 									<label></label>
-									<md-icon md-svg-src="bower_components/material-design-icons/av/svg/production/ic_library_books_48px.svg"></md-icon>
+									<md-icon md-svg-src="{{vm.icons.copy}}" class="o2r-icon"></md-icon>
 									<input type="text" value="{{vm.server + vm.oneFile.path}}" onClick="this.select();" ng-readonly="true">
 								</md-input-container>
 							</md-menu-item>
 							<md-menu-divider></md-menu-divider>
 							<md-menu-item>
 								<md-button ng-href="{{vm.oneFile.path}}" download>
-									<md-icon flex="10" md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_download_48px.svg"></md-icon>
+									<md-icon flex="10" md-svg-src="{{vm.icons.download}}" class="o2r-icon"></md-icon>
 									Download file
 								</md-button>
 							</md-menu-item>

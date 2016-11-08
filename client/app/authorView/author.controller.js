@@ -5,13 +5,14 @@
         .module('starter')
         .controller('AuthorCtrl', AuthorCtrl);
 
-        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'metadata', 'authorInfo', 'Upload', 'env', 'header'];
+        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'metadata', 'authorInfo', 'Upload', 'env', 'header', 'icons'];
 
-        function AuthorCtrl($scope, $stateParams, $log, $mdDialog, metadata, authorInfo, Upload, env, header){
+        function AuthorCtrl($scope, $stateParams, $log, $mdDialog, metadata, authorInfo, Upload, env, header, icons){
             var vm = this;
            
             var authorId = $stateParams.authorid; // id from author
             
+            vm.icons = icons;
             vm.allPubs = getAuthorInfo();
             vm.compExists = compExistence();
             vm.sortType = 'date'; // helper for sorting
@@ -58,8 +59,8 @@
                 vm.allPubs = metadata.getComp_meta();
             });
             
-            function ModalInstanceCtrl($scope, $mdDialog, Upload, env){
-
+            function ModalInstanceCtrl($scope, $mdDialog, Upload, env, icons){
+                $scope.icons = icons;
                 $scope.cancel = () => {$mdDialog.cancel()};
                 $scope.selected = (file) => {$scope.f = file;};
                 $scope.onLoad = false;

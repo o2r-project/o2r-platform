@@ -4,20 +4,20 @@
 		<md-card >
 			<md-card-content layout="column">
 				<md-button ng-click="vm.openDialog($event)">
-					<md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_upload_48px.svg"></md-icon>
+					<md-icon md-svg-src="{{vm.icons.upload}}" class="o2r-icon"></md-icon>
 					Upload ERC
 				</md-button>
 				<md-divider></md-divider>
 				<md-subheader class="backgr-white">Order By</md-subheader>
 				<md-button ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">
 					Date
-					<md-icon ng-show="vm.sortType == 'date' && vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_downward_48px.svg"></md-icon>
-					<md-icon ng-show="vm.sortType == 'date' && !vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_upward_48px.svg"></md-icon>					
+					<md-icon ng-show="vm.sortType == 'date' && vm.sortReverse" md-svg-src="{{vm.icons.downArrow}}" class="o2r-icon"></md-icon>
+					<md-icon ng-show="vm.sortType == 'date' && !vm.sortReverse" md-svg-src="{{vm.icons.upArrow}}" class="o2r-icon"></md-icon>					
 				</md-button>
 				<md-button ng-click="vm.sortType = 'id'; vm.sortReverse = !vm.sortReverse">
 					Title
-					<md-icon ng-show="vm.sortType == 'id' && vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_downward_48px.svg"></md-icon>
-					<md-icon ng-show="vm.sortType == 'id' && !vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_upward_48px.svg"></md-icon>					
+					<md-icon ng-show="vm.sortType == 'id' && vm.sortReverse" md-svg-src="{{vm.icons.downArrow}}" class="o2r-icon"></md-icon>
+					<md-icon ng-show="vm.sortType == 'id' && !vm.sortReverse" md-svg-src="{{vm.icons.upArrow}}" class="o2r-icon"></md-icon>					
 				</md-button>
 				<md-divider></md-divider>
 				<md-button>
