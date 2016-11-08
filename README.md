@@ -43,16 +43,20 @@ During development it is reasonable to disable the user tracking in the config f
 
 ### docker-compose
 
-Start all required o2r microservices with just one command using `docker-compose`:
+Start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose`:
 
 ```bash
-
+cd test
+docker-compose --file docker-compose-db.yml up -d
+# wait a few seconds
 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose up
+# using locally build images (different naming convention)
+# OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file docker-compose-local.yml up
 ```
 
-The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/), and a adminMongo instance is running at http://localhost:1234. Create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database.
+The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database.
 
-You can remove the storage volume by running `docker-compose down -v`
+_Hint:_ You can remove the storage volumes by running `docker-compose down -v`
 
 ### adminMongo
 
