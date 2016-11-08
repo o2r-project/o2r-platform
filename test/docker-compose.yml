@@ -119,7 +119,6 @@ services:
       - o2r_test_storage:/tmp/o2r
     external_links:
       - "test_elasticsearch_1:elasticsearch"
-    external_links:
       - "test_mongodb_1:mongodb"
     environment:
       - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
