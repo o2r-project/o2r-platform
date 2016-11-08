@@ -48,7 +48,7 @@ networks:
 
 services:
   muncher:
-    image: o2rproject/o2r-muncher:latest
+    image: muncher
     restart: unless-stopped
     volumes:
       - o2r_test_storage:/tmp/o2r
@@ -65,7 +65,7 @@ services:
       - "o2rnet"
 
   contentbutler:
-    image: o2rproject/o2r-contentbutler:latest
+    image: contentbutler
     restart: unless-stopped
     volumes:
       - o2r_test_storage:/tmp/o2r
@@ -81,7 +81,7 @@ services:
       - "o2rnet"
 
   informer:
-    image: o2rproject/o2r-informer:latest
+    image: informer
     restart: unless-stopped
     external_links:
       - "test_mongodb_1:mongodb"
@@ -96,7 +96,7 @@ services:
       - "o2rnet"
 
   bouncer:
-    image: o2rproject/o2r-bouncer:latest
+    image: bouncer
     restart: unless-stopped
     external_links:
       - "test_mongodb_1:mongodb"
@@ -123,7 +123,7 @@ services:
       - "o2rnet"
 
   finder:
-    image: o2rproject/o2r-finder:latest
+    image: finder
     restart: unless-stopped
     depends_on:
       - elasticsearch
@@ -147,7 +147,7 @@ services:
       - "o2rnet"
 
   transportar:
-    image: o2rproject/o2r-transportar:latest
+    image: transportar
     volumes:
       - o2r_test_storage:/tmp/o2r
     external_links:
