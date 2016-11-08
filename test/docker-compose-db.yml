@@ -1,0 +1,44 @@
+# (C) Copyright 2016 The o2r project. https://o2r.info
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+---
+version: '2'
+
+# Usage: docker-compose --file docker-compose-db.yml up -d
+# Then wait a few seconds before starting the main compose configuration.
+# You can re-use these containers between runs.
+
+networks:
+  o2rnet:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo:3.3
+    ports:
+      - "27017:27017"
+    command: "--replSet rso2r"
+    networks:
+      - "o2rnet"
+
+  mongodbconfig:
+    image: mongo:3.3
+    depends_on:
+      - mongodb
+    links:
+      - "mongodb:db"
+    command: bash -c "sleep 3; mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+    networks:
+      - "o2rnet"
