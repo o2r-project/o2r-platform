@@ -48,24 +48,19 @@ Start all required o2r microservices (using latest images from [Docker Hub](http
 ```bash
 cd test
 docker-compose --file docker-compose-db.yml up -d
-# wait a few seconds
+# wait at least 8 seconds for configuration container to run.
 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose up
 # using locally build images (different naming convention)
 # OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file docker-compose-local.yml up
 ```
 
-The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database.
+The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").
 
 _Hint:_ You can remove the storage volumes by running `docker-compose down -v`
 
 ### adminMongo
 
-adminMongo can be reached via `localhost:1234`. If you run the o2r microservicese locally, the connection path has to be changed to 
-
-
-```
-mongodb://db:27017
-```
+adminMongo can also be run standalone (see `docker-compose-db.yml`). If you run the o2r microservicese locally, the connection path has to be changed to `mongodb://db:27017`.
 
 ### Proxy for o2r microservices
 

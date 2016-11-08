@@ -39,6 +39,30 @@ services:
       - mongodb
     links:
       - "mongodb:db"
-    command: bash -c "sleep 3; mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+    command: bash -c "sleep 5; mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+    networks:
+      - "o2rnet"
+
+  # https://hub.docker.com/r/adicom/admin-mongo/
+  mongoadmin:
+    image: adicom/admin-mongo
+    external_links:
+      - "test_mongodb_1:db"
+    environment:
+      - DB_HOST=db
+      - CONN_NAME=Local 
+    ports:
+      - "1234:1234"
+    networks:
+      - "o2rnet"
+
+  elasticsearch:
+    image: elasticsearch:5
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    mem_limit: 1g
+    ports:
+      - "9200:9200"
+      - "9300:9300"
     networks:
       - "o2rnet"
