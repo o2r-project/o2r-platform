@@ -175,16 +175,3 @@ services:
       - "80:80"
     networks:
       - "o2rnet"
-
-  # https://hub.docker.com/r/adicom/admin-mongo/
-  mongoadmin:
-    image: adicom/admin-mongo
-    external_links:
-      - "test_mongodb_1:db"
-    environment:
-      - DB_HOST=db
-      - CONN_NAME=o2rconn 
-    ports:
-      - "1234:1234"
-    networks:
-      - "o2rnet"
