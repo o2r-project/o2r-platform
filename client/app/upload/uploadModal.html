@@ -1,3 +1,4 @@
+<!--
 <div class="modal-header">
     <h3 class="modal-title">Upload Compendium</h3>
 </div>
@@ -38,3 +39,57 @@
     <button class="btn btn-primary" type="button" ng-click="vm.ok()" ng-show="vm.doneButton">Done</button>
 </div>
 
+-->
+<md-dialog aria-label="Upload Dialog">
+	
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h3 class="white-font">Upload ERC</h3>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="cancel()">
+					<md-icon md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_close_48px.svg" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		
+		<md-dialog-content layout="column">
+			<div class="md-dialog-content" layout="column">
+				<div layout="column" ng-hide="doneButton">
+					<p>Select a file or drag and drop it into area!</p>
+					<form name="form">
+						<div 
+							class="upmod-dropbox" 
+							ngf-select="selected($file)" 
+							ngf-drop="selected($file)" 
+							ng-model="file" 
+							name="file" 
+							ngf-pattern="'application/zip, .gz'" 
+							ngf-accept="'.zip, .gz'"><span ng-hide="f.name">Click <br/ >or <br/> Drag 'n Drop</span><span ng-show="f.name">{{f.name}}</span></div>
+					</form>
+				</div>
+				
+				<div ng-show="doneButton && checkUpload">
+					<p>File uploaded successfully</p>
+				</div>
+				<div ng-show="doneButton && !checkUpload">
+					<p>File upload failed!</p>
+				</div>
+
+				<div id="upmod-progress" ng-show="onLoad" flex="90">
+					<md-progress-circular md-mode="determinate" value="{{f.progress}}" md-diameter="70"></md-progress-circular>
+					<div id="upmod-prog-text">{{f.progress}}%</div>
+				</div>
+			</div>
+		</md-dialog-content>
+	
+		<md-dialog-actions layout="row">
+			<md-button class="md-primary md-raised white-font" ng-click="submit()" ng-disabled="!fileSelected" ng-hide="doneButton">
+				Submit
+			</md-button>
+			
+			<md-button class="md-raised" ng-hide="!doneButton" ng-click="cancel()" >
+				Done
+			</md-button>
+			
+		</md-dialog-actions>
+</md-dialog>

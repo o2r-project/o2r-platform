@@ -5,29 +5,29 @@
         .module('starter')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$scope', '$stateParams', 'metadata', 'searchResults'];
+    SearchCtrl.$inject = ['$scope', '$stateParams', '$log', 'metadata', 'searchResults', 'header'];
 
-    function SearchCtrl($scope, $stateParams, metadata, searchResults){
+    function SearchCtrl($scope, $stateParams, $log, metadata, searchResults, header){
         var vm = this;
         var searchTerm = $stateParams.term; // reads term query from url
 
         vm.allPubs = searchResults;
 
-        console.log('SearchCtrl, vm.allPubs %o', vm.allPubs);
-        vm.setId;
-        //vm.allPubs = {};
+        $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
+        vm.setId = (id) => {metadata.setComp_id(id)};
         /*
         TODO 
             * Define submit function*/
-        vm.submit = () => console.log('hello world');
+        vm.submit = () => $log.debug('hello world');
 
-       // activate();
+        activate();
 
         //////////////
 
         function activate(){
-            console.log(metadata.callMetadata_search('asdf'));
-            return metadata.callMetadata_search('asdf'); // httpRequest for retrieving all compendia fitting search parameters
+            //$log.debug(metadata.callMetadata_search('asdf'));
+            //return metadata.callMetadata_search('asdf'); // httpRequest for retrieving all compendia fitting search parameters
+            header.setTitle('o2r - Search');
         }
         // function is called in asynchronous response from metadata.callMetadata_search()
         /*
@@ -39,9 +39,6 @@
 
             vm.setId = setId; // setter function for comp_id
         }
-        */
-        function setId(id){
-            metadata.setComp_id(id);
-        }  
+        */ 
     }
 })();

@@ -1,21 +1,21 @@
-<div class="panel panel-default a-land" ng-controller="MetadataCtrl as vm">
-	<div class="panel-heading a-land-panel-head">
-		<h4>{{vm.compMeta.title}}</h4>
-	</div>
-	<div class="panel-body a-land-panel">
-		<div ng-repeat="(key, value) in vm.compMeta">
-			<span ng-hide="vm.isSpecial(key)"><h4>{{vm.caps(key)}}</h4>
-			{{value}}</span>
-			<span ng-show="vm.isSpecial(key) && key == 'status'"><h4>{{vm.caps(key)}}</h4>
-				<span ng-hide="value.steps">
-				{{value}}
-				</span>
-				<span ng-repeat="(key,value) in value.steps">
-					<strong>{{key}}: </strong>{{value.status}}<br/>
-				</span>
-			</span>
-		</div>
-		<br/>
-		<button class="btn btn-default" ng-click="vm.submit()">Go To</button>
-	</div>
+<div layout="column" ng-controller="MetadataCtrl as vm">
+	<md-card>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+			<h4 class="white-font">{{vm.compMeta.id}}</h4>
+			</div>
+		</md-toolbar>
+		<md-card-content layout="column">
+			<div ng-repeat="(key, value) in vm.compMeta">
+				<span ng-hide="vm.isSpecial(key)"><h3>{{key | upperCase}}</h3>{{value}}</span>
+				<span ng-show="vm.isSpecial(key) && key == 'status'">
+					<h3>{{key | upperCase}}</h3>
+					<span ng-hide="value.steps">{{value}}</span>
+					<span ng-repeat="(key, value) in value.steps">
+						<strong>{{key}}: </strong>{{value.status}}<br/>
+					</span>
+			</div>
+			<md-button class="md-primary md-raised white-font" ui-sref="erc({ercid: vm.compMeta.id})">Go To</md-button>
+		</md-card-content>
+	</md-card>
 </div>

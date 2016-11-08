@@ -1,57 +1,71 @@
-<div class="row a-author-row-title">
-	<div class="col-md-12">
-		<h3>Landingpage <button type="button" class="btn btn-default" ng-click="vm.open()">Upload Compendium</button></h3>
-		<!--
-		<ng-include src="'templates/uploadModal.html'"></ng-include>
-		-->
-
-    	
-
-
-
-
+<div layout="row">
+	<div layout="column" flex="20">
+		<md-card >
+			<md-card-content layout="column">
+				<md-button ng-click="vm.openDialog($event)">
+					<md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_upload_48px.svg"></md-icon>
+					Upload ERC
+				</md-button>
+				<md-divider></md-divider>
+				<md-subheader class="backgr-white">Order By</md-subheader>
+				<md-button ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">
+					Date
+					<md-icon ng-show="vm.sortType == 'date' && vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_downward_48px.svg"></md-icon>
+					<md-icon ng-show="vm.sortType == 'date' && !vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_upward_48px.svg"></md-icon>					
+				</md-button>
+				<md-button ng-click="vm.sortType = 'id'; vm.sortReverse = !vm.sortReverse">
+					Title
+					<md-icon ng-show="vm.sortType == 'id' && vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_downward_48px.svg"></md-icon>
+					<md-icon ng-show="vm.sortType == 'id' && !vm.sortReverse" md-svg-src="bower_components/material-design-icons/navigation/svg/production/ic_arrow_upward_48px.svg"></md-icon>					
+				</md-button>
+				<md-divider></md-divider>
+				<md-button>
+					Other Options
+				</md-button>
+				
+			</md-card-content>
+		</md-card>
 	</div>
-</div>
 
-<div class="row author-row-content">
-
-
-	<!-- List of compendia -->
-	<div class="col-md-4 author">
-		
-		<div class="panel panel-default author">
-			<div class="panel-heading author-panel-head">
-				<h4>List of Compendia</h4>
-			</div>
-
-
-			<div class="panel-body author-panel">
+	<div layout="column" flex="60">
+		<md-card>
+			<!--
+			<md-card-header>
+				<md-card-header-text class="md-title">
+					Compendia
+				</md-card-header-text>
+			</md-card-header>
 			
-				<table class="table table-hover author-table" ng-if="vm.compExists">
-					<thead>
-						<tr><th class="author-sorter" ng-click="vm.sortType = 'title'; vm.sortReverse = !vm.sortReverse">Title
-							<span class="glyphicon glyphicon-triangle-bottom" ng-show="vm.sortType == 'title' && vm.sortReverse"></span>
-							<span class="glyphicon glyphicon-triangle-top" ng-show="vm.sortType == 'title' && !vm.sortReverse"></span>
-						</th><th class="author-sorter" ng-click="vm.sortType = 'date'; vm.sortReverse = !vm.sortReverse">Date
-							<span class="glyphicon glyphicon-triangle-bottom" ng-show="vm.sortType == 'date' && vm.sortReverse"></span>
-							<span class="glyphicon glyphicon-triangle-top" ng-show="vm.sortType == 'date' && !vm.sortReverse"></span>
-						</th></tr>
-					</thead>
-					<tbody>
-						<tr class="author-tr" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)" analytics-category="user" analytics-on="click" analytics-event="show my ERC {{pub.id}}">
-						<td>{{pub.id}}</td><td>{{pub.created}}</td></tr>
-					</tbody>
-				</table>
-
-				<div ng-if="!vm.compExists">No ERC uploaded yet.</div>
-			</div>
-		</div>	
-			
-		
+			<md-toolbar>
+				<md-toolbar-tools>
+					<h4 class="author-loc-header">List of Compendia</h4>
+				</md-toolbar-tools>
+			</md-toolbar>
+			-->
+			<md-card-content id="author-loc">
+				<md-list>
+					<md-list-item class="md-2-line">
+						<div class="md-list-item-text" layout="row">
+							<h3 flex>TITLE</h3>
+							<h4 flex>CREATED ON</h4>
+							<p flex>USER</p>
+						</div>
+					</md-list-item>
+					<md-divider></md-divider>
+					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)">
+						<div class="md-list-item-text" layout="row">
+							<h3 flex>{{pub.id}}</h3>
+							<h4 flex>{{pub.created}}</h4>
+							<p flex>{{pub.user}}</p>
+						</div>
+						<md-divider ng-if="!($last)"></md-divider>
+					</md-list-item>
+				</md-list>
+			</md-card-content>
+		</md-card>
 	</div>
-	
-	<!-- Metadata panel -->
-	<div class="col-md-8 a-land" ng-if="vm.compExists">
-		<ng-include src="'app/metadataPanel/metadata_panel.html'"></ng-include>
+
+	<div layout="column" flex="30">
+		<o2r-metadata></o2r-metadata>
 	</div>
 </div>

@@ -19,13 +19,17 @@ bower install
 
 ## Configure
 
-Create a copy of the file `config/configSample.js` and name it `config/config.js`. You must configure the required application settings in this file, which is not part of the version control:
+Create a copy of the file `client/app/config/configSample.js` and name it `client/app/config/config.js`. You must configure the required application settings in this file, which is not part of the version control:
 
 ```JavaScript
-app.constant('url', 'https://your.server.address');
+    window.__env.server = /*String containing server address*/;
+    window.__env.api = /*String containing base api*/;
+    window.__env.sizeRestriction = /*integer*/;
+    window.__env.disableTracking = /*true/false, default is false*/;
+    window.__env.enableDebug = /*true/false, default is false*/;
+    window.__env.piwik = /*String containing piwik server adress*/;
 ```
 
-There are more predefined settings in the file - please change with care.
 
 ## Development
 
@@ -34,7 +38,7 @@ There are more predefined settings in the file - please change with care.
 During development it is reasonable to disable the user tracking in the config file.
 
 ```JavaScript
-app.constant('disableTracking', true);
+    window.__env.disableTracking = true;
 ```
 
 ### docker-compose

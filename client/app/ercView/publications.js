@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory("publications", publications);
 		
-	publications.$inject = ['$q', 'httpRequests'];
+	publications.$inject = ['$q','$log', 'httpRequests'];
 
-	function publications($q, httpRequests){
+	function publications($q, $log, httpRequests){
 		var publications;
 		var pub = {};
 		var service = {
@@ -30,12 +30,12 @@
 			return deferred.promise;	
 
 			function callback(response){
-				console.log('getRequest callback: %o', response);
+				$log.debug('getRequest callback: %o', response);
 				publications = response.data;
 				deferred.resolve(response.data);
 			}
 			function errorHandler(e){
-				console.log('getRequest errorHandler: %o', e);
+				$log.debug('getRequest errorHandler: %o', e);
 				deferred.resolve(e);
 			}
 		}

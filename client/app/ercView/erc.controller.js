@@ -5,30 +5,30 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','publications', 'ercView', 'url', 'sizeRestriction', 'compInfo'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'header'];
 
-    function ErcCtrl($scope, $stateParams, publications, ercView, url, sizeRestriction, compInfo){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, header){
         var vm = this;
-        var ercId = $stateParams.ercid; // id of compendium
+        var originatorEv;
         
+        vm.ercId = $stateParams.ercid; // id of compendium
         vm.publication = compInfo;
-        vm.getOne = function(path){
-            var p = publications.getContentById(vm.publication, path);
-            return p;
-        }
-        vm.displaySource = (str) => ercView.checkDisplayType(str);
-        vm.sizeRestrict = sizeRestriction;
-        vm.fileId; // id of file in publication
-        vm.setId = setId;
+        vm.oneFile; // one file in publication
+        vm.setOne = setOne;
         vm.execJob = ex;
         vm.execStatus = ercView.getExecStatus();
         vm.jobDone = true;
+        vm.server = env.server;
         vm.treeOptions = {  // options for folderTree
             nodeChildren: 'children',
             dirSelectable: false
         };
+        vm.openMenu = function($mdOpenMenu, ev){
+            originatorEv = ev;
+            $mdOpenMenu(ev);
+        };
 
-        console.log('ErcCtrl, publication: %o', vm.publication);
+        $log.debug('ErcCtrl, publication: %o', vm.publication);
         
         $scope.$on('changedExecStatus', function(){
             vm.execStatus = ercView.getExecStatus();
@@ -37,19 +37,31 @@
             vm.jobDone = ercView.getJobDone();
         });
 
+        activate();
         ///////////////
         
         function activate(){
-            publications.getRequest(ercId); // httpRequest for retrieving all metadata of a compendium
-            ercView.callJobs(ercId); // getting job status
+            // publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
+            // ercView.callJobs(vm.ercId); // getting job status
+            header.setTitle('o2r - Compendium');
         }
-        
-        function setId(path){  // set fileId
-            vm.fileId = path;
+
+        function setOne(path){
+            var p = publications.getContentById(vm.publication, path);
+            $log.debug('clicked on file: ', p);
+            var isEmpty = true;
+            for(var att in p){
+                isEmpty = false;
+            }
+            if (isEmpty){
+                $log.debug('clicked on folder');
+                return;
+            }
+            vm.oneFile = p;
         }
 
         function ex(){
-            ercView.executeJob(ercId);
+            ercView.executeJob(vm.ercId);
         }
     }
 })();

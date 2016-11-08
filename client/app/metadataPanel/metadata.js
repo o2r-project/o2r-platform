@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('metadata', metadata);
 		
-	metadata.$inject = ['$http', '$rootScope','$q', 'httpRequests', 'url'];
+	metadata.$inject = ['$http', '$rootScope','$q', '$log', 'httpRequests'];
 	
-	function metadata($http, $rootScope, $q, httpRequests, url){
+	function metadata($http, $rootScope, $q, $log, httpRequests){
 		var comp_meta = []; // contains all metadata from all requested compendia
 		var comp_id = ''; // id of last clicked compendium
 		var service = {
@@ -71,7 +71,7 @@
 			
 			function cb1(response){
 				for(var index in response.data.results){
-					console.log('callMetadata_author, cb1 %o', response);
+					$log.debug('callMetadata_author, cb1 %o', response);
 					httpRequests
 						.singleCompendium(response.data.results[index])
 						.then(cb2)
@@ -89,7 +89,7 @@
 				
 			}
 			function errorHandler(e){
-				console.log('callMetadata_author errorHandler: %o',e);
+				$log.debug('callMetadata_author errorHandler: %o',e);
 				deferred.resolve(e);
 			}
 		}
@@ -107,7 +107,7 @@
 			
 			function cb1(response){
 				for(var index in response.data.results){
-					console.log('callMetadata_search, cb1 %o', response);
+					$log.debug('callMetadata_search, cb1 %o', response);
 					httpRequests
 						.singleCompendium(response.data.results[index])
 						.then(cb2)
@@ -125,7 +125,7 @@
 				
 			}
 			function errorHandler(e){
-				console.log('callMetadata_search errorHandler: %o',e);
+				$log.debug('callMetadata_search errorHandler: %o',e);
 				deferred.resolve(e);
 			}
 		}
@@ -143,16 +143,16 @@
 			return deferred.promise;
 
 			function callback1(joblist){
-				console.log('callJobStatus callback1: %o', joblist);
+				$log.debug('callJobStatus callback1: %o', joblist);
 				var jobId = joblist.data.results[joblist.data.results.length-1];
 				return httpRequests.listSingleJob(jobId);
 			}
 			function callback2(response){
-				console.log('callJobStatus callback2: %o', response);
+				$log.debug('callJobStatus callback2: %o', response);
 				deferred.resolve(response);
 			}
 			function errorHandler(e){
-				console.log('callJobStatus errorHandler: %o', e);
+				$log.debug('callJobStatus errorHandler: %o', e);
 				deferred.resolve({data: 'No jobs executed yet.'});
 			}
 		}

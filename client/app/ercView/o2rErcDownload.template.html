@@ -1,0 +1,26 @@
+<md-menu>
+    <md-button aria-label="open download menu" ng-click="openMenu($mdOpenMenu, $event)">
+        <md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_download_48px.svg"></md-icon>
+        <span md-menu-origin>Download ERC</span>
+    </md-button>
+    <md-menu-content width="2">
+        <md-menu-item>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.zip" download>
+                <md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_download_48px.svg"></md-icon>
+                .zip
+            </md-button>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar" download>
+                <md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_download_48px.svg"></md-icon>
+                .tar
+            </md-button>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar.gz" download>
+                <md-icon md-svg-src="bower_components/material-design-icons/file/svg/production/ic_file_download_48px.svg"></md-icon>
+                .tar.gz
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

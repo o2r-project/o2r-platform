@@ -1,0 +1,17 @@
+<!-- If filesize is too big, show following content -->
+<div layout="row" ng-if="file.size > sizeRestriction">
+<div flex></div>
+<div>
+    <h3>Filesize is too big to display</h3>
+    <center id="erc-bigfile-par">Click <a ng-href="{{file.path}}" download>here</a> to download file.</center>
+    <img ng-if="mime == 'image'" ng-src="{{file.path}}?width=140&height=140" />
+</div>
+<div flex></div>
+</div>
+
+<!-- display data depending on its mime type -->
+<object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="erc_pdf" type="application/pdf" data="{{file.path}}"></object>
+<img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="erc_img" ng-src="{{file.path}}" />
+<audio controls ng-if="(mime =='audio') && (file.size <= sizeRestriction)"><source ng-src="{{file.path}}" type="{{file.type}}"></source>Your browser does not support audio element.</audio>
+<video class="erc_video" ng-if="(mime =='video') && (file.size <= sizeRestriction)" controls><source ng-src="{{file.path}}"></source>Your browser does not support the video tag.</video>
+<hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs>

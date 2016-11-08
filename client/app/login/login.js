@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('login', login);
 		
-	login.$inject = ['$rootScope', '$analytics', 'httpRequests'];
+	login.$inject = ['$rootScope', '$log', '$analytics', 'httpRequests'];
 	
-	function login($rootScope, $analytics, httpRequests){
+	function login($rootScope, $log, $analytics, httpRequests){
 		var user = {};
 		var service = {
 			getUser: getUser,
@@ -36,12 +36,12 @@
 				.catch(errorHandler);
 			
 			function callback(user){
-				console.log('getUserCall callback: %o', user);
+				$log.debug('getUserCall callback: %o', user);
 				setUser(user.data);
 				return;
 			}
 			function errorHandler(e){
-				console.log('getUserCall errorHandler: %o', e);
+				$log.debug('getUserCall errorHandler: %o', e);
 			}
 		}
 

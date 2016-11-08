@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderCtrl as vm">
 <head>	
 
+<title ng-bind="vm.page.title()"></title>
 
 
 <!-- Libraries JavaScript -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
-<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
+<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -44,11 +48,12 @@
 <meta name="msapplication-TileImage" content="/mstile-144x144.png">
 <meta name="theme-color" content="#004288">
 
+<!-- config file -->
+<script src="app/config/config.js"></script>
+
 <!-- Starter file -->
 <script src="app/app.js"></script>
 
-<!-- config file -->
-<script src="app/config/config.js"></script>
 
 <!-- Services -->
 <script src="app/services/httpRequests.js"></script>
@@ -56,6 +61,7 @@
 <script src="app/metadataPanel/metadata.js"></script>
 <script src="app/ercView/ercView.js"></script>
 <script src="app/login/login.js"></script>
+<script src="app/services/header.factory.js"></script>
 
 <!-- Controllers -->
 <script src="app/ercView/erc.controller.js"></script>
@@ -65,9 +71,18 @@
 <script src="app/metadataPanel/metadata.controller.js"></script>
 <script src="app/upload/modalInstance.controller.js"></script>
 <script src="app/login/login.controller.js"></script>
+<script src="app/headerView/header.controller.js"></script>
+<script src="app/templates/impressum.controller.js"></script>
+<script src="app/templates/privacy.controller.js"></script>
 
 <!-- Directives -->
 <script src="app/ercView/o2rDisplayFiles.directive.js"></script>
+<script src="app/ercView/o2rErcDownload.directive.js"></script>
+<script src="app/metadataPanel/o2rMetadata.directive.js"></script>
+
+<!-- Filters -->
+<script src="app/services/upperCase.filter.js"></script>
+<script src="app/services/cutPath.filter.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
@@ -84,48 +99,56 @@
 
 
 </head>
-<body ng-app="starter" ng-controller="LoginCtrl as vm">
-        <header>
-            <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-      				<a class="navbar-brand" href="#"><img src="/img/o2r-logo-only.svg" height="100%" alt="o2r-logo"></a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-			        <li ng-show="vm.loggedIn"><a ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}}<br/><small>{{vm.user.orcid}}</small></a></li>
-                    <li ng-show="vm.loggedIn"><a href="/api/v1/auth/logout" analytics-category="user" analytics-on>Logout</a></li>
-                    <li ng-hide="vm.loggedIn"><a href="/api/v1/auth/login" analytics-category="user" analytics-on>Login</a></li>
-                </ul>
-            </div>
-            </nav>
-        </header>
-
-
-        <!-- Main content and injected views -->
-        <div id="main">
-			
-            <div id="ui-view" ui-view></div>  
-			
+<body ng-controller="LoginCtrl as vm">
+    <!-- header -->
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <img class="o2r-pointer" src="img/o2r-logo-only-white-outline.svg" alt="o2r-logo" height="80%" ui-sref="home">
+            <span flex></span>
+            <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
+            <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
+            <md-button class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
         </div>
+    </md-toolbar>
+    <!-- End header -->
 
-        <footer>
-            <hr/>
-            <span><a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a></span>
-        </footer>
+    <!-- Main content and injected views -->
+    <div id="main">
+        
+        <div id="ui-view" ui-view></div>  
+        
+    </div>
 
-        <!-- Piwik -->
-        <script type="text/javascript">
-            var _paq = _paq || [];
-            //_paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-                var u=piwik.url;
-                _paq.push(['setTrackerUrl', u+'piwik.php']);
-                _paq.push(['setSiteId', '1']);
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-            })();
-        </script>
-        <!-- End Piwik Code -->
+    <!-- footer -->
+    <md-toolbar class="footer">
+        <div class="md-toolbar-tools white-font">
+            <span flex></span>
+            <a ui-sref="impressum"><small>Impressum</small></a>|<a ui-sref="privacy"><small>Privacy Policy</small></a>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+<!--
+    <footer>
+        <a ui-sref="impressum">Impressum</a> | <a ui-sref="privacy">Privacy Policy</a>
+    </footer>
+-->
+
+    <!-- Piwik -->
+    <script type="text/javascript">
+        const piwik = {};
+        piwik.url = window.__env.piwik || "//o2r.uni-muenster.de/piwik/";
+
+        var _paq = _paq || [];
+        //_paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u=piwik.url;
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', '1']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <!-- End Piwik Code -->
 </body>
 </html>

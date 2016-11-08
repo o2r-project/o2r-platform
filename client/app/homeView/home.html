@@ -1,18 +1,9 @@
-<div class="row home_div">
-	<div class="col-md-8 col-md-offset-2 home_div">
-		<div class="row home_div">
-			<img src="img/logo-transparent.png" alt="o2r-logo" id="home_logo"/>
-			<div class="home_search">
-				<div class="col-md-11 home_searchinput">
-					<form class="form-inline" ng-submit="vm.submit()">
-						<div class="input-group input-group-lg col-md-10">
-							<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-				  			<input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="vm.searchModel"/>
-						</div>
-						<button type="submit" class="btn btn-primary btn-lg">Search</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+<div layout="column">
+	<img src="img/logo-transparent.png" alt="o2r-logo" id="home_logo"/>
+	<form ng-submit="vm.submit()" flex-offset="20">
+		<md-input-container md-no-float class="md-icon-float md-block" >
+			<md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_search_48px.svg"></md-icon>
+			<input type="text" placeholder="Search" flex="70" ng-model="vm.searchModel" autofocus>
+		</md-input-container>
+	</form>
 </div>
