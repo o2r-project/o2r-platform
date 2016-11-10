@@ -18,23 +18,22 @@ MAINTAINER o2r-project, https://o2r.info
 RUN apk add --no-cache \
     nodejs \
     git \
-  && git clone --depth 1 -b master https://github.com/o2r-project/o2r-platform /platform \
   && npm install -g bower \
   && echo '{ "allow_root": true }' > /root/.bowerrc
+  
+WORKDIR /etc/nginx/html
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY client .
+COPY bower.json bower.json
+COPY docker/browserconfig.xml browserconfig.xml
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-WORKDIR /platform
 RUN bower install
 
-WORKDIR /etc/nginx/html
-RUN cp -r /platform/client/* .
-
-RUN rm -r /platform \
+RUN rm bower.json \
   && npm uninstall -g bower \
   && apk del \
     git \
-    nodejs \
-  && rm -rf /var/cache/apk
+    nodejs
 
-# docker build --tag platform .
+# buil context must be repository base directory: docker build --tag platform --file docker/Dockerfile.local .

@@ -162,7 +162,7 @@ services:
       - "o2rnet"
 
   platform:
-    image: platform
+    image: platform # platform-from-github
     ports:
       - "8888:80"
     networks:
