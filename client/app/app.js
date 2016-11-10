@@ -4,7 +4,7 @@
     window.__env = window.__env || {};
 
     var env = {
-        server : window.__env.server || 'o2r.uni-muenster.de',
+        server : window.__env.server || 'http://localhost',
         c_api: window.__env.api || '/api/v1',
         sizeRestriction: window.__env.sizeRestriction || 10000000,
         disableTracking: window.__env.disableTracking || false,
