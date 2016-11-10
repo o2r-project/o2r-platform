@@ -161,6 +161,13 @@ services:
     networks:
       - "o2rnet"
 
+  platform:
+    image: platform
+    ports:
+      - "8888:80"
+    networks:
+      - "o2rnet"
+
   webserver:
     image: nginx:latest
     depends_on:
@@ -168,8 +175,9 @@ services:
       - contentbutler
       - bouncer
       - transportar
+      - platform
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./nginx-platformcontainer.conf:/etc/nginx/nginx.conf:ro"
       - "../client:/etc/nginx/html"
     ports:
       - "80:80"
