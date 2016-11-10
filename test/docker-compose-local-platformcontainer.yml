@@ -178,7 +178,6 @@ services:
       - platform
     volumes:
       - "./nginx-platformcontainer.conf:/etc/nginx/nginx.conf:ro"
-      - "../client:/etc/nginx/html"
     ports:
       - "80:80"
     networks:
