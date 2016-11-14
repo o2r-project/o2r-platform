@@ -46,12 +46,11 @@ During development it is reasonable to disable the user tracking in the config f
 Start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose`:
 
 ```bash
-cd test
-docker-compose --file docker-compose-db.yml up -d
+docker-compose --file test/docker-compose-db.yml up -d
 # wait at least 8 seconds for configuration container to run.
-OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose up
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose.yml up
 # using locally build images (different naming convention)
-# OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file docker-compose-local.yml up
+# OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose-local.yml up
 ```
 
 The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").

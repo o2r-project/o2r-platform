@@ -161,7 +161,7 @@ services:
     networks:
       - "o2rnet"
 
-  platform:
+  webserver:
     image: nginx:latest
     depends_on:
       - muncher
