@@ -5,12 +5,13 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'header', 'socket'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'icons', 'header', 'socket'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, header, socket){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, icons, header, socket){
         var vm = this;
         var originatorEv;
         
+        vm.icons = icons;
         vm.ercId = $stateParams.ercid; // id of compendium
         vm.publication = compInfo;
         vm.oneFile; // one file in publication

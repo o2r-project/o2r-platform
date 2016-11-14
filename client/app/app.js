@@ -25,6 +25,7 @@
             'angulartics.piwik',
             'md.data.table'])
         .constant('env', env)
+        .constant('icons', icons())
         .config(config);
     
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider'];
@@ -172,6 +173,30 @@
                 url: "/404",
                 templateUrl: "app/templates/404.html"
             });
+    }
+
+    function icons(){
+        var path = 'bower_components/material-design-icons/';
+        var path2 = '/svg/production/ic_';
+        var path3 = '_48px.svg';
+        var object = {};
+        var icons = [
+            {name: 'upload', category: 'file', fn: 'file_upload'},
+            {name: 'download', category: 'file', fn: 'file_download'},
+            {name: 'upArrow', category: 'navigation', fn: 'arrow_upward'},
+            {name: 'downArrow', category: 'navigation', fn: 'arrow_downward'},
+            {name: 'menu', category: 'navigation', fn: 'menu'},
+            {name: 'close', category: 'navigation', fn: 'close'},
+            {name: 'search', category: 'action', fn: 'search'},
+            {name: 'copy', category: 'av', fn: 'library_books'}
+        ];
+
+        for(var i in icons){
+            
+            object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
+        }
+        
+        return object;
     }
 
     authorInfoService.$inject = ['$stateParams', '$log', 'metadata'];
