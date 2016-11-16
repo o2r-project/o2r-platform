@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <title>o2r-informer test page</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+
+    <p>Job:&nbsp;<span id="jobid" style="border: 1px; font-weight: bold;"></span></p>
+    <p>Validate bag:&nbsp;<span id="status_bag" style="border: 1px solid black;"></span></p>
+    <p>Validate compendium:&nbsp;<span id="status_compendium" style="border: 1px solid black;"></span></p>
+    <p>Validate Dockerfile:&nbsp;<span id="status_dockerfile" style="border: 1px solid black;"></span></p>
+    <p>Image build:&nbsp;<span id="status_build" style="border: 1px solid black;"></span></p>
+    <p>Image execute:&nbsp;<span id="status_execute" style="border: 1px solid black;"></span></p>
+
+    Log: <pre id="log" style="border: 1px solid black;"></pre>
+
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script>
+      // Setup socket.io to connect to the server and the namespace '/api/v1/logs/job'.
+      var socket = io('http://localhost/api/v1/logs/job');
+      socket.on('connect', function(data) {
+        console.log('connected!');
+        seen = [];
+        console.log(JSON.stringify(socket, function(key, val) {
+          if (val != null && typeof val == "object") {
+                if (seen.indexOf(val) >= 0) {
+                    return;
+                }
+                seen.push(val);
+            }
+            return val;
+        }));
+      });
+
+      function setBackgroundStatus(status, element) {
+          switch (status) {
+            case "queued":
+              element.style.backgroundColor = "#f0f0f0";
+              break;
+            case "running":
+              element.style.backgroundColor = "#ffffdd";
+              break;
+            case "success":
+              element.style.backgroundColor = "#ddffdd";
+              break;
+            case "failure":
+              element.style.backgroundColor = "#ffdddd";
+              break;
+            default:
+              break;
+          }
+      }
+
+      function escapeHtml(unsafe) {
+          return unsafe
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+      }
+
+      var jobid = new Set();
+
+      function update(event) {
+        console.log(event.steps);
+
+        if(jobid && jobid !== event.id) {
+          console.log('Job ID already set to ' + jobid + ' but now events from ' + event.id + ' are coming in.');
+        }
+        jobid.add(event.id);
+        document.getElementById("jobid").innerHTML = Array.from(jobid).join(',&nbsp');    
+        
+        if(event.steps.validate_bag !== undefined && event.steps.validate_bag.status !== undefined) {
+          let element = document.getElementById("status_bag");
+          element.innerHTML = event.steps.validate_bag.status;
+          setBackgroundStatus(event.steps.validate_bag.status, element);
+        }
+        if(event.steps.validate_compendium !== undefined && event.steps.validate_compendium.status !== undefined) {
+          let element = document.getElementById("status_compendium");
+          element.innerHTML = event.steps.validate_compendium.status;
+          setBackgroundStatus(event.steps.validate_compendium.status, element);
+        }
+        if(event.steps.validate_dockerfile !== undefined && event.steps.validate_dockerfile.status !== undefined) {
+          let element = document.getElementById("status_dockerfile");
+          element.innerHTML = event.steps.validate_dockerfile.status;
+          setBackgroundStatus(event.steps.validate_dockerfile.status, element);
+        }
+        if(event.steps.image_build !== undefined && event.steps.image_build.status !== undefined) {
+          document.getElementById("status_build").innerHTML = event.steps.image_build.status;
+          setBackgroundStatus(event.steps.image_build.status, document.getElementById("status_build"));
+        }
+        if(event.steps.image_execute !== undefined && event.steps.image_execute.status !== undefined) {
+          document.getElementById("status_execute").innerHTML = event.steps.image_execute.status;
+          setBackgroundStatus(event.steps.image_execute.status, document.getElementById("status_execute"));
+        }
+
+        if(event.steps.validate_bag !== undefined && event.steps.validate_bag.text !== undefined) {
+          document.getElementById("log").innerHTML += "VALIDATE BAG:        " + escapeHtml(event.steps.validate_bag.text);
+        }
+        if(event.steps.validate_compendium !== undefined && event.steps.validate_compendium.text !== undefined) {
+          document.getElementById("log").innerHTML += "VALIDATE COMPENDIUM: " + escapeHtml(event.steps.validate_compendium.text);
+        }
+        if(event.steps.validate_dockerfile !== undefined && event.steps.validate_dockerfile.text !== undefined) {
+          document.getElementById("log").innerHTML += "VALIDATE DOCKERFILE: " + escapeHtml(event.steps.validate_dockerfile.text);
+        }
+        if(event.steps.image_build !== undefined && event.steps.image_build.text !== undefined) {
+          document.getElementById("log").innerHTML += "IMAGE BUILD:         " + escapeHtml(event.steps.image_build.text);
+        }
+        if(event.steps.image_execute !== undefined && event.steps.image_execute.text !== undefined) {
+          document.getElementById("log").innerHTML += "IMAGE EXECUTE:       " + escapeHtml(event.steps.image_execute.text);
+        }
+        if(event.steps.cleanup !== undefined && event.steps.cleanup.text !== undefined) {
+          document.getElementById("log").innerHTML += "CLEANUP:             " + escapeHtml(event.steps.cleanup.text);
+        }
+      }
+
+      socket.on("document", (event) => {
+        console.log('DOCUMENT EVENT');
+        update(event);
+      });
+      socket.on("set", (event) => {
+        console.log('SET EVENT');
+        update(event);
+      });
+    </script>
+  </body>
+</html>

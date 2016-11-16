@@ -67,7 +67,7 @@ If you run the o2r microservices locally, it is useful to run a local nginx to m
 
 ```bash
 #sed -i -e 's|http://o2r.uni-muenster.de/api/v1|http://localhost/api/v1|g' js/app.js
-docker run --rm --name o2r-platform -p 80:80 -v $(pwd)/test/nginx.conf:/etc/nginx/nginx.conf -v $(pwd):/etc/nginx/html nginx
+docker run --rm --name o2r-platform -p 80:80 -v $(pwd)/test/nginx.conf:/etc/nginx/nginx.conf -v $(pwd)/client:/etc/nginx/html $(pwd)/test:/etc/nginx/html/test nginx
 ```
 
 If you run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
