@@ -19,11 +19,11 @@
             "ui.router", 
             "hljs", 
             "ngFileUpload", 
-            'ngAnimate', 
+            'ngAnimate',
+            'ngAria', 
             'ngMaterial',
             'angulartics', 
-            'angulartics.piwik',
-            'md.data.table'])
+            'angulartics.piwik'])
         .constant('env', env)
         .constant('icons', icons())
         .config(config);
@@ -206,11 +206,11 @@
         return metadata.callMetadata_author(id);
     }
 
-    compInfoService.$inject = ['$stateParams', '$log', 'publications', 'ercView'];
-    function compInfoService($stateParams, $log, publications, ercView){
+    compInfoService.$inject = ['$stateParams', '$log', 'publications', 'jobs'];
+    function compInfoService($stateParams, $log, publications, jobs){
         var ercId = $stateParams.ercid;
         $log.debug('compInfoService, ercid: ' + ercId);
-        ercView.callJobs(ercId);
+        jobs.callJobs(ercId);
         return publications.getRequest(ercId);
     }
 

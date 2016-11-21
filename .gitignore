@@ -14,3 +14,8 @@ node_modules/
 lib/
 spec/
 karma.conf.js
+
+# keep ignored until well implemented
+client/app/ercView/publications.spec.js
+package.json
+

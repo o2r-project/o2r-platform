@@ -24,7 +24,13 @@
 							ngf-accept="'.zip'"><span ng-hide="f.name">Click <br/ >or <br/> Drag 'n Drop</span><span ng-show="f.name">{{f.name}}</span></div>
 					</form>
 				</div>
-				
+
+				<div ng-hide="doneButton" class="upmod-checkbox">
+					<md-checkbox class="md-primary" ng-model="checkRunAnalysis">
+						Automatically start analysis after upload
+					</md-checkbox>
+				</div>
+
 				<div ng-show="doneButton && checkUpload">
 					<p>File uploaded successfully</p>
 				</div>

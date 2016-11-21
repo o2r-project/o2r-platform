@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .factory('ercView', ercView);
+        .factory('jobs', jobs);
         
-    ercView.$inject = ['$rootScope', '$log', 'httpRequests'];
+    jobs.$inject = ['$rootScope', '$log', 'httpRequests'];
     
-    function ercView($rootScope, $log, httpRequests){
+    function jobs($rootScope, $log, httpRequests){
         var executionStatus = {};
         var jobDone = true;
 
@@ -40,24 +40,15 @@
             }
             function callback2(job){
                 $log.debug('in callJobs callback2: %o', job);
+                setExecStatus(job.data.steps);
                 getJobStatus(job.data.steps);
             }
             function errorHandler(e){
                 $log.debug('in callJobs errorHandler: %o', e);
-                //TODO 
-                //Generate error message for the user
+                //overwrite execStatus with empty object
+                setExecStatus({});
                 setJobDone(true);
             }
-            /*
-            function callback(response){
-                if(response.error){
-                    setExecStatus({'Information': {'status': 'No jobs executed yet'}});
-                    setJobDone(true);
-                } else {
-                    httpRequests.listSingleJob(response.results[response.results.length-1], (res) => {getJobStatus(res.steps);});
-                }
-            }
-            */
         }
 
         /*
@@ -65,7 +56,6 @@
         * @Param status, object containing status information
         */
         function getJobStatus(status){
-            setExecStatus(status);
             if(_checkStatus(status)){
                 setJobDone(true);
             } else {

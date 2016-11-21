@@ -5,9 +5,9 @@
         .module('starter')
         .controller('AuthorCtrl', AuthorCtrl);
 
-        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'metadata', 'authorInfo', 'Upload', 'env', 'header', 'icons'];
+        AuthorCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'metadata', 'authorInfo', 'Upload', 'env', 'header', 'icons', 'jobs'];
 
-        function AuthorCtrl($scope, $stateParams, $log, $mdDialog, metadata, authorInfo, Upload, env, header, icons){
+        function AuthorCtrl($scope, $stateParams, $log, $mdDialog, metadata, authorInfo, Upload, env, header, icons, jobs){
             var vm = this;
            
             var authorId = $stateParams.authorid; // id from author
@@ -59,8 +59,9 @@
                 vm.allPubs = metadata.getComp_meta();
             });
             
-            function ModalInstanceCtrl($scope, $mdDialog, Upload, env, icons){
+            function ModalInstanceCtrl($scope, $mdDialog, Upload, env, icons, jobs){
                 $scope.icons = icons;
+                $scope.checkRunAnalysis = true;
                 $scope.cancel = () => {$mdDialog.cancel()};
                 $scope.selected = (file) => {$scope.f = file;};
                 $scope.onLoad = false;
@@ -85,12 +86,19 @@
                     Upload.upload({
                         url: env.api + '/compendium',
                         data: {compendium: file, 'content_type': 'compendium_v1'}
-                    }).then(successCallback, errorCallback, progress);
+                    })
+                    .then(successCallback, errorCallback, progress)
+                    .then(execJobCallback, errorCallback);
                     
                     function successCallback(response){
-                        $scope.doneButton = true;
-                        metadata.callMetadata_author(authorId);
-                        $scope.checkUpload = true;
+                        if($scope.checkRunAnalysis){
+                            return jobs.executeJob(response.data.id);
+                        } else {
+                            $log.debug('upload successCallback: %o', response);
+                            $scope.doneButton = true;
+                            metadata.callMetadata_author(authorId);
+                            $scope.checkUpload = true;
+                        }
                     }
                     function errorCallback(response){
                         $scope.doneButton = true;
@@ -98,6 +106,14 @@
                     }
                     function progress(evt){
                         file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));
+                    }
+                    function execJobCallback(response){
+                        $log.debug('upload execJobCallback: %o', response);
+                        if($scope.checkRunAnalysis){
+                            $scope.doneButton = true;
+                            metadata.callMetadata_author(authorId);
+                            $scope.checkUpload = true;
+                        }
                     }
                 }
             }

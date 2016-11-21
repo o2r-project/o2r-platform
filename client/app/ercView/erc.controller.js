@@ -5,9 +5,9 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'ercView', 'compInfo', 'env', 'icons', 'header', 'socket'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'env', 'icons', 'header', 'socket'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, ercView, compInfo, env, icons, header, socket){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, env, icons, header, socket){
         var vm = this;
         var originatorEv;
         
@@ -17,7 +17,8 @@
         vm.oneFile; // one file in publication
         vm.setOne = setOne;
         vm.execJob = ex;
-        vm.execStatus = ercView.getExecStatus();
+        vm.execStatus = jobs.getExecStatus();
+        $log.debug('execStatus %o', vm.execStatus);
         vm.jobDone = true;
         vm.server = env.server;
         vm.treeOptions = {  // options for folderTree
@@ -35,10 +36,10 @@
         $log.debug('ErcCtrl, publication: %o', vm.publication);
         
         $scope.$on('changedExecStatus', function(){
-            vm.execStatus = ercView.getExecStatus();
+            vm.execStatus = jobs.getExecStatus();
         });
         $scope.$on('changedJobDone', function(){
-            vm.jobDone = ercView.getJobDone();
+            vm.jobDone = jobs.getJobDone();
         });
 
         activate();
@@ -46,7 +47,7 @@
         
         function activate(){
             // publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
-            // ercView.callJobs(vm.ercId); // getting job status
+            // jobs.callJobs(vm.ercId); // getting job status
             header.setTitle('o2r - Compendium');
             
             $log.debug(vm.execStatus);
@@ -65,24 +66,24 @@
         function stepUpdater(data, o){
                 if(data.steps.cleanup){
                     o.cleanup = data.steps.cleanup.status;
-                    $log.debug('updated cleanup');
+                    $log.debug('updated cleanup to %o', data.steps.cleanup.status);
                 } else if(data.steps.image_execute){
                     o.image_execute = data.steps.image_execute.status;
-                    $log.debug('updated image_execute');
+                    $log.debug('updated image_execute to %o', data.steps.image_execute.status);
                 } else if(data.steps.image_build){
                     if(data.steps.image_build.status){
                         o.image_build = data.steps.image_build.status;
-                        $log.debug('updated image_build');
+                        $log.debug('updated image_build to %o', data.steps.image_build.status);
                     }
                 } else if(data.steps.validate_bag){
                     o.validate_bag = data.steps.validate_bag.status;
-                    $log.debug('updated validate_bag');
+                    $log.debug('updated validate_bag to %o', data.steps.validate_bag.status);
                 } else if(data.steps.validate_compendium){
                     o.validate_compendium = data.steps.validate_compendium.status;
-                    $log.debug('updated validate_compendium');
+                    $log.debug('updated validate_compendium to %o', data.steps.validate_compendium.status);
                 } else if(data.steps.image_prepare){
                     o.image_prepare = data.steps.image_prepare.status;
-                    $log.debug('updated image_prepare');
+                    $log.debug('updated image_prepare to %o', data.steps.image_prepare.status);
                 }
             return;
         }
@@ -102,7 +103,7 @@
         }
 
         function ex(){
-            ercView.executeJob(vm.ercId);
+            jobs.executeJob(vm.ercId);
         }
 
         function isEmpty(obj){

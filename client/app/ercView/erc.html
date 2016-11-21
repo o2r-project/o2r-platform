@@ -1,15 +1,28 @@
 <div layout="column">
-	<div layou="row">
-		<o2r-erc-download erc-id="{{vm.ercId}}"></o2r-erc-download>
+	<!--
+	<div layout="row" flex="30">
+		<md-card>
+			<md-card-content layout="column">
+			</md-card-content>
+		</md-card>
 	</div>
+-->
 	<div layout="row">
 		<!-- folder tree -->
 		<div layout="column" flex="30">
 		<md-card>
 			<md-card-content>
-				<treecontrol class="tree-classic" tree-model="vm.publication.files" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
-					<span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
-				</treecontrol>
+				<div layout="row">
+					<h3 class="erc-comptitle">{{vm.ercId}}</h3>
+					<span flex></span>
+					<o2r-erc-download erc-id="{{vm.ercId}}"></o2r-erc-download>
+				</div>
+				<md-divider></md-divider>
+				<div id="erc-treediv">
+					<treecontrol class="tree-classic" tree-model="vm.publication.files" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+						<span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
+					</treecontrol>
+				</div>
 			</md-card-content>
 		</md-card>
 

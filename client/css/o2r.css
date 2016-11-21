@@ -9,7 +9,7 @@ body{
 	padding: 2%;
 	padding-top: calc(64px + 1vh);
 	height: auto !important;
-	min-height: calc(100vh - 178px + 32px);
+	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/ 
 }
 
 .o2r-pointer{
@@ -22,6 +22,10 @@ body{
 
 .white-font{
 	color: white !important;
+}
+
+.footer{
+	height: 64px !important;
 }
 
 /*
@@ -62,6 +66,13 @@ body{
 	text-align: center;
 }
 
+.erc-comptitle{
+	padding-left: 5%;
+}
+
+#erc-treediv{
+		padding-top: 5%;
+}
 md-card-header-text{
 	width: 100%;
 	overflow-wrap: break-word;
@@ -158,6 +169,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	width: 70px;
 	text-align: center;
 	padding-top: 10px;	
+}
+
+.upmod-checkbox{
+	padding-top: 30px;
 }
 /***********************
    End UploadModal
