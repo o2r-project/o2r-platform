@@ -149,7 +149,7 @@
                 }
             })
             .state('search', {
-                url: "/search?term",
+                url: "/search?q",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchCtrl',
                 controllerAs: 'vm',
@@ -216,7 +216,8 @@
 
     searchResultsService.$inject = ['$stateParams', '$log', 'metadata'];
     function searchResultsService($stateParams, $log, metadata){
-        var term = $stateParams.term;
+        $log.debug('searchResultsService, param: ', $stateParams);
+        var term = $stateParams.q;
         $log.debug('searchResultsService, term: ' + term);
         return metadata.callMetadata_search(term);
     }

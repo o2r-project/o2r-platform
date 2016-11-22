@@ -5,9 +5,9 @@
         .module('starter')
         .controller('HomeCtrl', HomeCtrl);
 
-    HomeCtrl.$inject = ['$scope', '$location', 'header'];
+    HomeCtrl.$inject = ['$log', '$scope', '$location', 'header'];
 
-    function HomeCtrl($scope, $location, header){
+    function HomeCtrl($log, $scope, $location, header){
         var vm = this;
         vm.submit = submitter;
         
@@ -20,7 +20,7 @@
 
         function submitter(){
             var _query = vm.searchModel.replace(/ /g, "+");
-            $location.path('/search').search('term=asdf'); // $location.path('/search').search('term=' + _query);
+            $location.path('/search').search('q=' + _query);
         };
     }
 })();

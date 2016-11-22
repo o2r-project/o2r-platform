@@ -39,7 +39,11 @@ body{
 }
 
 .o2r-icon{
-	color: rgba(0, 0, 0, 0.54) !important;
+	fill: rgba(0, 0, 0, 0.54) !important;
+}
+
+.o2r-white-icon{
+	fill: white !important;
 }
 /************************
    End General

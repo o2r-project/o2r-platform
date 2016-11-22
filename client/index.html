@@ -62,7 +62,6 @@
 <script src="app/services/jobs.js"></script>
 <script src="app/login/login.js"></script>
 <script src="app/services/header.js"></script>
-
 <script src="app/sockets/socket.js"></script>
 
 
@@ -107,6 +106,13 @@
         <div class="md-toolbar-tools">
             <img class="o2r-pointer" src="img/o2r-logo-only-white-outline.svg" alt="o2r-logo" height="80%" ui-sref="home">
             <span flex></span>
+            <form ng-submit="vm.submitSearch()" ng-if="vm.showSearchBar()">
+                <md-input-container md-no-float layout="row" class="md-icon-float white-font">
+                    <label class="white-font">Search</label>
+                    <input ng-model="vm.searchInput" class="white-font">
+                    <md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.search}}"></md-icon>
+                </md-input-container>
+            </form>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>

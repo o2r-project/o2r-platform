@@ -15,7 +15,8 @@
 			newJob: newJob,
 			listJobs: listJobs,
 			listSingleJob: listSingleJob,
-			getLoggedUser: getLoggedUser
+			getLoggedUser: getLoggedUser,
+			searchComp: searchComp
 		};
 
 		return service;
@@ -114,6 +115,17 @@
 		*/
 		function getLoggedUser(){
 			var _url = env.api + '/auth/whoami';
+			return $http.get(_url);
+		}
+
+		/**
+		 * @Desc calling the elasticsearch api-endpoint for retrieving search results
+		 * @Param query, String containing search term
+		 */
+		function searchComp(query){
+			var _url = env.api + '/search?q=';
+			if(query) _url += query;
+			else _url += '*';
 			return $http.get(_url);
 		}
 	};

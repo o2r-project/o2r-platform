@@ -2,8 +2,8 @@
 	<!-- search bar -->
 	<form ng-submit="vm.submit()" flex="50" flex-offset="5">
 		<md-input-container md-no-float class="md-icon-float md-block" >
-			<md-icon md-svg-src="bower_components/material-design-icons/action/svg/production/ic_search_48px.svg"></md-icon>
-			<input type="text" placeholder="Search" ng-model="vm.searchModel" ng-value="{{searchTerm}}" flex="40">
+			<md-icon md-svg-src="{{vm.icons.search}}"></md-icon>
+			<input type="text" placeholder="Search" ng-model="vm.searchModel" ng-value="vm.searchTerm" flex="40" autofocus>
 		</md-input-container>
 	</form>
 	<span flex></span>
@@ -12,14 +12,17 @@
 	<div layout="row" flex-offset="5">
 		<!-- search results -->
 		<div layout="column" flex="50">
-			<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs | orderBy:'-created'" ng-click="vm.setId(pub.id)">
+			<span flex-offset="5">Results for: "{{vm.searchTerm}}"</span>
+			<!--<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs | orderBy:'-created'" ng-click="vm.setId(pub.id)">
+			-->
+			<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs.data.hits.hits" ng-click="vm.setId(pub._source.compendium_id)">				
 				<md-card-title>
 					<md-card-title-text >
-						<span class="md-headline">{{pub.id}}</span>
+						<span class="md-headline">{{pub._source.compendium_id}}</span>
 					</md-card-title-text>
 				</md-card-title>
 				<md-card-content>
-					<span class="md-subhead">{{pub.files.path}} | {{pub.created}}</span>
+					<span class="md-subhead">{{pub._source.files.path}} | {{pub._source.created}}</span>
 				</md-card-content>
 			</md-card>
 		</div>

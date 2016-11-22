@@ -5,20 +5,19 @@
         .module('starter')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$scope', '$stateParams', '$log', 'metadata', 'searchResults', 'header'];
+    SearchCtrl.$inject = ['$scope', '$stateParams', '$log', '$location', 'metadata', 'searchResults', 'header', 'icons'];
 
-    function SearchCtrl($scope, $stateParams, $log, metadata, searchResults, header){
+    function SearchCtrl($scope, $stateParams, $log, $location, metadata, searchResults, header, icons){
         var vm = this;
-        var searchTerm = $stateParams.term; // reads term query from url
-
+        
+        vm.icons = icons;
+        vm.searchTerm = $stateParams.q; // reads term query from url
         vm.allPubs = searchResults;
-
-        $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
         vm.setId = (id) => {metadata.setComp_id(id)};
-        /*
-        TODO 
-            * Define submit function*/
-        vm.submit = () => $log.debug('hello world');
+        vm.submit = search;
+       
+        $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
+        $log.debug('SearchCtrl, searchTerm %s', vm.searchTerm);
 
         activate();
 
@@ -26,19 +25,13 @@
 
         function activate(){
             //$log.debug(metadata.callMetadata_search('asdf'));
-            //return metadata.callMetadata_search('asdf'); // httpRequest for retrieving all compendia fitting search parameters
             header.setTitle('o2r - Search');
-        }
-        // function is called in asynchronous response from metadata.callMetadata_search()
-        /*
-        function getMeta_search(meta_search){
-            $scope.$broadcast('getFirstComp');
-            $scope.$on('loadedAllComps', function(){
-                vm.allPubs = metadata.getComp_meta();
-            });
+        } 
 
-            vm.setId = setId; // setter function for comp_id
+        function search(){
+           //metadata.callMetadata_search(vm.searchModel);
+           $log.debug('searching for %s', vm.searchModel);
+           $location.path('/search').search('q=' + vm.searchModel);
         }
-        */ 
     }
 })();

@@ -34,7 +34,10 @@
 					<div>
 						<h3>Last finished analysis</h3>
 						<table ng-hide="vm.isEmpty(vm.execStatus)">
-							<tr ng-repeat="(key, value) in vm.execStatus"><td>{{key}}:</td><td><strong>{{value.status}}</strong></td></td></tr>
+							<tr ng-repeat="(key, value) in vm.execStatus">
+								<td>{{key}}:</td>
+								<td><strong>{{value.status}}</strong><br/><small>{{value.end | date : 'yyyy-MM-dd HH:mm'}}</small></td>
+							</tr>
 						</table>
 						<span ng-show="vm.isEmpty(vm.execStatus)">No analysis executed yet.</span>
 					</div>

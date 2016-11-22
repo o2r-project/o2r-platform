@@ -95,7 +95,26 @@
 		}
 
 		function callMetadata_search(searchTerm){
-			var counter = 0;
+			var query = searchTerm || '*';
+			var deferred = $q.defer();
+			comp_meta = [];
+			httpRequests
+				.searchComp(query)
+				.then(cb1)
+				.catch(errorHandler);
+			return deferred.promise;
+
+			function cb1(response){
+				comp_meta = response.data.hits.hits;
+				$log.debug('result of search: %o', response);
+				deferred.resolve(response);
+			}
+
+			function errorHandler(e){
+				$log.debug('search error: %o', e);
+				deferred.resolve(e);
+			}
+			/*var counter = 0;
 			var deferred = $q.defer();
 			comp_meta = [];
 			httpRequests
@@ -128,6 +147,7 @@
 				$log.debug('callMetadata_search errorHandler: %o',e);
 				deferred.resolve(e);
 			}
+			*/
 		}
 
 		// httpRequest for Metadata of one job
