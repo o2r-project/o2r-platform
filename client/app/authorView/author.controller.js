@@ -18,7 +18,8 @@
             vm.sortType = 'date'; // helper for sorting
             vm.sortReverse = true; // helper for sorting
             vm.filterContent = 'content'; // helper for contentfilter
-            vm.setId = (id) => {metadata.setComp_id(id)};
+            vm.selectedComp = vm.allPubs[vm.allPubs.length-1];
+            vm.selectComp = (comp) => {vm.selectedComp = comp};
             vm.selected = []; //required for md-data-table
             vm.openDialog = openDialog;
 

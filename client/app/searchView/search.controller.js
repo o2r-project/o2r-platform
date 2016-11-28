@@ -12,8 +12,9 @@
         
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
-        vm.allPubs = searchResults;
-        vm.setId = (id) => {metadata.setComp_id(id)};
+        vm.allPubs = map(searchResults);
+        vm.selectedComp = vm.allPubs.data.hits.hits[0]._source;
+        vm.selectComp = (comp) => {vm.selectedComp = comp};
         vm.submit = search;
        
         $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
@@ -32,6 +33,15 @@
            //metadata.callMetadata_search(vm.searchModel);
            $log.debug('searching for %s', vm.searchModel);
            $location.path('/search').search('q=' + vm.searchModel);
+        }
+
+        function map(obj){
+           var o = obj.data.hits.hits;
+            for(var i in o){
+                o[i]._source.id = o[i]._source.compendium_id;
+            }
+            $log.debug('mapping result: %o', o);
+            return obj;
         }
     }
 })();

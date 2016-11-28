@@ -41,7 +41,7 @@
 						</div>
 					</md-list-item>
 					<md-divider></md-divider>
-					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.setId(pub.id)">
+					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
 							<h3 flex>{{pub.id}}</h3>
 							<h4 flex>{{pub.created}}</h4>
@@ -64,6 +64,6 @@
 
 	<!-- metadata panel -->
 	<div layout="column" class="o2r-fixed author-metadata">
-		<o2r-metadata ng-if="vm.allPubs"></o2r-metadata>
+		<o2r-metadata o2r-comp="{{vm.selectedComp}}" ng-if="vm.allPubs"></o2r-metadata>
 	</div>
 </div>
