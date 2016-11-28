@@ -5,15 +5,15 @@
         .module('starter')
         .factory('jobs', jobs);
         
-    jobs.$inject = ['$rootScope', '$log', 'httpRequests'];
+    jobs.$inject = ['$rootScope', '$log', '$q', 'httpRequests'];
     
-    function jobs($rootScope, $log, httpRequests){
+    function jobs($rootScope, $log, $q, httpRequests){
         var executionStatus = {};
         var jobDone = true;
 
         var service = {
             callJobs: callJobs,
-            getJobStatus: getJobStatus,
+      //      getJobStatus: getJobStatus,
             executeJob: executeJob,
             getExecStatus: getExecStatus,
             getJobDone: getJobDone
@@ -28,12 +28,15 @@
         * @Param id, id of compendium
         */
         function callJobs(id){
+            var deferred = $q.defer();
             httpRequests
                 .listJobs({'compendium_id': id})
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);
             
+            return deferred.promise;
+
             function callback1(joblist){
                 $log.debug('in callJobs callback1: %o', joblist);
                 return httpRequests.listSingleJob(joblist.data.results[joblist.data.results.length-1]);
@@ -41,13 +44,15 @@
             function callback2(job){
                 $log.debug('in callJobs callback2: %o', job);
                 setExecStatus(job.data.steps);
-                getJobStatus(job.data.steps);
+                setJobDone(checkStatus(job.data.steps));
+                deferred.resolve(job);
             }
             function errorHandler(e){
                 $log.debug('in callJobs errorHandler: %o', e);
                 //overwrite execStatus with empty object
                 setExecStatus({});
                 setJobDone(true);
+                deferred.resolve({data: 'No analysis executed yet.'});
             }
         }
 
@@ -55,24 +60,16 @@
         * @Desc getting job status and checking if execution succeeded or failed
         * @Param status, object containing status information
         */
-        function getJobStatus(status){
-            if(_checkStatus(status)){
-                setJobDone(true);
-            } else {
-                setJobDone(false);
+        function checkStatus(object){
+            var allSuccess = true;
+            var oneFail = false;
+            for(var step in object){
+                if(object[step].status != 'success') allSuccess = false;
+                if(object[step].status == 'failure') oneFail = true;
             }
-
-            function _checkStatus(object){
-                var allSuccess = true;
-                var oneFail = false;
-                for(var step in object){
-                    if(object[step].status != 'success') allSuccess = false;
-                    if(object[step].status == 'failure') oneFail = true;
-                }
-                if(allSuccess) return true;
-                if(oneFail) return true;
-                return false;
-            }
+            if(allSuccess) return true;
+            if(oneFail) return true;
+            return false;
         }
 
         /*
@@ -92,7 +89,7 @@
             }
             function callback2(job){
                 $log.debug('executeJob callback2: %o', job);
-                getJobStatus(job.data.steps);
+                setJobDone(checkStatus(job.data.steps));
             }
             function errorHandler(e){
                 $log.debug('executeJob errorHandler: %o', e);

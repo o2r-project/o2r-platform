@@ -56,8 +56,8 @@
             }
 
 
-            $scope.$on('loadedAllComps', function(){ //allPubs will be set to comp_meta from metadata factory
-                vm.allPubs = metadata.getComp_meta();
+            $scope.$on('loadedAllComps', function(event, data){ //allPubs will be set to comp_meta from metadata factory
+                vm.allPubs = data;
             });
             
             function ModalInstanceCtrl($scope, $mdDialog, Upload, env, icons, jobs){

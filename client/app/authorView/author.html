@@ -44,7 +44,7 @@
 					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
 							<h3 flex>{{pub.id}}</h3>
-							<h4 flex>{{pub.created}}</h4>
+							<h4 flex>{{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
 							<p flex>{{pub.user}}</p>
 						</div>
 						<md-divider ng-if="!($last)"></md-divider>

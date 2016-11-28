@@ -11,7 +11,6 @@
 		var publications;
 		var pub = {};
 		var service = {
-			getPublications: get,
 			getContentById: findContent,
 			getRequest: getRequest
 		};
@@ -62,8 +61,5 @@
 			return searchedObject;
 		}
 
-		function get(){
-			return publications;
-		}
 	}
 })();

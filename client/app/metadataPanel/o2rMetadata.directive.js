@@ -4,7 +4,7 @@
  * o2r-comp must be an object with at least the following attributes:
  * 
  * {
- * id: String,
+ * id: String, //id has to contain the id of the compendium
  * }
  * 
  * Example:
@@ -18,8 +18,8 @@
         .module('starter')
         .directive('o2rMetadata', o2rMetadata);
     
-    o2rMetadata.$inject = ['$log', 'metadata'];
-    function o2rMetadata($log, metadata){
+    o2rMetadata.$inject = ['$log', 'jobs'];
+    function o2rMetadata($log, jobs){
         return {
             restrict: 'E',
             templateUrl: 'app/metadataPanel/metadata_panel.html',
@@ -48,7 +48,7 @@
             }
 
             function setCompStatus (){
-                metadata.callJobStatus(scope.comp.id)
+                jobs.callJobs(scope.comp.id)
                     .then(function(res){
                         scope.comp.status = res.data;
                         $log.debug('MetadataCtrl, comp.status: %o', scope.comp.status);
@@ -71,6 +71,9 @@
                         special = true;
                         break;
                     case 'jobs':
+                        special = true;
+                        break;
+                    case 'created':
                         special = true;
                         break;
                     default:
