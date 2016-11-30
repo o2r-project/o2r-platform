@@ -150,6 +150,7 @@ services:
     image: transportar
     volumes:
       - o2r_test_storage:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
     external_links:
       - "test_mongodb_1:mongodb"
     environment:

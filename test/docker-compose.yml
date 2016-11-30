@@ -74,7 +74,7 @@ services:
     environment:
       - "CONTENTBUTLER_MONGODB=mongodb://mongodb"
       - CONTENTBUTLER_PORT=8081
-      - DEBUG=*,-express:*
+      - DEBUG=*,-express-session,-compression,-body-parser:*,-mquery,-express:*
     ports:
       - "8081:8081"
     networks:
@@ -137,6 +137,7 @@ services:
     image: o2rproject/o2r-transportar:latest
     volumes:
       - o2r_test_storage:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
     external_links:
       - "test_mongodb_1:mongodb"
     environment:
