@@ -1,0 +1,174 @@
+# (C) Copyright 2016 The o2r project. https://o2r.info
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+---
+version: '2'
+
+#### Usage ####
+#
+# IMPORTANT: To use MongoDB with its replication feature, it is most feasible to start and run the container manually, and re-use that database container between runs.
+#
+# Once:
+# - run mongo:3.3                                 $ docker run --name test_mongodb_1 --detach mongo:3.3 --replSet o2r
+# - run mongo inside the container                $ docker exec -it test_mongodb_1 mongo
+# - configure replication                         $> rs.status();
+#                                                 $> rs.conf();
+#                                                 $> rs.initiate();
+#                                                 $> rs.slaveOk();
+#                                                 $> rs.status();
+# - stop the container                            $ docker stop test_mongodb_1
+# - alternatively, run all commands in 2nd shell  $ docker exec -it test_mongodb_1 mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'
+#
+# Every time:
+# - run docker-compose w/ config parameters       $ CLIENT_ID=<...> CLIENT_SECRET=<...> AUTH_CALLBACK_URL=<...> docker-compose up
+# - run configured MongoDB joining the network    $ docker start --name test_mongodb_1 --detach -p 27017:27017 --network o2rnet mongo:3.3 --replSet o2r
+#
+# ALTERNATIVE: run the docker-compose-db.yml file in this directory
+
+volumes:
+  # docker volume ls
+  # docker volume inspect test_storage
+  o2r_test_storage: {}
+
+networks:
+  o2rnet:
+    driver: bridge
+
+services:
+  muncher:
+    image: o2rproject/o2r-muncher:latest
+    restart: unless-stopped
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "MUNCHER_MONGODB=mongodb://mongodb"
+      - MUNCHER_PORT=8080
+      - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+    ports:
+      - "8080:8080"
+    networks:
+      - "o2rnet"
+
+  contentbutler:
+    image: o2rproject/o2r-contentbutler:latest
+    restart: unless-stopped
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "CONTENTBUTLER_MONGODB=mongodb://mongodb"
+      - CONTENTBUTLER_PORT=8081
+      - DEBUG=*,-express-session,-compression,-body-parser:*,-mquery,-express:*
+    ports:
+      - "8081:8081"
+    networks:
+      - "o2rnet"
+
+  informer:
+    image: o2rproject/o2r-informer:latest
+    restart: unless-stopped
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "INFORMER_MONGODB=mongodb://mongodb"
+      - INFORMER_MONGODB_HOST=mongodb
+      - INFORMER_PORT=8082
+      - DEBUG=informer
+    ports:
+      - "8082:8082"
+    networks:
+      - "o2rnet"
+
+  bouncer:
+    image: o2rproject/o2r-bouncer:latest
+    restart: unless-stopped
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "BOUNCER_MONGODB=mongodb://mongodb"
+      - BOUNCER_PORT=8083
+      - DEBUG=bouncer
+      - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+    ports:
+      - "8083:8083"
+    networks:
+      - "o2rnet"
+
+  finder:
+    image: o2rproject/o2r-finder:latest
+    restart: unless-stopped
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+    external_links:
+      - "test_elasticsearch_1:elasticsearch"
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
+      - FINDER_PORT=8084
+      - DEBUG=finder
+      - ELASTIC_SEARCH_URL=elasticsearch:9200
+      - "MONGO_DATA_URL=mongodb://mongodb/muncher"
+      - "MONGO_OPLOG_URL=mongodb://mongodb/muncher"
+      - BATCH_COUNT=20
+    ports:
+      - "8084:8084"
+    networks:
+      - "o2rnet"
+
+  transportar:
+    image: o2rproject/o2r-transportar:latest
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "TRANSPORTAR_MONGODB=mongodb://mongodb"
+      - TRANSPORTAR_PORT=8086
+      - DEBUG=transportar
+    ports:
+      - "8086:8086"
+    networks:
+      - "o2rnet"
+
+  platform:
+    image: o2rproject/o2r-platform:latest
+    ports:
+      - "8888:80"
+    volumes:
+      - "./config-toolbox.js:/etc/nginx/html/app/config/config.js:ro"
+    networks:
+      - "o2rnet"
+
+  webserver:
+    image: nginx:latest
+    depends_on:
+      - muncher
+      - contentbutler
+      - bouncer
+      - transportar
+      - platform
+    volumes:
+      - "./nginx-platformcontainer.conf:/etc/nginx/nginx.conf:ro"
+    ports:
+      - "80:80"
+    networks:
+      - "o2rnet"
