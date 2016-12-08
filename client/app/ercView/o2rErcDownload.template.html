@@ -5,22 +5,28 @@
     </md-button>
     <md-menu-content width="2">
         <md-menu-item>
-            <md-button ng-href="/api/v1/compendium/{{ercId}}.zip" download>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.zip?image={{excImg(excludeImg)}}" download>
                 <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
                 .zip
             </md-button>
         </md-menu-item>
         <md-menu-item>
-            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar" download>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar?image={{excImg(excludeImg)}}" download>
                 <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
                 .tar
             </md-button>
         </md-menu-item>
         <md-menu-item>
-            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar.gz" download>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar.gz?image={{excImg(excludeImg)}}" download>
                 <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
                 .tar.gz
             </md-button>
+        </md-menu-item>
+        <md-divider></md-divider>
+        <md-menu-item>
+            <md-checkbox ng-model="excludeImg" aria-label="Exclude image files">
+                Exclude docker image
+            </md-checkbox>
         </md-menu-item>
     </md-menu-content>
 </md-menu>

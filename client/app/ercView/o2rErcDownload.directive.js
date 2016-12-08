@@ -23,10 +23,16 @@
 
         function link(scope, attrs){
             scope.icons = icons;
+            scope.excImg = exclude;
             scope.openMenu = function($mdOpenMenu, ev){
                 var originatorEv = ev;
                 $mdOpenMenu(ev);
             };
+
+            function exclude(bool){
+                if(bool) return false;
+                return true;
+            }
         }
     }
 

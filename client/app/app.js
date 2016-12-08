@@ -136,7 +136,9 @@
                 controller: 'ErcCtrl',
                 controllerAs: 'vm',
                 resolve: {
-                    compInfo: compInfoService
+                    compInfo: compInfoService,
+                    compFJob: compFJobService,
+                    compSJob: compSJobService
                 }
             })
             .state('author', {
@@ -188,7 +190,9 @@
             {name: 'menu', category: 'navigation', fn: 'menu'},
             {name: 'close', category: 'navigation', fn: 'close'},
             {name: 'search', category: 'action', fn: 'search'},
-            {name: 'copy', category: 'av', fn: 'library_books'}
+            {name: 'copy', category: 'av', fn: 'library_books'},
+            {name: 'done', category: 'action', fn: 'done'},
+            {name: 'fail', category: 'content', fn: 'clear'}
         ];
 
         for(var i in icons){
@@ -206,12 +210,27 @@
         return metadata.callMetadata_author(id);
     }
 
-    compInfoService.$inject = ['$stateParams', '$log', 'publications', 'jobs'];
-    function compInfoService($stateParams, $log, publications, jobs){
+    compInfoService.$inject = ['$stateParams', '$log', 'publications'];
+    function compInfoService($stateParams, $log, publications){
         var ercId = $stateParams.ercid;
         $log.debug('compInfoService, ercid: ' + ercId);
-        jobs.callJobs(ercId);
         return publications.getRequest(ercId);
+    }
+
+    //TODO
+    //httpRequest needs to be changed to last finished analysis as soon as it is implemented
+    compFJobService.$inject = ['$stateParams', 'jobs'];
+    function compFJobService($stateParams, jobs){
+        var ercId = $stateParams.ercid;
+        return jobs.callJobs(ercId);
+    }
+
+    //TODO
+    //httpRequest needs to be changed to last started analysis as soon as it is implemented
+    compSJobService.$inject = ['$stateParams', 'jobs'];
+    function compSJobService($stateParams, jobs){
+        var ercId = $stateParams.ercid;
+        return jobs.callJobs(ercId);
     }
 
     searchResultsService.$inject = ['$stateParams', '$log', 'metadata'];

@@ -22,15 +22,16 @@
     function o2rMetadata($log, jobs){
         return {
             restrict: 'E',
+            scope: {
+                o2rComp: '@'
+            },
             templateUrl: 'app/metadataPanel/metadata_panel.html',
             link: link
         };
 
         function link(scope, iElement, attrs){
             scope.isSpecial = isSpecial;
-
-          
-
+            
 			attrs.$observe('o2rComp', function(value){
                 if(value == ''){
 
@@ -40,15 +41,16 @@
                     activate();
                 }
 			});
-
+            
         
             /////////////////
             function activate(){
-                setCompStatus();
+                setCompStatus(scope.comp.id);
+                $log.debug(scope.comp);
             }
 
-            function setCompStatus (){
-                jobs.callJobs(scope.comp.id)
+            function setCompStatus (id){
+                jobs.callJobs(id)
                     .then(function(res){
                         scope.comp.status = res.data;
                         $log.debug('MetadataCtrl, comp.status: %o', scope.comp.status);

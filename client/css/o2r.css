@@ -45,6 +45,14 @@ body{
 .o2r-white-icon{
 	fill: white !important;
 }
+
+.o2r-red-icon{
+	fill: #8e141c !important;
+}
+
+.o2r-green-icon{
+	fill: green !important;
+}
 /************************
    End General
 *************************/
@@ -63,7 +71,7 @@ body{
 }
 
 .erc-video{
-
+	max-width: 100%;
 }
 
 .erc-bigfile-par{

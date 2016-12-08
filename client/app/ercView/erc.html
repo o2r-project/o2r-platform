@@ -26,31 +26,9 @@
 			</md-card-content>
 		</md-card>
 
-		<!-- Analysis -->
-		<div flex="30">
-			<md-card>
-				<md-card-content layout="column">
-					<md-button class="md-raised" ng-click="vm.execJob()" ng-disabled="!vm.jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
-					<div>
-						<h3>Last finished analysis</h3>
-						<table ng-hide="vm.isEmpty(vm.execStatus)">
-							<tr ng-repeat="(key, value) in vm.execStatus">
-								<td>{{key}}:</td>
-								<td><strong>{{value.status}}</strong><br/><small>{{value.end | date : 'yyyy-MM-dd HH:mm'}}</small></td>
-							</tr>
-						</table>
-						<span ng-show="vm.isEmpty(vm.execStatus)">No analysis executed yet.</span>
-					</div>
-					<div ng-if="vm.gotSocket">
-						<md-divider></md-divider>
-						<h3>Currently running analysis</h3>
-						<table>
-							<tr ng-repeat="(key, value) in vm.steps"><td>{{key}}:</td><td><strong>{{value}}</strong></td></td></tr>
-						</table>
-					</div>
-				</md-card-content>
-			</md-card>
-		</div>
+			<!-- Analysis -->
+			<o2r-analysis-stats o2r-finished="{{vm.fJob}}" o2r-started="{{vm.sJob}}" flex="30"></o2r-analysis-stats>
+
 		</div>
 
 		<!-- Content -->

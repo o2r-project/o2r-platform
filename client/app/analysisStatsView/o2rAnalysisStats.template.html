@@ -1,0 +1,39 @@
+<md-card>
+    <md-card-content layout="column">
+        <md-button class="md-raised" ng-click="execJob()" ng-disabled="!jobDone" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
+        <div>
+            <h3>Last finished analysis</h3>
+            <table ng-hide="$paren.vm.isEmpty(lFin.steps)">
+                <tr ng-repeat="(key, value) in lFin.steps">
+                    <td>{{key}}</td>
+                    <td>
+                        <strong>{{value.status}}</strong>
+                        <md-icon md-svg-src="{{checkIcon(value.status, key, 'finished')}}" ng-class="iconClass[key].finished"></md-icon>
+                        <br/>
+                        <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>
+                    </td>
+                </tr>
+            </table>
+            <strong ng-hide="$parent.vm.isEmpty(lFin.steps)">{{resultInfo(lFin.steps)}}</strong>
+            <span ng-show="$parent.vm.isEmpty(lFin.steps)">No analysis executed yet.</span>
+        </div>
+        <div ng-show="!$parent.vm.isEmpty(lStar) && !jobDone">
+            <md-divider></md-divider>
+            <h3>Last started analysis</h3>
+            <small>Started on: {{lStar.steps.validate_bag.start | date: 'yyyy-MM-dd HH:mm'}}</small>
+            
+            <table>
+                <tr ng-repeat="(key, value) in lStar.steps">
+                    <td>{{key}}</td>
+                    <td>
+                        <strong>{{value.status}}</strong>
+                        <md-icon md-svg-src="{{checkIcon(value.status, key, 'started')}}" ng-class="iconClass[key].started"></md-icon>
+                        <br/>
+                        <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>
+                    </td>
+                </tr>
+            </table>
+            <strong>{{resultInfo(lStar.steps)}}</strong>
+        </div>
+    </md-card-content>
+</md-card>

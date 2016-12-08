@@ -13,7 +13,7 @@
 
         var service = {
             callJobs: callJobs,
-      //      getJobStatus: getJobStatus,
+            checkStatus: checkStatus,
             executeJob: executeJob,
             getExecStatus: getExecStatus,
             getJobDone: getJobDone
@@ -77,11 +77,14 @@
         * @Param id, id of compendium
         */
         function executeJob(id){
+            var deferred = $q.defer();
             httpRequests.newJob({'compendium_id': id})
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);
 
+            return deferred.promise;
+            
             function callback1(response){
                 $log.debug('executeJob callback1: %o', response);
                 return httpRequests.listSingleJob(response.data.job_id);
@@ -90,9 +93,11 @@
             function callback2(job){
                 $log.debug('executeJob callback2: %o', job);
                 setJobDone(checkStatus(job.data.steps));
+                deferred.resolve(job);
             }
             function errorHandler(e){
                 $log.debug('executeJob errorHandler: %o', e);
+                deferred.resolve(e);
             }
         }
 
