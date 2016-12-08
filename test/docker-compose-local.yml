@@ -150,6 +150,7 @@ services:
     image: transportar
     volumes:
       - o2r_test_storage:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
     external_links:
       - "test_mongodb_1:mongodb"
     environment:
@@ -170,7 +171,7 @@ services:
       - transportar
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "../client:/etc/nginx/html"
+      - "../client:/usr/share/nginx/html:ro"
     ports:
       - "80:80"
     networks:
