@@ -152,6 +152,11 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	right: 5vw;
 }
 
+.search-button{
+	bottom:1em;
+}
+
+
 /***********************
    End Search view
 ************************/

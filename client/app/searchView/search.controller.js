@@ -29,8 +29,10 @@
         } 
 
         function search(){
-           $log.debug('searching for %s', vm.searchModel);
-           $location.path('/search').search('q=' + vm.searchModel);
+            if (vm.searchModel!=undefined && vm.searchModel.trim() != ""){            
+                $log.debug('searching for %s', vm.searchModel);
+                $location.path('/search').search('q=' + vm.searchModel);
+            }         
         }
 
         function map(obj){

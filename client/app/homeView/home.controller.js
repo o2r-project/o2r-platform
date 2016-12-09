@@ -14,13 +14,19 @@
         activate();
         ///////////
         
+        function tester(){
+            console.log("test")
+        }
+
         function activate(){
             header.setTitle('o2r - opening reproducible research');
         }
 
         function submitter(){
-            var _query = vm.searchModel.replace(/ /g, "+");
-            $location.path('/search').search('q=' + _query);
+            if (vm.searchModel!=undefined && vm.searchModel.trim() != ""){
+                var _query = vm.searchModel.replace(/ /g, "+");
+                $location.path('/search').search('q=' + _query);
+            }
         };
     }
 })();
