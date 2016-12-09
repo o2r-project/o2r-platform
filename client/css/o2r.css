@@ -66,6 +66,12 @@ body{
 	margin-right: auto;
 }
 
+.erc-html{
+	min-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .erc-img{
 	max-width: 100%;
 }

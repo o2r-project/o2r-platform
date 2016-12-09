@@ -28,7 +28,7 @@
 			link: link
 		};
 
-		function link(scope, iElement, attrs){
+		function link(scope, iElement, attrs){		
 			$log.debug('in o2rDisplayFiles');
 			scope.file;
 			scope.sizeRestriction = env.sizeRestriction;
@@ -47,10 +47,10 @@
 
 					scope.useHljs = useHljs();
 					
-					function useHljs(){
-						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video')){
+					function useHljs(){						
+						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html')){
 							return false;
-						}	
+						}
 						return true;
 					}
 					
