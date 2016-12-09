@@ -53,6 +53,15 @@ OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-
 # OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose-local.yml up
 ```
 
+On Windows the environmental variables must be passed seperately, followed by the docker-compose command:
+
+```powershell
+$env:OAUTH_CLIENT_ID = <...>
+$env:OAUTH_CLIENT_SECRET = <...>
+$env:OAUTH_URL_CALLBACK = <...>
+docker-compose --file test/docker-compose-db.yml up -d
+```
+
 The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").
 
 _Hint:_ You can remove the storage volumes by running `docker-compose down -v`
