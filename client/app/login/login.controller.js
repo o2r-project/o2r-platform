@@ -31,8 +31,10 @@
         }
 
         function search(query){
-            $location.path('/search').search('q=' + vm.searchInput);
-            vm.searchInput = null;
+            if (vm.searchInput!=undefined && vm.searchInput.trim() != ""){ 
+                $location.path('/search').search('q=' + vm.searchInput);
+                vm.searchInput = null;
+            }
         }
 
         function showBar(){

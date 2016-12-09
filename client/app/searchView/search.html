@@ -10,7 +10,15 @@
 	<span flex></span>
 	<!-- End search bar -->
 
-	<div layout="row" flex-offset="5">
+	<!-- Show only in case of no search results -->
+	<div layout="row" ng-if="vm.allPubs.data.hits.hits.length<=0">
+		<div>
+			<h3>No results. Please try again.</h3>
+		</div>
+	</div>
+
+	<!-- Visible if there are search results -->
+	<div layout="row" flex-offset="5" ng-if="vm.allPubs.data.hits.hits.length>0">
 		<!-- search results -->
 		<div layout="column" flex="50">
 			<span flex-offset="5">Results for: "{{vm.searchTerm}}"</span>
