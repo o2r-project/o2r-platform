@@ -25,12 +25,12 @@
 
         /*
         * @Desc httpRequest for getting information about a job status
-        * @Param id, id of compendium
+        * @Param query, object containing query information for httpRequest
         */
-        function callJobs(id){
+        function callJobs(query){
             var deferred = $q.defer();
             httpRequests
-                .listJobs({'compendium_id': id})
+                .listJobs(query)
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);

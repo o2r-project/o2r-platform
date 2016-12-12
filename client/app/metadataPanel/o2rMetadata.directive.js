@@ -50,7 +50,7 @@
             }
 
             function setCompStatus (id){
-                jobs.callJobs(id)
+                jobs.callJobs({compendium_id : id})
                     .then(function(res){
                         scope.comp.status = res.data;
                         $log.debug('MetadataCtrl, comp.status: %o', scope.comp.status);

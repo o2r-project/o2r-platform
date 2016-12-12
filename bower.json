@@ -27,7 +27,6 @@
     "angular-material": "^1.1.1",
     "material-design-icons": "^3.0.1",
     "angular-material-data-table": "^0.10.9",
-    "angular-resource": "^1.6.0",
     "angular-utils-pagination": "0.11.0"
   },
   "devDependencies": {

@@ -79,7 +79,7 @@
 
 		/*
 		* @Desc httpRequest for retrieving a list of jobs
-		* @Param query, object with attributes compendium_id, start, limit
+		* @Param query, object with attributes compendium_id, start, limit, status
 		*/
 		function listJobs(query){
 			var _url = env.api + '/job';
@@ -97,7 +97,12 @@
 					_url += param + 'start=' + query.start;
 					param = '&';
 				}
+				if(typeof query.status !== 'undefined'){
+					_url += param + 'status=' + query.status;
+					param = '&';
+				}
 			}
+			console.log('calling listJobs with %s', _url);
 			return $http.get(_url);
 		}
 
