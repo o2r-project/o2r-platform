@@ -68,8 +68,12 @@
                 $scope.onLoad = false;
                 $scope.doneButton = false;
                 $scope.fileSelected = false;
+                $scope.uploadError;
                 $scope.submit = function(){
                     if($scope.form.file.$valid && $scope.file){
+                        //deactivate submit button
+                        $scope.fileSelected = false;
+
                         $scope.onLoad = true;
                         uploader($scope.file);
                     }
@@ -99,14 +103,17 @@
                             $scope.doneButton = true;
                             metadata.callMetadata_author(authorId);
                             $scope.checkUpload = true;
+                            file.progress = 100;
                         }
                     }
                     function errorCallback(response){
+                        file.progress = 100;
                         $scope.doneButton = true;
                         $scope.checkUpload = false;
+                        $scope.uploadError = response;
                     }
                     function progress(evt){
-                        file.progress = Math.min(100, parseInt(100.0 * evt.loaded/evt.total));
+                        file.progress = parseInt(95.0 * evt.loaded/evt.total);
                     }
                     function execJobCallback(response){
                         $log.debug('upload execJobCallback: %o', response);
@@ -114,6 +121,7 @@
                             $scope.doneButton = true;
                             metadata.callMetadata_author(authorId);
                             $scope.checkUpload = true;
+                            file.progress = 100;
                         }
                     }
                 }

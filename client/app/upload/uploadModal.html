@@ -36,6 +36,7 @@
 				</div>
 				<div ng-show="doneButton && !checkUpload">
 					<p>File upload failed!</p>
+					<p>{{uploadError.data.error}}</p>
 				</div>
 
 				<div id="upmod-progress" ng-show="onLoad" flex="90">
