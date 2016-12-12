@@ -61,15 +61,16 @@
         * @Param status, object containing status information
         */
         function checkStatus(object){
+            var status = ['success', 'failure', 'running'];
             var allSuccess = true;
             var oneFail = false;
             for(var step in object){
                 if(object[step].status != 'success') allSuccess = false;
                 if(object[step].status == 'failure') oneFail = true;
             }
-            if(allSuccess) return true;
-            if(oneFail) return true;
-            return false;
+            if(allSuccess) return status[0];
+            if(oneFail) return status[1];
+            return status[2];
         }
 
         /*
