@@ -122,6 +122,18 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	right: 1vw;
 	width: 25vw;
 }
+
+.author-H3ToTheBack{
+	display: inline-block;
+	z-index: 0;
+	background-color: red;
+}
+
+.author-AToTheFront{
+	width: fit-content;
+	z-index: 1;
+	background-color: blue;
+}
 /***********************
    End Author-Landingpage view
 ************************/
@@ -230,3 +242,4 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 /***********************
    End pagination of search results
 ************************/
+

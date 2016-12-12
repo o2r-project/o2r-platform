@@ -43,7 +43,7 @@
 					<md-divider></md-divider>
 					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
-							<h3 flex>{{pub.id}}</h3>
+							<div flex><md-button ui-sref="erc({ercid: pub.id})">{{pub.id}}</md-button></div>
 							<h4 flex>{{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
 							<p flex>{{pub.user}}</p>
 						</div>
