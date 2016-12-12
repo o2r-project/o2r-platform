@@ -13,7 +13,6 @@
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.allPubs = map(searchResults);
-        console.log(vm.allPubs.data.hits.hits.length>0)
         vm.allPubs.data.hits.hits.length>0 ? vm.selectedComp = vm.allPubs.data.hits.hits[0]._source : null;
         vm.selectComp = (comp) => {vm.selectedComp = comp};
         vm.submit = search;
