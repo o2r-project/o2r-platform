@@ -23,7 +23,8 @@
             'ngAria', 
             'ngMaterial',
             'angulartics', 
-            'angulartics.piwik'])
+            'angulartics.piwik',
+            'ngResource'])
         .constant('env', env)
         .constant('icons', icons())
         .config(config);
