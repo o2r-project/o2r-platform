@@ -19,3 +19,5 @@ karma.conf.js
 client/app/ercView/publications.spec.js
 package.json
 
+# ignore workspace settings
+.vscode/

@@ -25,12 +25,12 @@
 
         /*
         * @Desc httpRequest for getting information about a job status
-        * @Param id, id of compendium
+        * @Param query, object containing query information for httpRequest
         */
-        function callJobs(id){
+        function callJobs(query){
             var deferred = $q.defer();
             httpRequests
-                .listJobs({'compendium_id': id})
+                .listJobs(query)
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);
@@ -61,15 +61,16 @@
         * @Param status, object containing status information
         */
         function checkStatus(object){
+            var status = ['success', 'failure', 'running'];
             var allSuccess = true;
             var oneFail = false;
             for(var step in object){
                 if(object[step].status != 'success') allSuccess = false;
                 if(object[step].status == 'failure') oneFail = true;
             }
-            if(allSuccess) return true;
-            if(oneFail) return true;
-            return false;
+            if(allSuccess) return status[0];
+            if(oneFail) return status[1];
+            return status[2];
         }
 
         /*

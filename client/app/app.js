@@ -219,19 +219,25 @@
     }
 
     //TODO
-    //httpRequest needs to be changed to last finished analysis as soon as it is implemented
+    //query param status might need to be changed to filter all finished jobs
     compFJobService.$inject = ['$stateParams', 'jobs'];
     function compFJobService($stateParams, jobs){
         var ercId = $stateParams.ercid;
-        return jobs.callJobs(ercId);
+        var query = {
+            compendium_id: ercId,
+            status: 'success'
+        };
+        return jobs.callJobs(query);
     }
 
-    //TODO
-    //httpRequest needs to be changed to last started analysis as soon as it is implemented
     compSJobService.$inject = ['$stateParams', 'jobs'];
     function compSJobService($stateParams, jobs){
         var ercId = $stateParams.ercid;
-        return jobs.callJobs(ercId);
+        var query = {
+            compendium_id: ercId,
+            status: 'running'
+        };
+        return jobs.callJobs(query);
     }
 
     searchResultsService.$inject = ['$stateParams', '$log', 'metadata'];

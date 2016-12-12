@@ -90,7 +90,6 @@
             scope.checkIcon = checkIcon;
             scope.iconClass = iconClass;
             scope.execJob = ex;
-            scope.jobDone = true;
             scope.gotSocket = false;
             scope.resultInfo = resultInfo;
             
@@ -113,7 +112,6 @@
 
                 try {
                     scope.lStar = JSON.parse(scope.lStarted);
-                    scope.jobDone = jobs.checkStatus(scope.lStar.steps);
                 } catch (error) {
                     $log.debug(error);
                     scope.lStar = {};
@@ -121,18 +119,27 @@
 
                 socket.on('document', function(data){
                     scope.gotSocket = true;
-                    stepUpdater(data, scope.lStar.steps);
+                    if(data.hasOwnProperty('steps')){
+                        stepUpdater(data, scope.lStar.steps);
+                    } else if (data.hasOwnProperty('status')){
+                        $log.debug('setting overall status to %s', data.status);
+                        scope.lStar.status = data.status;
+                    }
                 });
 
                 socket.on('set', function(data){
-                    $log.debug('socket lStar %s', JSON.stringify(scope.lStar));
                     scope.gotSocket = true;
-                    stepUpdater(data, scope.lStar.steps);
+                    if(data.hasOwnProperty('steps')){
+                        stepUpdater(data, scope.lStar.steps);
+                    } else if (data.hasOwnProperty('status')){
+                        $log.debug('setting overall status to %s', data.status);
+                        scope.lStar.status = data.status;
+                    }
                 });
             }
 
             function ex(){
-                scope.lStar = new Object();
+                scope.lStar = {};
                 scope.lStar.steps = {
                     validate_bag: {
                         status: ''
@@ -153,9 +160,8 @@
                         status: ''
                     }
                 };
-                $log.debug('new lStar: %s', JSON.stringify(scope.lStar));
-                scope.jobDone = false;
-                scope.lStar = jobs.executeJob(scope.$parent.vm.ercId);
+                scope.lStar.status = '';
+                jobs.executeJob(scope.$parent.vm.ercId);
             }
 
             function checkIcon(status, step, pos){
@@ -182,48 +188,66 @@
 
             function resultInfo(obj){
                 var result;
-                var allSuccess = true;
-                var oneFail = false;
                 var states = {
                     success: 'Analysis finished successfully.',
                     failure: 'Analysis failed.',
-                    running: 'Analysis running'
+                    running: 'Analysis is running.'
                 };
-
-                for(var step in obj){
-                    if(obj[step].status != 'success') allSuccess = false;
-                    if(obj[step].status == 'failure') oneFail = true;
+                switch(obj){
+                    case 'success':
+                        result = states.success;
+                        break;
+                    case 'failure':
+                        result = states.failure;
+                        break;
+                    default:
+                        result = states.running;
+                        break;
                 }
-                if(allSuccess) return states.success;
-                if(oneFail) return states.failure;
-                return states.running;                
+                return result;                
             }
 
             function stepUpdater(data, o){
-                if(data.steps.cleanup){
+                if(data.steps.hasOwnProperty('cleanup')){
                     o.cleanup.status = data.steps.cleanup.status;
                     $log.debug('updated cleanup to %o', data.steps.cleanup.status);
-                } else if(data.steps.image_execute){
-                    o.image_execute.status = data.steps.image_execute.status;
-                    $log.debug('updated image_execute to %o', data.steps.image_execute.status);
-                } else if(data.steps.image_build){
-                    if(data.steps.image_build.status){
+                } else if(data.steps.hasOwnProperty('image_execute')){
+                    if(data.steps.image_execute.hasOwnProperty('status')){
+                        o.image_execute.status = data.steps.image_execute.status;
+                        $log.debug('updated image_execute to %o', data.steps.image_execute.status);
+                    }
+                } else if(data.steps.hasOwnProperty('image_build')){
+                    if(data.steps.image_build.hasOwnProperty('status')){
                         o.image_build.status = data.steps.image_build.status;
                         $log.debug('updated image_build to %o', data.steps.image_build.status);
                     }
-                } else if(data.steps.validate_bag){
+                } else if(data.steps.hasOwnProperty('validate_bag')){
                     o.validate_bag.status = data.steps.validate_bag.status;
                     $log.debug('updated validate_bag to %o', data.steps.validate_bag.status);
-                } else if(data.steps.validate_compendium){
+                } else if(data.steps.hasOwnProperty('validate_compendium')){
                     o.validate_compendium.status = data.steps.validate_compendium.status;
                     $log.debug('updated validate_compendium to %o', data.steps.validate_compendium.status);
-                } else if(data.steps.image_prepare){
+                } else if(data.steps.hasOwnProperty('image_prepare')){
                     o.image_prepare.status = data.steps.image_prepare.status;
                     $log.debug('updated image_prepare to %o', data.steps.image_prepare.status);
                 }
-                $log.debug('checkStatus with %o returning %s',o, jobs.checkStatus(o));
-                scope.jobDone = jobs.checkStatus(o);
                 return;
+            }
+
+            function isRunning(o){
+                var isRunning;
+                switch(o){
+                    case 'success':
+                        isRunning = false;
+                        break;
+                    case 'failure':
+                        isRunning = false;
+                        break;
+                    default:
+                        isRunning = true;
+                        break;
+                }
+                return isRunning;
             }
         }
     }
