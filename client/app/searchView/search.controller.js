@@ -13,7 +13,7 @@
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.allPubs = map(searchResults);
-        vm.selectedComp = vm.allPubs.data.hits.hits[0]._source;
+        vm.allPubs.data.hits.hits.length>0 ? vm.selectedComp = vm.allPubs.data.hits.hits[0]._source : null;
         vm.selectComp = (comp) => {vm.selectedComp = comp};
         vm.submit = search;
        
@@ -29,8 +29,10 @@
         } 
 
         function search(){
-           $log.debug('searching for %s', vm.searchModel);
-           $location.path('/search').search('q=' + vm.searchModel);
+            if (vm.searchModel!=undefined && vm.searchModel.trim() != ""){            
+                $log.debug('searching for %s', vm.searchModel);
+                $location.path('/search').search('q=' + vm.searchModel);
+            }         
         }
 
         function map(obj){

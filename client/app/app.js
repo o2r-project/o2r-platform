@@ -24,7 +24,8 @@
             'ngMaterial',
             'angulartics', 
             'angulartics.piwik',
-            'ngResource'])
+            'ngResource',
+            'angularUtils.directives.dirPagination'])
         .constant('env', env)
         .constant('icons', icons())
         .config(config);
