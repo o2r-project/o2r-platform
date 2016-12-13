@@ -17,7 +17,8 @@
 			listSingleJob: listSingleJob,
 			getLoggedUser: getLoggedUser,
 			searchComp: searchComp,
-			toZenodo: toZenodo
+			toZenodo: toZenodo,
+			ercInZenodo: ercInZenodo
 		};
 
 		return service;
@@ -129,11 +130,19 @@
 		 * @Param query, String containing search term
 		 */
 		function searchComp(query){
-			var _url = env.api + '/search?size=100&q=';
+			var _url = env.api + '/search?size=100&from=0&q=';
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
 		}
+
+		function ercInZenodo(compendiumID){
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
+			//Wait for server implementation
+			//var shipment = $http.get(_url);
+			//return shipment.status != "delivered";
+			return true;
+		}	
 
 		function toZenodo(compendiumID){
 			//$http.post("http://o2r.uni-muenster.de/api/v1/shipment", {compendium_id:compendiumID, recipient:"zenodo"});

@@ -31,7 +31,7 @@
         vm.sendToZenodo = sendToZenodo;
 
         //To do:query to shipper api if ERC is already in zenodo
-        vm.notArchived = true;
+        vm.stillToArchive = stillToArchive;
 
         $log.debug('ErcCtrl, publication: %o', vm.publication);
 
@@ -43,8 +43,13 @@
             header.setTitle('o2r - Compendium'); 
         }
 
+        function stillToArchive(){
+            httpRequests.ercInZenodo(vm.ercId);
+            return true;
+        }    
+
         function sendToZenodo(compendiumID){
-            httpRequests.toZenodo(compendiumID);
+            httpRequests.toZenodo(vm.ercId);
         }
 
         function setOne(path){
