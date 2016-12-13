@@ -92,6 +92,7 @@
             scope.execJob = ex;
             scope.gotSocket = false;
             scope.resultInfo = resultInfo;
+            scope.isRunning = isRunning;
             
             activate();
 
@@ -235,19 +236,8 @@
             }
 
             function isRunning(o){
-                var isRunning;
-                switch(o){
-                    case 'success':
-                        isRunning = false;
-                        break;
-                    case 'failure':
-                        isRunning = false;
-                        break;
-                    default:
-                        isRunning = true;
-                        break;
-                }
-                return isRunning;
+                if(o == 'running') return true;
+                return false;
             }
         }
     }
