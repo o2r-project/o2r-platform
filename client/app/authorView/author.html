@@ -48,8 +48,10 @@
 								<h4 flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
 								<h4 flex><b>by</b> {{pub.user}}</h4>
 							</div>
-							<md-button><md-icon aria-label md-svg-src="{{vm.icons.forward}}" ui-sref="erc({ercid: pub.id})"></md-icon></md-button>
-							<md-button><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}" ng-click="vm.selectComp(pub)"></md-icon></md-button>
+							<div>
+							<md-button ui-sref="erc({ercid: pub.id})"><md-icon aria-label md-svg-src="{{vm.icons.forward}}"></md-icon></md-button>
+							<md-button ng-click="vm.selectComp(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
+							</div>
 						</div>
 						<md-divider ng-if="!($last)"></md-divider>
 					</md-list-item>
