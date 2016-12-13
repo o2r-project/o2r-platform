@@ -16,7 +16,8 @@
 			listJobs: listJobs,
 			listSingleJob: listSingleJob,
 			getLoggedUser: getLoggedUser,
-			searchComp: searchComp
+			searchComp: searchComp,
+			toZenodo: toZenodo
 		};
 
 		return service;
@@ -132,6 +133,11 @@
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
+		}
+
+		function toZenodo(compendiumID){
+			//$http.post("http://o2r.uni-muenster.de/api/v1/shipment", {compendium_id:compendiumID, recipient:"zenodo"});
+			window.open("http://o2r.uni-muenster.de/api/v1/shipment?compendium_id="+compendiumID +"&recipient=zenodo");		
 		}
 	};
 })();

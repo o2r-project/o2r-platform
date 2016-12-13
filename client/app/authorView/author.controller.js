@@ -63,6 +63,7 @@
             function ModalInstanceCtrl($scope, $mdDialog, Upload, env, icons, jobs){
                 $scope.icons = icons;
                 $scope.checkRunAnalysis = true;
+                $scope.shipToZenodo = false;
                 $scope.cancel = () => {$mdDialog.cancel()};
                 $scope.selected = (file) => {$scope.f = file;};
                 $scope.onLoad = false;

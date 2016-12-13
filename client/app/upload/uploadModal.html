@@ -26,11 +26,17 @@
 				</div>
 
 				<div ng-hide="doneButton" class="upmod-checkbox">
-					<md-checkbox class="md-primary" ng-model="checkRunAnalysis">
-						Automatically start analysis after upload
-					</md-checkbox>
-				</div>
-
+					<div>	
+						<md-checkbox class="md-primary" ng-model="checkRunAnalysis">
+							Automatically start analysis after upload
+						</md-checkbox>
+					</div>
+					<div>	
+						<md-checkbox class="md-primary" ng-model="shipToZenodo">
+							Ship to Zenodo
+						</md-checkbox>
+					</div>
+				</div>		
 				<div ng-show="doneButton && checkUpload">
 					<p>File uploaded successfully</p>
 				</div>
