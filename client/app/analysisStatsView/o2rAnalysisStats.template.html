@@ -1,6 +1,6 @@
 <md-card>
     <md-card-content layout="column">
-        <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status)" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
+        <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status) || !$parent.$$prevSibling.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
         <div>
             <h3>Last finished analysis</h3>
             <table ng-hide="$paren.vm.isEmpty(lFin.steps)">

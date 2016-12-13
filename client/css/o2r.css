@@ -72,6 +72,10 @@ body{
 	margin-right: auto;
 }
 
+.erc-html iframe{
+	border-style: none;
+}
+
 .erc-img{
 	max-width: 100%;
 }
