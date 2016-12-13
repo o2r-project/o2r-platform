@@ -36,16 +36,20 @@
 					<md-list-item class="md-2-line">
 						<div class="md-list-item-text" layout="row">
 							<h3 flex>TITLE</h3>
-							<h4 flex>CREATED ON</h4>
-							<p flex>USER</p>
+							<!--<h4 flex>CREATED ON</h4>-->
+							<!--<p flex>USER</p>-->
 						</div>
 					</md-list-item>
 					<md-divider></md-divider>
 					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
-							<div flex><md-button ui-sref="erc({ercid: pub.id})">{{pub.id}}</md-button></div>
-							<h4 flex>{{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
-							<p flex>{{pub.user}}</p>
+							<div flex>
+								<md-button ui-sref="erc({ercid: pub.id})"><b class="search-clickOnName">{{pub.id}}</b></md-button>
+								<h4 flex>Created on: {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
+								<h4 flex>by {{pub.user}}</h4>
+							</div>
+							<md-button><md-icon aria-label md-svg-src="{{vm.icons.forward}}" ui-sref="erc({ercid: pub.id})"></md-icon></md-button>
+							<md-button><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}" ng-click="vm.selectComp(pub)"></md-icon></md-button>
 						</div>
 						<md-divider ng-if="!($last)"></md-divider>
 					</md-list-item>
