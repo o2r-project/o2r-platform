@@ -193,7 +193,9 @@
             {name: 'search', category: 'action', fn: 'search'},
             {name: 'copy', category: 'av', fn: 'library_books'},
             {name: 'done', category: 'action', fn: 'done'},
-            {name: 'fail', category: 'content', fn: 'clear'}
+            {name: 'fail', category: 'content', fn: 'clear'},
+            {name: 'forward', category: 'content', fn: 'forward'},
+            {name: 'info_outline', category: 'action', fn: 'info_outline'}
         ];
 
         for(var i in icons){

@@ -27,8 +27,12 @@
 			<md-card class="o2r-pointer" dir-paginate="pub in vm.allPubs.data.hits.hits | itemsPerPage:10" ng-click="vm.selectComp(pub._source)">				
 				<md-card-title>
 					<md-card-title-text >
-						<span class="md-headline">{{pub._source.compendium_id}}</span>
+						<div>
+							<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><b class="search-clickOnName">{{pub._source.compendium_id}}</b></md-button>
+						</div>
 					</md-card-title-text>
+					<md-button><md-icon aria-label md-svg-src="{{vm.icons.forward}}" ui-sref="erc({ercid: pub._source.compendium_id})"></md-icon></md-button>
+					<md-button><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}" ng-click="vm.selectComp(pub._source)"></md-icon></md-button>
 				</md-card-title>
 				<md-card-content>
 					<span class="md-subhead">{{pub._source.files.path}} | {{pub._source.created | date : 'yyyy-MM-dd HH:mm'}}</span>

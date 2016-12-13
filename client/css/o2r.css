@@ -168,6 +168,9 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	bottom:1em;
 }
 
+.search-clickOnName{
+	font-size: 1.5em;
+}
 
 /***********************
    End Search view
