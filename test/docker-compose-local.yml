@@ -16,30 +16,7 @@
 ---
 version: '2'
 
-#### Usage ####
-#
-# IMPORTANT: To use MongoDB with its replication feature, it is most feasible to start and run the container manually, and re-use that database container between runs.
-#
-# Once:
-# - run mongo:3.3                                 $ docker run --name test_mongodb_1 --detach mongo:3.3 --replSet o2r
-# - run mongo inside the container                $ docker exec -it test_mongodb_1 mongo
-# - configure replication                         $> rs.status();
-#                                                 $> rs.conf();
-#                                                 $> rs.initiate();
-#                                                 $> rs.slaveOk();
-#                                                 $> rs.status();
-# - stop the container                            $ docker stop test_mongodb_1
-# - alternatively, run all commands in 2nd shell  $ docker exec -it test_mongodb_1 mongo --verbose --host db --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'
-#
-# Every time:
-# - run docker-compose w/ config parameters       $ CLIENT_ID=<...> CLIENT_SECRET=<...> AUTH_CALLBACK_URL=<...> docker-compose up
-# - run configured MongoDB joining the network    $ docker start --name test_mongodb_1 --detach -p 27017:27017 --network o2rnet mongo:3.3 --replSet o2r
-#
-# ALTERNATIVE: run the docker-compose-db.yml file in this directory
-
 volumes:
-  # docker volume ls
-  # docker volume inspect test_storage
   o2r_test_storage: {}
 
 networks:
