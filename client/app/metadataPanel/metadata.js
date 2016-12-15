@@ -66,7 +66,7 @@
 			var deferred = $q.defer();
 			var comp_meta = [];
 			httpRequests
-				.searchComp(query)
+				.searchComp(query, 0)
 				.then(cb1)
 				.catch(errorHandler);
 			return deferred.promise;

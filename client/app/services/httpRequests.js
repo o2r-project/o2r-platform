@@ -130,7 +130,7 @@
 		 * @Param query, String containing search term
 		 */
 		function searchComp(query, startIndex){
-			var _url = env.api + '/search?size=10&from='+startIndex+'&q=';
+			var _url = env.api + '/search?size=100&from='+startIndex+'&q=';
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
