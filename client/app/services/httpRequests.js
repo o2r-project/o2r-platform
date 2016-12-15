@@ -129,8 +129,8 @@
 		 * @Desc calling the elasticsearch api-endpoint for retrieving search results
 		 * @Param query, String containing search term
 		 */
-		function searchComp(query){
-			var _url = env.api + '/search?size=100&from=0&q=';
+		function searchComp(query, startIndex){
+			var _url = env.api + '/search?size=10&from='+startIndex+'&q=';
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
@@ -145,7 +145,8 @@
 		}	
 
 		function toZenodo(compendiumID){
-			//$http.post("http://o2r.uni-muenster.de/api/v1/shipment", {compendium_id:compendiumID, recipient:"zenodo"});
+			var _url = env.api + '/shipment';
+			//$http.post(_url, {compendium_id:compendiumID, recipient:"zenodo"});
 			window.open("http://o2r.uni-muenster.de/api/v1/shipment?compendium_id="+compendiumID +"&recipient=zenodo");		
 		}
 	};

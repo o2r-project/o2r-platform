@@ -5,9 +5,9 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header', 'socket', 'httpRequests'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header', 'socket', 'httpRequests', 'login'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header, socket, httpRequests){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header, socket, httpRequests, login){
         var vm = this;
         var originatorEv;
         vm.fJob = compFJob.data;
@@ -29,6 +29,7 @@
         };
 
         vm.sendToZenodo = sendToZenodo;
+        vm.loggedIn = login.isLoggedIn();
 
         //To do:query to shipper api if ERC is already in zenodo
         vm.stillToArchive = stillToArchive;
