@@ -61,29 +61,20 @@
 		}
 
 		// httpRequest for Metadata of all compendia matching a search query
-		function callMetadata_search(searchTerm, startIndex, tempResults){
+		function callMetadata_search(searchTerm){
 			var query = searchTerm || '*';
-			startIndex==undefined ? startIndex=0 : null;
 			var deferred = $q.defer();
+			var comp_meta = [];
 			httpRequests
-				.searchComp(query,startIndex)
+				.searchComp(query, 0)
 				.then(cb1)
 				.catch(errorHandler);
 			return deferred.promise;
-			
+
 			function cb1(response){
-				
-				$log.debug('result of search: %o', response);		
-				tempResults==undefined ? tempResults=response : response.data.hits.hits = tempResults.data.hits.hits.concat(response.data.hits.hits);
-				if (response.data.hits.hits.length < response.data.hits.total){
-					startIndex+=10; 
-					callMetadata_search(searchTerm, startIndex, response);
-					deferred.resolve(response);
-					
-				}else{
-					console.log("ende")
-										
-				} 	
+				comp_meta = response.data.hits.hits;
+				$log.debug('result of search: %o', response);
+				deferred.resolve(response);
 			}
 
 			function errorHandler(e){
