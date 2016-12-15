@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('metadata', metadata);
 		
-	metadata.$inject = ['$http', '$rootScope','$q', '$log', 'httpRequests'];
+	metadata.$inject = ['$http', '$rootScope','$q', '$log', 'httpRequests', 'ngProgressFactory'];
 	
-	function metadata($http, $rootScope, $q, $log, httpRequests){
+	function metadata($http, $rootScope, $q, $log, httpRequests, ngProgressFactory){
 		var service = {
 			callMetadata_author: callMetadata_author,
 			callMetadata_search: callMetadata_search
@@ -65,6 +65,9 @@
 			var query = searchTerm || '*';
 			var deferred = $q.defer();
 			var comp_meta = [];
+			var progressbar = ngProgressFactory.createInstance();
+				progressbar.setHeight('3px');
+				progressbar.start();
 			httpRequests
 				.searchComp(query, 0)
 				.then(cb1)
@@ -75,11 +78,13 @@
 				comp_meta = response.data.hits.hits;
 				$log.debug('result of search: %o', response);
 				deferred.resolve(response);
+				progressbar.complete();
 			}
 
 			function errorHandler(e){
 				$log.debug('search error: %o', e);
 				deferred.resolve(e);
+				progressbar.complete();
 			}
 		}
 	}
