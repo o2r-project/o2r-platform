@@ -10,8 +10,8 @@
         .module('starter')
         .directive('o2rAnalysisStats', o2rAnalysisStats);
 
-    o2rAnalysisStats.$inject = ['$log', 'jobs', 'icons', 'socket'];
-    function o2rAnalysisStats($log, jobs, icons, socket){
+    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket'];
+    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket){
         return{
             restrict: 'E',
             scope: {
@@ -212,6 +212,7 @@
                 if(data.steps.hasOwnProperty('cleanup')){
                     o.cleanup.status = data.steps.cleanup.status;
                     $log.debug('updated cleanup to %o', data.steps.cleanup.status);
+                    $rootScope.progressbar.complete();
                 } else if(data.steps.hasOwnProperty('image_execute')){
                     if(data.steps.image_execute.hasOwnProperty('status')){
                         o.image_execute.status = data.steps.image_execute.status;

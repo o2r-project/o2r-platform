@@ -6,10 +6,12 @@
 					TODO:
 					as soon as a comp title will be available, change to comp.title
 				-->
-			<h4 class="white-font">{{comp.id}}</h4>
+			<h4 class="white-font">{{comp.id}}
+			</h4>
 			</div>
 		</md-toolbar>
 		<md-card-content layout="column">
+			<md-button class="md-primary md-raised white-font" ui-sref="erc({ercid: comp.id})">Go To</md-button>
 			<div ng-repeat="(key, value) in comp">
 				<span ng-hide="isSpecial(key)"><h3>{{key | upperCase}}</h3>{{value}}</span>
 				<span ng-show="isSpecial(key) && key == 'created'"><h3>{{key | upperCase}}</h3>{{value | date : 'yyyy-MM-dd HH:mm'}}</span>
@@ -20,7 +22,6 @@
 						<strong>{{key}}: </strong>{{value.status}}<br/>
 					</span>
 			</div>
-			<md-button class="md-primary md-raised white-font" ui-sref="erc({ercid: comp.id})">Go To</md-button>
 		</md-card-content>
 	</md-card>
 </div>
