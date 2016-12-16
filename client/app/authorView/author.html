@@ -44,7 +44,7 @@
 					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
 							<div flex>
-								<md-button ui-sref="erc({ercid: pub.id})"><b class="search-clickOnName">{{pub.id}}</b></md-button>
+								<md-button ui-sref="erc({ercid: pub.id})"><b class="search-clickOnName">{{pub.metadata.o2r.title}}</b></md-button>
 								<h4 flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
 								<h4 flex><b>by</b> {{pub.user}}</h4>
 							</div>
