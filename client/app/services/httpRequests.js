@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', 'env'];
+	httpRequests.$inject = ['$http', 'env', '$window'];
 		
-	function httpRequests($http, env){
+	function httpRequests($http, env, $window){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -144,10 +144,16 @@
 			return true;
 		}	
 
-		function toZenodo(compendiumID){
+		function toZenodo(compendiumID) {
 			var _url = env.api + '/shipment';
-			//$http.post(_url, {compendium_id:compendiumID, recipient:"zenodo"});
-			window.open("http://o2r.uni-muenster.de/api/v1/shipment?compendium_id="+compendiumID +"&recipient=zenodo");		
+			$http.post(_url, "compendium_id=" + encodeURIComponent(compendiumID) + "&recipient=" + encodeURIComponent("zenodo"))
+				.then(function (response) {
+					console.log(response);
+					$window.open(_url + '/' + response.data.id);
+				},
+				function (response) {
+					console.log(response);
+				});		
 		}
 	};
 })();
