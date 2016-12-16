@@ -142,19 +142,23 @@
 
     <!-- Piwik -->
     <script type="text/javascript">
+        if (window.__env.piwik) {
         const piwik = {};
         piwik.url = window.__env.piwik || "//o2r.uni-muenster.de/piwik/";
 
         var _paq = _paq || [];
         //_paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
-        (function() {
-            var u=piwik.url;
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            (function () {
+                var u = piwik.url;
+                _paq.push(['setTrackerUrl', u + 'piwik.php']);
             _paq.push(['setSiteId', '1']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+                g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'piwik.js'; s.parentNode.insertBefore(g, s);
         })();
+        } else {
+            console.log('piwik not configuree, not loading tracking files');
+        }
     </script>
     <!-- End Piwik Code -->
 </body>
