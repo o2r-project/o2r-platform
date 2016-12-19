@@ -5,11 +5,10 @@
         .module('starter')
         .controller('ErcCtrl', ErcCtrl);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header', 'socket'];
+    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header, socket){
+    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header){
         var vm = this;
-        var originatorEv;
         vm.fJob = compFJob.data;
         vm.sJob = compSJob.data;
         vm.icons = icons;
@@ -24,7 +23,6 @@
             dirSelectable: false
         };
         vm.openMenu = function($mdOpenMenu, ev){
-            originatorEv = ev;
             $mdOpenMenu(ev);
         };
 

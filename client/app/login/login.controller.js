@@ -30,7 +30,7 @@
             login.getUserCall();
         }
 
-        function search(query){
+        function search(){
             if (vm.searchInput!=undefined && vm.searchInput.trim() != ""){ 
                 $location.path('/search').search('q=' + vm.searchInput);
                 vm.searchInput = null;

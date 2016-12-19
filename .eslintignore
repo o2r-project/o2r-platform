@@ -1,0 +1,5 @@
+#ignore configSample.js
+client/app/config/configSample.js
+
+# ignore spec file for now
+client/app/ercView/publications.spec

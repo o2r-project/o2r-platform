@@ -8,7 +8,6 @@
 	publications.$inject = ['$q','$log', 'httpRequests'];
 
 	function publications($q, $log, httpRequests){
-		var publications;
 		var pub = {};
 		var service = {
 			getContentById: findContent,

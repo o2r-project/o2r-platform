@@ -12,11 +12,8 @@
         vm.submit = submitter;
         
         activate();
-        ///////////
         
-        function tester(){
-            console.log("test")
-        }
+        ///////////
 
         function activate(){
             header.setTitle('o2r - opening reproducible research');
