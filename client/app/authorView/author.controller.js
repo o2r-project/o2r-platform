@@ -29,7 +29,7 @@
             //////////////////
 
             function activate(){
-                header.setTitle('o2r - Landingpage');
+                header.setTitle('o2r - Author page');
             }
             
             function getAuthorInfo(){

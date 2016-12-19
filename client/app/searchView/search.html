@@ -28,14 +28,14 @@
 				<md-card-title>
 					<md-card-title-text >
 						<div>
-							<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><b class="search-clickOnName">{{pub._source.compendium_id}}</b></md-button>
+							<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><b class="search-clickOnName">{{pub._source.metadata.o2r.title}}</b></md-button>
 						</div>
 					</md-card-title-text>
-					<md-button><md-icon aria-label md-svg-src="{{vm.icons.forward}}" ui-sref="erc({ercid: pub._source.compendium_id})"></md-icon></md-button>
-					<md-button><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}" ng-click="vm.selectComp(pub._source)"></md-icon></md-button>
+					<!--<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><md-icon aria-label md-svg-src="{{vm.icons.forward}}"></md-icon></md-button>-->
+					<md-button ng-click="vm.selectComp(pub._source)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
 				</md-card-title>
 				<md-card-content>
-					<span class="md-subhead">Created at: {{pub._source.created | date : 'yyyy-MM-dd HH:mm'}}</span>
+					<!--<span class="md-subhead"><b>Created on:</b> {{pub._source.created | date : 'yyyy-MM-dd HH:mm'}}</span>-->
 				</md-card-content>
 			</md-card>
 		</div>

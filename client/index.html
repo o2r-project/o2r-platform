@@ -7,12 +7,12 @@
 
 
 <!-- Libraries JavaScript -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="bower_components/angular/angular.min.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script src="bower_components/angular-aria/angular-aria.js"></script>
-<script src="bower_components/angular-material/angular-material.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
+<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
@@ -20,6 +20,7 @@
 <script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
+<script type="text/javascript" src="bower_components/ngprogress/build/ngprogress.js"></script>
 
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
@@ -28,6 +29,7 @@
 <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
+<link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -133,26 +135,30 @@
     <md-toolbar class="footer">
         <div class="md-toolbar-tools white-font">
             <span flex></span>
-            <a ui-sref="impressum"><small>Impressum</small></a>|<a ui-sref="privacy"><small>Privacy Policy</small></a>
+            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>
             <span flex></span>
         </div>
     </md-toolbar>
 
     <!-- Piwik -->
     <script type="text/javascript">
+        if (window.__env.piwik) {
         const piwik = {};
         piwik.url = window.__env.piwik || "//o2r.uni-muenster.de/piwik/";
 
         var _paq = _paq || [];
         //_paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
-        (function() {
-            var u=piwik.url;
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            (function () {
+                var u = piwik.url;
+                _paq.push(['setTrackerUrl', u + 'piwik.php']);
             _paq.push(['setSiteId', '1']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+                g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'piwik.js'; s.parentNode.insertBefore(g, s);
         })();
+        } else {
+            console.log('piwik not configuree, not loading tracking files');
+        }
     </script>
     <!-- End Piwik Code -->
 </body>

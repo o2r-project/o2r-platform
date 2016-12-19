@@ -24,7 +24,8 @@
             'ngMaterial',
             'angulartics', 
             'angulartics.piwik',
-            'angularUtils.directives.dirPagination'])
+            'angularUtils.directives.dirPagination',
+            'ngProgress'])
         .constant('env', env)
         .constant('icons', icons())
         .config(config);
@@ -195,7 +196,8 @@
             {name: 'done', category: 'action', fn: 'done'},
             {name: 'fail', category: 'content', fn: 'clear'},
             {name: 'forward', category: 'content', fn: 'forward'},
-            {name: 'info_outline', category: 'action', fn: 'info_outline'}
+            {name: 'info_outline', category: 'action', fn: 'info_outline'},
+            {name: 'rowing', category: 'action', fn: 'rowing'}
         ];
 
         for(var i in icons){

@@ -41,9 +41,37 @@ During development it is reasonable to disable the user tracking in the config f
 window.__env.disableTracking = true;
 ```
 
-### docker-compose
+### Development environment with docker-compose
 
-Start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose`:
+You can start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose` (version `>= 1.6.0`).
+
+There are several `docker-compose` configurations in the directory `test` of this repository starting a number of containers.
+
+- `docker-compose-db.yml` starts the required databases and configures them. While this could be integrated into the other configurations, it is a lot easier to make sure the DBs are up and running before starting the microservices.
+  - `mongodb` MongoDB
+  - `elasticsearch` Elasticsearch
+  - `mongoadmin` An instance of admin-mongo at port `1234`
+- `docker-compose.yml` starts all microservices as containers downloaded [from o2rproject on Docker Hub](https://hub.docker.com/r/o2rproject/) and mounts the client (the repository of this file) from the host into an nginx container. _The client must be build on the host!_
+- `docker-compose-local.yml` starts all microservices as containers that were build locally. Only useful for testing container-packaging of apps. The microservice image names are simply the name without leading `o2r-`, so `muncher`, `bouncer`, etc. The client is mounted from the host, see above.
+- `docker-compose-local-platformcontainer.yml` the same as the previous configuration, but the client is also started in a container based on the local image named `platform`.
+- `docker-compose-remote.yml` starts all microservices as well as the client as containers from Docker Hub.
+
+The configurations all use a common volume `o2r_test_storage` (with the global name `test_o2r_test_storage` because the name of the directory of this file is preprended by Docker), and a common network `o2rnet` (with the global name `test_o2rnet`).
+
+The volume and network can be inspected for development purposes:
+
+```bash
+docker volume ls
+docker volume inspect test_o2r_test_storage
+docker network ls
+docker network inspect test_o2rnet
+```
+
+#### Host preparation
+
+Elasticsearch requires the ability to create many memory-mapped areas ([mmaps](https://en.wikipedia.org/wiki/Mmap)s) for fast access. The usual max map count check setting is [configured to low on many computers](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/_maximum_map_count_check.html). You must configure `vm.max_map_count` on the host to be at least `262144`, e.g. on Linux via `sysctl`. You can find instructions for all hosts (including Docker Toolbox) in the [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/docker.html#docker-cli-run-prod-mode).
+
+#### Linux
 
 ```bash
 docker-compose --file test/docker-compose-db.yml up -d
@@ -53,7 +81,9 @@ OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-
 # OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose-local.yml up
 ```
 
-On Windows the environmental variables must be passed seperately, followed by the docker-compose command:
+#### Windows
+
+The environmental variables must be passed seperately on Windows, followed by the docker-compose command:
 
 ```powershell
 $env:OAUTH_CLIENT_ID = <...>

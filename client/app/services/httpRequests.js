@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', 'env'];
+	httpRequests.$inject = ['$http', 'env', '$window'];
 		
-	function httpRequests($http, env){
+	function httpRequests($http, env, $window){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -16,7 +16,9 @@
 			listJobs: listJobs,
 			listSingleJob: listSingleJob,
 			getLoggedUser: getLoggedUser,
-			searchComp: searchComp
+			searchComp: searchComp,
+			toZenodo: toZenodo,
+			ercInZenodo: ercInZenodo
 		};
 
 		return service;
@@ -127,11 +129,31 @@
 		 * @Desc calling the elasticsearch api-endpoint for retrieving search results
 		 * @Param query, String containing search term
 		 */
-		function searchComp(query){
-			var _url = env.api + '/search?size=100&q=';
+		function searchComp(query, startIndex){
+			var _url = env.api + '/search?size=100&from='+startIndex+'&q=';
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
+		}
+
+		function ercInZenodo(compendiumID){
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
+			//Wait for server implementation
+			//var shipment = $http.get(_url);
+			//return shipment.status != "delivered";
+			return true;
+		}	
+
+		function toZenodo(compendiumID) {
+			var _url = env.api + '/shipment';
+			$http.post(_url, "compendium_id=" + encodeURIComponent(compendiumID) + "&recipient=" + encodeURIComponent("zenodo"))
+				.then(function (response) {
+					console.log(response);
+					$window.open(_url + '/' + response.data.id);
+				},
+				function (response) {
+					console.log(response);
+				});		
 		}
 	};
 })();
