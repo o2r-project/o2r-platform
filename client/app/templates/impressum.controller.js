@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('ImpressumCtrl', ImpressumCtrl);
+        .controller('ImpressumController', ImpressumController);
 
-    ImpressumCtrl.$inject = ['header'];
+    ImpressumController.$inject = ['header'];
 
-    function ImpressumCtrl(header){
+    function ImpressumController(header){
         activate();
 
         //////////

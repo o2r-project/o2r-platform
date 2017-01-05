@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderCtrl as vm">
+<html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderController as vm">
 <head>	
 
 <title ng-bind="vm.page.title()"></title>
@@ -71,6 +71,7 @@
 
 <!-- Controllers -->
 <script src="app/ercView/erc.controller.js"></script>
+<script src="app/upload/uploadModal.controller.js"></script>
 <script src="app/authorView/author.controller.js"></script>
 <script src="app/searchView/search.controller.js"></script>
 <script src="app/homeView/home.controller.js"></script>
@@ -104,7 +105,7 @@
 
 
 </head>
-<body ng-controller="LoginCtrl as vm">
+<body ng-controller="LoginController as vm">
     <!-- header -->
     <md-toolbar class="o2r-fixed">
         <div class="md-toolbar-tools">

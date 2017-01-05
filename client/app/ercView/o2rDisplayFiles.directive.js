@@ -35,10 +35,10 @@
 
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
-					scope.file = JSON.parse(value);
+					scope.file = angular.fromJson(value);
 					var mime;
 					// if no mime type is defined hljs will be used for display
-					if(typeof scope.file.type !== 'undefined'){
+					if(angular.isDefined(scope.file.type)){
 						mime = scope.file.type.split('/');
 						scope.mime = mime[0];
 					} else {

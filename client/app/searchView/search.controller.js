@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('SearchCtrl', SearchCtrl);
+        .controller('SearchController', SearchController);
 
-    SearchCtrl.$inject = ['$scope', '$stateParams', '$log', '$location', 'searchResults', 'header', 'icons'];
+    SearchController.$inject = ['$scope', '$stateParams', '$log', '$location', 'searchResults', 'header', 'icons'];
 
-    function SearchCtrl($scope, $stateParams, $log, $location, searchResults, header, icons){
+    function SearchController($scope, $stateParams, $log, $location, searchResults, header, icons){
         var vm = this;
         
         vm.icons = icons;
@@ -29,7 +29,7 @@
         } 
 
         function search(){
-            if (vm.searchModel!=undefined && vm.searchModel.trim() != ""){            
+            if (angular.isDefined(vm.searchModel) && vm.searchModel.trim() != ""){            
                 $log.debug('searching for %s', vm.searchModel);
                 $location.path('/search').search('q=' + vm.searchModel);
             }         

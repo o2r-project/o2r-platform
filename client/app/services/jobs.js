@@ -102,7 +102,7 @@
             }
             function errorHandler(e){
                 $log.debug('executeJob errorHandler: %o', e);
-                progressbar.complete();
+                $rootScope.progressbar.complete();
                 deferred.resolve(e);
             }
         }

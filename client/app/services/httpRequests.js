@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', 'env', '$window'];
+	httpRequests.$inject = ['$http', '$log', 'env', '$window'];
 		
-	function httpRequests($http, env, $window){
+	function httpRequests($http, $log, env, $window){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -34,15 +34,15 @@
 			var param = '?';
 
 			if(query){
-				if(typeof query.limit !== 'undefined') {
+				if(angular.isDefined(query.limit)) {
 					_url += param + 'limit=' + query.limit;
 					param = '&';
 				}
-				if(typeof query.start !== 'undefined') {
+				if(angular.isDefined(query.start)) {
 					_url += param + 'start=' + query.start;
 					param = '&';
 				}
-				if(typeof query.author !== 'undefined') {
+				if(angular.isDefined(query.author)) {
 					_url += param + 'user=' + query.author;
 					param = '&';
 				}
@@ -87,24 +87,24 @@
 			var _url = env.api + '/job';
 			var param = '?';
 			if(query){
-				if(typeof query.compendium_id !== 'undefined'){
+				if(angular.isDefined(query.compendium_id)){
 					_url += param + 'compendium_id=' + query.compendium_id;
 					param = '&';
 				}
-				if(typeof query.limit !== 'undefined'){
+				if(angular.isDefined(query.limit)){
 					_url += param + 'limit=' + query.limit;
 					param = '&';
 				}
-				if(typeof query.start !== 'undefined'){
+				if(angular.isDefined(query.start)){
 					_url += param + 'start=' + query.start;
 					param = '&';
 				}
-				if(typeof query.status !== 'undefined'){
+				if(angular.isDefined(query.status)){
 					_url += param + 'status=' + query.status;
 					param = '&';
 				}
 			}
-			console.log('calling listJobs with %s', _url);
+			$log.debug('calling listJobs with %s', _url);
 			return $http.get(_url);
 		}
 
@@ -148,11 +148,11 @@
 			var _url = env.api + '/shipment';
 			$http.post(_url, "compendium_id=" + encodeURIComponent(compendiumID) + "&recipient=" + encodeURIComponent("zenodo"))
 				.then(function (response) {
-					console.log(response);
+					$log.debug(response);
 					$window.open(_url + '/' + response.data.id);
 				},
 				function (response) {
-					console.log(response);
+					$log.debug(response);
 				});		
 		}
 	};

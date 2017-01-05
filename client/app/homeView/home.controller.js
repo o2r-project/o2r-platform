@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('HomeCtrl', HomeCtrl);
+        .controller('HomeController', HomeController);
 
-    HomeCtrl.$inject = ['$log', '$scope', '$location', 'header'];
+    HomeController.$inject = ['$log', '$scope', '$location', 'header'];
 
-    function HomeCtrl($log, $scope, $location, header){
+    function HomeController($log, $scope, $location, header){
         var vm = this;
         vm.submit = submitter;
         
@@ -20,7 +20,7 @@
         }
 
         function submitter(){
-            if (vm.searchModel!=undefined && vm.searchModel.trim() != ""){
+            if (angular.isDefined(vm.searchModel) && vm.searchModel.trim() != ""){
                 var _query = vm.searchModel.replace(/ /g, "+");
                 $location.path('/search').search('q=' + _query);
             }

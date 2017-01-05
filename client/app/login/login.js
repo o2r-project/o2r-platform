@@ -46,7 +46,7 @@
 		}
 
 		function isLoggedIn(){
-			if(typeof getUser().name === 'undefined') return false;
+			if(angular.isUndefined(getUser().name)) return false;
 			return true;
 		}
 	}

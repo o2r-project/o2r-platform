@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('HeaderCtrl', HeaderCtrl);
+        .controller('HeaderController', HeaderController);
 
-    HeaderCtrl.$inject = ['$scope', 'header'];
+    HeaderController.$inject = ['$scope', 'header'];
 
-    function HeaderCtrl ($scope, header){
+    function HeaderController ($scope, header){
         var vm = this;
         vm.page = header;
     }

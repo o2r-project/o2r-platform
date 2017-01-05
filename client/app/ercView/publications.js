@@ -42,7 +42,7 @@
 			var object = o;
 			var searchedFile = path;
 
-			if(typeof object.children != 'undefined'){
+			if(angular.isDefined(object.children)){
 				for(var content in object.children){
 					iterator(object.children[content], searchedFile);
 				}

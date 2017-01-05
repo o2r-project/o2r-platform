@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('ErcCtrl', ErcCtrl);
+        .controller('ErcController', ErcController);
 
-    ErcCtrl.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header', 'httpRequests', 'login'];
+    ErcController.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header', 'httpRequests', 'login'];
 
-    function ErcCtrl($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header, socket, httpRequests, login){
+    function ErcController($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header, socket, httpRequests, login){
         var vm = this;
         vm.fJob = compFJob.data;
         vm.sJob = compSJob.data;

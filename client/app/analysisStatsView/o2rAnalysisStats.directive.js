@@ -105,14 +105,14 @@
 
             function activate(){
                 try {
-                    scope.lFin = JSON.parse(scope.lFinished);
+                    scope.lFin = angular.fromJson(scope.lFinished); //JSON.parse(scope.lFinished);
                 } catch (error) {
                     $log.debug(error);
                     scope.lFin = {};
                 }
 
                 try {
-                    scope.lStar = JSON.parse(scope.lStarted);
+                    scope.lStar = angular.fromJson(scope.lStarted); //JSON.parse(scope.lStarted);
                 } catch (error) {
                     $log.debug(error);
                     scope.lStar = {};
