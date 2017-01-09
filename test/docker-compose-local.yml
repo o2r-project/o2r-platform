@@ -35,7 +35,7 @@ services:
     environment:
       - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
-      - DEBUG=*
+      - "DEBUG=*,-express-session,-express:*,-compression,-body-parser:*,-mquery"
     ports:
       - "8080:8080"
     networks:
@@ -89,26 +89,13 @@ services:
     networks:
       - "o2rnet"
 
-  elasticsearch:
-    image: elasticsearch:5
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - o2r_test_storage:/data/es
-    networks:
-      - "o2rnet"
-
   finder:
     image: finder
     restart: unless-stopped
-    depends_on:
-      - elasticsearch
     volumes:
       - o2r_test_storage:/tmp/o2r
-    links:
-      - elasticsearch
     external_links:
+      - "test_elasticsearch_1:elasticsearch"
       - "test_mongodb_1:mongodb"
     environment:
       - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
