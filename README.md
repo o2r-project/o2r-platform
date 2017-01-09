@@ -68,6 +68,8 @@ docker network ls
 docker network inspect test_o2rnet
 ```
 
+You can remove the storage volumes by running `docker-compose down -v`.
+
 #### Host preparation
 
 Elasticsearch requires the ability to create many memory-mapped areas ([mmaps](https://en.wikipedia.org/wiki/Mmap)s) for fast access. The usual max map count check setting is [configured to low on many computers](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/_maximum_map_count_check.html). You must configure `vm.max_map_count` on the host to be at least `262144`, e.g. on Linux via `sysctl`. You can find instructions for all hosts (including Docker Toolbox) in the [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/docker.html#docker-cli-run-prod-mode).
@@ -83,11 +85,9 @@ The parameters are as follows:
 - `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication (start with machine IP when using Docker Toolbox)
 - `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo sandbox
 
-#### Required settings for Docker Toolbox
+#### Database adminstration
 
-When using Compose with Docker Toolbox/Machine on Windows, [volume paths are no longer converted from by default](https://github.com/docker/compose/releases/tag/1.9.0), but we need this conversion to be able to mount the docker volume to the o2r microservices. To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
-
-Also, the client's defaults (i.e. using `localhost`) does not work. We must mount a config file to point the API to the correct location, see `test/config-toolbox.js`, and use the prepared configuration file `
+An adminMongo instance is running at http://localhost:1234. In mongoAdmin please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").
 
 #### Linux
 
@@ -95,11 +95,9 @@ Also, the client's defaults (i.e. using `localhost`) does not work. We must moun
 docker-compose --file test/docker-compose-db.yml up -d
 # wait at least 8 seconds for configuration container to run.
 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose --file test/docker-compose.yml up
-# using locally build images (different naming convention)
-# OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose-local.yml up
 ```
 
-#### Windows
+#### Windows with Docker for Windows
 
 The environmental variables must be passed seperately on Windows, followed by the docker-compose commands:
 
@@ -107,18 +105,28 @@ The environmental variables must be passed seperately on Windows, followed by th
 $env:OAUTH_CLIENT_ID = <...>
 $env:OAUTH_CLIENT_SECRET = <...>
 $env:OAUTH_URL_CALLBACK = <...>
-$env:COMPOSE_CONVERT_WINDOWS_PATHS = 1
 docker-compose --file test/docker-compose-db.yml up -d
 docker-compose --file test/docker-compose-remote.yml up
 ```
 
-The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").
+The services are available at `http://localhost`.
 
-_Hint:_ You can remove the storage volumes by running `docker-compose down -v`
+#### Windows with Docker Toolbox
+
+When using Compose with Docker Toolbox/Machine on Windows, [volume paths are no longer converted from by default](https://github.com/docker/compose/releases/tag/1.9.0), but we need this conversion to be able to mount the docker volume to the o2r microservices. To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
+
+Also, the client's defaults (i.e. using `localhost`) does not work. We must mount a config file to point the API to the correct location, see `test/config-toolbox.js`, and use the prepared configuration file `docker-compose-remote-toolbox.yml`.
+
+```bash
+docker-compose --file test/docker-compose-db.yml up -d
+COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose --file test/docker-compose.yml up
+```
+
+The services are available at `http://<machine-ip>`.
 
 #### Restart from scratch
 
-You can remove all containers and images from o2r with the following two commands:
+You can remove all containers and images by o2r with the following two commands on Linux:
 
 ```bash
 docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
@@ -127,7 +135,7 @@ docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
 ### Proxy for o2r microservices
 
-If you run the o2r microservices locally, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo. A nginx configuration file to achieve this is `test/nginx.conf`.
+If you run the o2r microservices locally as a developer, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo. A nginx configuration file to achieve this is `test/nginx.conf`.
 
 ```bash
 #sed -i -e 's|http://o2r.uni-muenster.de/api/v1|http://localhost/api/v1|g' js/app.js
@@ -139,4 +147,4 @@ If you run this in a Makefile, `$(CURDIR)` will come in handy to create the moun
 ## License
 
 o2r-platform is licensed under Apache License, Version 2.0, see file LICENSE.
-Copyright &copy; 2016 - o2r project.
+Copyright &copy; 2017 - o2r project.
