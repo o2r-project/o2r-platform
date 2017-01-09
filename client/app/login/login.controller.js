@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('LoginCtrl', LoginCtrl);
+        .controller('LoginController', LoginController);
 
-    LoginCtrl.$inject = ['$scope', '$log', '$location', 'login', 'icons'];
+    LoginController.$inject = ['$scope', '$log', '$location', 'login', 'icons'];
 
-    function LoginCtrl($scope, $log, $location, login, icons){
+    function LoginController($scope, $log, $location, login, icons){
         var vm = this;
 
         vm.icons = icons;
@@ -30,8 +30,8 @@
             login.getUserCall();
         }
 
-        function search(query){
-            if (vm.searchInput!=undefined && vm.searchInput.trim() != ""){ 
+        function search(){
+            if (angular.isDefined(vm.searchInput) && vm.searchInput.trim() != ""){ 
                 $location.path('/search').search('q=' + vm.searchInput);
                 vm.searchInput = null;
             }

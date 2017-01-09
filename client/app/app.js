@@ -1,6 +1,6 @@
 (function(){
     'use strict';
-    
+    /* eslint-disable angular/window-service */
     window.__env = window.__env || {};
 
     var env = {
@@ -13,6 +13,7 @@
     };
     env.api = env.server + env.c_api;
 
+    /* eslint-enable angular/window-service */
     angular
         .module('starter', [
             "treeControl",
@@ -33,11 +34,12 @@
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider'];
 
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider){
+        /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(window.__env.disableTracking);
         if(window.__env.disableTracking) console.log("Tracking globally disabled!");
 
         $logProvider.debugEnabled(window.__env.enableDebug);
-
+        /* eslint-enable angular/window-service, angular/log */
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
@@ -129,13 +131,13 @@
             .state('home', {
                 url: "/home",
                 templateUrl: "app/homeView/home.html",
-                controller: 'HomeCtrl',
+                controller: 'HomeController',
                 controllerAs: 'vm'
             })
             .state('erc', {
                 url: "/erc/:ercid",
                 templateUrl: "app/ercView/erc.html",
-                controller: 'ErcCtrl',
+                controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
                     compInfo: compInfoService,
@@ -146,7 +148,7 @@
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
-                controller: 'AuthorCtrl',
+                controller: 'AuthorController',
                 controllerAs: 'vm',
                 resolve: {
                     authorInfo: authorInfoService
@@ -155,7 +157,7 @@
             .state('search', {
                 url: "/search?q",
                 templateUrl: "app/searchView/search.html",
-                controller: 'SearchCtrl',
+                controller: 'SearchController',
                 controllerAs: 'vm',
                 resolve: {
                     searchResults: searchResultsService
@@ -164,13 +166,13 @@
             .state('impressum', {
                 url: "/impressum",
                 templateUrl: "app/templates/impressum.html",
-                controller: 'ImpressumCtrl',
+                controller: 'ImpressumController',
                 controllerAs: 'vm'
             })
             .state('privacy', {
                 url: "/privacy",
                 templateUrl: "app/templates/privacy.html",
-                controller: 'PrivacyCtrl',
+                controller: 'PrivacyController',
                 controllerAs: 'vm'
             })
             .state('404', {

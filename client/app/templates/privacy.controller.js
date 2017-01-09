@@ -3,11 +3,11 @@
 
     angular
         .module('starter')
-        .controller('PrivacyCtrl', PrivacyCtrl);
+        .controller('PrivacyController', PrivacyController);
 
-    PrivacyCtrl.$inject = ['header'];
+    PrivacyController.$inject = ['header'];
 
-    function PrivacyCtrl(header){
+    function PrivacyController(header){
         activate();
 
         //////////

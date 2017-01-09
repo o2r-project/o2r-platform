@@ -21,11 +21,10 @@
             link: link
         };
 
-        function link(scope, attrs){
+        function link(scope){
             scope.icons = icons;
             scope.excImg = exclude;
             scope.openMenu = function($mdOpenMenu, ev){
-                var originatorEv = ev;
                 $mdOpenMenu(ev);
             };
 

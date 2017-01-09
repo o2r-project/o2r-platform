@@ -4,62 +4,62 @@
 			<div class="md-toolbar-tools">
 				<h3 class="white-font">Upload ERC</h3>
 				<span flex></span>
-				<md-button class="md-icon-button" ng-click="cancel()">
-					<md-icon md-svg-src="{{icons.close}}" aria-label="Close" class="o2r-icon"></md-icon>
+				<md-button class="md-icon-button" ng-click="vm.cancel()">
+					<md-icon md-svg-src="{{vm.icons.close}}" aria-label="Close" class="o2r-icon"></md-icon>
 				</md-button>
 			</div>
 		</md-toolbar>
 		
 		<md-dialog-content layout="column">
 			<div class="md-dialog-content" layout="column">
-				<div layout="column" ng-hide="doneButton">
+				<div layout="column" ng-hide="vm.doneButton">
 					<p>Select a file or drag and drop it into area!</p>
-					<form name="form">
+					<form name="vm.form">
 						<div 
 							class="upmod-dropbox" 
-							ngf-select="selected($file)" 
-							ngf-drop="selected($file)" 
-							ng-model="file" 
+							ngf-select="vm.selected($file)" 
+							ngf-drop="vm.selected($file)" 
+							ng-model="vm.file" 
 							name="file" 
-							ngf-accept="'.zip'"><span ng-hide="f.name">Click <br/ >or <br/> Drag 'n Drop</span><span ng-show="f.name">{{f.name}}</span></div>
+							ngf-accept="'.zip'"><span ng-hide="vm.f.name">Click <br/ >or <br/> Drag 'n Drop</span><span ng-show="vm.f.name">{{vm.f.name}}</span></div>
 					</form>
 				</div>
 
-				<div ng-hide="doneButton" class="upmod-checkbox">
+				<div ng-hide="vm.doneButton" class="upmod-checkbox">
 					<div>	
-						<md-checkbox class="md-primary" ng-model="checkRunAnalysis">
+						<md-checkbox class="md-primary" ng-model="vm.checkRunAnalysis">
 							Automatically start analysis after upload
 						</md-checkbox>
 					</div>
 					<div>	
-						<md-checkbox class="md-primary" ng-model="shipToZenodo">
+						<md-checkbox class="md-primary" ng-model="vm.shipToZenodo">
 							Ship to Zenodo
 						</md-checkbox>
 					</div>
 				</div>		
-				<div ng-show="doneButton && checkUpload">
+				<div ng-show="vm.doneButton && vm.checkUpload">
 					<p>File uploaded successfully</p>
 				</div>
-				<div ng-show="doneButton && !checkUpload">
+				<div ng-show="vm.doneButton && !vm.checkUpload">
 					<p>File upload failed!</p>
-					<p>{{uploadError.data.error}}</p>
+					<p>{{vm.uploadError.data.error}}</p>
 				</div>
 
-				<div id="upmod-progress" ng-show="onLoad" flex="90">
-					<md-progress-circular md-mode="determinate" value="{{f.progress}}" md-diameter="70"></md-progress-circular>
-					<div id="upmod-prog-text">{{f.progress}}%</div>
+				<div id="upmod-progress" ng-show="vm.onLoad" flex="90">
+					<md-progress-circular md-mode="determinate" value="{{vm.f.progress}}" md-diameter="70"></md-progress-circular>
+					<div id="upmod-prog-text">{{vm.f.progress}}%</div>
 				</div>
 			</div>
 		</md-dialog-content>
 	
 		<md-dialog-actions layout="row">
-			<md-button class="md-primary md-raised white-font" ng-click="submit()" ng-disabled="!fileSelected" ng-hide="doneButton">
+			<md-button class="md-primary md-raised white-font" ng-click="vm.submit()" ng-disabled="!vm.fileSelected" ng-hide="vm.doneButton">
 				Submit
 			</md-button>
-			<md-button class="md-primary md-raised white-font" ng-click="cancel()" ng-hide="doneButton">
+			<md-button class="md-primary md-raised white-font" ng-click="vm.cancel()" ng-hide="vm.doneButton">
 				Cancel
 			</md-button>			
-			<md-button class="md-raised" ng-hide="!doneButton" ng-click="cancel()" >
+			<md-button class="md-raised" ng-hide="!vm.doneButton" ng-click="vm.cancel()" >
 				Done
 			</md-button>
 			

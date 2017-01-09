@@ -36,7 +36,7 @@
                 if(value == ''){
 
                 }else{
-                    scope.comp = JSON.parse(value);
+                    scope.comp = angular.fromJson(value);
                     $log.debug('selected comp: %s', scope.comp.id);
                     activate();
                 }

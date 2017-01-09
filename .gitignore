@@ -21,3 +21,6 @@ package.json
 
 # ignore workspace settings
 .vscode/
+
+# ignore npm debug logs
+npm-debug.log

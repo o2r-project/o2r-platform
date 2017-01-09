@@ -64,7 +64,6 @@
 		function callMetadata_search(searchTerm){
 			var query = searchTerm || '*';
 			var deferred = $q.defer();
-			var comp_meta = [];
 			var progressbar = ngProgressFactory.createInstance();
 				progressbar.setHeight('3px');
 				progressbar.start();
@@ -75,7 +74,6 @@
 			return deferred.promise;
 
 			function cb1(response){
-				comp_meta = response.data.hits.hits;
 				$log.debug('result of search: %o', response);
 				deferred.resolve(response);
 				progressbar.complete();
