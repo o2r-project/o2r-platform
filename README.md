@@ -41,12 +41,14 @@ During development it is reasonable to disable the user tracking in the config f
 window.__env.disableTracking = true;
 ```
 
-### Development environment with docker-compose
+### Development environment with Docker Compose
 
 You can start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose` (version `>= 1.6.0`).
 
 There are several `docker-compose` configurations in the directory `test` of this repository starting a number of containers.
 
+- `docker-compose-remote.yml` starts all microservices as well as the client as containers from Docker Hub. _This is probably want you want to simply run the platform._
+- `docker-compose-remote-toolbox.yml` starts all microservices as well as the client as containers from Docker Hub and mounts a client configuration file suitable for typical settings when using Docker Toolbox.
 - `docker-compose-db.yml` starts the required databases and configures them. While this could be integrated into the other configurations, it is a lot easier to make sure the DBs are up and running before starting the microservices.
   - `mongodb` MongoDB
   - `elasticsearch` Elasticsearch
@@ -54,7 +56,6 @@ There are several `docker-compose` configurations in the directory `test` of thi
 - `docker-compose.yml` starts all microservices as containers downloaded [from o2rproject on Docker Hub](https://hub.docker.com/r/o2rproject/) and mounts the client (the repository of this file) from the host into an nginx container. _The client must be build on the host!_
 - `docker-compose-local.yml` starts all microservices as containers that were build locally. Only useful for testing container-packaging of apps. The microservice image names are simply the name without leading `o2r-`, so `muncher`, `bouncer`, etc. The client is mounted from the host, see above.
 - `docker-compose-local-platformcontainer.yml` the same as the previous configuration, but the client is also started in a container based on the local image named `platform`.
-- `docker-compose-remote.yml` starts all microservices as well as the client as containers from Docker Hub.
 
 The configurations all use a common volume `o2r_test_storage` (with the global name `test_o2r_test_storage` because the name of the directory of this file is preprended by Docker), and a common network `o2rnet` (with the global name `test_o2rnet`).
 
@@ -67,42 +68,74 @@ docker network ls
 docker network inspect test_o2rnet
 ```
 
+You can remove the storage volumes by running `docker-compose down -v`.
+
 #### Host preparation
 
 Elasticsearch requires the ability to create many memory-mapped areas ([mmaps](https://en.wikipedia.org/wiki/Mmap)s) for fast access. The usual max map count check setting is [configured to low on many computers](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/_maximum_map_count_check.html). You must configure `vm.max_map_count` on the host to be at least `262144`, e.g. on Linux via `sysctl`. You can find instructions for all hosts (including Docker Toolbox) in the [Elasticsearch docs](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/docker.html#docker-cli-run-prod-mode).
+
+#### Required settings
+
+Some of the settings to run the platform cannot be published. These must be provided at runtime using envionment variables as is described in the OS-specific instructions below. Not providing one of these paramters results in untested behaviour.
+
+The parameters are as follows:
+
+- `OAUTH_CLIENT_ID` identifier for the platform with auth provider
+- `OAUTH_CLIENT_SECRET` password for identification with the auth provider
+- `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication (start with machine IP when using Docker Toolbox)
+- `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo sandbox
+
+#### Database adminstration
+
+An adminMongo instance is running at http://localhost:1234. In mongoAdmin please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").
 
 #### Linux
 
 ```bash
 docker-compose --file test/docker-compose-db.yml up -d
 # wait at least 8 seconds for configuration container to run.
-OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose.yml up
-# using locally build images (different naming convention)
-# OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> docker-compose --file test/docker-compose-local.yml up
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose --file test/docker-compose.yml up
 ```
 
-#### Windows
+#### Windows with Docker for Windows
 
-The environmental variables must be passed seperately on Windows, followed by the docker-compose command:
+The environmental variables must be passed seperately on Windows, followed by the docker-compose commands:
 
 ```powershell
 $env:OAUTH_CLIENT_ID = <...>
 $env:OAUTH_CLIENT_SECRET = <...>
 $env:OAUTH_URL_CALLBACK = <...>
 docker-compose --file test/docker-compose-db.yml up -d
+docker-compose --file test/docker-compose-remote.yml up
 ```
 
-The services are available at http://localhost (or on Windows/with docker-machine at http://<machine-ip>/). An adminMongo instance is running at http://localhost:1234. In mongoAdming please manually create a connection to host `db`, i.e. `mongodb://db:27017` to edit the database (click "Update" first if you edit the existing connection, then "Connect").
+The services are available at `http://localhost`.
 
-_Hint:_ You can remove the storage volumes by running `docker-compose down -v`
+#### Windows with Docker Toolbox
 
-### adminMongo
+When using Compose with Docker Toolbox/Machine on Windows, [volume paths are no longer converted from by default](https://github.com/docker/compose/releases/tag/1.9.0), but we need this conversion to be able to mount the docker volume to the o2r microservices. To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
 
-adminMongo can also be run standalone (see `docker-compose-db.yml`). If you run the o2r microservicese locally, the connection path has to be changed to `mongodb://db:27017`.
+Also, the client's defaults (i.e. using `localhost`) does not work. We must mount a config file to point the API to the correct location, see `test/config-toolbox.js`, and use the prepared configuration file `docker-compose-remote-toolbox.yml`.
+
+```bash
+docker-compose --file test/docker-compose-db.yml up -d
+COMPOSE_CONVERT_WINDOWS_PATHS=1 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose --file test/docker-compose.yml up
+```
+
+The services are available at `http://<machine-ip>`.
+
+#### Restart from scratch
+
+You can remove all containers and images by o2r with the following two commands on Linux:
+
+```bash
+docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
+docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
+```
 
 ### Proxy for o2r microservices
 
-If you run the o2r microservices locally, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo. A nginx configuration file to achieve this is `test/nginx.conf`.
+If you run the o2r microservices locally as a developer, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo. A nginx configuration file to achieve this is `test/nginx.conf`.
 
 ```bash
 #sed -i -e 's|http://o2r.uni-muenster.de/api/v1|http://localhost/api/v1|g' js/app.js
@@ -114,4 +147,4 @@ If you run this in a Makefile, `$(CURDIR)` will come in handy to create the moun
 ## License
 
 o2r-platform is licensed under Apache License, Version 2.0, see file LICENSE.
-Copyright &copy; 2016 - o2r project.
+Copyright &copy; 2017 - o2r project.
