@@ -18,6 +18,8 @@
         vm.setOne = setOne;
         vm.server = env.server;
         vm.isEmpty = isEmpty;
+        vm.hideBagit = true;
+        vm.bagitToggle = bagitToggle;
         vm.treeOptions = {  // options for folderTree
             nodeChildren: 'children',
             dirSelectable: false
@@ -70,6 +72,24 @@
                 if(obj.hasOwnProperty(key)) return false;
             }
             return true;
+        }
+
+        /*
+        * TODO:
+        * rewrite function so that bagit files will be excluded
+        * right now only 'data' folder is included. But this could cause problems, if the data directoy gets another name
+        */
+        function bagitToggle(files, hide){
+            if(hide) {
+                var unhidden = {};
+                for(var i in files.children){
+                    if(files.children[i].name == 'data'){
+                        var unhidden = files.children[i];
+                    }
+                }
+                return unhidden;
+            }
+            return files;
         }
     }
 })();
