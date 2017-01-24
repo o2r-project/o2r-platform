@@ -1,0 +1,112 @@
+<form>
+    <div layout="row" ng-if="editMode">
+        <span flex></span>
+        <md-button ng-disabled="!checkChanges()" ng-click="saveChanges(meta.ercIdentifier, changes, meta)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
+    </div>
+    <!-- Author Information -->
+    <!-- show info -->
+    <h3 class="edit-button" ng-click="edit('author')">Author<md-icon flex-offset="5" md-svg-src="{{icons.edit}}"></md-icon></h3>
+    <div ng-hide="showInput('author')" layout="column" ng-repeat="author in meta.author">
+        <span>{{author.authorName}}</span>
+        <span ng-repeat="affiliation in author.authorAffiliation">{{affiliation}}</span>
+        <span ng-repeat="id in author.authorId">Id: {{id}}</span>
+    </div>
+    <!-- end show info -->
+
+
+    <!-- edit info -->
+    <div ng-show="showInput('author')">
+        <div ng-repeat="author in meta.author">
+            <md-input-container>
+                <label>Name</label>
+                <input ng-model="changes.author[$index].authorName"ng-value="'{{author.authorName}}'">
+            </md-input-container>
+<!--
+            <md-input-container ng-if="author.authorAffiliation.length != 0" ng-repeat="affiliation in author.authorAffiliation">
+                <label>Affiliation</label>
+                <input ng-value="'{{affiliation}}'">
+                <md-icon ng-if="$last" class="edit-button" md-svg-src="{{icons.add}}" ng-click=""></md-icon>
+            </md-input-container>
+            <md-input-container ng-if="author.authorAffiliation.length == 0">
+                <label>Affiliation</label>
+                <input>
+            </md-input-container>
+
+            <md-input-container ng-if="author.authorId.length != 0" ng-repeat="id in author.authorId">
+                <label>Id</label>
+                <input ng-value="'{{id}}'">
+                <md-icon ng-if="$last" class="edit-button" md-svg-src="{{icons.add}}" ng-click=""></md-icon>
+            </md-input-container>
+            <md-input-container ng-if="isUndefined(author.authorId) || author.authorId.length == 0">
+                <label>Id</label>
+                <input>
+            </md-input-container>
+-->
+        </div>
+    </div>
+    <!-- end edit info -->
+    <!-- End Author Information -->
+
+
+
+
+
+
+
+
+    <!-- Publication Information -->
+    <!-- show info -->
+    <h3 class="edit-button" ng-click="edit('publication')">Publication<md-icon flex-offset="5" md-svg-src="{{icons.edit}}"></md-icon></h3>
+    <div ng-hide="showInput('publication')" layout="column">
+        <span><h4 ng-if="meta.hasOwnProperty('title')">Title</h4> {{meta.title}}</span>
+        <span><h4 ng-if="meta.hasOwnProperty('description')">Abstract</h4> {{meta.description}}</span>
+        <span><h4 ng-if="meta.hasOwnProperty('dateCreated')">Date</h4> {{meta.dateCreated}}</span>
+        <span><h4 ng-if="meta.hasOwnProperty('paperLanguage')">Language</h4> {{meta.paperLanguage}}</span>
+        <span><h4 ng-if="meta.hasOwnProperty('keywords')">Keywords</h4> <span ng-repeat="keyword in meta.keywords">{{keyword}}<span ng-hide="$last">, </span></span></span>
+        <span><h4 ng-if="meta.hasOwnProperty('softwarePaperCitation')">Citation</h4> {{meta.softwarePaperCitation}}</span>
+    </div>
+    <!-- end show info -->
+
+    <!-- begin edit info-->
+    <div ng-show="showInput('publication')" layout="column">
+        <md-input-container class="md-block">
+            <label>Title</label>
+            <input ng-model="changes.title" ng-value="meta.title">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Abstract</label>
+            <textarea rows="5" ng-model="changes.description" ng-value="meta.description"></textarea>
+        </md-input-container>
+        <md-input-container>
+            <label>Publication Date</label>
+            <input ng-model="changes.dateCreated" ng-value="meta.dateCreated">
+        </md-input-container>
+        <md-input-container>
+            <label>Paper Language</label>
+            <input ng-model="changes.paperLanguage" ng-value="meta.paperLanguage">
+        </md-input-container>
+        <!-- Keywords -->
+        <!--
+        <md-input-container ng-if="meta.keyword.length != 0" ng-repeat="keyword in meta.keywords">
+            <label>Keywords</label>
+            <input ng-model="changes.keyword[$index]" ng-value="keyword">
+        </md-input-container>
+        <md-input-container ng-if="meta.keyword.length == 0 || !meta.hasOwnProperty('keywords')">
+            <label>Keywords</label>
+            <input>
+        </md-input-container>
+        <md-button class="md-raised" ng-click="" aria-label="add Item">
+            <md-icon md-svg-src="{{icons.add}}"></md-icon>
+        </md-button>
+        -->
+        <!-- End Keywords -->
+        <md-input-container class="md-block">
+            <label>Citation</label>
+            <input ng-model="changes.sofwarePaperCitation" ng-value="meta.softwarePaperCitation">
+        </md-input-container>
+    </div>
+    <!-- end edit info-->
+    <!-- end publication information -->
+</form>
+
+{{changes}}

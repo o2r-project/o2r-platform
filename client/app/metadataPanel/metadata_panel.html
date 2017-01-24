@@ -13,7 +13,9 @@
 		<md-card-content layout="column">
 			<md-button class="md-primary md-raised white-font" ui-sref="erc({ercid: comp.id})">Go To</md-button>
 			<div ng-repeat="(key, value) in comp">
+				<!-- show not specially treated values -->
 				<span ng-hide="isSpecial(key)"><h3>{{key | upperCase}}</h3>{{value}}</span>
+				<!-- show specially treated values -->
 				<span ng-show="isSpecial(key) && key == 'created'"><h3>{{key | upperCase}}</h3>{{value | date : 'yyyy-MM-dd HH:mm'}}</span>
 				<span ng-show="isSpecial(key) && key == 'status'">
 					<h3>{{key | upperCase}}</h3>
@@ -21,6 +23,27 @@
 					<span ng-repeat="(key, value) in value.steps">
 						<strong>{{key}}: </strong>{{value.status}}<br/>
 					</span>
+				</span>
+				<span ng-show="isSpecial(key) && key == 'metadata'" ng-repeat="(mkey, mvalue) in value.o2r">
+					<!-- show not specially treated values in metadata.o2r -->
+					<span ng-hide="isSpecial(mkey)"><h3>{{mkey | upperCase}}</h3>{{mvalue}}</span>
+					<!-- show specially treated values in metadata.o2r -->
+					<span ng-show="isSpecial(mkey) && mkey == 'author'">
+						<h3>{{mkey | upperCase}}</h3>{{mvalue[0].authorName}}<br/>{{mvalue[0].authorAffiliation[0]}}
+					</span>
+					<span ng-show="isSpecial(mkey) && mkey == 'depends'">
+						<h3>{{mkey | upperCase}}</h3>
+						<span ng-repeat="dependance in mvalue">
+							<span ng-repeat="(dkey, dvalue) in dependance">
+								<strong>{{dkey}}:</strong>{{dvalue}}<br/>
+							</span>
+						</span>
+
+					</span>
+					<span ng-show="isSpecial(mkey) && mkey == 'keywords'">
+						<h3>{{mkey | upperCase}}</h3><span ng-repeat="word in mvalue">{{word}} </span>
+					</span>
+				</span>
 			</div>
 		</md-card-content>
 	</md-card>

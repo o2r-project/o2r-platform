@@ -253,4 +253,13 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 /***********************
    End pagination of search results
 ************************/
-
+/***********************
+	Start editMetadatView
+************************/
+.edit-button:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+/***********************
+	End editMetadatView
+************************/

@@ -18,7 +18,8 @@
 			getLoggedUser: getLoggedUser,
 			searchComp: searchComp,
 			toZenodo: toZenodo,
-			ercInZenodo: ercInZenodo
+			ercInZenodo: ercInZenodo,
+			updateMetadata: updateMetadata
 		};
 
 		return service;
@@ -154,6 +155,11 @@
 				function (response) {
 					$log.debug(response);
 				});		
+		}
+
+		function updateMetadata(id, data){
+			var _url = env.api + '/compendium/' + id + '/metadata';
+			return $http.put(_url, data);
 		}
 	};
 })();

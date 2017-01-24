@@ -78,6 +78,18 @@
                     case 'created':
                         special = true;
                         break;
+                    case 'metadata':
+                        special = true;
+                        break;
+                    case 'author':
+                        special = true;
+                        break;
+                    case 'depends':
+                        special = true;
+                        break;
+                    case 'keywords':
+                        special = true;
+                        break;
                     default:
                         special = false;
                 }
