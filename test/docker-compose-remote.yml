@@ -149,8 +149,6 @@ services:
     image: o2rproject/o2r-platform:latest
     ports:
       - "8888:80"
-    volumes:
-      - "./config-toolbox.js:/etc/nginx/html/app/config/config.js:ro"
     networks:
       - "o2rnet"
 
