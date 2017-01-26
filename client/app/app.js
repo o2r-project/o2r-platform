@@ -199,7 +199,9 @@
             {name: 'fail', category: 'content', fn: 'clear'},
             {name: 'forward', category: 'content', fn: 'forward'},
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
-            {name: 'rowing', category: 'action', fn: 'rowing'}
+            {name: 'rowing', category: 'action', fn: 'rowing'},
+            {name: 'add', category: 'content', fn: 'add'},
+            {name: 'edit', category: 'editor', fn: 'mode_edit'}
         ];
 
         for(var i in icons){
