@@ -54,6 +54,7 @@ There are several `docker-compose` configurations in the directory `test` of thi
   - `elasticsearch` Elasticsearch
   - `mongoadmin` An instance of admin-mongo at port `1234`
 - `docker-compose.yml` starts all microservices as containers downloaded [from o2rproject on Docker Hub](https://hub.docker.com/r/o2rproject/) and mounts the client (the repository of this file) from the host into an nginx container. _The client must be build on the host!_
+- `docker-compose-host-nginx.yml` is a variant of the above but the nginx must run on the host and is not run in a container.
 - `docker-compose-local.yml` starts all microservices as containers that were build locally. Only useful for testing container-packaging of apps. The microservice image names are simply the name without leading `o2r-`, so `muncher`, `bouncer`, etc. The client is mounted from the host, see above.
 - `docker-compose-local-platformcontainer.yml` the same as the previous configuration, but the client is also started in a container based on the local image named `platform`.
 
