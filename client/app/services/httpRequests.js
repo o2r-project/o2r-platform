@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', 'env', '$window'];
+	httpRequests.$inject = ['$http', '$log', 'env', '$window', 'ngProgressFactory'];
 		
-	function httpRequests($http, $log, env, $window){
+	function httpRequests($http, $log, env, $window, ngProgressFactory){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -30,6 +30,7 @@
 		* @Desc httpRequest for retrieving a list of compendia
 		* @Param query, object with attributes author, start and limit to define queries
 		*/
+
 		function listCompendia(query){
 			var _url= env.api + '/compendium';
 			var param = '?';
@@ -147,10 +148,15 @@
 
 		function toZenodo(compendiumID) {
 			var _url = env.api + '/shipment';
+            var progressbar = ngProgressFactory.createInstance();
+			progressbar.setHeight('3px');
+			progressbar.start();
 			$http.post(_url, "compendium_id=" + encodeURIComponent(compendiumID) + "&recipient=" + encodeURIComponent("zenodo"))
 				.then(function (response) {
 					$log.debug(response);
 					$window.open(_url + '/' + response.data.id);
+					progressbar.complete();
+					return "success";
 				},
 				function (response) {
 					$log.debug(response);

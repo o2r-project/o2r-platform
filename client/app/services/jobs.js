@@ -97,6 +97,7 @@
             }
             function callback2(job){
                 $log.debug('executeJob callback2: %o', job);
+                $rootScope.progressbar.complete();
                 setJobDone(checkStatus(job.data.steps));
                 deferred.resolve(job);
             }
