@@ -83,7 +83,7 @@ The parameters are as follows:
 - `OAUTH_CLIENT_ID` identifier for the platform with auth provider
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
 - `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication (start with machine IP when using Docker Toolbox)
-- `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo sandbox
+- `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo (sandbox)
 
 #### Database adminstration
 
@@ -105,6 +105,7 @@ The environmental variables must be passed seperately on Windows, followed by th
 $env:OAUTH_CLIENT_ID = <...>
 $env:OAUTH_CLIENT_SECRET = <...>
 $env:OAUTH_URL_CALLBACK = <...>
+$env:ZENODO_TOKEN = <...>
 docker-compose --file test/docker-compose-db.yml up -d
 docker-compose --file test/docker-compose-remote.yml up
 ```
