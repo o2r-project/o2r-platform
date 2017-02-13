@@ -164,23 +164,9 @@
 		}
 
 		function updateMetadata(id, data){
-			/*
 			var _url = env.api + '/compendium/' + id + '/metadata';
-			return $http.put(_url, data);
-			*/
-			var deferred = $q.defer();
-			$log.debug('This will be uploaded: %o', data);
-			setTimeout(function(){
-				deferred.notify('Going to update metadata');
-				if(true){
-					deferred.resolve(data);
-				} else {
-					deferred.reject('failed to update');
-				}
-			}, 1000);
-
-			return deferred.promise;
-
+			var body = {o2r: data};
+			return $http.put(_url, body);
 		}
 	};
 })();
