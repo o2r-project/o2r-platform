@@ -5,11 +5,11 @@
         .module('starter')
         .factory('socket', socket);
 
-    socket.$inject = ['$log', '$rootScope'];
+    socket.$inject = ['$log', '$rootScope', 'env'];
 
-    function socket($log, $rootScope){
+    function socket($log, $rootScope, env){
         /* eslint-disable no-undef */
-        var socket = io('http://localhost/api/v1/logs/job');
+        var socket = io(env.api + '/logs/job');
         /* eslint-enable no-undef */
         socket.on('connect', function(){
             $log.debug('connected');
