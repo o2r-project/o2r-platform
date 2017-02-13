@@ -8,8 +8,13 @@
     socket.$inject = ['$log', '$rootScope', 'env'];
 
     function socket($log, $rootScope, env){
+        var tmp = env.api.split(':');
         /* eslint-disable no-undef */
-        var socket = io(env.api + '/logs/job');
+        if(tmp[0] == 'https'){
+            var socket = io(env.api + '/logs/job', {secure: true});
+        } else {
+            var socket = io(env.api + '/logs/job');
+        }
         /* eslint-enable no-undef */
         socket.on('connect', function(){
             $log.debug('connected');
