@@ -23,6 +23,7 @@
             'ngAnimate',
             'ngAria', 
             'ngMaterial',
+            'ngMessages',
             'angulartics', 
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
@@ -31,9 +32,11 @@
         .constant('icons', icons())
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider, $compileProvider, $mdDateLocaleProvider){
+        $compileProvider.preAssignBindingsEnabled(true);
+        
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(window.__env.disableTracking);
         if(window.__env.disableTracking) console.log("Tracking globally disabled!");
@@ -43,6 +46,10 @@
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
+
+        $mdDateLocaleProvider.formatDate = function(date){
+            return moment(date).format('DD-MM-YYYY');
+        };
 
         var customPrimary = {
             '50': '#0681ff',
@@ -125,7 +132,7 @@
             .accentPalette('customAccent')
             .warnPalette('customWarn')
             .backgroundPalette('grey');
-            
+
         $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
         $stateProvider
             .state('home', {

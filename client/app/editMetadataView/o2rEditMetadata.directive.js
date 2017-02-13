@@ -18,8 +18,8 @@
         .module('starter')
         .directive('o2rEditMetadata', o2rEditMetadata);
     
-    o2rEditMetadata.$inject = ['$log', 'jobs', 'icons', 'httpRequests'];
-    function o2rEditMetadata($log, jobs, icons, httpRequests){
+    o2rEditMetadata.$inject = ['$log', '$filter', '$window', 'jobs', 'icons', 'httpRequests'];
+    function o2rEditMetadata($log, $filter, $window, jobs, icons, httpRequests){
         return {
             restrict: 'E',
             scope: {
@@ -32,31 +32,23 @@
         function link(scope, iElement, attrs){
             var showField = {
                 author: false,
-                publication: false
-            };
-            const noChange = {
-                author: [],
-                keywords: []
+                publication: false,
+                tech: false,
+                depends: false
             };
             scope.icons = icons;
-            scope.isSpecial = isSpecial;
-            scope.authorList = [{id: 'author1'}];
-            scope.keywordList = [{id: 'keyword1'}];
             scope.addItem = addItem;
             scope.edit = edit;
-            scope.changes = {
-                author: [],
-                keywords: []
-            };
             scope.saveChanges = saveChanges;
-            scope.checkChanges = () => !angular.equals(noChange, scope.changes); 
-            scope.editMode = false;
             scope.showInput = showInput;
+            scope.isEmpty = isEmpty;
             scope.isUndefined = (o) => angular.isUndefined(o); 
 			attrs.$observe('o2rComp', function(value){
                 if(value == ''){
 
                 }else{
+                    scope.editMode = false;
+                    scope.cancelEditing = cancelEditing;
                     scope.comp = angular.fromJson(value);
                     // reset showField values to default
                     showField.author = false;
@@ -69,15 +61,35 @@
                             scope.comp.metadata.o2r = {};
                         } else {
                             scope.comp.metadata = {
-                                o2r:{
-                                    author: [],
-                                    depends: [],
-                                    keywords: []
-                                }
+                                o2r: {}
                             };
                         }
                         scope.meta = scope.comp.metadata.o2r;
                     }
+                    // create properties with arrays
+                    if(!scope.meta.hasOwnProperty('keywords')) scope.meta.keywords = [{}];
+                    if(!scope.meta.hasOwnProperty('depends')) scope.meta.depends = [{operatingSystem: [{}] }];
+                    /* use this, when author metadata is an object
+                    if(!scope.meta.hasOwnProperty('author')) scope.meta.author = [{ authorAffiliation: [{}], authorId:[{}] }];
+                    for(var i in scope.meta.depends){
+                        if(!scope.meta.depends[i].hasOwnProperty('operatingSystem')) scope.meta.depends[i].operatingSystem = [{}];
+                    }
+                    for(var i in scope.meta.author){
+                        if(!scope.meta.author[i].hasOwnProperty('authorAffiliation')) scope.meta.author[i].authorAffiliation = [{}];
+                        if(!scope.meta.author[i].hasOwnProperty('authorId')) scope.meta.author[i].authorId = [{}];
+                    }
+                    */
+                    //if(scope.meta.hasOwnProperty('dateCreated')) scope.date = new Date(scope.meta.dateCreated);
+                    if(angular.isDefined(scope.meta.dateCreated)){
+                        $log.debug('used existing dateCreated');
+                        scope.date = new Date(scope.meta.dateCreated);
+                    } else {
+                        $log.debug('created new dateCreated');
+                        scope.date = new Date();
+                    }
+                    scope.changedDate = changedDate;
+                    scope.original = angular.copy(scope.meta);
+                    scope.checkChanges = () => !angular.equals(scope.original, scope.meta);
                     $log.debug('selected comp: %s', scope.comp.id);
                     activate();
                 }
@@ -97,62 +109,32 @@
                         $log.debug('EditMetadataCtrl, comp.status: %o', scope.comp.status);
                     });
             }
-            
-            function isSpecial(key){
-                var special;
-                switch(key){
-                    case 'files':
-                        special = true;
-                        break;
-                    case 'status':
-                        special = true;
-                        break;
-                    case 'texts':
-                        special = true;
-                        break;
-                    case 'compendium_id':
-                        special = true;
-                        break;
-                    case 'jobs':
-                        special = true;
-                        break;
-                    case 'created':
-                        special = true;
-                        break;
-                    case 'metadata':
-                        special = true;
-                        break;
-                    case 'author':
-                        special = true;
-                        break;
-                    case 'depends':
-                        special = true;
-                        break;
-                    case 'keywords':
-                        special = true;
-                        break;
-                    default:
-                        special = false;
-                }
-                return special;
-            }
 
             /**
              * @Desc adds item to array including item id
              * @Param target, variable where item should be added
-             * @Param type, string to prepend id
+             * @Param type, datatype that should be added to array
              */
             function addItem(target, type){
-                /*
-                var newItemNo = target.length + 1;
-                target.push({'id': type + newItemNo});
-                return;
-                */
-                if(angular.equals(noChange, scope.changes)){
-                    //nothing changed
-                } else {
-                    //update meta object and submit it
+                var item;
+                switch (type) {
+                    case 'author':
+                        item = {
+                            authorAffiliation: [{}],
+                            authorId: [{}]
+                        };
+                        break;
+                    case 'depends':
+                        item = {
+                            operatingSystem: [{}]
+                        };
+                        break;
+                    default:
+                        item = {};
+                        break;
                 }
+                target.push(item);
+                return;
             }
 
             function showInput(field){
@@ -164,34 +146,79 @@
                 scope.editMode = true;
             }
 
-            /*
-                TODO Update whole function
-            */
             function saveChanges(id, changes, original){
-                //update object to be uploaded
-                //var data = merge(changes, original);
-               // merge(changes, original);
-                //TODO upload object
+                // remove empty objects and upload
+                httpRequests
+                    .updateMetadata(original.ercIdentifier, removeArtifacts(changes))
+                    .then(function(response){
+                        $log.debug(response);
+                        /*
+                        scope.cancelEditing(); //reset edit mode
+                        scope.meta = response;
+                        scope.original = angular.copy(scope.meta);
+                        */
+                        $window.location.reload();
+                    })
+                    .catch(function(err){
+                        $log.debug(err);
+                    });
+            }
+
+            function cancelEditing(){
+                // reset scope.meta
+                scope.meta = angular.copy(scope.original);
                 for(var i in showField){
                     showField[i] = false;
                 }
                 scope.editMode = false;
+            }
 
-                function merge(c, o){
-                    //array check and update
-
-                    //overwrite other attributes
-                    for(var i in c){
-                        if(!c.hasOwnProperty(i)) continue;
-                        if(c[i] == 'author' || c[i] == 'keywords'){
-                            $log.debug('is author or keywords');
-                        } else {
-                            o[i] = c[i];
-                        }
-                            
-                    }
-                    $log.debug('new object %o', o);
+            /**
+             * @Desc checks if an object is empty, according to its empty template
+             * @param obj, object to check if it is empty
+             * @param attr, String referring to its empty template
+             */
+            function isEmpty(obj, attr){
+                var emptyTmplt;
+                switch(attr){
+                    case 'depends':
+                        emptyTmplt = { operatingSystem: [{}] };
+                        break;
+                    default:
+                        emptyTmplt = {};
+                        break;
                 }
+                return angular.equals(obj, emptyTmplt);
+            }
+
+            function removeArtifacts(obj){
+                checkKeywords();
+                checkDepends();
+                $log.debug('removed artifacts from object');
+                return obj;
+
+                function checkKeywords(){
+                    for(var i=obj.keywords.length; i>0; i--){
+                        if(!obj.keywords[i-1].hasOwnProperty('name')) obj.keywords.splice(i-1, 1);
+                    }
+                    if(obj.keywords.length == 0) delete obj.keywords;
+                }
+
+                function checkDepends(){
+                    for(var i=obj.depends.length; i>0; i--){
+                        for(var j=obj.depends[i-1].operatingSystem.length; j>0; j--){
+                            if(!obj.depends[i-1].operatingSystem[j-1].hasOwnProperty('name')) obj.depends[i-1].operatingSystem.splice(j-1, 1);
+                        }
+                        if(obj.depends[i-1].operatingSystem.length == 0) delete obj.depends[i-1].operatingSystem;
+                        if(!obj.depends[i-1].hasOwnProperty('version') && !obj.depends[i-1].hasOwnProperty('packageId') && !obj.depends[i-1].hasOwnProperty('packageSystem')) obj.depends.splice(i-1, 1);
+                    }
+                    if(obj.depends.length == 0) delete obj.depends;
+                }
+            }
+
+            function changedDate(val){
+                $log.debug('changed date to %s', val);
+                scope.meta.dateCreated = $filter('date')(val, 'dd-MM-yyyy');
             }
 
 		}
