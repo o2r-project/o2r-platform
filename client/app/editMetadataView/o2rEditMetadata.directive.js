@@ -40,88 +40,60 @@
             scope.addItem = addItem;
             scope.edit = edit;
             scope.saveChanges = saveChanges;
-            scope.showInput = showInput;
+            scope.showInput = (field) => showField[field];
             scope.isEmpty = isEmpty;
-            scope.isUndefined = (o) => angular.isUndefined(o); 
+            scope.isUndefined = (o) => angular.isUndefined(o);
+            scope.notNull = (val) => val !== null; 
 			attrs.$observe('o2rComp', function(value){
                 if(value == ''){
 
                 }else{
-                    scope.editMode = false;
-                    scope.cancelEditing = cancelEditing;
-                    scope.comp = angular.fromJson(value);
-                    // reset showField values to default
-                    showField.author = false;
-                    showField.publication = false;
-                    try {
-                        scope.meta = scope.comp.metadata.o2r;
-                    } catch (error) {
-                        $log.debug('comp.metadata or comp.metadata.o2r is undefined. Creating missing objects...');   
-                        if(angular.isDefined(scope.comp.metadata)){
-                            scope.comp.metadata.o2r = {};
-                        } else {
-                            scope.comp.metadata = {
-                                o2r: {}
-                            };
-                        }
-                        scope.meta = scope.comp.metadata.o2r;
-                    }
-                    // create properties with arrays
-                    if(!scope.meta.hasOwnProperty('keywords')) scope.meta.keywords = [{}];
-                    if(!scope.meta.hasOwnProperty('depends')) scope.meta.depends = [{operatingSystem: [{}] }];
-                    /* use this, when author metadata is an object
-                    if(!scope.meta.hasOwnProperty('author')) scope.meta.author = [{ authorAffiliation: [{}], authorId:[{}] }];
-                    for(var i in scope.meta.depends){
-                        if(!scope.meta.depends[i].hasOwnProperty('operatingSystem')) scope.meta.depends[i].operatingSystem = [{}];
-                    }
-                    for(var i in scope.meta.author){
-                        if(!scope.meta.author[i].hasOwnProperty('authorAffiliation')) scope.meta.author[i].authorAffiliation = [{}];
-                        if(!scope.meta.author[i].hasOwnProperty('authorId')) scope.meta.author[i].authorId = [{}];
-                    }
-                    */
-                    //if(scope.meta.hasOwnProperty('dateCreated')) scope.date = new Date(scope.meta.dateCreated);
-                    if(angular.isDefined(scope.meta.dateCreated)){
-                        $log.debug('used existing dateCreated');
-                        scope.date = new Date(scope.meta.dateCreated);
-                    } else {
-                        $log.debug('created new dateCreated');
-                        scope.date = new Date();
-                    }
-                    scope.changedDate = changedDate;
-                    scope.original = angular.copy(scope.meta);
-                    scope.checkChanges = () => !angular.equals(scope.original, scope.meta);
-                    $log.debug('selected comp: %s', scope.comp.id);
-                    activate();
+                    activate(value);
                 }
 			});
             
         
             /////////////////
-            function activate(){
-                setCompStatus(scope.comp.id);
-                $log.debug(scope.comp);
-            }
+            function activate(value){
+                scope.cancelEditing = cancelEditing;
+                scope.comp = angular.fromJson(value);
+                resetShowField();
+                try {
+                    scope.meta = scope.comp.metadata.o2r;
+                } catch (error) {
+                    $log.debug('comp.metadata or comp.metadata.o2r is undefined. Creating missing objects...');   
+                    if(angular.isDefined(scope.comp.metadata)){ scope.comp.metadata.o2r = {}; } else { scope.comp.metadata = { o2r: {} }; }
+                    scope.meta = scope.comp.metadata.o2r;
+                }
+                // create properties with arrays
+                if(scope.meta.author.length == 0) scope.meta.author.push({ affiliation: [{}] });
+                for(var i in scope.meta.author){
+                    if(scope.meta.author[i].affiliation.length == 0) scope.meta.author[i].affiliation.push("");
+                }
+                if(scope.meta.depends.length == 0) scope.meta.depends.push({operatingSystem: [{}] });
+                if(scope.meta.keywords.length == 0) scope.meta.keywords.push("");
+                if(scope.meta.paperLanguage == 0) scope.meta.paperLanguage.push("");
+                // create date object
+                if(!scope.meta.hasOwnProperty('dateCreated') || scope.meta.dateCreated.length == 0){ scope.date = new Date();}
+                else { scope.date = new Date(scope.meta.dateCreated);}
 
-            function setCompStatus (id){
-                jobs.callJobs({compendium_id : id})
-                    .then(function(res){
-                        scope.comp.status = res.data;
-                        $log.debug('EditMetadataCtrl, comp.status: %o', scope.comp.status);
-                    });
+                scope.changedDate = (val) => scope.meta.dateCreated = $filter('date')(val, 'dd-MM-yyyy');
+                scope.original = angular.copy(scope.meta);
+                $log.debug(scope.original);
+                scope.checkChanges = () => !angular.equals(scope.original, scope.meta);
+                $log.debug('selected comp: %s', scope.comp.id);
             }
-
             /**
-             * @Desc adds item to array including item id
-             * @Param target, variable where item should be added
-             * @Param type, datatype that should be added to array
+             * @description adds item to array including item id
+             * @param target, variable where item should be added
+             * @param type, datatype that should be added to array
              */
             function addItem(target, type){
                 var item;
                 switch (type) {
                     case 'author':
                         item = {
-                            authorAffiliation: [{}],
-                            authorId: [{}]
+                            affiliation: [""]
                         };
                         break;
                     case 'depends':
@@ -130,15 +102,11 @@
                         };
                         break;
                     default:
-                        item = {};
+                        item = "";
                         break;
                 }
                 target.push(item);
                 return;
-            }
-
-            function showInput(field){
-                return showField[field];
             }
 
             function edit(field){
@@ -173,8 +141,11 @@
                 scope.editMode = false;
             }
 
+            /*
+            TODO: update this function according to new metadata structure
+            */
             /**
-             * @Desc checks if an object is empty, according to its empty template
+             * @description checks if an object is empty, according to its empty template
              * @param obj, object to check if it is empty
              * @param attr, String referring to its empty template
              */
@@ -191,34 +162,66 @@
                 return angular.equals(obj, emptyTmplt);
             }
 
+            /*
+            TODO: Update this function according to new metadata schema
+            */
+
+            /**
+             * @description removes empty objects that had been added due to the creation of input fields
+             * @param obj, metadata.o2r object, that will be uploaded to the server
+             */
             function removeArtifacts(obj){
                 checkKeywords();
-                checkDepends();
+                //checkDepends();
+                checkAuthor();
+                checkPaperLanguage();
                 $log.debug('removed artifacts from object');
                 return obj;
 
                 function checkKeywords(){
                     for(var i=obj.keywords.length; i>0; i--){
-                        if(!obj.keywords[i-1].hasOwnProperty('name')) obj.keywords.splice(i-1, 1);
+                        if(obj.keywords[i-1].length == 0) obj.keywords.splice(i-1, 1);
                     }
-                    if(obj.keywords.length == 0) delete obj.keywords;
                 }
 
+                //TODO update this function
                 function checkDepends(){
                     for(var i=obj.depends.length; i>0; i--){
                         for(var j=obj.depends[i-1].operatingSystem.length; j>0; j--){
                             if(!obj.depends[i-1].operatingSystem[j-1].hasOwnProperty('name')) obj.depends[i-1].operatingSystem.splice(j-1, 1);
                         }
-                        if(obj.depends[i-1].operatingSystem.length == 0) delete obj.depends[i-1].operatingSystem;
                         if(!obj.depends[i-1].hasOwnProperty('version') && !obj.depends[i-1].hasOwnProperty('packageId') && !obj.depends[i-1].hasOwnProperty('packageSystem')) obj.depends.splice(i-1, 1);
                     }
-                    if(obj.depends.length == 0) delete obj.depends;
+                }
+
+                function checkAuthor(){
+                    for(var i=obj.author.length; i>0; i--){
+                        for(var j=obj.author[i-1].affiliation.length; j>0; j--){
+                            if(obj.author[i-1].affiliation[j-1].length == 0) obj.author[i-1].affiliation.splice(j-1, 1);
+                        }
+                        if(
+                        obj.author[i-1].hasOwnProperty('orcid')
+                        && obj.author[i-1].hasOwnProperty('name')
+                        && obj.author[i-1].hasOwnProperty('affiliation')
+                        && obj.author[i-1].orcid.length == 0 
+                        && obj.author[i-1].name.length == 0 
+                        && obj.author[i-1].affiliation.length == 0) obj.author.splice(i-1, 1);
+                    }
+                }
+
+                function checkPaperLanguage(){
+                    for(var i=obj.paperLanguage.length; i>0; i--){
+                        if(obj.paperLanguage[i-1].length == 0) obj.paperLanguage.splice(i-1, 1);
+                    }
                 }
             }
 
-            function changedDate(val){
-                $log.debug('changed date to %s', val);
-                scope.meta.dateCreated = $filter('date')(val, 'dd-MM-yyyy');
+            // reset showField values to default
+            function resetShowField(){
+                for(var i in showField){
+                    showField[i] = false;
+                }
+                scope.editMode = false;
             }
 
 		}
