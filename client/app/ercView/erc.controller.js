@@ -30,8 +30,8 @@
 
         vm.sendToZenodo = function(){
             var response = httpRequests.toZenodo(vm.ercId);
-            console.log("test")
-            console.log(response)
+            $log.debug("test");
+            $log.debug(response);
         };
 
         vm.loggedIn = login.isLoggedIn();

@@ -48,7 +48,9 @@
         });
 
         $mdDateLocaleProvider.formatDate = function(date){
+            /* eslint-disable no-undef */
             return moment(date).format('DD-MM-YYYY');
+            /* eslint-enable no-undef */
         };
 
         var customPrimary = {
