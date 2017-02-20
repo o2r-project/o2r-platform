@@ -12,7 +12,7 @@
     <div ng-hide="showInput('author')" layout="column" ng-repeat="author in original.author">
         <span>{{author.name}}</span>
         <span ng-repeat="affiliation in author.affiliation">{{affiliation}}</span>
-        <span ng-if="author.hasOwnProperty('orcid')">Orcid: {{author.orcid}}</span>
+        <span ng-if="notNull(author.orcid)">Orcid: {{author.orcid}}</span>
         <md-divider ng-if="!$last"></md-divider>
     </div>
     <!-- end show info -->

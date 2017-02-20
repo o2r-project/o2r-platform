@@ -171,6 +171,7 @@
              * @param obj, metadata.o2r object, that will be uploaded to the server
              */
             function removeArtifacts(obj){
+                checkStrings();
                 checkKeywords();
                 //checkDepends();
                 checkAuthor();
@@ -199,13 +200,11 @@
                         for(var j=obj.author[i-1].affiliation.length; j>0; j--){
                             if(obj.author[i-1].affiliation[j-1].length == 0) obj.author[i-1].affiliation.splice(j-1, 1);
                         }
-                        if(
-                        obj.author[i-1].hasOwnProperty('orcid')
-                        && obj.author[i-1].hasOwnProperty('name')
-                        && obj.author[i-1].hasOwnProperty('affiliation')
-                        && obj.author[i-1].orcid.length == 0 
-                        && obj.author[i-1].name.length == 0 
-                        && obj.author[i-1].affiliation.length == 0) obj.author.splice(i-1, 1);
+                        if(obj.author[i-1].orcid === "") obj.author[i-1].orcid = null;
+                        if(obj.author[i-1].name === "") obj.author[i-1].name = null;
+                        if(angular.isUndefined(obj.author[i-1].orcid) 
+                        && angular.isUndefined(obj.author[i-1].name) 
+                        && (angular.isUndefined(obj.author[i-1].affiliation) || (obj.author[i-1].affiliation.length == 0))) obj.author.splice(i-1, 1);
                     }
                 }
 
@@ -213,6 +212,14 @@
                     for(var i=obj.paperLanguage.length; i>0; i--){
                         if(obj.paperLanguage[i-1].length == 0) obj.paperLanguage.splice(i-1, 1);
                     }
+                }
+
+                // overwrites empty strings with null on first level of object
+                function checkStrings(){
+                    for(var i in obj){
+                        if(obj[i] === "") obj[i] = null;
+                    }
+                    return;
                 }
             }
 
