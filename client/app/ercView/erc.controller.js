@@ -28,13 +28,11 @@
             $mdOpenMenu(ev);
         };
 
-        vm.sendToZenodo = function(){
-            var response = httpRequests.toZenodo(vm.ercId);
-            console.log("test")
-            console.log(response)
-        };
-
         vm.loggedIn = login.isLoggedIn();
+
+        vm.sendToZenodo = function(){
+            httpRequests.toZenodo(vm.ercId);
+        };
 
         //To do:query to shipper api if ERC is already in zenodo
         vm.stillToArchive = function(){

@@ -145,6 +145,12 @@
                     compSJob: compSJobService
                 }
             })
+            .state('metadata', {
+                url: "/metadata/:ercid",
+                templateUrl: "app/checkMetadata/metadata.html",
+                controller: 'CheckMetaController',
+                controllerAs: 'vm',
+            })            
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
@@ -232,8 +238,8 @@
     function compFJobService($stateParams, jobs){
         var ercId = $stateParams.ercid;
         var query = {
-            compendium_id: ercId,
-            status: 'success'
+            compendium_id: ercId
+            //status: 'success'
         };
         return jobs.callJobs(query);
     }

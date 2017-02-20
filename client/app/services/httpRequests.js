@@ -19,7 +19,8 @@
 			searchComp: searchComp,
 			toZenodo: toZenodo,
 			ercInZenodo: ercInZenodo,
-			updateMetadata: updateMetadata
+			updateMetadata: updateMetadata,
+			sendScieboUrl: sendScieboUrl
 		};
 
 		return service;
@@ -144,6 +145,15 @@
 			//var shipment = $http.get(_url);
 			//return shipment.status != "delivered";
 			return true;
+		}
+
+		function sendScieboUrl(url){
+			console.log(url)
+			var _url = 'http://localhost/api/v2/compendium';
+			$http.post(_url, "content_type=compendium_v1" + "&share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO" + "path=/metatainer")
+				.then(function (response) {
+					$log.debug(response);
+				});			
 		}	
 
 		function toZenodo(compendiumID) {
