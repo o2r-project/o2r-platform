@@ -28,14 +28,12 @@
         * @Param query, object containing query information for httpRequest
         */
         function callJobs(query){
-            var deferred = $q.defer();
-            httpRequests
+           return httpRequests
                 .listJobs(query)
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);
             
-            return deferred.promise;
 
             function callback1(joblist){
                 $log.debug('in callJobs callback1: %o', joblist);
@@ -45,14 +43,16 @@
                 $log.debug('in callJobs callback2: %o', job);
                 setExecStatus(job.data.steps);
                 setJobDone(checkStatus(job.data.steps));
-                deferred.resolve(job);
+                return job;
             }
             function errorHandler(e){
                 $log.debug('in callJobs errorHandler: %o', e);
                 //overwrite execStatus with empty object
                 setExecStatus({});
                 setJobDone(true);
-                deferred.resolve({data: 'No analysis executed yet.'});
+                return {
+                    data: 'No anlysis executed yet.'
+                }
             }
         }
 
