@@ -152,12 +152,21 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	width:15%;
 	position: relative;
 	top: 10%;
 }
 
+#home-label{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+
+
 #home-logo-box{
-	padding-top: 10%;
+	padding-top: 5%;
 }
 /***********************
    End Home view
@@ -169,6 +178,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .search-metadata{
 	width: 25vw;
 	right: 5vw;
+}
+
+.go-button{
+	bottom:1em;
 }
 
 .search-button{
