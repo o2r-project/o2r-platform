@@ -149,8 +149,8 @@
 
 		function sendScieboUrl(url){
 			console.log(url)
-			var _url = 'http://localhost/api/v2/compendium';
-			$http.post(_url, "content_type=compendium_v1" + "&share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO" + "path=/metatainer")
+			var _url = 'http://localhost/api/v2/compendium/';
+			$http.post(_url, "http://localhost:8088/api/v2/compendium/content_type=compendium_v1&share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO&path=/metatainer")
 				.then(function (response) {
 					$log.debug(response);
 				});			
