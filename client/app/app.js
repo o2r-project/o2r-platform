@@ -197,9 +197,8 @@
     }
 
     function icons(){
-        var path = 'bower_components/material-design-icons/';
-        var path2 = '/svg/production/ic_';
-        var path3 = '_48px.svg';
+        var path = 'img/ic_';
+        var path2 = '_48px.svg';
         var object = {};
         var icons = [
             {name: 'upload', category: 'file', fn: 'file_upload'},
@@ -221,7 +220,7 @@
 
         for(var i in icons){
             
-            object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
+            object[icons[i].name] = path + icons[i].fn + path2;
         }
         
         return object;
