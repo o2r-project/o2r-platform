@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', 'env', '$window', 'ngProgressFactory'];
+	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory'];
 		
-	function httpRequests($http, $log, env, $window, ngProgressFactory){
+	function httpRequests($http, $log, env, $window, $q, ngProgressFactory){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -175,7 +175,8 @@
 
 		function updateMetadata(id, data){
 			var _url = env.api + '/compendium/' + id + '/metadata';
-			return $http.put(_url, data);
+			var body = {o2r: data};
+			return $http.put(_url, body);
 		}
 	};
 })();

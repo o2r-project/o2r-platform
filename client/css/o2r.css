@@ -28,6 +28,9 @@ body{
 	height: 64px !important;
 }
 
+#o2r-header{
+	z-index:100;
+}
 /*
 .no-link{
 	color: 0, 0, 0, 0.87 !important;
@@ -271,7 +274,10 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 ************************/
 .edit-button:hover{
 	cursor: pointer;
-	text-decoration: underline;
+}
+
+.edit-metadata-label-color{
+	color: rgba(0,0,0, 0.54);
 }
 /***********************
 	End editMetadatView

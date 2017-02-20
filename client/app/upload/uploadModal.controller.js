@@ -47,12 +47,12 @@
                 url: env.api + '/compendium',
                 data: {compendium: file, 'content_type': 'compendium_v1'}
             })
-            .then(successCallback, errorCallback, progress)
-            .then(execJobCallback, errorCallback);
+            .then(successCallback, errorCallback, progress);
             
             function successCallback(response){
                 if(vm.checkRunAnalysis){
-                    return jobs.executeJob(response.data.id);
+                    jobs.executeJob(response.data.id)
+                        .then(execJobCallback, errorCallback);
                 } else {
                     $log.debug('upload successCallback: %o', response);
                     vm.doneButton = true;
@@ -62,6 +62,7 @@
                 }
             }
             function errorCallback(response){
+                $log.debug('upload errorCallback %o', response);
                 file.progress = 100;
                 vm.doneButton = true;
                 vm.checkUpload = false;
