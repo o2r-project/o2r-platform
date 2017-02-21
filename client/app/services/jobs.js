@@ -35,6 +35,7 @@
                 .then(callback2)
                 .catch(errorHandler);
             
+            return deferred.promise;
 
             function callback1(joblist){
                 $log.debug('in callJobs callback1: %o', joblist);
@@ -51,7 +52,7 @@
                 //overwrite execStatus with empty object
                 setExecStatus({});
                 setJobDone(true);
-                deferred.resolve({data: 'No anlysis executed yet.'});
+                deferred.resolve({data: 'No analysis executed yet.'});
             }
         }
 

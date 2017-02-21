@@ -26,7 +26,6 @@
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
-<link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
 <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
@@ -59,9 +58,14 @@
 <!-- Starter file -->
 <script src="app/app.js"></script>
 
+<!-- Submodules -->
+<script src="app/config/config.module.js"></script>
+<script src="app/o2rDisplayFiles/o2rDisplayFiles.module.js"></script>
+<script src="app/o2rCompare/o2rCompare.module.js"></script>
+<script src="app/o2rHttp/o2rHttp.module.js"></script>
 
 <!-- Services -->
-<script src="app/services/httpRequests.js"></script>
+<script src="app/o2rHttp/httpRequests.js"></script>
 <script src="app/ercView/publications.js"></script>
 <script src="app/metadataPanel/metadata.js"></script>
 <script src="app/services/jobs.js"></script>
@@ -81,17 +85,20 @@
 <script src="app/templates/impressum.controller.js"></script>
 <script src="app/templates/privacy.controller.js"></script>
 <script src="app/checkMetadata/checkmeta.controller.js"></script>
+<script src="app/compareView/compare.controller.js"></script>
 
 <!-- Directives -->
-<script src="app/ercView/o2rDisplayFiles.directive.js"></script>
+<script src="app/o2rDisplayFiles/o2rDisplayFiles.directive.js"></script>
 <script src="app/ercView/o2rErcDownload.directive.js"></script>
 <script src="app/metadataPanel/o2rMetadata.directive.js"></script>
 <script src="app/analysisStatsView/o2rAnalysisStats.directive.js"></script>
 <script src="app/editMetadataView/o2rEditMetadata.directive.js"></script>
+<script src="app/o2rCompare/o2rCompare.directive.js"></script>
 
 <!-- Filters -->
 <script src="app/services/upperCase.filter.js"></script>
 <script src="app/services/cutPath.filter.js"></script>
+<script src="app/services/cutPathLong.filter.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">

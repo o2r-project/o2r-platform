@@ -9,7 +9,6 @@
 		
 		{
 		size: Integer,
-		type: String,
 		path: String
 		}
 
@@ -17,14 +16,17 @@
 		<o2r-display-files o2r-file="{'foo': 'bar'}"></o2r-display-files>
 	*/
 	angular
-		.module('starter')
+		.module('starter.o2rDisplayFiles')
 		.directive('o2rDisplayFiles', o2rDisplayFiles);
 
 	o2rDisplayFiles.$inject= ['$log', 'env'];
 	function o2rDisplayFiles($log, env){
 		return{
 			restrict: 'E',
-			templateUrl: 'app/ercView/o2rDisplayFiles.template.html',
+			templateUrl: 'app/o2rDisplayFiles/o2rDisplayFiles.template.html',
+			scope: {
+				o2rFile: '@'
+			},
 			link: link
 		};
 
@@ -58,4 +60,4 @@
 			});
 		}
 	}
-})();
+})(window.angular);

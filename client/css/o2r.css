@@ -282,3 +282,12 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 /***********************
 	End editMetadatView
 ************************/
+/***********************
+	Start compareView
+************************/
+o2r-compare md-card-content{
+	overflow-y: hidden;
+}
+/***********************
+	End compareView
+************************/

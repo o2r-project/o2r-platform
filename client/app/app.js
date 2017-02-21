@@ -1,24 +1,15 @@
 (function(){
     'use strict';
-    /* eslint-disable angular/window-service */
-    window.__env = window.__env || {};
 
-    var env = {
-        server : window.__env.server || 'http://localhost',
-        c_api: window.__env.api || '/api/v1',
-        sizeRestriction: window.__env.sizeRestriction || 10000000,
-        disableTracking: window.__env.disableTracking || false,
-        enableDebug: window.__env.enableDebug || false,
-        version: window.__env.version || 'deployment'
-    };
-    env.api = env.server + env.c_api;
-
-    /* eslint-enable angular/window-service */
     angular
         .module('starter', [
+            "conf",
+            "starter.o2rDisplayFiles",
+            "starter.o2rCompare",
+            "starter.o2rHttp",
             "treeControl",
+            "hljs",
             "ui.router", 
-            "hljs", 
             "ngFileUpload", 
             'ngAnimate',
             'ngAria', 
@@ -28,21 +19,21 @@
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress'])
-        .constant('env', env)
         .constant('icons', icons())
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider', 'env'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider, $compileProvider, $mdDateLocaleProvider){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, env){
         $compileProvider.preAssignBindingsEnabled(true);
         
         /* eslint-disable angular/window-service, angular/log */
-        $analyticsProvider.developerMode(window.__env.disableTracking);
-        if(window.__env.disableTracking) console.log("Tracking globally disabled!");
+        $analyticsProvider.developerMode(env.disableTracking);
+        if(env.disableTracking) console.log("Tracking globally disabled!");
 
-        $logProvider.debugEnabled(window.__env.enableDebug);
+        $logProvider.debugEnabled(env.enableDebug);
         /* eslint-enable angular/window-service, angular/log */
+
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
@@ -177,6 +168,12 @@
                 resolve: {
                     searchResults: searchResultsService
                 }
+            })
+            .state('compare', {
+                url: "/compare",
+                templateUrl: "app/compareView/compare.html",
+                controller: 'CompareController',
+                controllerAs: 'vm'
             })
             .state('impressum', {
                 url: "/impressum",

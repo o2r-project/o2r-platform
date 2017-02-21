@@ -1,0 +1,13 @@
+<div layout="row">
+    <md-card flex ng-repeat="file in files track by $index">
+        <md-card-header>
+            <md-card-header-text>
+                <span>{{file.path | cutPathLong}}</span>
+					<span flex></span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <o2r-display-files o2r-file="{{file}}"></o2r-display-files>
+        </md-card-content>
+    </md-card>
+</div>
