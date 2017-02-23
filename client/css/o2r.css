@@ -173,6 +173,21 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 ************************/
 
 /***********************
+   Start creation process
+************************/
+.metabuttons{
+	width:100%;
+}
+
+.cardHeight{
+	height:650px;
+}
+
+/***********************
+   End creation process
+************************/
+
+/***********************
    Start Search view
 ************************/
 .search-metadata{

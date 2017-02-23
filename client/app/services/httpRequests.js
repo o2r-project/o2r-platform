@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory'];
+	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory', '$location'];
 		
-	function httpRequests($http, $log, env, $window, $q, ngProgressFactory){
+	function httpRequests($http, $log, env, $window, $q, ngProgressFactory, $location){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -20,7 +20,7 @@
 			toZenodo: toZenodo,
 			ercInZenodo: ercInZenodo,
 			updateMetadata: updateMetadata,
-			sendScieboUrl: sendScieboUrl
+			uploadViaSciebo: uploadViaSciebo
 		};
 
 		return service;
@@ -147,13 +147,9 @@
 			return true;
 		}
 
-		function sendScieboUrl(url){
-			console.log(url)
-			var _url = 'http://localhost/api/v2/compendium/';
-			$http.post(_url, "http://localhost:8088/api/v2/compendium/content_type=compendium_v1&share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO&path=/metatainer")
-				.then(function (response) {
-					$log.debug(response);
-				});			
+		function uploadViaSciebo(url, path){
+			var _url = 'http://localhost/api/v2/compendium/';			
+			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});	
 		}	
 
 		function toZenodo(compendiumID) {

@@ -9,7 +9,7 @@
 <!-- Libraries JavaScript -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
@@ -23,6 +23,12 @@
 <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
 <script type="text/javascript" src="bower_components/ngprogress/build/ngprogress.js"></script>
 <script type="text/javascript" src="bower_components/moment/min/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="bower_components/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="bower_components/leaflet-draw/dist/leaflet.draw-src.js"></script>
+<script type="text/javascript" src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+<script type="text/javascript" src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+<script type="text/javascript" src="lib/ui-leaflet-draw.js"></script>
+
 
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
@@ -32,6 +38,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
 <link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
+<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -81,7 +89,9 @@
 <script src="app/headerView/header.controller.js"></script>
 <script src="app/templates/impressum.controller.js"></script>
 <script src="app/templates/privacy.controller.js"></script>
-<script src="app/checkMetadata/checkmeta.controller.js"></script>
+<script src="app/creationProcess/checkmeta.controller.js"></script>
+<script src="app/creationProcess/spacetime.controller.js"></script>
+<script src="app/creationProcess/creationProcess.controller.js"></script>
 
 <!-- Directives -->
 <script src="app/ercView/o2rDisplayFiles.directive.js"></script>
