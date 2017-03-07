@@ -18,15 +18,17 @@
             'angulartics', 
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
-            'ngProgress'])
+            'ngProgress',
+            'ngIframeResizer'])
         .constant('icons', icons())
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider', 'env'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, env){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
         $compileProvider.preAssignBindingsEnabled(true);
         
+        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
         if(env.disableTracking) console.log("Tracking globally disabled!");
@@ -170,7 +172,7 @@
                 }
             })
             .state('compare', {
-                url: "/compare",
+                url: "/compare?url&tocompareurl&urltype&tocomparetype",
                 templateUrl: "app/compareView/compare.html",
                 controller: 'CompareController',
                 controllerAs: 'vm'
@@ -212,7 +214,9 @@
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
             {name: 'rowing', category: 'action', fn: 'rowing'},
             {name: 'add', category: 'content', fn: 'add'},
-            {name: 'edit', category: 'editor', fn: 'mode_edit'}
+            {name: 'edit', category: 'editor', fn: 'mode_edit'},
+            {name: 'lock_open', category: 'action', fn: 'lock_open'},
+            {name: 'lock_outline', category: 'action', fn: 'lock_outline'}
         ];
 
         for(var i in icons){

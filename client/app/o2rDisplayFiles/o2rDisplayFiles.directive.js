@@ -5,15 +5,23 @@
 		Directive for displaying different file types.
 		This directive checks the mime type attribute of a publication.content.<element> to handle it differently considering its mime type.
 		Directive can only be used as Html-Element and expects an attribute o2r-file.
-		o2r-file must be an object with at least following attributes:
+		o2r-file must be an object with at least following attribute:
 		
 		{
-		size: Integer,
 		path: String
 		}
 
 		Example: 
-		<o2r-display-files o2r-file="{'foo': 'bar'}"></o2r-display-files>
+		<o2r-display-files o2r-file="{'path': 'foo/bar'}"></o2r-display-files>
+
+		optional attributes:
+
+		{
+			size: Integer,
+			type: String
+		}
+		
+		where size is the filesize in bytes and type is the mime type.
 	*/
 	angular
 		.module('starter.o2rDisplayFiles')
@@ -34,7 +42,12 @@
 			$log.debug('in o2rDisplayFiles');
 			scope.file;
 			scope.sizeRestriction = env.sizeRestriction;
-
+			/*
+			scope.useSync = function(){
+				if(angular.isDefined(scope.o2rSyncScroll) && scope.o2rSyncScroll == true) return true;
+				else return false;
+			}
+			*/
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
 					scope.file = angular.fromJson(value);
@@ -45,6 +58,10 @@
 						scope.mime = mime[0];
 					} else {
 						scope.mime = '';
+					}
+
+					if(angular.isUndefined(scope.file.size)){
+						scope.file.size = null;
 					}
 
 					scope.useHljs = useHljs();

@@ -1,4 +1,25 @@
 <div layout="row">
+    <span flex></span>
+    <md-button ng-click="toggleSync()" aria-label="Synchronize Scrolling">
+        <md-icon ng-if="sync == false" md-svg-src="{{icons.lock_open}}"></md-icon>
+        <md-icon ng-if="sync == true" md-svg-src="{{icons.lock_outline}}"></md-icon>
+    </md-button>
+    <span flex></span>
+</div>
+<div ng-show="!sync" ng-hide="sync" layout="row">
+    <md-card flex ng-repeat="file in files track by $index" style="height: 80vh;">
+        <md-card-header>
+            <md-card-header-text>
+                <span>{{file.path | cutPathLong}}</span>
+					<span flex></span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content style="overflow-y: auto;">
+            <o2r-display-files o2r-file="{{file}}"></o2r-display-files>
+        </md-card-content>
+    </md-card>
+</div>
+<div ng-show="sync" ng-hide="!sync" layout="row">
     <md-card flex ng-repeat="file in files track by $index">
         <md-card-header>
             <md-card-header-text>

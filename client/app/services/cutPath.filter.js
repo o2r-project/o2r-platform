@@ -9,19 +9,19 @@
         .module('starter')
         .filter('cutPath', cutPath);
     
-    function cutPath(){
+    cutPath.$inject = ['$log'];
+    function cutPath($log){
         return cutter;
 
         function cutter (input){
             if(input){
-                var cuts = input.split('/');
-                var relPath = '';
-                for (var i=6; i<cuts.length; i++){
-                    if(i == 6){
-                        relPath += cuts[i];
-                    } else {
-                        relPath += '/' + cuts[i];
-                    }
+                var re = /(http[s]?:\/\/)?(localhost)?(\/api\/v\d\/.*\/)(data\/.*\.\w+)/;
+                var cuts = input.match(re);
+                try {
+                    var relPath = cuts[cuts.length-1];
+                } catch (error) {
+                    $log.info('cutPath.filter.js: No match found. Setting result to original');
+                    var relPath = input;
                 }
                 return relPath;
             } else return;

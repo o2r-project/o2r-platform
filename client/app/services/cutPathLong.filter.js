@@ -9,20 +9,22 @@
         .module('starter')
         .filter('cutPathLong', cutPathLong);
     
-    function cutPathLong(){
+    cutPathLong.$inject = ['$log'];
+    function cutPathLong($log){
         return cutter;
 
         function cutter (input){
             if(input){
-                var cuts = input.split('/');
-                var relPath = '';
-                for (var i=4; i<cuts.length; i++){
-                    if(i == 4){
-                        relPath += cuts[i];
-                    } else {
-                        relPath += '/' + cuts[i];
-                    }
+                var re = /(http[s]?:\/\/)?(localhost\/api\/v\d\/compendium\/)(.*\.\w+)/;
+                var cuts = input.match(re);
+                try {
+                    var relPath = cuts[cuts.length-1];
+                } catch (error) {
+                    $log.info('cutPathLong.filter.js: No match found. Setting result to original');
+                    var relPath = input;
                 }
+                
+                
                 return relPath;
             } else return;
         }

@@ -75,10 +75,14 @@ body{
 	margin-right: auto;
 }
 
-.erc-html iframe{
+iframe.erc-html{
 	border-style: none;
+	min-height: 200px;
 }
 
+erc-html iframe{
+	border-style: none;
+}
 .erc-img{
 	max-width: 100%;
 }
