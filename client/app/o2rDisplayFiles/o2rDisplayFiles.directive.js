@@ -42,15 +42,13 @@
 			$log.debug('in o2rDisplayFiles');
 			scope.file;
 			scope.sizeRestriction = env.sizeRestriction;
-			/*
-			scope.useSync = function(){
-				if(angular.isDefined(scope.o2rSyncScroll) && scope.o2rSyncScroll == true) return true;
-				else return false;
-			}
-			*/
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
 					scope.file = angular.fromJson(value);
+					scope.iframeOptions = {
+						checkOrigin: false,
+						log: true
+					};
 					var mime;
 					// if no mime type is defined hljs will be used for display
 					if(angular.isDefined(scope.file.type)){
@@ -67,7 +65,7 @@
 					scope.useHljs = useHljs();
 					
 					function useHljs(){						
-						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html')){
+						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html') || (scope.file.type == 'text/shiny')){
 							return false;
 						}
 						return true;

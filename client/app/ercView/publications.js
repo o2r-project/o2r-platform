@@ -11,6 +11,7 @@
 		var pub = {};
 		var service = {
 			getContentById: findContent,
+			addInteractive: addInteractive,
 			getRequest: getRequest
 		};
 
@@ -58,6 +59,29 @@
 			searchedObject = pub;
 			pub = {};
 			return searchedObject;
+		}
+
+		
+		function addInteractive(compendium, searchedFolder, val){
+			var searchedObject = {};
+			folder_iterator(compendium.files, searchedFolder, val);
+			return compendium;
+		}
+
+		function folder_iterator(o, path, v){
+			var val = v;
+			var object = o;
+			var searchedFolder = path;
+			if(angular.isDefined(object.children)){
+				if(object.path == searchedFolder) {
+					object.children.push(val);
+					return;
+				} else {
+					for(var content in object.children){
+						folder_iterator(object.children[content], searchedFolder, val);
+					}
+				}
+			} else return;
 		}
 
 	}

@@ -13,7 +13,7 @@
         vm.sJob = compSJob.data;
         vm.icons = icons;
         vm.ercId = $stateParams.ercid; // id of compendium
-        vm.publication = compInfo;
+        vm.publication = prepareFiles(compInfo);
         vm.oneFile; // one file in publication
         vm.setOne = setOne;
         vm.server = env.server;
@@ -46,7 +46,12 @@
         
         function activate(){
             // publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
-            header.setTitle('o2r - Compendium'); 
+            header.setTitle('o2r - Compendium');
+            // TODO
+            //use this, when backend fixes path to main file
+            //vm.setOne('/api/v1/compendium/' + vm.publication.metadata.o2r.file.filepath);
+            //delete this, when backend fixed path to main file
+            vm.setOne('/api/v1/compendium/' + vm.publication.id + '/data/data/' + vm.publication.metadata.o2r.file.filename);
         }
 
         function setOne(path){
@@ -86,6 +91,28 @@
                 return unhidden;
             }
             return files;
+        }
+
+        function prepareFiles(obj){
+            if(obj.metadata.o2r.interaction.interactive == true){
+                // TODO
+                //delete this when backend added interaction.path
+                obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/main/';
+                var name = obj.metadata.o2r.file.filename.split('.');
+                var name = name[0] + '_interactive';
+                var dummy = {
+                    extension: null,
+                    name: name,
+                    path: obj.metadata.o2r.interaction.path,
+                    size: 368,
+                    type: 'text/shiny'
+                };
+                // TODO 
+                // substitute second parameter with obj.metadata.o2r.file.filepath
+                obj = publications.addInteractive(obj, '/api/v1/compendium/' + obj.id + '/data/data', dummy);
+                $log.debug(obj);
+            }
+            return obj;
         }
     }
 })();
