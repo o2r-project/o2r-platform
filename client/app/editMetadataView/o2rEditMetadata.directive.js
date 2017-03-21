@@ -43,7 +43,8 @@
             scope.showInput = (field) => showField[field];
             scope.isEmpty = isEmpty;
             scope.isUndefined = (o) => angular.isUndefined(o);
-            scope.notNull = (val) => val !== null; 
+            scope.notNull = (val) => val !== null;
+            scope.myforms = {}; 
 			attrs.$observe('o2rComp', function(value){
                 if(value == ''){
 
@@ -52,35 +53,34 @@
                 }
 			});
             
-        
             /////////////////
             function activate(value){
                 scope.cancelEditing = cancelEditing;
                 scope.comp = angular.fromJson(value);
                 resetShowField();
                 try {
-                    scope.meta = scope.comp.metadata.o2r;
+                    scope.original = scope.comp.metadata.o2r;
                 } catch (error) {
                     $log.debug('comp.metadata or comp.metadata.o2r is undefined. Creating missing objects...');   
                     if(angular.isDefined(scope.comp.metadata)){ scope.comp.metadata.o2r = {}; } else { scope.comp.metadata = { o2r: {} }; }
-                    scope.meta = scope.comp.metadata.o2r;
+                    scope.original = scope.comp.metadata.o2r;
                 }
                 // create properties with arrays
-                if(scope.meta.author.length == 0) scope.meta.author.push({ affiliation: [{}] });
-                for(var i in scope.meta.author){
-                    if(scope.meta.author[i].affiliation.length == 0) scope.meta.author[i].affiliation.push("");
+                if(scope.original.author.length == 0) scope.original.author.push({ affiliation: [{}] });
+                for(var i in scope.original.author){
+                    if(scope.original.author[i].affiliation.length == 0) scope.original.author[i].affiliation.push("");
                 }
-                if(scope.meta.depends.length == 0) scope.meta.depends.push({operatingSystem: [{}] });
-                if(scope.meta.keywords.length == 0) scope.meta.keywords.push("");
-                if(scope.meta.paperLanguage == 0) scope.meta.paperLanguage.push("");
+                if(scope.original.depends.length == 0) scope.original.depends.push({operatingSystem: [{}] });
+                if(scope.original.keywords.length == 0) scope.original.keywords.push("");
+                if(scope.original.paperLanguage == 0) scope.original.paperLanguage.push("");
                 // create date object
-                if(!scope.meta.hasOwnProperty('dateCreated') || scope.meta.dateCreated.length == 0){ scope.date = new Date();}
-                else { scope.date = new Date(scope.meta.dateCreated);}
+                if(!scope.original.hasOwnProperty('dateCreated') || scope.original.dateCreated.length == 0){ scope.date = new Date();}
+                else { scope.date = new Date(scope.original.dateCreated);}
 
-                scope.changedDate = (val) => scope.meta.dateCreated = $filter('date')(val, 'dd-MM-yyyy');
-                scope.original = angular.copy(scope.meta);
-                $log.debug(scope.original);
-                scope.checkChanges = () => !angular.equals(scope.original, scope.meta);
+                scope.changedDate = (val) => scope.original.dateCreated = $filter('date')(val, 'dd-MM-yyyy');
+                scope.meta = angular.copy(scope.original);
+                $log.debug(scope.meta);
+                scope.checkChanges = () => !angular.equals(scope.meta, scope.original);
                 $log.debug('selected comp: %s', scope.comp.id);
             }
             /**
