@@ -44,7 +44,8 @@
             scope.isEmpty = isEmpty;
             scope.isUndefined = (o) => angular.isUndefined(o);
             scope.notNull = (val) => val !== null;
-            scope.myforms = {}; 
+            scope.myforms = {};
+            scope.validate = validate; 
 			attrs.$observe('o2rComp', function(value){
                 if(value == ''){
 
@@ -229,6 +230,23 @@
                     showField[i] = false;
                 }
                 scope.editMode = false;
+            }
+
+            function validate(obj){
+                $log.debug(obj);
+                //if technical and publication form $valid is true return true
+                //if publication form $valid is false, make copy and remove empty authors then check if valid
+                if(obj.technicalform.$valid && obj.publicationform.$valid) return true;
+                else {
+                    // take meta.author and check for empty authors
+                    var result = true;
+                    var copy = angular.copy(scope.meta);
+                    copy = removeArtifacts(copy);
+                    for(var i in copy.author){
+                        if(!copy.author[i].name) result = false;
+                    }
+                    return result;
+                }
             }
 
 		}

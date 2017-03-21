@@ -10,7 +10,7 @@
                 <md-tab label="Publication">
                     <ng-form name="myforms.publicationform" novalidate>
                         <div layout="row" ng-if="editMode">
-                            <md-button ng-disabled="!myforms.publicationform.$valid || !myforms.technicalform.$valid || !checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
+                            <md-button ng-disabled="!validate(myforms) || !checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
                             <md-button ng-click="cancelEditing()" aria-label="Cancel">Cancel</md-button>
                         </div>
                         <!-- Author Information -->
@@ -22,7 +22,7 @@
                         <div ng-hide="showInput('author')" layout="column" ng-repeat="author in original.author">
                             <span>{{author.name}}</span>
                             <span ng-repeat="affiliation in author.affiliation">{{affiliation}}</span>
-                            <span ng-if="notNull(author.orcid)">Orcid: {{author.orcid}}</span>
+                            <span ng-if="notNull(author.orcid) && !isUndefined(author.orcid)">Orcid: {{author.orcid}}</span>
                             <md-divider ng-if="!$last"></md-divider>
                         </div>
                         <!-- end show info -->
@@ -31,8 +31,8 @@
                             <div ng-repeat="author in meta.author track by $index">
                                 <md-input-container>
                                     <label>Name</label>
-                                    <input ng-model="meta.author[$index].name" ng-value="'{{author.name}}'" name="authorname" required>
-                                    <div ng-messages="myforms.publicationform.authorname.$error" md-auto-hide="false">
+                                    <input ng-model="meta.author[$index].name" ng-value="'{{author.name}}'" name="{{'authorname' + $index}}" required>
+                                    <div ng-messages="myforms.publicationform['authorname' + $index].$error" md-auto-hide="false">
                                         <div ng-message="required">Required field</div>
                                     </div>
                                 </md-input-container>
@@ -48,7 +48,6 @@
                                 <md-divider ng-if="!$last"></md-divider>
                             </div>
                         </div>
-                        {{myforms.form}}
                         <!-- End Author Information -->
 
                         <!-- Publication Information -->
@@ -115,7 +114,7 @@
                 <md-tab label="Technical">
                     <ng-form name="myforms.technicalform" novalidate>
                         <div layout="row" ng-if="editMode">
-                            <md-button ng-disabled="!myforms.publicationform.$valid || !myforms.technicalform.$valid || !checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
+                            <md-button ng-disabled="!validate(myforms) || !checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
                             <md-button ng-click="cancelEditing()" aria-label="Cancel">Cancel</md-button>
                         </div>
 
