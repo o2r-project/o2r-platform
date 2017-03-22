@@ -28,6 +28,9 @@ body{
 	height: 64px !important;
 }
 
+#o2r-header{
+	z-index:100;
+}
 /*
 .no-link{
 	color: 0, 0, 0, 0.87 !important;
@@ -149,15 +152,39 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	width:15%;
 	position: relative;
 	top: 10%;
 }
 
+#home-label{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+
+
 #home-logo-box{
-	padding-top: 10%;
+	padding-top: 5%;
 }
 /***********************
    End Home view
+************************/
+
+/***********************
+   Start creation process
+************************/
+.metabuttons{
+	width:100%;
+}
+
+.cardHeight{
+	height:650px;
+}
+
+/***********************
+   End creation process
 ************************/
 
 /***********************
@@ -166,6 +193,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .search-metadata{
 	width: 25vw;
 	right: 5vw;
+}
+
+.go-button{
+	bottom:1em;
 }
 
 .search-button{
@@ -253,4 +284,16 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 /***********************
    End pagination of search results
 ************************/
+/***********************
+	Start editMetadatView
+************************/
+.edit-button:hover{
+	cursor: pointer;
+}
 
+.edit-metadata-label-color{
+	color: rgba(0,0,0, 0.54);
+}
+/***********************
+	End editMetadatView
+************************/

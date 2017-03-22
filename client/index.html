@@ -9,7 +9,7 @@
 <!-- Libraries JavaScript -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
@@ -17,10 +17,18 @@
 <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
 <script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
 <script type="text/javascript" src="bower_components/angulartics-piwik/dist/angulartics-piwik.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
 <script type="text/javascript" src="bower_components/ngprogress/build/ngprogress.js"></script>
+<script type="text/javascript" src="bower_components/moment/min/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="bower_components/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="bower_components/leaflet-draw/dist/leaflet.draw-src.js"></script>
+<script type="text/javascript" src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+<script type="text/javascript" src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+<script type="text/javascript" src="lib/ui-leaflet-draw.js"></script>
+
 
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
@@ -30,6 +38,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
 <link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
+<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -79,12 +89,16 @@
 <script src="app/headerView/header.controller.js"></script>
 <script src="app/templates/impressum.controller.js"></script>
 <script src="app/templates/privacy.controller.js"></script>
+<script src="app/creationProcess/checkmeta.controller.js"></script>
+<script src="app/creationProcess/spacetime.controller.js"></script>
+<script src="app/creationProcess/creationProcess.controller.js"></script>
 
 <!-- Directives -->
 <script src="app/ercView/o2rDisplayFiles.directive.js"></script>
 <script src="app/ercView/o2rErcDownload.directive.js"></script>
 <script src="app/metadataPanel/o2rMetadata.directive.js"></script>
 <script src="app/analysisStatsView/o2rAnalysisStats.directive.js"></script>
+<script src="app/editMetadataView/o2rEditMetadata.directive.js"></script>
 
 <!-- Filters -->
 <script src="app/services/upperCase.filter.js"></script>
@@ -107,7 +121,7 @@
 </head>
 <body ng-controller="LoginController as vm">
     <!-- header -->
-    <md-toolbar class="o2r-fixed">
+    <md-toolbar class="o2r-fixed" id="o2r-header">
         <div class="md-toolbar-tools">
             <img class="o2r-pointer" src="img/o2r-logo-only-white-outline.svg" alt="o2r-logo" height="80%" ui-sref="home">
             <span flex></span>

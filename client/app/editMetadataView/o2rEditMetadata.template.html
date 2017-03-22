@@ -1,0 +1,23 @@
+<div layout="column">
+	<md-card>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+                <h4 class="white-font">{{comp.metadata.o2r.title}}</h4>
+			</div>
+		</md-toolbar>
+		<md-card-content layout="column">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Publication">
+                    <ng-include src="'app/editMetadataView/pubMeta.template.html'"></ng-include>
+                </md-tab>
+
+                <md-tab label="Technical">
+                    <ng-include src="'app/editMetadataView/techMeta.template.html'"></ng-include>
+                </md-tab>
+            </md-tabs>
+
+
+
+		</md-card-content>
+	</md-card>
+</div>

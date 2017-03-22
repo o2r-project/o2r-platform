@@ -5,7 +5,7 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header', 'httpRequests', 'login'];
+    ErcController.$inject = ['$scope', '$stateParams','$log', '$mdDialog', 'publications', 'jobs', 'compInfo', 'compFJob', 'compSJob', 'env', 'icons', 'header','socket', 'httpRequests', 'login'];
 
     function ErcController($scope, $stateParams, $log, $mdDialog, publications, jobs, compInfo, compFJob, compSJob, env, icons, header, socket, httpRequests, login){
         var vm = this;
@@ -27,13 +27,18 @@
         vm.openMenu = function($mdOpenMenu, ev){
             $mdOpenMenu(ev);
         };
-/*
-        vm.sendToZenodo = sendToZenodo;
+
         vm.loggedIn = login.isLoggedIn();
 
+        vm.sendToZenodo = function(){
+            httpRequests.toZenodo(vm.ercId);
+        };
+
         //To do:query to shipper api if ERC is already in zenodo
-        vm.stillToArchive = stillToArchive;
-*/
+        vm.stillToArchive = function(){
+            return httpRequests.ercInZenodo(vm.ercId);        
+        };
+
         $log.debug('ErcCtrl, publication: %o', vm.publication);
 
         activate();
@@ -43,16 +48,7 @@
             // publications.getRequest(vm.ercId); // httpRequest for retrieving all metadata of a compendium
             header.setTitle('o2r - Compendium'); 
         }
-/*
-        function stillToArchive(){
-            httpRequests.ercInZenodo(vm.ercId);
-            return true;
-        }    
 
-        function sendToZenodo(compendiumID){
-            httpRequests.toZenodo(vm.ercId);
-        }
-*/
         function setOne(path){
             var p = publications.getContentById(vm.publication, path);
             $log.debug('clicked on file: ', p);

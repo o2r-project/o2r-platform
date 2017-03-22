@@ -5,9 +5,9 @@
 		.module('starter')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', 'env', '$window'];
+	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory', '$location'];
 		
-	function httpRequests($http, $log, env, $window){
+	function httpRequests($http, $log, env, $window, $q, ngProgressFactory, $location){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -18,7 +18,9 @@
 			getLoggedUser: getLoggedUser,
 			searchComp: searchComp,
 			toZenodo: toZenodo,
-			ercInZenodo: ercInZenodo
+			ercInZenodo: ercInZenodo,
+			updateMetadata: updateMetadata,
+			uploadViaSciebo: uploadViaSciebo
 		};
 
 		return service;
@@ -29,6 +31,7 @@
 		* @Desc httpRequest for retrieving a list of compendia
 		* @Param query, object with attributes author, start and limit to define queries
 		*/
+
 		function listCompendia(query){
 			var _url= env.api + '/compendium';
 			var param = '?';
@@ -142,18 +145,34 @@
 			//var shipment = $http.get(_url);
 			//return shipment.status != "delivered";
 			return true;
+		}
+
+		function uploadViaSciebo(url, path){
+			var _url = 'http://localhost/api/v2/compendium/';			
+			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});	
 		}	
 
 		function toZenodo(compendiumID) {
 			var _url = env.api + '/shipment';
+            var progressbar = ngProgressFactory.createInstance();
+			progressbar.setHeight('3px');
+			progressbar.start();
 			$http.post(_url, "compendium_id=" + encodeURIComponent(compendiumID) + "&recipient=" + encodeURIComponent("zenodo"))
 				.then(function (response) {
 					$log.debug(response);
 					$window.open(_url + '/' + response.data.id);
+					progressbar.complete();
+					return "success";
 				},
 				function (response) {
 					$log.debug(response);
 				});		
+		}
+
+		function updateMetadata(id, data){
+			var _url = env.api + '/compendium/' + id + '/metadata';
+			var body = {o2r: data};
+			return $http.put(_url, body);
 		}
 	};
 })();

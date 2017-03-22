@@ -5,15 +5,19 @@
         .module('starter')
         .controller('UploadModalController', UploadModalController);
     
-    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs'];
+    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs', '$location'];
 
-    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs){
+    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs, $location){
         var authorId = $stateParams.authorid; // id from author
 
         var vm = this;
         vm.icons = icons;
         vm.checkRunAnalysis = true;
-        vm.cancel = () => {$mdDialog.cancel()};
+        vm.uploadedERCid = false;
+        vm.cancel = () => {
+                        $mdDialog.cancel(); 
+                        $location.path('/creationProcess/' + vm.uploadedERCid + '/checkMetadata');
+                        };
         vm.selected = (file) => {vm.f = file;};
         vm.onLoad = false;
         vm.doneButton = false;
@@ -43,12 +47,12 @@
                 url: env.api + '/compendium',
                 data: {compendium: file, 'content_type': 'compendium_v1'}
             })
-            .then(successCallback, errorCallback, progress)
-            .then(execJobCallback, errorCallback);
+            .then(successCallback, errorCallback, progress);
             
             function successCallback(response){
                 if(vm.checkRunAnalysis){
-                    return jobs.executeJob(response.data.id);
+                    jobs.executeJob(response.data.id)
+                        .then(execJobCallback, errorCallback);
                 } else {
                     $log.debug('upload successCallback: %o', response);
                     vm.doneButton = true;
@@ -58,6 +62,7 @@
                 }
             }
             function errorCallback(response){
+                $log.debug('upload errorCallback %o', response);
                 file.progress = 100;
                 vm.doneButton = true;
                 vm.checkUpload = false;
@@ -68,12 +73,15 @@
             }
             function execJobCallback(response){
                 $log.debug('upload execJobCallback: %o', response);
+                vm.uploadedERCid = response.data.compendium_id;
+                console.log(vm.uploadedERCid);
                 if(vm.checkRunAnalysis){
                     vm.doneButton = true;
                     metadata.callMetadata_author(authorId);
                     vm.checkUpload = true;
                     file.progress = 100;
                 }
+                
             }
         }
     }

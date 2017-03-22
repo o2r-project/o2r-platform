@@ -23,17 +23,21 @@
             'ngAnimate',
             'ngAria', 
             'ngMaterial',
+            'ngMessages',
             'angulartics', 
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
-            'ngProgress'])
+            'ngProgress',
+            'ui-leaflet'])
         .constant('env', env)
         .constant('icons', icons())
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider, $compileProvider, $mdDateLocaleProvider){
+        $compileProvider.preAssignBindingsEnabled(true);
+        
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(window.__env.disableTracking);
         if(window.__env.disableTracking) console.log("Tracking globally disabled!");
@@ -43,6 +47,10 @@
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
+
+        $mdDateLocaleProvider.formatDate = function(date){
+            return moment(date).format('DD-MM-YYYY');
+        };
 
         var customPrimary = {
             '50': '#0681ff',
@@ -125,7 +133,7 @@
             .accentPalette('customAccent')
             .warnPalette('customWarn')
             .backgroundPalette('grey');
-            
+
         $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
         $stateProvider
             .state('home', {
@@ -145,6 +153,34 @@
                     compSJob: compSJobService
                 }
             })
+            .state('creationProcess', {
+                abstract: true,
+                url: "/creationProcess/:ercid",
+                templateUrl: "app/creationProcess/creationProcess.html",
+                controller: "CreationProcessController",
+                controllerAs: "vm"
+            })            
+            .state('checkMetadata',{
+                url:"/checkMetadata",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/checkMetadata.html",
+                controller: 'CheckMetaController',
+                controllerAs: 'vm'    
+            })
+            .state('optionalMetadata',{
+                url:"/optionalMetadata",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/optionalMetadata.html",
+                controller: 'CheckMetaController',
+                controllerAs: 'vm'    
+            })      
+            .state('spacetimeMetadata',{
+                url:"/spacetimeMetadata",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/spacetimeMetadata.html",
+                controller: 'SpaceTimeController',
+                controllerAs: 'vm'    
+            })                        
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
@@ -199,7 +235,9 @@
             {name: 'fail', category: 'content', fn: 'clear'},
             {name: 'forward', category: 'content', fn: 'forward'},
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
-            {name: 'rowing', category: 'action', fn: 'rowing'}
+            {name: 'rowing', category: 'action', fn: 'rowing'},
+            {name: 'add', category: 'content', fn: 'add'},
+            {name: 'edit', category: 'editor', fn: 'mode_edit'}
         ];
 
         for(var i in icons){
@@ -230,8 +268,8 @@
     function compFJobService($stateParams, jobs){
         var ercId = $stateParams.ercid;
         var query = {
-            compendium_id: ercId,
-            status: 'success'
+            compendium_id: ercId
+            //status: 'success'
         };
         return jobs.callJobs(query);
     }
