@@ -45,7 +45,7 @@
 
 					function responseMetadata(data){
 						progressbar.complete();
-						$location.path('/creationProcess/' + data.data.id + '/checkMetadata');
+						$location.path('/creationProcess/' + data.data.id + '/requiredMetadata');
 					}	
 
 					function errorHandlerMetadata(err){

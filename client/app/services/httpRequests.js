@@ -20,7 +20,8 @@
 			toZenodo: toZenodo,
 			ercInZenodo: ercInZenodo,
 			updateMetadata: updateMetadata,
-			uploadViaSciebo: uploadViaSciebo
+			uploadViaSciebo: uploadViaSciebo,
+			getLicenses: getLicenses
 		};
 
 		return service;
@@ -173,6 +174,10 @@
 			var _url = env.api + '/compendium/' + id + '/metadata';
 			var body = {o2r: data};
 			return $http.put(_url, body);
+		}
+
+		function getLicenses(){
+			return $http.get("http://licenses.opendefinition.org/licenses/groups/all.json");
 		}
 	};
 })();

@@ -8,7 +8,6 @@
     SpaceTimeController.$inject = ['$rootScope', '$scope', 'leafletDrawEvents'];
 
     function SpaceTimeController($rootScope, $scope, leafletDrawEvents){
-
     var drawnItems = new L.FeatureGroup();
     $rootScope.meta.temporal.begin = new Date();
     $rootScope.meta.temporal.end = new Date();
@@ -43,13 +42,16 @@
                 color: 'blue'
               }
             },
-            circle: {
+            polyline:false
+            ,
+            circle:false
+            /*circle: {
               showArea: true,
               metric: false,
               shapeOptions: {
                 color: '#662d91'
               }
-            },
+            }*/,
             marker: true
           },
           edit: {
