@@ -5,20 +5,22 @@
         .module('starter')
         .controller('CreationProcessController', CreationProcessController);
     
-    CreationProcessController.$inject = ['$rootScope', '$scope', '$stateParams', 'httpRequests', '$log'];
+    CreationProcessController.$inject = ['$rootScope', '$stateParams', 'httpRequests', '$log'];
 
-    function CreationProcessController($rootScope, $scope, $stateParams, httpRequests, $log){
-        $scope.ercID = $stateParams.ercid;
-        $scope.getMetadata = getMetadata();
+    function CreationProcessController($rootScope, $stateParams, httpRequests, $log){
+        var cpctrl = this;
+        cpctrl.ercID = $stateParams.ercid;
+        cpctrl.getMetadata = getMetadata();
         $rootScope.meta = {};
         function getMetadata(){
             httpRequests
-                .singleCompendium($scope.ercID)
+                .singleCompendium(cpctrl.ercID)
                 .then(response)
                 .catch(errorHandler);
             
             function response(res){
-                console.log("meta loaded")
+                $log.debug("meta loaded")
+                $log.debug(res.data.metadata.o2r)
                 $rootScope.meta = res.data.metadata.o2r;
             }
 
@@ -27,9 +29,9 @@
 				deferred.resolve(e);                
             }
         }
-        $scope.updateMetadata = function(){
-            console.log($rootScope.meta)
-            httpRequests.updateMetadata($scope.ercID, $rootScope.meta)
+        cpctrl.updateMetadata = function(){
+            $log.debug($rootScope.meta)
+            httpRequests.updateMetadata(cpctrl.ercID, $rootScope.meta)
             .then(function(res){
                  $log.debug(res);   
             })

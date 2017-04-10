@@ -158,20 +158,20 @@
                 url: "/creationProcess/:ercid",
                 templateUrl: "app/creationProcess/creationProcess.html",
                 controller: "CreationProcessController",
-                controllerAs: "vm"
+                controllerAs: "cpctrl"
             })            
-            .state('checkMetadata',{
-                url:"/checkMetadata",
+            .state('requiredMetadata',{
+                url:"/requiredMetadata",
                 parent: "creationProcess",
-                templateUrl: "app/creationProcess/checkMetadata.html",
-                controller: 'CheckMetaController',
-                controllerAs: 'vm'    
+                templateUrl: "app/creationProcess/requiredMetadata.html",
+                controller: 'RequiredMetaController',
+                controllerAs: 'requiredctrl'    
             })
             .state('optionalMetadata',{
                 url:"/optionalMetadata",
                 parent: "creationProcess",
                 templateUrl: "app/creationProcess/optionalMetadata.html",
-                controller: 'CheckMetaController',
+                controller: 'OptionalMetaController',
                 controllerAs: 'vm'    
             })      
             .state('spacetimeMetadata',{
@@ -180,7 +180,14 @@
                 templateUrl: "app/creationProcess/spacetimeMetadata.html",
                 controller: 'SpaceTimeController',
                 controllerAs: 'vm'    
-            })                        
+            }) 
+            .state('uibindings',{
+                url:"/uibindings",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/uibindings.html",
+                controller: 'UIBindings',
+                controllerAs: 'vm'    
+            })                                    
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",

@@ -18,7 +18,7 @@
   "dependencies": {
     "angular-tree-control": "^0.2.26",
     "jquery": "^2.2.4",
-    "angular": "1.5.8",
+    "angular": "1.6.4",
     "angular-highlightjs": "^0.6.3",
     "angular-ui-router": "^0.3.1",
     "ng-file-upload": "^12.0.4",
@@ -30,7 +30,7 @@
     "angular-utils-pagination": "0.11.0",
     "ngprogress": "1.1.2",
     "moment": "^2.17.1",
-    "leaflet": "^1.0.3",
+    "leaflet": "^0.7.7",
     "angular-leaflet-directive": "^0.10.0",
     "ui-leaflet": "^2.0.0",
     "leaflet-draw": "git://github.com/michaelguild13/Leaflet.draw.git#master",
@@ -42,10 +42,11 @@
     "karma-jasmine": "^1.0.2",
     "jasmine-core": "^2.5.2",
     "karma-chrome-launcher": "^2.0.0",
-    "angular": "^1.5.8",
+    "angular": "^1.6.4",
     "angular-ui-router": "^0.3.2"
   },
   "resolutions": {
-    "angular": "1.6.2"
+    "angular": "1.6.4",
+    "leaflet": "0.7.7"
   }
 }

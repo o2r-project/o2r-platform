@@ -1,8 +1,8 @@
 <md-card class="cardHeight">
     <md-card-content layout="column">
-        <h2>Specify the location of your dataset</h2>
+        <h2>Specify the spatial properties of your dataset(s)</h2>
         <leaflet lf-center="map.center" lf-draw="map.drawOptions" width="100%" height="400px"></leaflet>
-        <h2>Specify the time of your dataset</h2>
+        <h2>Specify the temporal properties of your dataset(s)</h2>
         <div>
             <span class="edit-metadata-label-color">From</span>
             <md-datepicker ng-model="startDate" md-placeholder="starting date" ng-change='changeDate("start", startDate)'></md-datepicker>
