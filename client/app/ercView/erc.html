@@ -21,11 +21,11 @@
 				<div id="erc-treediv">
 					<div layout="row">
 						<span flex></span>
-						<md-checkbox ng-model="vm.hideBagit" aria-label="Hide Bagit">
-							Hide Bagit files
+						<md-checkbox ng-model="vm.showBagit" aria-label="Show Bagit">
+							Show Bagit files
 						</md-checkbox>
 					</div>
-					<treecontrol class="tree-classic" tree-model="vm.bagitToggle(vm.publication.files, vm.hideBagit)" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+					<treecontrol class="tree-classic" tree-model="vm.bagitToggle(vm.publication.files, vm.showBagit)" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
 						<span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
 					</treecontrol>
 				</div>
