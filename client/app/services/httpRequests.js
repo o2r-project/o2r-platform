@@ -4,9 +4,9 @@
 	angular
 		.module('starter')
 		.factory('httpRequests', httpRequests);
-		
+
 	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory', '$location'];
-		
+
 	function httpRequests($http, $log, env, $window, $q, ngProgressFactory, $location){
 		var service = {
 			listCompendia : listCompendia,
@@ -21,7 +21,9 @@
 			ercInZenodo: ercInZenodo,
 			updateMetadata: updateMetadata,
 			uploadViaSciebo: uploadViaSciebo,
-			getLicenses: getLicenses
+			getLicenses: getLicenses,
+			spatialsearch: spatialsearch
+
 		};
 
 		return service;
@@ -70,7 +72,7 @@
 		function listRelatedJobs(id){
 			var _url = env.api + '/compendium/' + id + '/jobs';
 			return $http.get(_url);
-		}	
+		}
 
 		/*
 		* @Desc httpRequest for executing a new job
@@ -82,7 +84,47 @@
 			return $http.post(_url, body);
 		}
 
+		function spatialsearch(coordinates_selected) {
+			var coords = coordinates_selected.geometry.coordinates;
+			console.log('c',JSON.stringify(coordinates_selected.geometry.coordinates));
+				var _url = 'http://127.0.0.1:9201/_search?';
 
+				var b = {
+						"query": {
+								"bool": {
+										"must": {
+												"match_all": {}
+										},
+										"filter": {
+												"geo_shape": {
+														"metadata.o2r.spatial.geometry": {
+																"shape": {
+																		"type": "polygon",
+																		"coordinates":
+																			coords
+
+																				/* [
+																				//     [-22.0, 76.0],
+																				//     [-27.0, 65.0],
+																				//     [-57.0, 65.0],
+																				//     [-59.0, 76.0],
+																				//     [-22.0, 76.0]
+																			]*/
+
+																},
+																"relation": "within"
+														}
+												}
+										}
+								}
+						}
+				};
+
+				console.log(b,'http sending request');
+				return $http.post(_url,b);
+
+
+		}
 		/*
 		* @Desc httpRequest for retrieving a list of jobs
 		* @Param query, object with attributes compendium_id, start, limit, status
@@ -136,12 +178,11 @@
 		function searchComp(query, startIndex){
 			var _url = env.api + '/search?size=100&from='+startIndex+'&q=';
 			if(query) _url += query;
-			else _url += '*';
-			return $http.get(_url);
+						return $http.get(_url);
 		}
 
 		function ercInZenodo(compendiumID){
-			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;
 			//Wait for server implementation
 			//var shipment = $http.get(_url);
 			//return shipment.status != "delivered";
@@ -149,9 +190,9 @@
 		}
 
 		function uploadViaSciebo(url, path){
-			var _url = 'http://localhost/api/v2/compendium/';			
-			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});	
-		}	
+			var _url = 'http://localhost/api/v2/compendium/';
+			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});
+		}
 
 		function toZenodo(compendiumID) {
 			var _url = env.api + '/shipment';
@@ -167,7 +208,7 @@
 				},
 				function (response) {
 					$log.debug(response);
-				});		
+				});
 		}
 
 		function updateMetadata(id, data){

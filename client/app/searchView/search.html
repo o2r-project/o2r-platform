@@ -1,30 +1,45 @@
 <div layout="column">
-	<!-- search bar -->
-	<form ng-submit="vm.submit()" flex="50" flex-offset="5">
+		<div layout="row">
+<!-- search bar -->
+<div layout="column">
+
+	<form ng-submit="vm.submit()" >
 		<md-input-container md-no-float class="md-icon-float md-block" >
 			<md-icon md-svg-src="{{vm.icons.search}}"></md-icon>
-			<input type="text" placeholder="Search" ng-model="vm.searchModel" ng-value="vm.searchTerm" flex="40" autofocus>
+		<input type="text" placeholder="Search" ng-model="vm.searchModel" ng-value="vm.searchTerm" flex="60" autofocus>
 			<md-button ng-click="vm.submit()" class="search-button md-primary md-raised white-font">Search</md-button>
+			<md-button ng-click="vm.button()" class="search-button md-primary md-raised white-font">Spatial</md-button>
+
 		</md-input-container>
 	</form>
 	<span flex></span>
 	<!-- End search bar -->
 
+	<leaflet lf-center="center" controls="controls" layers="layers"geojson="geojson" width="640" height="400"></leaflet>
+
+</div>
+
 	<!-- Show only in case of no search results -->
-	<div layout="row" ng-if="vm.allPubs.data.hits.hits.length<=0">
+	<div layout="row" ng-if="vm.allPubs.data.hits.hits.length<=0" >
 		<div>
 			<h3>No results. Please try again.</h3>
+
 		</div>
+
 	</div>
 
+
 	<!-- Visible if there are search results -->
-	<div layout="row" flex-offset="5" ng-if="vm.allPubs.data.hits.hits.length>0">
+	<div layout="row"  ng-if="vm.allPubs.data.hits.hits.length>0" >
+
+
 		<!-- search results -->
-		<div layout="column" flex="50">
+		<div layout="column" class="o2r-fixed" ng-if="vm.searchTerm" >
+
 			<span flex-offset="5">Results for: "{{vm.searchTerm}}"</span>
 			<!--<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs | orderBy:'-created'" ng-click="vm.setId(pub.id)">
 			-->
-			<md-card class="o2r-pointer" dir-paginate="pub in vm.allPubs.data.hits.hits | itemsPerPage:10" ng-click="vm.selectComp(pub._source)">				
+			<md-card class="o2r-pointer" dir-paginate="pub in vm.allPubs.data.hits.hits | itemsPerPage:10" ng-click="vm.selectComp(pub._source)">
 				<md-card-title>
 					<md-card-title-text >
 						<div>
@@ -32,7 +47,7 @@
 						</div>
 					</md-card-title-text>
 					<!--<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><md-icon aria-label md-svg-src="{{vm.icons.forward}}"></md-icon></md-button>-->
-					<md-button ng-click="vm.selectComp(pub._source)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
+					<md-button ng-click="vm.selectComp(pub._source)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}" ></md-icon></md-button>
 				</md-card-title>
 				<md-card-content>
 					<!--<span class="md-subhead"><b>Created on:</b> {{pub._source.created | date : 'yyyy-MM-dd HH:mm'}}</span>-->
@@ -41,11 +56,13 @@
 		</div>
 		<!-- End search results -->
 
-		<!-- Metadata -->
+		<!-- Metadata
 		<div class="o2r-fixed search-metadata">
 			<o2r-metadata o2r-comp="{{vm.selectedComp}}"></o2r-metadata>
 		</div>
-		<!-- End Metadata -->
-	</div>
+		<!-- End Metadata
+	</div>-->
+
 	<dir-pagination-controls template-url="/app/searchView/dirPagination.tpl.html"></dir-pagination-controls>
+</div>
 </div>

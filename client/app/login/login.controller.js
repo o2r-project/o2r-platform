@@ -13,11 +13,11 @@
         vm.icons = icons;
         vm.user = {};
         vm.isLoggedIn;
-        vm.submitSearch = search;
+        //vm.submitSearch = search;
         vm.showSearchBar = showBar;
 
         activate();
-        
+
 
         $scope.$on('setUser', function(){
             vm.user = login.getUser();
@@ -31,12 +31,12 @@
             login.getUserCall();
         }
 
-        function search(){
-            if (angular.isDefined(vm.searchInput) && vm.searchInput.trim() != ""){ 
+        /*function search(){
+            if (angular.isDefined(vm.searchInput) && vm.searchInput.trim() != ""){
                 $location.path('/search').search('q=' + vm.searchInput);
                 vm.searchInput = null;
             }
-        }
+        }*/
 
         function showBar(){
             var showIt = true;

@@ -9,8 +9,13 @@ body{
 	padding: 2%;
 	padding-top: calc(64px + 1vh);
 	height: auto !important;
-	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/ 
+	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/
 }
+
+input {
+            width: 120px;
+            margin-right: 10px;
+        }
 
 .o2r-pointer{
 	cursor: pointer;
@@ -202,7 +207,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
     align-items: center;
     width: auto; }
   .selectdemoSelectHeader md-content._md {
-    max-height: 240px; 
+    max-height: 240px;
 }
 
 .md-select-width {
@@ -242,6 +247,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .search-clickOnName{
 	font-size: 1.5em;
 }
+.search-right-nav{
+	right: 1vw;
+	width: 5vw;
+}
 
 /***********************
    End Search view
@@ -277,7 +286,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 #upmod-prog-text{
 	width: 70px;
 	text-align: center;
-	padding-top: 10px;	
+	padding-top: 10px;
 }
 
 .upmod-checkbox{

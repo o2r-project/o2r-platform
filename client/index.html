@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderController as vm">
-<head>	
+<head>
 
 <title ng-bind="vm.page.title()"></title>
 <meta charset="utf-8" />
@@ -125,16 +125,10 @@
 <body ng-controller="LoginController as vm">
     <!-- header -->
     <md-toolbar class="o2r-fixed" id="o2r-header">
-        <div class="md-toolbar-tools">
+      <div class="md-toolbar-tools">
             <img class="o2r-pointer" src="img/o2r-logo-only-white.svg" alt="o2r logo" height="60%" ui-sref="home">
             <span flex></span>
-            <form ng-submit="vm.submitSearch()" ng-if="vm.showSearchBar()">
-                <md-input-container md-no-float layout="row" class="md-icon-float white-font">
-                    <label class="white-font">Search</label>
-                    <input ng-model="vm.searchInput" class="white-font">
-                    <md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.search}}"></md-icon>
-                </md-input-container>
-            </form>
+            <md-button class="white-font" ui-sref="search({search:'vm.submit',q:''})" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Discover ERC</md-button>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
@@ -144,9 +138,9 @@
 
     <!-- Main content and injected views -->
     <div id="main">
-        
-        <div id="ui-view" ui-view></div>  
-        
+
+        <div id="ui-view" ui-view></div>
+
     </div>
 
     <!-- footer -->

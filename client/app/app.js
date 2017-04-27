@@ -17,14 +17,14 @@
     angular
         .module('starter', [
             "treeControl",
-            "ui.router", 
-            "hljs", 
-            "ngFileUpload", 
+            "ui.router",
+            "hljs",
+            "ngFileUpload",
             'ngAnimate',
-            'ngAria', 
+            'ngAria',
             'ngMaterial',
             'ngMessages',
-            'angulartics', 
+            'angulartics',
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress',
@@ -32,12 +32,12 @@
         .constant('env', env)
         .constant('icons', icons())
         .config(config);
-    
+
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
 
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider, $compileProvider, $mdDateLocaleProvider){
         $compileProvider.preAssignBindingsEnabled(true);
-        
+
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(window.__env.disableTracking);
         if(window.__env.disableTracking) console.log("Tracking globally disabled!");
@@ -159,35 +159,35 @@
                 templateUrl: "app/creationProcess/creationProcess.html",
                 controller: "CreationProcessController",
                 controllerAs: "cpctrl"
-            })            
+            })
             .state('requiredMetadata',{
                 url:"/requiredMetadata",
                 parent: "creationProcess",
                 templateUrl: "app/creationProcess/requiredMetadata.html",
                 controller: 'RequiredMetaController',
-                controllerAs: 'requiredctrl'    
+                controllerAs: 'requiredctrl'
             })
             .state('optionalMetadata',{
                 url:"/optionalMetadata",
                 parent: "creationProcess",
                 templateUrl: "app/creationProcess/optionalMetadata.html",
                 controller: 'OptionalMetaController',
-                controllerAs: 'vm'    
-            })      
+                controllerAs: 'vm'
+            })
             .state('spacetimeMetadata',{
                 url:"/spacetimeMetadata",
                 parent: "creationProcess",
                 templateUrl: "app/creationProcess/spacetimeMetadata.html",
                 controller: 'SpaceTimeController',
-                controllerAs: 'vm'    
-            }) 
+                controllerAs: 'vm'
+            })
             .state('uibindings',{
                 url:"/uibindings",
                 parent: "creationProcess",
                 templateUrl: "app/creationProcess/uibindings.html",
                 controller: 'UIBindings',
-                controllerAs: 'vm'    
-            })                                    
+                controllerAs: 'vm'
+            })
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
@@ -248,10 +248,10 @@
         ];
 
         for(var i in icons){
-            
+
             object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
         }
-        
+
         return object;
     }
 
@@ -298,4 +298,4 @@
         $log.debug('searchResultsService, term: ' + term);
         return metadata.callMetadata_search(term);
     }
-})();  
+})();
