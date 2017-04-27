@@ -73,9 +73,15 @@ body{
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
+	overflow-x: auto;
 }
 
-.erc-html iframe{
+iframe.erc-html{
+	border-style: none;
+	/*min-height: 80vh;*/
+}
+
+erc-html iframe{
 	border-style: none;
 }
 
@@ -328,4 +334,13 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 }
 /***********************
 	End editMetadatView
+************************/
+/***********************
+	Start compareView
+************************/
+o2r-compare md-card-content{
+	overflow-y: hidden;
+}
+/***********************
+	End compareView
 ************************/

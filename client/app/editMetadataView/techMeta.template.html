@@ -1,6 +1,6 @@
 <form>
     <div layout="row" ng-if="editMode">
-        <md-button ng-disabled="!checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
+        <md-button ng-disabled="!form.$valid || !checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
         <md-button ng-click="cancelEditing()" aria-label="Cancel">Cancel</md-button>
     </div>
 

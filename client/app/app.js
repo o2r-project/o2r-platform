@@ -1,24 +1,15 @@
 (function(){
     'use strict';
-    /* eslint-disable angular/window-service */
-    window.__env = window.__env || {};
 
-    var env = {
-        server : window.__env.server || 'http://localhost',
-        c_api: window.__env.api || '/api/v1',
-        sizeRestriction: window.__env.sizeRestriction || 10000000,
-        disableTracking: window.__env.disableTracking || false,
-        enableDebug: window.__env.enableDebug || false,
-        version: window.__env.version || 'deployment'
-    };
-    env.api = env.server + env.c_api;
-
-    /* eslint-enable angular/window-service */
     angular
         .module('starter', [
+            "conf",
+            "starter.o2rDisplayFiles",
+            "starter.o2rCompare",
+            "starter.o2rHttp",
             "treeControl",
+            "hljs",
             "ui.router", 
-            "hljs", 
             "ngFileUpload", 
             'ngAnimate',
             'ngAria', 
@@ -28,22 +19,24 @@
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress',
+            'ngIframeResizer',
             'ui-leaflet'])
-        .constant('env', env)
         .constant('icons', icons())
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider, $compileProvider, $mdDateLocaleProvider){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
         $compileProvider.preAssignBindingsEnabled(true);
         
+        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/']);
         /* eslint-disable angular/window-service, angular/log */
-        $analyticsProvider.developerMode(window.__env.disableTracking);
-        if(window.__env.disableTracking) console.log("Tracking globally disabled!");
+        $analyticsProvider.developerMode(env.disableTracking);
+        if(env.disableTracking) console.log("Tracking globally disabled!");
 
-        $logProvider.debugEnabled(window.__env.enableDebug);
+        $logProvider.debugEnabled(env.enableDebug);
         /* eslint-enable angular/window-service, angular/log */
+
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
@@ -206,6 +199,12 @@
                     searchResults: searchResultsService
                 }
             })
+            .state('compare', {
+                url: "/compare?url&tocompareurl&urltype&tocomparetype",
+                templateUrl: "app/compareView/compare.html",
+                controller: 'CompareController',
+                controllerAs: 'vm'
+            })
             .state('impressum', {
                 url: "/impressum",
                 templateUrl: "app/templates/impressum.html",
@@ -225,9 +224,8 @@
     }
 
     function icons(){
-        var path = 'bower_components/material-design-icons/';
-        var path2 = '/svg/production/ic_';
-        var path3 = '_48px.svg';
+        var path = 'img/ic_';
+        var path2 = '_48px.svg';
         var object = {};
         var icons = [
             {name: 'upload', category: 'file', fn: 'file_upload'},
@@ -244,12 +242,14 @@
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
             {name: 'rowing', category: 'action', fn: 'rowing'},
             {name: 'add', category: 'content', fn: 'add'},
-            {name: 'edit', category: 'editor', fn: 'mode_edit'}
+            {name: 'edit', category: 'editor', fn: 'mode_edit'},
+            {name: 'lock_open', category: 'action', fn: 'lock_open'},
+            {name: 'lock_outline', category: 'action', fn: 'lock_outline'}
         ];
 
         for(var i in icons){
             
-            object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
+            object[icons[i].name] = path + icons[i].fn + path2;
         }
         
         return object;
