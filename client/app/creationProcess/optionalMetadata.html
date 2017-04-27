@@ -1,0 +1,27 @@
+<md-card class="cardHeight">
+    <md-card-content layout="column">
+        <form>
+                <h1>Optional metadata</h1>
+                    <md-input-container class="md-block">
+                        <label>Keywords</label>
+                        <input ng-model="keywords" ng-change="updateKeywords()">
+                    </md-input-container>
+                <div ng-repeat="lang in meta.paperLanguage">
+                    <md-input-container class="md-block">
+                        <label>Paper Language</label>
+                        <input ng-model="lang" ng-value="lang" ng-change="updateKeywords()">
+                    </md-input-container>
+                </div>
+                <md-input-container class="md-block">
+                    <label>Research question(s)</label>
+                    <input ng-model="changes.researchQuestion" ng-value="meta.researchQuestion" ng-change="updateResearchquestion()">
+                </md-input-container> 
+                <md-input-container class="md-block">
+                    <label>Hypotheses</label>
+                    <input ng-model="changes.hypotheses" ng-value="meta.hypotheses" ng-change="updateHypotheses()">
+                </md-input-container>                                
+        </form>
+    </md-card-content>
+</md-card>
+
+

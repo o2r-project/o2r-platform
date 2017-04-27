@@ -18,7 +18,7 @@
         vm.setOne = setOne;
         vm.server = env.server;
         vm.isEmpty = isEmpty;
-        vm.hideBagit = true;
+        vm.showBagit = false;
         vm.bagitToggle = bagitToggle;
         vm.treeOptions = {  // options for folderTree
             nodeChildren: 'children',
@@ -81,7 +81,7 @@
         * right now only 'data' folder is included. But this could cause problems, if the data directoy gets another name
         */
         function bagitToggle(files, hide){
-            if(hide) {
+            if(!hide) {
                 var unhidden = {};
                 for(var i in files.children){
                     if(files.children[i].name == 'data'){

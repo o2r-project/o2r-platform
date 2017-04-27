@@ -146,6 +146,16 @@ docker run --rm --name o2r-platform -p 80:80 -v $(pwd)/test/nginx.conf:/etc/ngin
 
 If you run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
 
+### Elasticsearch
+
+If you update the metadata structure of `compendium` or `jobs` and you already have indexed these in elasticsearch, you have to drop the elasticsearch `o2r`-index via
+
+```bash
+curl -XDELETE 'http://172.17.0.3:9200/o2r'
+```
+
+Otherwise, new compendia will not be indexed anymore.
+
 ## License
 
 o2r-platform is licensed under Apache License, Version 2.0, see file LICENSE.

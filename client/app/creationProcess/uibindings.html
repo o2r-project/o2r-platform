@@ -1,0 +1,19 @@
+<md-card>
+    <md-card-content layout="column">
+        <h1>UI bindings</h1>
+        <form>
+            <md-input-container>
+                <label>Choose purpose</label>
+                <md-select ng-model="vm.purpose" ng-change="vm.inferWidget()">
+                    <md-option ng-repeat="purpose in vm.purposes" value="{{purpose}}">{{purpose}}</md-option>
+                </md-select>
+            </md-input-container> 
+            <md-input-container>
+                <label>Choose UI widget</label>
+                <md-select ng-model="widget">
+                    <md-option ng-repeat="widget in vm.widgets" value="{{widget}}">{{widget}}</md-option>
+                </md-select>
+            </md-input-container>                    
+        </form>
+    </md-card-content>
+</md-card>

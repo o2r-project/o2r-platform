@@ -22,6 +22,7 @@
         $scope.$on('setUser', function(){
             vm.user = login.getUser();
             vm.loggedIn = login.isLoggedIn();
+            console.log(vm.user)
         });
 
         ///////////

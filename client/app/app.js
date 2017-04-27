@@ -19,7 +19,9 @@
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress',
-            'ngIframeResizer'])
+            'ngIframeResizer',
+            'ui-leaflet'])
+        .constant('env', env)
         .constant('icons', icons())
         .config(config);
     
@@ -41,9 +43,7 @@
         });
 
         $mdDateLocaleProvider.formatDate = function(date){
-            /* eslint-disable no-undef */
             return moment(date).format('DD-MM-YYYY');
-            /* eslint-enable no-undef */
         };
 
         var customPrimary = {
@@ -147,12 +147,41 @@
                     compSJob: compSJobService
                 }
             })
-            .state('metadata', {
-                url: "/metadata/:ercid",
-                templateUrl: "app/checkMetadata/metadata.html",
-                controller: 'CheckMetaController',
-                controllerAs: 'vm',
+            .state('creationProcess', {
+                abstract: true,
+                url: "/creationProcess/:ercid",
+                templateUrl: "app/creationProcess/creationProcess.html",
+                controller: "CreationProcessController",
+                controllerAs: "cpctrl"
             })            
+            .state('requiredMetadata',{
+                url:"/requiredMetadata",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/requiredMetadata.html",
+                controller: 'RequiredMetaController',
+                controllerAs: 'requiredctrl'    
+            })
+            .state('optionalMetadata',{
+                url:"/optionalMetadata",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/optionalMetadata.html",
+                controller: 'OptionalMetaController',
+                controllerAs: 'vm'    
+            })      
+            .state('spacetimeMetadata',{
+                url:"/spacetimeMetadata",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/spacetimeMetadata.html",
+                controller: 'SpaceTimeController',
+                controllerAs: 'vm'    
+            }) 
+            .state('uibindings',{
+                url:"/uibindings",
+                parent: "creationProcess",
+                templateUrl: "app/creationProcess/uibindings.html",
+                controller: 'UIBindings',
+                controllerAs: 'vm'    
+            })                                    
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",

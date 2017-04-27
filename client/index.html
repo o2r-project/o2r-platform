@@ -9,7 +9,7 @@
 <!-- Libraries JavaScript -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
@@ -22,8 +22,18 @@
 <script type="text/javascript" src="bower_components/angular-utils-pagination/dirPagination.js"></script>
 <script type="text/javascript" src="bower_components/ngprogress/build/ngprogress.js"></script>
 <script type="text/javascript" src="bower_components/moment/min/moment-with-locales.min.js"></script>
+<<<<<<< HEAD
 <script type="text/javascript" src="bower_components/iframe-resizer/js/iframeResizer.min.js"></script>
 <script type="text/javascript" src="lib/ng-iframe-resizer/dist/iframe-resizer.js"></script>
+=======
+<script type="text/javascript" src="bower_components/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="bower_components/leaflet-draw/dist/leaflet.draw.js"></script>
+<script type="text/javascript" src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+<script type="text/javascript" src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+<script type="text/javascript" src="bower_components/ui-leaflet-draw/dist/ui-leaflet-draw.js"></script>
+
+
+>>>>>>> upstream/master
 
 <!-- Libraries CSS -->
 <link rel="stylesheet" type="text/css" href="css/o2r.css">
@@ -32,6 +42,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
 <link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
+<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -86,8 +98,16 @@
 <script src="app/headerView/header.controller.js"></script>
 <script src="app/templates/impressum.controller.js"></script>
 <script src="app/templates/privacy.controller.js"></script>
+<<<<<<< HEAD
 <script src="app/checkMetadata/checkmeta.controller.js"></script>
 <script src="app/compareView/compare.controller.js"></script>
+=======
+<script src="app/creationProcess/requiredmeta.controller.js"></script>
+<script src="app/creationProcess/optionalmeta.controller.js"></script>
+<script src="app/creationProcess/spacetime.controller.js"></script>
+<script src="app/creationProcess/creationProcess.controller.js"></script>
+<script src="app/creationProcess/uibindings.controller.js"></script>
+>>>>>>> upstream/master
 
 <!-- Directives -->
 <script src="app/o2rDisplayFiles/o2rSetIframeHeight.directive.js"></script>
@@ -122,7 +142,7 @@
     <!-- header -->
     <md-toolbar class="o2r-fixed" id="o2r-header">
         <div class="md-toolbar-tools">
-            <img class="o2r-pointer" src="img/o2r-logo-only-white-outline.svg" alt="o2r-logo" height="80%" ui-sref="home">
+            <img class="o2r-pointer" src="img/o2r-logo-only-white.svg" alt="o2r logo" height="60%" ui-sref="home">
             <span flex></span>
             <form ng-submit="vm.submitSearch()" ng-if="vm.showSearchBar()">
                 <md-input-container md-no-float layout="row" class="md-icon-float white-font">

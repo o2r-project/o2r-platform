@@ -16,8 +16,11 @@
         vm.uploadedERCid = false;
         vm.cancel = () => {
                         $mdDialog.cancel(); 
-                        $location.path('/metadata/' + vm.uploadedERCid);
-                        };
+                    };
+        vm.done = function() {
+                        $mdDialog.cancel();
+                        $location.path('/creationProcess/' + vm.uploadedERCid + '/requiredMetadata');
+                    };            
         vm.selected = (file) => {vm.f = file;};
         vm.onLoad = false;
         vm.doneButton = false;
