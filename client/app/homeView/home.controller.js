@@ -11,12 +11,19 @@
         var vm = this;
         vm.submit = submitter;
         vm.openDialog = openDialog;
-        vm.loggedIn = login.isLoggedIn();
+        //vm.loggedIn = login.isLoggedIn;
+        vm.user = {};
+        vm.isLoggedIn;
         vm.sendScieboUrl = sendScieboUrl;
         vm.validUrl = true;
         
         activate();
         
+        $scope.$on('setUser', function(){
+            vm.user = login.getUser();
+            vm.loggedIn = login.isLoggedIn();
+            $log.debug(vm.user);
+        });
         ///////////
 
         if(window.location.href.indexOf('shareURL') >= 0){
@@ -62,6 +69,7 @@
 
         function activate(){
             header.setTitle('o2r - opening reproducible research');
+            login.getUserCall();
         }
 
         function submitter(){

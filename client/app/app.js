@@ -21,7 +21,6 @@
             'ngProgress',
             'ngIframeResizer',
             'ui-leaflet'])
-        .constant('env', env)
         .constant('icons', icons())
         .config(config);
     
