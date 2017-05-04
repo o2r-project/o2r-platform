@@ -53,6 +53,7 @@
             .then(successCallback, errorCallback, progress);
             
             function successCallback(response){
+                console.log("bis hier gehts success")
                 if(vm.checkRunAnalysis){
                     jobs.executeJob(response.data.id)
                         .then(execJobCallback, errorCallback);
@@ -65,6 +66,7 @@
                 }
             }
             function errorCallback(response){
+                console.log("bis hier gehts error")
                 $log.debug('upload errorCallback %o', response);
                 file.progress = 100;
                 vm.doneButton = true;

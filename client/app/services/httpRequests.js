@@ -149,7 +149,7 @@
 		}
 
 		function uploadViaSciebo(url, path){
-			var _url = 'http://localhost/api/v2/compendium/';			
+			var _url = 'http://localhost/api/v1/compendium/';		
 			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});	
 		}	
 
@@ -158,7 +158,7 @@
             var progressbar = ngProgressFactory.createInstance();
 			progressbar.setHeight('3px');
 			progressbar.start();
-			$http.post(_url, "compendium_id=" + encodeURIComponent(compendiumID) + "&recipient=" + encodeURIComponent("zenodo"))
+			$http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")
 				.then(function (response) {
 					$log.debug(response);
 					$window.open(_url + '/' + response.data.id);
@@ -167,6 +167,7 @@
 				},
 				function (response) {
 					$log.debug(response);
+					progressbar.complete();
 				});		
 		}
 
