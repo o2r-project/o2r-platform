@@ -18,7 +18,9 @@
 			getLoggedUser: getLoggedUser,
 			searchComp: searchComp,
 			toZenodo: toZenodo,
-			ercInZenodo: ercInZenodo,
+			getShipment: getShipment,
+			getStatus: getStatus,
+			publishERC: publishERC,
 			updateMetadata: updateMetadata,
 			uploadViaSciebo: uploadViaSciebo,
 			getLicenses: getLicenses
@@ -140,35 +142,29 @@
 			return $http.get(_url);
 		}
 
-		function ercInZenodo(compendiumID){
-			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
-			//Wait for server implementation
-			//var shipment = $http.get(_url);
-			//return shipment.status != "delivered";
-			return true;
-		}
-
 		function uploadViaSciebo(url, path){
 			var _url = 'http://localhost/api/v1/compendium/';		
 			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});	
-		}	
+		}
 
 		function toZenodo(compendiumID) {
 			var _url = env.api + '/shipment';
-            var progressbar = ngProgressFactory.createInstance();
-			progressbar.setHeight('3px');
-			progressbar.start();
-			$http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")
-				.then(function (response) {
-					$log.debug(response);
-					$window.open(_url + '/' + response.data.id);
-					progressbar.complete();
-					return "success";
-				},
-				function (response) {
-					$log.debug(response);
-					progressbar.complete();
-				});		
+			return $http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")		
+		}
+
+		function getShipment(compendiumID){
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
+			return $http.get(_url);
+		}	
+
+		function getStatus(shipmentID){
+			var _url = env.api + '/shipment/' + shipmentID + '/status';
+			return $http.get(_url);
+		}
+
+		function publishERC(shipmentID){
+			var _url = env.api + '/shipment/' + shipmentID + '/publishment/';
+			return $http.put(_url);			
 		}
 
 		function updateMetadata(id, data){
