@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('starter')
+		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 		
 	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory', '$location'];
