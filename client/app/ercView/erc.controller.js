@@ -34,14 +34,16 @@
         
         httpRequests.getShipment(vm.ercId)
             .then(function (res){
+                console.log(res);
                 if(res.data.length > 0){ 
                     $scope.shipped=true;
                     httpRequests.getStatus(res.data[0])
                     .then(function (res2){
+                        console.log(res2);
                         if (res2.data.status == "shipped"){
                              $scope.publish = false;
                         }
-                        if (res2.data.status == "shipped"){
+                        if (res2.data.status == "published"){
                             $scope.publish = true;
                         }    
                     })
