@@ -1,83 +1,29 @@
-<div layout="row" ng-cloak>
-    <md-card flex="50" class="inspect-main">
-        <md-card-header>
-            <md-card-header-text>
-                <span>{{vm.main.name}}</span>
-                <span flex></span>
-            </md-card-header-text>
-        </md-card-header>
-        <md-card-content>
-            <o2r-display-files o2r-file="{{vm.main}}"></o2r-display-files>
-        </md-card-content>
-    </md-card>
-    <div layout="column" flex="50">
-        <md-card class="inspect-code-card">
-            <md-card-header>
-                <md-card-header-text>
-                    <span>{{vm.code.name}}</span>
-                    <span flex></span>
-                </md-card-header-text>
-            </md-card-header>
-            <md-card-content>
-                <o2r-display-files o2r-file="{{vm.code}}"></o2r-display-files>
-            </md-card-content>
-        </md-card>
-        <md-card class="inspect-data-card">
-            <md-card-header>
-                <md-card-header-text layout="row">
-                    <span>{{vm.selectedData.name}}</span>
-                    <span flex></span>
-                    <md-menu md-position-mode="target-right target">
-                        <md-button aria-label="Datafiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
-                            <md-icon md-menu-origin md-svg-icon="{{vm.icons.menu}}"></md-icon>
-                        </md-button>
-                        <md-menu-content width="4">
-                            <md-menu-item ng-repeat="item in vm.datasets track by $index">
-                                <md-button ng-click="vm.selectData(item)">
-                                    {{item.name}}
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                </md-card-header-text>
-            </md-card-header>
-            <md-card-content>
-                <o2r-display-files o2r-file="{{vm.selectedData}}"></o2r-display-files>
-            </md-card-content>
-        </md-card>
-    </div>
-<!--
-        <md-card flex="50" class="inspect-rightside">
-            <md-card-content>
-                <!-- code section
-                <div layout="row" class="inspect-code-header">
-                    <span>{{vm.code.name}}</span>
-                    <span flex></span>
-                </div>
-                <div class="inspect-code">
-                    <o2r-display-files o2r-file="{{vm.code}}"></o2r-display-files>
-                </div>
-                <md-divider style="margin-top: 2vh;"></md-divider>
-                <!-- data section
-                <div layout="row" class="inspect-data-header">
-                    <span>{{vm.selectedData.name}}</span>
-                    <span flex></span>
-                    <md-menu md-position-mode="target-right target">
-                        <md-button aria-label="Datafiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
-                            <md-icon md-menu-origin md-svg-icon="{{vm.icons.menu}}"></md-icon>
-                        </md-button>
-                        <md-menu-content width="4">
-                            <md-menu-item ng-repeat="item in vm.datasets track by $index">
-                                <md-button ng-click="vm.selectData(item)">
-                                    {{item.name}}
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                </div>
-                <div class="inspect-data">
-                    <o2r-display-files o2r-file="{{vm.selectedData}}"></o2r-display-files>
-                </div>
-        </md-card>
--->
+<!--upper part -->
+{{vm.code.name}}
+<div class="inspect-code">
+    <o2r-display-files o2r-file="{{vm.code}}"></o2r-display-files>
+</div>
+
+<md-divider class="inspect-divider"></md-divider>
+
+<!-- lower part -->
+<div layout="row">
+    {{vm.selectedData.name}}
+    <span flex></span>
+    <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Datafiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
+            <md-icon md-menu-origin md-svg-icon="{{vm.icons.menu}}"></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+            <md-menu-item ng-repeat="item in vm.datasets track by $index">
+                <md-button ng-click="vm.selectData(item)">
+                    {{item.name}}
+                </md-button>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+</div>
+
+<div class="inspect-data">
+    <o2r-display-files o2r-file="{{vm.selectedData}}"></o2r-display-files>
 </div>

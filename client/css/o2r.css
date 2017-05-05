@@ -347,22 +347,16 @@ o2r-compare md-card-content{
 /***********************
 	Start examineView
 ************************/
-.examine-file-selector{
-	padding-left: 3%;
-	padding-top: 3%;
-	padding-right: 5%;
+.examine-main{
+	height: 85vh;
 }
 
-.examine-method-selector .radio{
-	padding-top: 5%;
-	padding-bottom: 5%;
+.examine-main > md-card-content{
+	overflow-y: auto;
 }
 
-.examine-compare{
-	padding-top: 3%;
-	padding-left: 3%;
-	background: #F0F0F0;
-	border-radius: 2px;
+.examine-rightside{
+	height: 85vh;
 }
 /***********************
 	End examineView
@@ -370,46 +364,6 @@ o2r-compare md-card-content{
 /***********************
 	Start inspectView
 ************************/
-/*
-.inspect-wrapper{
-	height: 85vh;
-}
-
-.inspect-rightside{
-	height: 85vh;
-}
-*/
-.inspect-main{
-	height: 85vh;
-	overflow-y: auto;
-}
-
-.inspect-main > md-card-content{
-	overflow-y: auto;
-}
-
-/*
-.inspect-code{
-	height: 38vh;
-	overflow-y: auto;
-}
-.inspect-code > md-card-content{
-	overflow-y: auto;
-}
-.inspect-data{
-	height: 36vh;
-	overflow-y: auto;
-}
-
-.inspect-data-header{
-	margin-top: 1vh;
-	margin-bottom: 1vh;
-}
-
-.inspect-code-header{
-	margin-bottom: 1vh;
-}
-*/
 
 .inspect-menu-button{
 	padding: 0!important;
@@ -419,32 +373,34 @@ o2r-compare md-card-content{
 	vertical-align: top!important;
 }
 
-.inspect-code-card{
-	height: 42vh;
-	padding-bottom: 1vh;
+.inspect-divider{
+	margin-top: 0.5vh;
+	margin-bottom: 0.5vh;
 }
-
-.inspect-code-card > md-card-content{
+.inspect-code{
+	height: 35vh;
 	overflow-y: auto;
+	margin-top: 0.5vh;
 }
 
-.inspect-data-card{
-	height: 42vh;
-	padding-bottom: 1vh;
-}
-
-.inspect-data-card > md-card-content{
+.inspect-data{
+	height: 37vh;
 	overflow-y: auto;
-}
-/*
-.inspect-data > md-card-content{
-	overflow-y: auto;
+	margin-top: 0.5vh;
 }
 
-.inspect-rightside > md-card md-card-content{
-	height: 100%;
-}
-*/
 /***********************
 	End inspectView
+************************/
+/***********************
+	Start manipulateView
+************************/
+
+.manipulate-interactive{
+	overflow-y: auto;
+}
+
+
+/***********************
+	End manipulateView
 ************************/

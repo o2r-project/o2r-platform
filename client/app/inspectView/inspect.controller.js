@@ -5,15 +5,12 @@
         .module('starter')
         .controller('InspectController', InspectController);
     
-    InspectController.$inject = ['$scope', '$log', 'inspect', 'publications', 'icons'];
-    function InspectController($scope, $log, inspect, publications, icons){
+    InspectController.$inject = ['$scope', '$log', 'publications', 'icons', 'examine'];
+    function InspectController($scope, $log, publications, icons, examine){
+        var inspect = examine;
+        
         var vm = this;
         vm.icons = icons;
-        vm.main = {};
-        vm.main.path = '/api/v1/compendium/lnbNa/data/data/aspacetimestatisticalclimatemodelforhurricaneintensification/mjomeiAnalysis.html';
-        vm.main.type = 'text/html';
-        vm.main.name = 'mjomeiAnalysis.html';
-
         vm.datasets = prepareDatasets(inspect.metadata.o2r.inputfiles);
         vm.selectedData = vm.datasets[2];
 
@@ -25,8 +22,7 @@
         vm.openMenu = openMenu;
 
         vm.selectData = selectData;
-
-        $log.debug(inspect);
+        
         $log.debug(vm);
         ///////
 

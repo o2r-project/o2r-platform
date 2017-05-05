@@ -201,7 +201,6 @@
                 }
             })
             .state('examine', {
-                //url: "/compare?url&tocompareurl&urltype&tocomparetype",
                 url: "/examine/:ercid",
                 templateUrl: "app/examineView/examine.html",
                 controller: 'ExamineController',
@@ -210,10 +209,22 @@
                     examine: examineService
                 }
             })
-            .state('compare', {
-                url: "/compare?left&right&lmime&rmime",
+            /*
+            .state('examine.compare', {
+                //url: "/compare?left&right&lmime&rmime",
                 templateUrl: "app/compareView/compare.html",
                 controller: 'CompareController',
+                controllerAs: 'vm'
+            })
+            */
+            .state('examine.inspect', {
+                templateUrl: "app/inspectView/inspect.html",
+                controller: 'InspectController',
+                controllerAs: 'vm'
+            })
+            .state('examine.manipulate', {
+                templateUrl: "app/manipulateView/manipulate.html",
+                controller: 'ManipulateController',
                 controllerAs: 'vm'
             })
             .state('compareanalysis', {
@@ -221,15 +232,6 @@
                 templateUrl: "app/compareAnalysisView/compareAnalysis.html",
                 controller: "CompareAnalysisController",
                 controllerAs: 'vm'
-            })
-            .state('inspect', {
-                url: "/inspect/:ercid",
-                templateUrl: "app/inspectView/inspect.html",
-                controller: 'InspectController',
-                controllerAs: 'vm',
-                resolve: {
-                    inspect: inspectService
-                }
             })
             .state('impressum', {
                 url: "/impressum",
@@ -330,12 +332,5 @@
         var ercId = $stateParams.ercid;
         $log.debug('called /examine/%s', ercId);
         return publications.getRequest(ercId);
-    }
-
-    inspectService.$inject = ['$log', '$stateParams', 'publications'];
-    function inspectService($log, $stateParams, publications){
-        var ercId = $stateParams.ercid;
-        $log.debug('called /inspect/%s', ercId);
-        return publications.getRequest(ercId); 
     }
 })();  
