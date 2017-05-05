@@ -1,9 +1,12 @@
 <md-card>
     <md-card-content layout="column">
-        <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status) || !$parent.$$prevSibling.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
+        <div layout="row">
+            <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status) || !$parent.$$prevSibling.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
+            <md-button class="md-raised" ng-disabled="($parent.vm.isEmpty(lFin.steps))" ui-sref="compareanalysis({o: dummy.o.path, r: dummy.r.path, d: dummy.d.path, om: 'text/html', rm: 'text/html', dm: 'text/html'})"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
+        </div>
         <div>
             <h3>Last finished analysis</h3>
-            <table ng-hide="$paren.vm.isEmpty(lFin.steps)">
+            <table ng-hide="$parent.vm.isEmpty(lFin.steps)">
                 <tr ng-repeat="(key, value) in lFin.steps">
                     <td>{{key}}</td>
                     <td>

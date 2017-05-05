@@ -1,0 +1,48 @@
+<div layout="row">
+    <md-card flex="50">
+        <md-card-header>
+            <md-card-header-text>
+                <span>{{vm.file.path | cutPathLong}}</span>
+				<span flex></span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <o2r-display-files o2r-file="{{vm.file}}"></o2r-display-files>
+        </md-card-content>
+    </md-card>
+
+    <md-card flex="50">
+        <md-card-content>
+            <div class="examine-method-selector">
+                <span>Select Method</span>
+                <md-radio-group class="radio" ng-model="vm.method" layout="row">
+                    <md-radio-button ng-value="vm.methods.compare">{{vm.methods.compare}}</md-radio-button>
+                    <md-radio-button ng-value="vm.methods.inspect">{{vm.methods.inspect}}</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div ng-if="vm.method == 'Inspect'">
+                you have to select inspection style
+            </div>
+            <div class="examine-compare" ng-show="vm.method == vm.methods.compare">
+                <h2>Compare</h2>
+                <md-radio-group class="radio" ng-model="vm.comparemethod">
+                    <md-radio-button ng-value="vm.compare.analysis">Compare Analysis</md-radio-button>
+                    <md-radio-button ng-value="vm.compare.manipulation">Compare Manipulations</md-radio-button>
+                    <md-radio-button ng-value="vm.compare.substitution">Compare Substitution</md-radio-button>
+                    <md-radio-button ng-value="vm.compare.localfiles">Compare Internal Files</md-radio-button>
+                </md-radio-group>
+                <div class="examine-file-selector" ng-show="vm.comparemethod == vm.compare.localfiles">
+                    <span>Select file </span>
+                    <div layout="column" style="padding-top: 3%;">
+                        <small style="padding-bottom: 1%;">{{vm.publication.metadata.o2r.title}}</small>
+                        <treecontrol class="tree-classic" tree-model="vm.publication.files" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+                            <span ng-click="vm.setCompare(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
+                        </treecontrol>
+                        <small style="padding-top: 1%;">Selected file: {{vm.toCompare.name}}</small>
+                    </div>
+                    <md-button class="" ng-click="vm.compareaction()">Compare</md-button>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

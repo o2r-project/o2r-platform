@@ -19,7 +19,7 @@
 <video class="erc-video" ng-if="(mime =='video') && (file.size <= sizeRestriction)" controls><source ng-src="{{file.path}}"></source>Your browser does not support the video tag.</video>
 <hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs>
 <iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="erc-html"></iframe>
-<iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.type=='text/html') && (file.size <= sizeRestriction)" class="erc-html"></iframe>
+<iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="erc-html"></iframe>
 <!--
 <div ng-include="file.path" ng-if="(!isInteractive(file.path)) && (file.type=='text/html') && (file.size <= sizeRestriction)" class="erc-html"></div>
 -->

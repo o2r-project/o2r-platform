@@ -97,7 +97,8 @@
             if(obj.metadata.o2r.interaction.interactive == true){
                 // TODO
                 //delete this when backend added interaction.path
-                obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/main/';
+                //obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/main/';
+                obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/'
                 var name = obj.metadata.o2r.file.filename.split('.');
                 var name = name[0] + '_interactive';
                 var dummy = {
