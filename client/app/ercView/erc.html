@@ -29,7 +29,8 @@
 						<span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
 					</treecontrol>
 				</div>
-				<md-button ng-show="vm.stillToArchive() && vm.loggedIn" ng-click="vm.sendToZenodo()">Ship to Zenodo<md-icon aria-label md-svg-src="{{vm.icons.rowing}}"></md-icon></md-button>
+				<md-button ng-disabled="shipped" ng-click="vm.sendToZenodo()">Ship to Zenodo<md-icon aria-label md-svg-src="{{vm.icons.rowing}}"></md-icon></md-button></br>
+				<md-button ng-disabled="publish" ng-click="vm.publishInZenodo()">Publish in Zenodo</md-button>
 			</md-card-content>
 		</md-card>
 
