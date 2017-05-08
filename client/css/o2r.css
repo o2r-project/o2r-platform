@@ -344,3 +344,63 @@ o2r-compare md-card-content{
 /***********************
 	End compareView
 ************************/
+/***********************
+	Start examineView
+************************/
+.examine-main{
+	height: 85vh;
+}
+
+.examine-main > md-card-content{
+	overflow-y: auto;
+}
+
+.examine-rightside{
+	height: 85vh;
+}
+/***********************
+	End examineView
+************************/
+/***********************
+	Start inspectView
+************************/
+
+.inspect-menu-button{
+	padding: 0!important;
+	height: 30px!important;
+	width: 30px!important;
+	line-height: normal!important;
+	vertical-align: top!important;
+}
+
+.inspect-divider{
+	margin-top: 0.5vh;
+	margin-bottom: 0.5vh;
+}
+.inspect-code{
+	height: 35vh;
+	overflow-y: auto;
+	margin-top: 0.5vh;
+}
+
+.inspect-data{
+	height: 37vh;
+	overflow-y: auto;
+	margin-top: 0.5vh;
+}
+
+/***********************
+	End inspectView
+************************/
+/***********************
+	Start manipulateView
+************************/
+
+.manipulate-interactive{
+	overflow-y: auto;
+}
+
+
+/***********************
+	End manipulateView
+************************/

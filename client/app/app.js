@@ -29,12 +29,13 @@
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
         $compileProvider.preAssignBindingsEnabled(true);
         
-        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/']);
+        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
         if(env.disableTracking) console.log("Tracking globally disabled!");
 
         $logProvider.debugEnabled(env.enableDebug);
+        if(!env.enableDebug) console.log('Debug logs disabled!');
         /* eslint-enable angular/window-service, angular/log */
 
         hljsServiceProvider.setOptions({
@@ -199,10 +200,37 @@
                     searchResults: searchResultsService
                 }
             })
-            .state('compare', {
-                url: "/compare?url&tocompareurl&urltype&tocomparetype",
+            .state('examine', {
+                url: "/examine/:ercid",
+                templateUrl: "app/examineView/examine.html",
+                controller: 'ExamineController',
+                controllerAs: 'vm',
+                resolve: {
+                    examine: examineService
+                }
+            })
+            /*
+            .state('examine.compare', {
+                //url: "/compare?left&right&lmime&rmime",
                 templateUrl: "app/compareView/compare.html",
                 controller: 'CompareController',
+                controllerAs: 'vm'
+            })
+            */
+            .state('examine.inspect', {
+                templateUrl: "app/inspectView/inspect.html",
+                controller: 'InspectController',
+                controllerAs: 'vm'
+            })
+            .state('examine.manipulate', {
+                templateUrl: "app/manipulateView/manipulate.html",
+                controller: 'ManipulateController',
+                controllerAs: 'vm'
+            })
+            .state('compareanalysis', {
+                url: "/compare/analysis?o&r&d&om&rm&dm",
+                templateUrl: "app/compareAnalysisView/compareAnalysis.html",
+                controller: "CompareAnalysisController",
                 controllerAs: 'vm'
             })
             .state('impressum', {
@@ -297,5 +325,12 @@
         var term = $stateParams.q;
         $log.debug('searchResultsService, term: ' + term);
         return metadata.callMetadata_search(term);
+    }
+
+    examineService.$inject = ['$log', '$stateParams', 'publications'];
+    function examineService($log, $stateParams, publications){
+        var ercId = $stateParams.ercid;
+        $log.debug('called /examine/%s', ercId);
+        return publications.getRequest(ercId);
     }
 })();  

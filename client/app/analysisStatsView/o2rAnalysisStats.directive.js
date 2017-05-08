@@ -93,7 +93,15 @@
             scope.gotSocket = false;
             scope.resultInfo = resultInfo;
             scope.isRunning = isRunning;
-            
+            // delete dummy object after metadata object was updated
+            scope.dummy = {};
+            scope.dummy.o = {};
+            scope.dummy.o.path = 'api/v1/compendium/' + scope.$parent.vm.ercId + '/data/data/Original.html';
+            scope.dummy.r = {};
+            scope.dummy.r.path = 'api/v1/compendium/' + scope.$parent.vm.ercId + '/data/data/Reproduced.html';
+            scope.dummy.d = {};
+            scope.dummy.d.path = 'api/v1/compendium/' + scope.$parent.vm.ercId + '/data/data/Checker_Result.html';
+
             activate();
 
             ////////
