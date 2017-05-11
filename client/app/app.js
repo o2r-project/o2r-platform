@@ -20,7 +20,8 @@
             'angularUtils.directives.dirPagination',
             'ngProgress',
             'ngIframeResizer',
-            'ui-leaflet'])
+            'ui-leaflet',
+            'angularResizable'])
         .constant('icons', icons())
         .config(config);
     
@@ -225,6 +226,11 @@
             .state('examine.manipulate', {
                 templateUrl: "app/manipulateView/manipulate.html",
                 controller: 'ManipulateController',
+                controllerAs: 'vm'
+            })
+            .state('examine.substitute', {
+                templateUrl: "app/substituteView/substitute.html",
+                controller: 'SubstituteController',
                 controllerAs: 'vm'
             })
             .state('compareanalysis', {
