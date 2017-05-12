@@ -12,7 +12,7 @@
         var vm = this;
         vm.icons = icons;
         vm.datasets = prepareDatasets(inspect.metadata.o2r.inputfiles);
-        vm.selectedData = vm.datasets[2];
+        vm.selectedData = vm.datasets[0];
 
         vm.code = {};
         vm.code.path = prepareCode(inspect.metadata.o2r.file.filepath);

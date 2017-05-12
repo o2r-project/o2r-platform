@@ -11,12 +11,12 @@
         return cutName;
 
         function cutName(input){
-            $log.debug(input);
+            //$log.debug(input);
             try {
                 if(input.length >= maxnumber){
                     var short = input.substr(0, maxnumber) + '...';
                     return short;
-                } else return;
+                } else return input;
             } catch (error) {
                 $log.debug('cutLongName: input is null');
                 return;

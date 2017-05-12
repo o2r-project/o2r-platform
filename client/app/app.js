@@ -20,8 +20,7 @@
             'angularUtils.directives.dirPagination',
             'ngProgress',
             'ngIframeResizer',
-            'ui-leaflet',
-            'angularResizable'])
+            'ui-leaflet'])
         .constant('icons', icons())
         .config(config);
     
