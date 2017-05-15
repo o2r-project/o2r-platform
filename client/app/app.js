@@ -227,6 +227,11 @@
                 controller: 'ManipulateController',
                 controllerAs: 'vm'
             })
+            .state('examine.substitute', {
+                templateUrl: "app/substituteView/substitute.html",
+                controller: 'SubstituteController',
+                controllerAs: 'vm'
+            })
             .state('compareanalysis', {
                 url: "/compare/analysis?o&r&d&om&rm&dm",
                 templateUrl: "app/compareAnalysisView/compareAnalysis.html",
