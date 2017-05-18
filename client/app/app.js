@@ -29,6 +29,9 @@
             "hljs",
             "ui.router",
             "ngFileUpload",
+            "hljs",
+            "ui.router",
+            "ngFileUpload",
             'ngAnimate',
             'ngAria',
             'ngMaterial',
@@ -49,6 +52,12 @@
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
         $compileProvider.preAssignBindingsEnabled(true);
 
+
+
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
+
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
+        $compileProvider.preAssignBindingsEnabled(true);
 
 
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
@@ -340,6 +349,7 @@
 
 
 
+
             object[icons[i].name] = path + icons[i].fn + path2;
         }
 
@@ -397,6 +407,7 @@
         $log.debug('called /examine/%s', ercId);
         return publications.getRequest(ercId);
     }
+})();
 })();
 })();
 })();

@@ -212,6 +212,9 @@
 		function uploadViaSciebo(url, path){
 			var _url = 'http://localhost/api/v1/compendium/';
 			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});
+		function uploadViaSciebo(url, path){
+			var _url = 'http://localhost/api/v1/compendium/';
+			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});
 		}
 
 		function toZenodo(compendiumID) {
@@ -271,6 +274,13 @@
 			var _url = env.api + '/shipment?compendium_id=' + compendiumID;
 			return $http.get(_url);
 		}
+			return $http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")
+		}
+
+		function getShipment(compendiumID){
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;
+			return $http.get(_url);
+		}
 
 		function getStatus(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/status';
@@ -279,6 +289,7 @@
 
 		function publishERC(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/publishment';
+			return $http.put(_url,{});
 			return $http.put(_url,{});
 			return $http.put(_url,{});
 			return $http.put(_url,{});
