@@ -1,24 +1,18 @@
 (function(){
     'use strict';
-    /* eslint-disable angular/window-service */
-    window.__env = window.__env || {};
 
-    var env = {
-        server : window.__env.server || 'http://localhost',
-        c_api: window.__env.api || '/api/v1',
-        sizeRestriction: window.__env.sizeRestriction || 10000000,
-        disableTracking: window.__env.disableTracking || false,
-        enableDebug: window.__env.enableDebug || false,
-        version: window.__env.version || 'deployment'
-    };
-    env.api = env.server + env.c_api;
-
-    /* eslint-enable angular/window-service */
     angular
         .module('starter', [
+            "conf",
+            "starter.o2rDisplayFiles",
+            "starter.o2rCompare",
+            "starter.o2rHttp",
             "treeControl",
             "ui.router",
             "hljs",
+            "ngFileUpload",
+            "hljs",
+            "ui.router",
             "ngFileUpload",
             'ngAnimate',
             'ngAria',
@@ -28,22 +22,28 @@
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress',
+            'ngIframeResizer',
             'ui-leaflet'])
-        .constant('env', env)
         .constant('icons', icons())
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider, $compileProvider, $mdDateLocaleProvider){
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
+
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
         $compileProvider.preAssignBindingsEnabled(true);
 
-        /* eslint-disable angular/window-service, angular/log */
-        $analyticsProvider.developerMode(window.__env.disableTracking);
-        if(window.__env.disableTracking) console.log("Tracking globally disabled!");
 
-        $logProvider.debugEnabled(window.__env.enableDebug);
+        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/']);
+        /* eslint-disable angular/window-service, angular/log */
+        $analyticsProvider.developerMode(env.disableTracking);
+        if(env.disableTracking) console.log("Tracking globally disabled!");
+
+        $logProvider.debugEnabled(env.enableDebug);
+        if(!env.enableDebug) console.log('Debug logs disabled!');
         /* eslint-enable angular/window-service, angular/log */
+
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
@@ -206,6 +206,44 @@
                     searchResults: searchResultsService
                 }
             })
+            .state('examine', {
+                url: "/examine/:ercid",
+                templateUrl: "app/examineView/examine.html",
+                controller: 'ExamineController',
+                controllerAs: 'vm',
+                resolve: {
+                    examine: examineService
+                }
+            })
+            /*
+            .state('examine.compare', {
+                //url: "/compare?left&right&lmime&rmime",
+                templateUrl: "app/compareView/compare.html",
+                controller: 'CompareController',
+                controllerAs: 'vm'
+            })
+            */
+            .state('examine.inspect', {
+                templateUrl: "app/inspectView/inspect.html",
+                controller: 'InspectController',
+                controllerAs: 'vm'
+            })
+            .state('examine.manipulate', {
+                templateUrl: "app/manipulateView/manipulate.html",
+                controller: 'ManipulateController',
+                controllerAs: 'vm'
+            })
+            .state('examine.substitute', {
+                templateUrl: "app/substituteView/substitute.html",
+                controller: 'SubstituteController',
+                controllerAs: 'vm'
+            })
+            .state('compareanalysis', {
+                url: "/compare/analysis?o&r&d&om&rm&dm",
+                templateUrl: "app/compareAnalysisView/compareAnalysis.html",
+                controller: "CompareAnalysisController",
+                controllerAs: 'vm'
+            })
             .state('impressum', {
                 url: "/impressum",
                 templateUrl: "app/templates/impressum.html",
@@ -225,9 +263,8 @@
     }
 
     function icons(){
-        var path = 'bower_components/material-design-icons/';
-        var path2 = '/svg/production/ic_';
-        var path3 = '_48px.svg';
+        var path = 'img/ic_';
+        var path2 = '_48px.svg';
         var object = {};
         var icons = [
             {name: 'upload', category: 'file', fn: 'file_upload'},
@@ -244,12 +281,16 @@
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
             {name: 'rowing', category: 'action', fn: 'rowing'},
             {name: 'add', category: 'content', fn: 'add'},
-            {name: 'edit', category: 'editor', fn: 'mode_edit'}
+            {name: 'edit', category: 'editor', fn: 'mode_edit'},
+            {name: 'lock_open', category: 'action', fn: 'lock_open'},
+            {name: 'lock_outline', category: 'action', fn: 'lock_outline'}
         ];
 
         for(var i in icons){
 
             object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
+
+            object[icons[i].name] = path + icons[i].fn + path2;
         }
 
         return object;
@@ -297,5 +338,13 @@
         var term = $stateParams.q;
         $log.debug('searchResultsService, term: ' + term);
         return metadata.callMetadata_search(term);
+    }
+})();
+
+    examineService.$inject = ['$log', '$stateParams', 'publications'];
+    function examineService($log, $stateParams, publications){
+        var ercId = $stateParams.ercid;
+        $log.debug('called /examine/%s', ercId);
+        return publications.getRequest(ercId);
     }
 })();

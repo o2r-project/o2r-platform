@@ -1,6 +1,6 @@
-<form>
+<ng-form name="myforms.formpublication">
     <div layout="row" ng-if="editMode">
-        <md-button ng-disabled="!checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
+        <md-button ng-disabled="!formpublication.$valid || !checkChanges()" ng-click="saveChanges(original.ercIdentifier, meta, original)" class="md-primary md-raised white-font" aria-label="Save Changes">Save Changes</md-button>
         <md-button ng-click="cancelEditing()" aria-label="Cancel">Cancel</md-button>
     </div>
     <!-- Author Information -->
@@ -21,7 +21,10 @@
         <div ng-repeat="author in meta.author track by $index">
             <md-input-container>
                 <label>Name</label>
-                <input ng-model="meta.author[$index].name" ng-value="'{{author.name}}'">
+                <input ng-model="meta.author[$index].name" ng-value="'{{author.name}}'" name="authorname" required>
+                <div ng-messages="formpublication.authorname.$error">
+                    <div ng-message="required">Required field</div>
+                </div>
             </md-input-container>
             <md-input-container ng-repeat="affiliation in author.affiliation track by $index">
                 <label>Affiliation</label>
@@ -54,15 +57,28 @@
     <div ng-show="showInput('publication')" layout="column">
         <md-input-container class="md-block">
             <label>Title</label>
-            <input ng-model="meta.title" ng-value="original.title">
+            <input ng-model="meta.title" ng-value="original.title" name="title" required>
+            <div ng-messages="formpublication.title.$error">
+                <div ng-message="required">Required field</div>
+            </div>
         </md-input-container>
         <md-input-container class="md-block">
             <label>Abstract</label>
-            <textarea rows="5" ng-model="meta.description" ng-value="original.description"></textarea>
+            <textarea rows="5" ng-model="meta.description" ng-value="original.description" name="description" required></textarea>
+            <div ng-messages="formpublication.description.$error">
+                <div ng-message="required">Required field</div>
+            </div>
         </md-input-container>
-        <div>
+        <md-input-container>
+            <!--
             <span class="edit-metadata-label-color">Publication Date</span><md-datepicker ng-model="date" md-placeholder="Publication date" ng-change="changedDate(date)"></md-datepicker>
-        </div>
+            -->
+            <label>Publication Date</label>
+            <md-datepicker ng-model="date" ng-change="changedDate(date)" name="date" required></md-datepicker>
+            <div ng-messages="formpublication.date.$error" md-auto-hide="false">
+                <div ng-message="required">Required field</div>
+            </div>
+        </md-input-container>
         <md-input-container ng-repeat="lang in meta.paperLanguage track by $index">
             <label>Paper Language</label>
             <input ng-model="meta.paperLanguage[$index]" ng-value="lang">
@@ -82,4 +98,5 @@
     </div>
     <!-- end edit info-->
     <!-- end publication information -->
-</form>
+</ng-form>
+<!--{{myforms}}-->

@@ -157,6 +157,7 @@ services:
       - "SHIPPER_MONGODB=mongodb://test_mongodb_1:27017/"
       - SHIPPER_REPO_ZENODO_TOKEN=${ZENODO_TOKEN}
       - SHIPPER_BOTTLE_HOST=0.0.0.0
+      - "SHIPPER_BASE_PATH=/tmp/o2r"
     ports:
       - "8087:8087"
     networks:

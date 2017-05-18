@@ -5,26 +5,36 @@
 		Directive for displaying different file types.
 		This directive checks the mime type attribute of a publication.content.<element> to handle it differently considering its mime type.
 		Directive can only be used as Html-Element and expects an attribute o2r-file.
-		o2r-file must be an object with at least following attributes:
+		o2r-file must be an object with at least following attribute:
 		
 		{
-		size: Integer,
-		type: String,
 		path: String
 		}
 
 		Example: 
-		<o2r-display-files o2r-file="{'foo': 'bar'}"></o2r-display-files>
+		<o2r-display-files o2r-file="{'path': 'foo/bar'}"></o2r-display-files>
+
+		optional attributes:
+
+		{
+			size: Integer,
+			type: String
+		}
+		
+		where size is the filesize in bytes and type is the mime type.
 	*/
 	angular
-		.module('starter')
+		.module('starter.o2rDisplayFiles')
 		.directive('o2rDisplayFiles', o2rDisplayFiles);
 
 	o2rDisplayFiles.$inject= ['$log', 'env'];
 	function o2rDisplayFiles($log, env){
 		return{
 			restrict: 'E',
-			templateUrl: 'app/ercView/o2rDisplayFiles.template.html',
+			templateUrl: 'app/o2rDisplayFiles/o2rDisplayFiles.template.html',
+			scope: {
+				o2rFile: '@'
+			},
 			link: link
 		};
 
@@ -32,10 +42,13 @@
 			$log.debug('in o2rDisplayFiles');
 			scope.file;
 			scope.sizeRestriction = env.sizeRestriction;
-
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
 					scope.file = angular.fromJson(value);
+					scope.iframeOptions = {
+						checkOrigin: false,
+						log: true
+					};
 					var mime;
 					// if no mime type is defined hljs will be used for display
 					if(angular.isDefined(scope.file.type)){
@@ -45,10 +58,14 @@
 						scope.mime = '';
 					}
 
+					if(angular.isUndefined(scope.file.size)){
+						scope.file.size = null;
+					}
+
 					scope.useHljs = useHljs();
 					
 					function useHljs(){						
-						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html')){
+						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html') || (scope.file.type == 'text/shiny')){
 							return false;
 						}
 						return true;
@@ -58,4 +75,4 @@
 			});
 		}
 	}
-})();
+})(window.angular);
