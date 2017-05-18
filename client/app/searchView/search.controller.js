@@ -1,5 +1,5 @@
 (function(){
-  var coordinates_selected;
+
 
     'use strict';
 
@@ -7,9 +7,51 @@
         .module('starter')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope','$stateParams','$q', '$log', 'httpRequests', '$log', '$location', 'searchResults', 'header', 'icons','leafletData'];
-    function SearchController($scope,$stateParams, $q, $log, httpRequests, $log, $location, searchResults, header, icons,leafletData){
+    SearchController.$inject = ['$scope','$stateParams','$q', '$log', 'httpRequests', '$location', 'searchResults', 'header', 'icons','leafletData'];
+    function SearchController($scope,$stateParams, $q, $log, httpRequests, $location, searchResults, header, icons,leafletData){
+      var coordinates_selected;
+      var endto;
+      var beginfrom;
+      var endfrom;
+      var endto;
+      var beginto;
+
       var vm = this;
+      $scope.beginfromDate = new Date();
+      $scope.begintoDate = new Date();
+      $scope.endfromDate =  new Date();
+      $scope.endtoDate = new Date();
+      $scope.month = 4;
+
+      vm.selectedendtodate=selectedendtodate;
+      vm.beginfromDate=beginfromDate;
+      vm.begintoDate=begintoDate;
+      vm.endfromDate=endfromDate;
+      vm.states = ('Geosciences Visualization Ecology Cartography').split(' ').map(function (state) { return { abbrev: state }; });
+      vm.options = ('Libraries Functions Data').split(' ').map(function (state) { return { abbrev: state }; });
+
+
+
+      function selectedendtodate(){
+  endto= $scope.endtoDate;
+ console.log(JSON.stringify(endto,'end'));
+
+}
+function beginfromDate(){
+beginfrom= $scope.beginfromDate;
+console.log(JSON.stringify(beginfrom,'bf'));
+
+}
+function begintoDate(){
+beginto= $scope.begintoDate;
+console.log(JSON.stringify(beginto,'bt'));
+
+}
+function endfromDate(){
+endfrom= $scope.endfromDate;
+console.log(JSON.stringify(endfrom,'bt'));
+
+}
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.allPubs = map(searchResults);
@@ -17,6 +59,9 @@
         vm.selectComp = (comp) => {vm.selectedComp = comp};
         vm.submit = search;
         vm.button= callingspatialsearch;
+        vm.Button=callingtemporalsearch;
+        vm.Buttons=callingtemporalsearche;
+
 
         $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
         $log.debug('SearchCtrl, searchTerm %s', vm.searchTerm);
@@ -154,15 +199,71 @@ return deferred.promise;
 
 
     function cb1(response){
-      $log.debug('result of search: %o', response);
+      $log.debug('result of search2: %o', response);
+      var t= response.data.hits.hits;
+      var c=[];
+      for (var x in t){
+        c.push(t[x]._source.metadata.o2r.spatial.geometry);
+      }
+      console.log(c,'response array');
       deferred.resolve(response);
+          angular.extend($scope, {
+                  geojson: {
+                      data: c,
+                      style: {
+                          fillColor: "green",
+                          weight: 2,
+                          opacity: 1,
+                          color: 'white',
+                          dashArray: '3',
+                          fillOpacity: 0.7
+                      }
+                  }
+              });
     }
 
     function errorHandler(e){
       $log.debug('search error: %o', e);
       deferred.resolve(e);
     }
+
   }
+  //temporalsearching
+  function callingtemporalsearch(){
+    console.log('calling temporal search');
+    var deferred = $q.defer();
+   httpRequests.
+   temporalsearch(beginfrom,beginto)
+   .then(cb1)
+   .catch(errorHandler);
+  return deferred.promise;
+
+  function cb1(response){
+    $log.debug('result of search: %o', response);
+  }
+  function errorHandler(e){
+    $log.debug('search error: %o', e);
+    deferred.resolve(e);
+  }
+}
+
+function callingtemporalsearche(){
+  console.log('calling temporal search');
+  var deferred = $q.defer();
+ httpRequests.
+ temporalsearch(endfrom,endto)
+ .then(cb1)
+ .catch(errorHandler);
+return deferred.promise;
+
+function cb1(response){
+  $log.debug('result of search: %o', response);
+}
+function errorHandler(e){
+  $log.debug('search error: %o', e);
+  deferred.resolve(e);
+}
+}
 
   }
 })();

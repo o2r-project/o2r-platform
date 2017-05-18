@@ -42,8 +42,10 @@ input {
 	text-decoration: none;
 }
 */
+
+
 .o2r-fixed{
-	position: fixed;
+	position: relative;
 }
 
 .o2r-icon{

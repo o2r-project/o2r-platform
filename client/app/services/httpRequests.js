@@ -87,7 +87,7 @@
 		function spatialsearch(coordinates_selected) {
 			var coords = coordinates_selected.geometry.coordinates;
 			console.log('c',JSON.stringify(coordinates_selected.geometry.coordinates));
-				var _url = 'http://127.0.0.1:9201/_search?';
+				var _url = 'http://giv-project15.uni-muenster.de:9200/_search?';
 
 				var b = {
 						"query": {
@@ -220,5 +220,5 @@
 		function getLicenses(){
 			return $http.get("http://licenses.opendefinition.org/licenses/groups/all.json");
 		}
-	};
+	}
 })();
