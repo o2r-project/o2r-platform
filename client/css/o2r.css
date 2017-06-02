@@ -450,3 +450,14 @@ o2r-compare md-card-content{
 /***********************
 	End manipulateView
 ************************/
+/***********************
+	Start reproduceView
+************************/
+
+.reproduce-dialog{
+	max-height: 85% !important;
+}
+
+/***********************
+	End reproduceView
+************************/

@@ -1,6 +1,11 @@
 /**
  * Directive for showing the status of last finished and last started analysis.
- * 
+ * Expects 3 params:
+ * o2r-finished: object containing metadata about finished job
+ * o2r-started: object containing metadata about started/running job
+ * o2r-ercid: id of compendium
+ * Example:
+ * <o2r-analysis-stats o2r-finished="{foo:'bar'}" o2r-started="{foo: 'bar'}" o2r-ercid="xcv12"></o2r-analysis-stats>
  */
 
 (function(){
@@ -10,13 +15,14 @@
         .module('starter')
         .directive('o2rAnalysisStats', o2rAnalysisStats);
 
-    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket'];
-    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket){
+    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket', '$mdDialog'];
+    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket, $mdDialog){
         return{
             restrict: 'E',
             scope: {
                 lFinished: '@o2rFinished',
-                lStarted: '@o2rStarted'
+                lStarted: '@o2rStarted',
+                ercId: '@o2rErcid'
             },
             templateUrl: 'app/analysisStatsView/o2rAnalysisStats.template.html',
             link: link
@@ -93,6 +99,7 @@
             scope.gotSocket = false;
             scope.resultInfo = resultInfo;
             scope.isRunning = isRunning;
+            scope.showDialog = showDialog;
             // delete dummy object after metadata object was updated
             scope.dummy = {};
             scope.dummy.o = {};
@@ -145,6 +152,8 @@
                         scope.lStar.status = data.status;
                     }
                 });
+
+                $log.debug(scope);
             }
 
             function ex(){
@@ -247,6 +256,18 @@
             function isRunning(o){
                 if(o == 'running') return true;
                 return false;
+            }
+
+            function showDialog(ev){
+                $mdDialog.show({
+                    controller: 'CompareAnalysisController',
+                    controllerAs: 'vm',
+                    templateUrl: 'app/compareAnalysisView/compareAnalysis.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    fullscreen: true,
+                    clickOutsideToClose: true
+                });
             }
         }
     }

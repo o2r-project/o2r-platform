@@ -44,10 +44,7 @@
         function buildToggler(navId){
             return function(){
                 $mdSidenav(navId)
-                    .toggle()
-                    .then(function(){
-                        $log.debug("toggled sidenav");
-                    });
+                    .toggle();
             };
         }
 
