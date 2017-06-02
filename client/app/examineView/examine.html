@@ -1,17 +1,54 @@
 <div layout="row">
+    <md-sidenav
+        class="md-sidenav-left examine-side"
+        md-component-id="sidenav"
+        md-is-open="false"
+        md-whiteframe="5">
+        <md-toolbar>
+            <h1 class="md-toolbar-tools white-font">Display File</h1>
+        </md-toolbar>
+        <md-content layout-padding layout="column" class="examine-side-content" ng-controller="ExamineSidenavController as vm">
+            <div layout="row" class="examine-side-button-row">
+                <o2r-erc-download erc-id="{{vm.ercId}}"></o2r-erc-download>
+                <span flex></span>
+                <md-checkbox ng-model="vm.showBagit" aria-label="Show Bagit" class="examine-side-checkbox">
+                    Show Bagit files
+                </md-checkbox>
+            </div>
+            <div layout="row" class="examine-side-content">
+                <treecontrol class="tree-classic" tree-model="vm.bagitToggle(vm.publication.files, vm.showBagit)" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+                    <span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
+                </treecontrol>
+            <span flex></span>
+            <md-button class="examine-side-collapse-button" ng-click="$parent.vm.toggleSidenav()">
+                <md-icon md-svg-icon="{{vm.icons.navigate_before}}"></md-icon>
+            </md-button>
+            </div>
+        </md-content>
+    </md-sidenav>
+
+    <div class="examine-side-toggle">
+        <md-button class="examine-side-toggle-button" ng-click="vm.toggleSidenav()">
+            <md-icon md-svg-icon="{{vm.icons.navigate_next}}"></md-icon>
+        </md-button>
+    </div>
     <md-card flex="50" class="examine-main">
         <md-card-header>
-            <md-card-header-text>
+            <md-card-header-text layout="row">
                 <span>{{vm.file.name}}</span>
 				<span flex></span>
+                <md-button ng-hide="vm.originalSelected" ng-click="vm.showOriginal()">
+                    Back to paper
+                </md-button>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
             <o2r-display-files o2r-file="{{vm.file}}"></o2r-display-files>
         </md-card-content>
     </md-card>
-    <md-card flex="50" class="examine-rightside">
+    <md-card flex="45" class="examine-rightside">
         <md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="Options">
+            <md-nav-item md-nav-sref="examine.reproduce" name="reproduce">Reproduce</md-nav-item>
             <md-nav-item md-nav-sref="examine.inspect" name="inspect">Inspect</md-nav-item>
             <md-nav-item md-nav-sref="examine.manipulate" name="manipulate">Manipulate</md-nav-item>
             <md-nav-item md-nav-sref="examine.substitute" name="substitute">Substitute</md-nav-item>

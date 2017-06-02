@@ -56,6 +56,10 @@ body{
 .o2r-green-icon{
 	fill: green !important;
 }
+
+.o2r-download-exclude-image{
+	margin-left: 16px;
+}
 /************************
    End General
 *************************/
@@ -349,6 +353,7 @@ o2r-compare md-card-content{
 ************************/
 .examine-main{
 	height: 85vh;
+	margin-left: 0;
 }
 
 .examine-main > md-card-content{
@@ -357,6 +362,47 @@ o2r-compare md-card-content{
 
 .examine-rightside{
 	height: 85vh;
+}
+
+.examine-side-toggle{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	/*background-color: white;*/
+}
+
+.examine-side-toggle-button{
+	min-width: 15px !important;
+	/*max-width: 15px !important;*/
+	min-height: 88px !important;
+	margin: 0 !important;
+	margin-top: 40vh !important;
+	/*padding-bottom: 42vh !important;*/
+}
+
+.examine-side-collapse-button{
+	margin-right: 0 !important;
+	min-width: 15px !important;
+	min-height: 88px !important;
+	margin-top: 27vh !important;
+}	
+
+.examine-side-content{
+	padding-right: 0 !important;
+}
+
+.examine-side-checkbox{
+	margin-top: 12px !important;
+}
+
+.examine-side{
+	height: 85vh;
+	margin-top: calc(64px + 1vh + 8px); /* navbar height + padding top + margin top */
+	margin-bottom: 8px;
+	min-width: 35vw !important;
+}
+
+.examine-side-button-row{
+	margin-right: 15px;
 }
 /***********************
 	End examineView

@@ -217,6 +217,15 @@
                 controllerAs: 'vm'
             })
             */
+            .state('examine.reproduce', {
+                templateUrl: "app/reproduceView/reproduce.html",
+                controller: 'ReproduceController',
+                controllerAs: 'vm',
+                resolve: {
+                    compFJob: compFJobService,
+                    compSJob: compSJobService
+                }
+            })
             .state('examine.inspect', {
                 templateUrl: "app/inspectView/inspect.html",
                 controller: 'InspectController',
@@ -277,7 +286,9 @@
             {name: 'add', category: 'content', fn: 'add'},
             {name: 'edit', category: 'editor', fn: 'mode_edit'},
             {name: 'lock_open', category: 'action', fn: 'lock_open'},
-            {name: 'lock_outline', category: 'action', fn: 'lock_outline'}
+            {name: 'lock_outline', category: 'action', fn: 'lock_outline'},
+            {name: 'navigate_next', category: 'image', fn: 'navigate_next'},
+            {name: 'navigate_before', category: 'image', fn: 'navigate_before'}
         ];
 
         for(var i in icons){

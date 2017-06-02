@@ -5,16 +5,22 @@
         .module('starter')
         .controller('ExamineController', ExamineController);
 
-    ExamineController.$inject = ['$scope', '$stateParams', '$log', '$state', 'examine', 'publications'];
-    function ExamineController($scope, $stateParams, $log, $state, examine, publications){
+    ExamineController.$inject = ['$scope', '$stateParams', '$log', '$state', 'examine', 'publications', 'icons', '$mdSidenav'];
+    function ExamineController($scope, $stateParams, $log, $state, examine, publications, icons, $mdSidenav){
         var defView = {};
-        defView.state = 'examine.inspect';
-        defView.name = 'inspect';
+        defView.state = 'examine.reproduce';
+        defView.name = 'reproduce';
         
         var vm = this;
+        vm.icons = icons;
         vm.publication = examine;
         vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.file.filepath));
+        vm.originalfile = angular.copy(vm.file);
         vm.currentNavItem = defView.name;
+        vm.toggleSidenav = buildToggler('sidenav');
+        vm.originalSelected = true;
+        vm.checkForOriginal = checkForOriginal;
+        vm.showOriginal = showOriginal;
 
         $log.debug(vm.publication);
         $log.debug(vm.file);
@@ -33,6 +39,25 @@
             var newPath = path.replace(str, str+'data/');
             $log.debug('fixed path is: %s', newPath);
             return newPath;
+        }
+
+        function buildToggler(navId){
+            return function(){
+                $mdSidenav(navId)
+                    .toggle()
+                    .then(function(){
+                        $log.debug("toggled sidenav");
+                    });
+            };
+        }
+
+        function checkForOriginal(){
+            vm.originalSelected = angular.equals(vm.file, vm.originalfile);
+        }
+
+        function showOriginal(){
+            vm.file = angular.copy(vm.originalfile);
+            checkForOriginal();
         }
     }
 }
