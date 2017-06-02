@@ -5,7 +5,7 @@
         md-is-open="false"
         md-whiteframe="5">
         <md-toolbar>
-            <h1 class="md-toolbar-tools white-font">Display File</h1>
+            <h1 class="md-toolbar-tools white-font">Files</h1>
         </md-toolbar>
         <md-content layout-padding layout="column" class="examine-side-content" ng-controller="ExamineSidenavController as vm">
             <div layout="row" class="examine-side-button-row">
@@ -20,7 +20,7 @@
                     <span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
                 </treecontrol>
             <span flex></span>
-            <md-button class="examine-side-collapse-button" ng-click="$parent.vm.toggleSidenav()">
+            <md-button class="examine-side-collapse-button" ng-click="$parent.vm.toggleSidenav()" aria-label="Collapse sidenav">
                 <md-icon md-svg-icon="{{vm.icons.navigate_before}}"></md-icon>
             </md-button>
             </div>
@@ -28,7 +28,7 @@
     </md-sidenav>
 
     <div class="examine-side-toggle">
-        <md-button class="examine-side-toggle-button" ng-click="vm.toggleSidenav()">
+        <md-button class="examine-side-toggle-button" ng-click="vm.toggleSidenav()" aria-label="Expand sidenav">
             <md-icon md-svg-icon="{{vm.icons.navigate_next}}"></md-icon>
         </md-button>
     </div>

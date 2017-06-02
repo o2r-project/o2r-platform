@@ -123,14 +123,14 @@
                 try {
                     scope.lFin = angular.fromJson(scope.lFinished); //JSON.parse(scope.lFinished);
                 } catch (error) {
-                    $log.debug(error);
+                    $log.debug('No finished jobs. Set last finished Job to {}');
                     scope.lFin = {};
                 }
 
                 try {
                     scope.lStar = angular.fromJson(scope.lStarted); //JSON.parse(scope.lStarted);
                 } catch (error) {
-                    $log.debug(error);
+                    $log.debug('No currently running job. Set last started Job to {}');
                     scope.lStar = {};
                 }
 

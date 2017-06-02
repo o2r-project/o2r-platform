@@ -19,9 +19,6 @@
         vm.showBagit = false;
         vm.ercId = $scope.$parent.vm.publication.id;
 
-        $log.debug(vm);
-        $log.debug($scope);
-
         //////
 
         function prepareFiles(obj){
@@ -30,7 +27,6 @@
                 // TODO
                 //delete this when backend added interaction.path
                 //obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/main/';
-                $log.debug('preparing files');
                 obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/'
                 var name = obj.metadata.o2r.file.filename.split('.');
                 var name = name[0] + '_interactive';
@@ -44,7 +40,7 @@
                 // TODO 
                 // substitute second parameter with obj.metadata.o2r.file.filepath
                 obj = publications.addInteractive(obj, '/api/v1/compendium/' + obj.id + '/data/data', dummy);
-                $log.debug(obj);
+                $log.debug('Done preparing files');
             //}
             return obj;
         }

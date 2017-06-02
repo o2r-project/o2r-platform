@@ -346,7 +346,7 @@
     examineService.$inject = ['$log', '$stateParams', 'publications'];
     function examineService($log, $stateParams, publications){
         var ercId = $stateParams.ercid;
-        $log.debug('called /examine/%s', ercId);
+        $log.debug('GET /examine/%s', ercId);
         return publications.getRequest(ercId);
     }
 })();  

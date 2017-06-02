@@ -1,6 +1,6 @@
 <div layout="row">
     <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status) || !$parent.$$prevSibling.$parent.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
-    <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
+    <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()" aria-label="Check Results"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
 </div>
 <div>
     <h3>Last finished analysis</h3>
