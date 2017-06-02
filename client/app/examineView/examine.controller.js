@@ -5,14 +5,15 @@
         .module('starter')
         .controller('ExamineController', ExamineController);
 
-    ExamineController.$inject = ['$scope', '$stateParams', '$log', '$state', 'examine', 'publications', 'icons', '$mdSidenav'];
-    function ExamineController($scope, $stateParams, $log, $state, examine, publications, icons, $mdSidenav){
+    ExamineController.$inject = ['$scope', '$stateParams', '$log', '$state', 'examine', 'publications', 'icons', '$mdSidenav', 'env'];
+    function ExamineController($scope, $stateParams, $log, $state, examine, publications, icons, $mdSidenav, env){
         var defView = {};
         defView.state = 'examine.reproduce';
         defView.name = 'reproduce';
         
         var vm = this;
         vm.icons = icons;
+        vm.server = env.server;
         vm.publication = examine;
         vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.file.filepath));
         vm.originalfile = angular.copy(vm.file);
@@ -21,6 +22,9 @@
         vm.originalSelected = true;
         vm.checkForOriginal = checkForOriginal;
         vm.showOriginal = showOriginal;
+        vm.openMenu = function($mdOpenMenu, ev){
+            $mdOpenMenu(ev);
+        };
 
         $log.debug(vm.publication);
         $log.debug(vm.file);

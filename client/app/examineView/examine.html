@@ -1,4 +1,5 @@
 <div layout="row">
+    <!-- Sidenav -->
     <md-sidenav
         class="md-sidenav-left examine-side"
         md-component-id="sidenav"
@@ -32,6 +33,8 @@
             <md-icon md-svg-icon="{{vm.icons.navigate_next}}"></md-icon>
         </md-button>
     </div>
+
+    <!-- Left side -->
     <md-card flex="50" class="examine-main">
         <md-card-header>
             <md-card-header-text layout="row">
@@ -40,12 +43,36 @@
                 <md-button ng-hide="vm.originalSelected" ng-click="vm.showOriginal()">
                     Back to paper
                 </md-button>
+                <!-- Menu for downloading single file or copying absolute path -->
+                <md-menu ng-if="vm.file.path">
+                    <md-button class="md-icon-button" aria-label="show file path or download file" ng-click="vm.openMenu($mdOpenMenu, $event)">
+                        <md-icon md-menu-origin md-svg-src="{{vm.icons.menu}}" class="o2r-icon"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-input-container class="md-icon-float md-block">
+                                <label></label>
+                                <md-icon md-svg-src="{{vm.icons.copy}}" class="o2r-icon"></md-icon>
+                                <input type="text" value="{{vm.server + vm.file.path}}" onClick="this.select();" ng-readonly="true">
+                            </md-input-container>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-href="{{vm.file.path}}" download>
+                                <md-icon flex="10" md-svg-src="{{vm.icons.download}}" class="o2r-icon"></md-icon>
+                                Download file
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
             <o2r-display-files o2r-file="{{vm.file}}"></o2r-display-files>
         </md-card-content>
     </md-card>
+
+    <!-- Right side -->
     <md-card flex="45" class="examine-rightside">
         <md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="Options">
             <md-nav-item md-nav-sref="examine.reproduce" name="reproduce">Reproduce</md-nav-item>
