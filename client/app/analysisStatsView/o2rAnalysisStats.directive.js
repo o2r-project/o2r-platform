@@ -100,6 +100,7 @@
             scope.resultInfo = resultInfo;
             scope.isRunning = isRunning;
             scope.showDialog = showDialog;
+            scope.isEmpty = isEmpty;
             // delete dummy object after metadata object was updated
             scope.dummy = {};
             scope.dummy.o = {};
@@ -268,6 +269,13 @@
                     fullscreen: true,
                     clickOutsideToClose: true
                 });
+            }
+
+            function isEmpty(obj){
+                for(var key in obj){
+                    if(obj.hasOwnProperty(key)) return false;
+                }
+                return true;
             }
         }
     }

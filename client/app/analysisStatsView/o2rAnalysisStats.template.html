@@ -1,10 +1,10 @@
 <div layout="row">
     <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status) || !$parent.$$prevSibling.$parent.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
-    <md-button class="md-raised" ng-disabled="($parent.vm.isEmpty(lFin.steps))" ng-click="showDialog()"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
+    <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
 </div>
 <div>
     <h3>Last finished analysis</h3>
-    <table ng-hide="$parent.vm.isEmpty(lFin.steps)">
+    <table ng-hide="isEmpty(lFin.steps)">
         <tr ng-repeat="(key, value) in lFin.steps">
             <td>{{key}}</td>
             <td>
@@ -15,15 +15,15 @@
             </td>
         </tr>
     </table>
-    <strong ng-hide="$parent.vm.isEmpty(lFin.steps)">{{resultInfo(lFin.status)}}</strong>
-    <span ng-show="$parent.vm.isEmpty(lFin.steps)">No analysis finished yet.</span>
+    <strong ng-hide="isEmpty(lFin.steps)">{{resultInfo(lFin.status)}}</strong>
+    <span ng-show="isEmpty(lFin.steps)">No analysis finished yet.</span>
 </div>
 <div>
     <md-divider></md-divider>
     <h3>Last started analysis</h3>
-    <small ng-hide="$parent.vm.isEmpty(lStar)">Started on: {{lStar.steps.validate_bag.start | date: 'yyyy-MM-dd HH:mm'}}</small>
+    <small ng-hide="isEmpty(lStar)">Started on: {{lStar.steps.validate_bag.start | date: 'yyyy-MM-dd HH:mm'}}</small>
     
-    <table ng-hide="$parent.vm.isEmpty(lStar)">
+    <table ng-hide="isEmpty(lStar)">
         <tr ng-repeat="(key, value) in lStar.steps">
             <td>{{key}}</td>
             <td>
@@ -34,7 +34,7 @@
             </td>
         </tr>
     </table>
-    <strong ng-hide="$parent.vm.isEmpty(lStar)">{{resultInfo(lStar.status)}}</strong>
-    <span ng-show="$parent.vm.isEmpty(lStar)">No currently running analysis.</span>
+    <strong ng-hide="isEmpty(lStar)">{{resultInfo(lStar.status)}}</strong>
+    <span ng-show="isEmpty(lStar)">No currently running analysis.</span>
 </div>
 
