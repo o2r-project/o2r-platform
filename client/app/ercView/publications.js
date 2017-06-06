@@ -5,14 +5,15 @@
 		.module('starter')
 		.factory("publications", publications);
 		
-	publications.$inject = ['$q','$log', 'httpRequests'];
+	publications.$inject = ['$q','$log', 'httpRequests', 'env'];
 
-	function publications($q, $log, httpRequests){
+	function publications($q, $log, httpRequests, env){
 		var pub = {};
 		var service = {
 			getContentById: findContent,
 			addInteractive: addInteractive,
-			getRequest: getRequest
+			getRequest: getRequest,
+			getOverallSize: getOverallSize
 		};
 
 		return service;
@@ -84,5 +85,16 @@
 			} else return;
 		}
 
+		function getOverallSize(obj){
+			var result = {};
+			result.dockerInclude = obj.files.size;
+			for(var i in obj.files.children){
+				if(obj.files.children[i].path == env.c_api + '/compendium/' + obj.id + '/data/data'){
+					result.dockerExclude = obj.files.children[i].size;
+					break;
+				}
+			}
+			return result;
+		}
 	}
 })();

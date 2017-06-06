@@ -1,6 +1,7 @@
 /**
  * @desc creates a material-ui menu with download links to a specific compendium
- * @param file-id, String containing the id of the erc
+ * @param ercId, String containing the id of the erc
+ * @param filesize String containting the filesize in bytes
  * @example <o2r-erc-download erc-id="1234"></o2r-erc-download>
  */
 (function(){
@@ -15,13 +16,16 @@
         return{
             restrict: 'E',
             scope: {
-                ercId: '@ercId'
+                ercId: '@ercId',
+                filesize: '&filesize'
             },
             templateUrl: 'app/ercView/o2rErcDownload.template.html',
             link: link
         };
 
         function link(scope){
+            scope.size = scope.filesize();
+            console.log(scope.size);
             scope.icons = icons;
             scope.excImg = exclude;
             scope.openMenu = function($mdOpenMenu, ev){

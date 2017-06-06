@@ -10,7 +10,7 @@
         </md-toolbar>
         <md-content layout-padding layout="column" class="examine-side-content" ng-controller="ExamineSidenavController as vm">
             <div layout="row" class="examine-side-button-row">
-                <o2r-erc-download erc-id="{{vm.ercId}}"></o2r-erc-download>
+                <o2r-erc-download erc-id="{{vm.ercId}}" filesize="vm.overallSize"></o2r-erc-download>
                 <span flex></span>
                 <md-checkbox ng-model="vm.showBagit" aria-label="Show Bagit" class="examine-side-checkbox">
                     Show Bagit files
