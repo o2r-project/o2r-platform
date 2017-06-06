@@ -8,7 +8,7 @@
     ExamineController.$inject = ['$scope', '$stateParams', '$log', '$state', 'examine', 'publications', 'icons', '$mdSidenav', 'env'];
     function ExamineController($scope, $stateParams, $log, $state, examine, publications, icons, $mdSidenav, env){
         var defView = {};
-        defView.state = 'examine.reproduce';
+        defView.state = 'erc.reproduce';
         defView.name = 'reproduce';
         
         var vm = this;
@@ -25,6 +25,22 @@
         vm.openMenu = function($mdOpenMenu, ev){
             $mdOpenMenu(ev);
         };
+        vm.mShowCodeData = false;
+        vm.mSetCodeData = mSetCodeData;
+        vm.activateMCodeData = () => vm.mShowCodeData = true;
+        vm.resetMCodeData = () => vm.mShowCodeData = false;
+        vm.mCodeData = {};
+
+        vm.inspect = {};
+        vm.inspect.data = vm.publication.metadata.o2r.inputfiles;
+        vm.inspect.code = [];
+        vm.inspect.code.push({
+            path: vm.publication.metadata.o2r.file.filepath,
+            type: vm.publication.metadata.o2r.file.mimetype,
+            name: vm.publication.metadata.o2r.file.filename
+        });
+
+
 
         $log.debug(vm.publication);
         $log.debug(vm.file);
@@ -59,6 +75,15 @@
         function showOriginal(){
             vm.file = angular.copy(vm.originalfile);
             checkForOriginal();
+        }
+
+        /**
+         * 
+         * @param {Object} obj, expects an object with two attributes: code, data. Each attribute is an array 
+         */
+        function mSetCodeData(obj){
+            vm.mCodeData = obj;
+            vm.mCodeData.publication = vm.publication;
         }
     }
 }

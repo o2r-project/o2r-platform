@@ -7,6 +7,7 @@
             "starter.o2rDisplayFiles",
             "starter.o2rCompare",
             "starter.o2rHttp",
+            "starter.o2rInspect",
             "treeControl",
             "hljs",
             "ui.router", 
@@ -136,6 +137,7 @@
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
+            /*
             .state('erc', {
                 url: "/erc/:ercid",
                 templateUrl: "app/ercView/erc.html",
@@ -147,6 +149,7 @@
                     compSJob: compSJobService
                 }
             })
+            */
             .state('creationProcess', {
                 abstract: true,
                 url: "/creationProcess/:ercid",
@@ -200,8 +203,8 @@
                     searchResults: searchResultsService
                 }
             })
-            .state('examine', {
-                url: "/examine/:ercid",
+            .state('erc', {
+                url: "/erc/:ercid",
                 templateUrl: "app/examineView/examine.html",
                 controller: 'ExamineController',
                 controllerAs: 'vm',
@@ -217,7 +220,7 @@
                 controllerAs: 'vm'
             })
             */
-            .state('examine.reproduce', {
+            .state('erc.reproduce', {
                 templateUrl: "app/reproduceView/reproduce.html",
                 controller: 'ReproduceController',
                 controllerAs: 'vm',
@@ -226,17 +229,17 @@
                     compSJob: compSJobService
                 }
             })
-            .state('examine.inspect', {
+            .state('erc.inspect', {
                 templateUrl: "app/inspectView/inspect.html",
                 controller: 'InspectController',
                 controllerAs: 'vm'
             })
-            .state('examine.manipulate', {
+            .state('erc.manipulate', {
                 templateUrl: "app/manipulateView/manipulate.html",
                 controller: 'ManipulateController',
                 controllerAs: 'vm'
             })
-            .state('examine.substitute', {
+            .state('erc.substitute', {
                 templateUrl: "app/substituteView/substitute.html",
                 controller: 'SubstituteController',
                 controllerAs: 'vm'

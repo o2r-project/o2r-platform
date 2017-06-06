@@ -405,6 +405,11 @@ o2r-compare md-card-content{
 .examine-side-button-row{
 	margin-right: 15px;
 }
+
+.examine-codedata-header{
+	padding-top: 0;
+	padding-bottom: 0;
+}
 /***********************
 	End examineView
 ************************/

@@ -35,7 +35,7 @@
     </div>
 
     <!-- Left side -->
-    <md-card flex="50" class="examine-main">
+    <md-card flex="50" class="examine-main" ng-hide="vm.mShowCodeData">
         <md-card-header>
             <md-card-header-text layout="row">
                 <span>{{vm.file.name}}</span>
@@ -69,16 +69,31 @@
         </md-card-header>
         <md-card-content>
             <o2r-display-files o2r-file="{{vm.file}}"></o2r-display-files>
+        </md-card-content>   
+    </md-card>
+
+    <!-- CodeDataView for manipulateView -->
+    <md-card flex="50" ng-if="vm.mShowCodeData">
+        <md-card-header class="examine-codedata-header">
+            <md-card-header-text layout="row">
+                <span flex></span>
+                <md-button ng-click="vm.resetMCodeData()">
+                    Back to paper
+                </md-button>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <o2r-inspect o2r-inspect-data="{{vm.mCodeData}}"></o2r-inspect>
         </md-card-content>
     </md-card>
 
     <!-- Right side -->
     <md-card flex="45" class="examine-rightside">
         <md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="Options">
-            <md-nav-item md-nav-sref="examine.reproduce" name="reproduce">Reproduce</md-nav-item>
-            <md-nav-item md-nav-sref="examine.inspect" name="inspect">Inspect</md-nav-item>
-            <md-nav-item md-nav-sref="examine.manipulate" name="manipulate">Manipulate</md-nav-item>
-            <md-nav-item md-nav-sref="examine.substitute" name="substitute">Substitute</md-nav-item>
+            <md-nav-item md-nav-sref="erc.reproduce" name="reproduce">Reproduce</md-nav-item>
+            <md-nav-item md-nav-sref="erc.inspect" name="inspect">Inspect</md-nav-item>
+            <md-nav-item md-nav-sref="erc.manipulate" name="manipulate">Manipulate</md-nav-item>
+            <md-nav-item md-nav-sref="erc.substitute" name="substitute">Substitute</md-nav-item>
         </md-nav-bar>
         <md-card-content>
             <div ui-view></div>
