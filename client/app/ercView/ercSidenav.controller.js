@@ -3,10 +3,10 @@
 
     angular
         .module('starter')
-        .controller('ExamineSidenavController', ExamineSidenavController);
+        .controller('ErcSidenavController', ErcSidenavController);
     
-    ExamineSidenavController.$inject = ['$scope', '$log', 'publications', 'icons'];
-    function ExamineSidenavController($scope, $log, publications, icons){
+    ErcSidenavController.$inject = ['$scope', '$log', 'publications', 'icons'];
+    function ErcSidenavController($scope, $log, publications, icons){
         var vm = this;
         vm.icons = icons;
         vm.treeOptions = {  // options for folderTree
@@ -57,8 +57,10 @@
                 $log.debug('clicked on folder');
                 return;
             }
+            $scope.$parent.vm.toggleSidenav();
             $scope.$parent.vm.file = p;
             $scope.$parent.vm.checkForOriginal();
+            $scope.$parent.vm.resetMCodeData();
         }
 
         /*

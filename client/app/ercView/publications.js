@@ -86,14 +86,23 @@
 		}
 
 		function getOverallSize(obj){
+			console.log(obj);
 			var result = {};
-			result.dockerInclude = obj.files.size;
+			var imageSize = 0;
 			for(var i in obj.files.children){
 				if(obj.files.children[i].path == env.c_api + '/compendium/' + obj.id + '/data/data'){
-					result.dockerExclude = obj.files.children[i].size;
+					result.dockerInclude = obj.files.children[i].size;
+					for(var j in obj.files.children[i].children){
+						if(obj.files.children[i].children[j].path == env.c_api + '/compendium/' + obj.id + '/data/data/dockerimage.tar'){
+							imageSize = obj.files.children[i].children[j].size;
+							break;
+						}
+
+					}
 					break;
 				}
 			}
+			result.dockerExclude = result.dockerInclude - imageSize;
 			return result;
 		}
 	}

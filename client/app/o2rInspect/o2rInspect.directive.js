@@ -58,6 +58,8 @@
                  * 
                  * @param {Array} dsets , array containing all input files
                  */
+                //TODO
+                //Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareDatasets(dsets){
                     var regex = '/tmp/o2r/compendium/' + inspect.publication.id;
                     var results = [];
@@ -69,6 +71,7 @@
 
                 //TODO
                 // Rewrite code so that it handles all path possibilities right
+                // Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareCode(code){
                     var regex = inspect.publication.id;
                     var results = [];

@@ -5,9 +5,9 @@
         .module('starter')
         .controller('InspectController', InspectController);
     
-    InspectController.$inject = ['$scope', '$log','examine'];
-    function InspectController($scope, $log, examine){
-        var inspect = examine;
+    InspectController.$inject = ['$scope', '$log','erc'];
+    function InspectController($scope, $log, erc){
+        var inspect = erc;
         
         var vm = this;
         vm.inspectData = {};

@@ -8,7 +8,7 @@
     'use strict';
 
     angular
-        .module('starter')
+        .module('starter.o2rErcDownload')
         .directive('o2rErcDownload', o2rErcDownload);
 
     o2rErcDownload.$inject = ['$mdDialog', 'icons'];
@@ -19,13 +19,12 @@
                 ercId: '@ercId',
                 filesize: '&filesize'
             },
-            templateUrl: 'app/ercView/o2rErcDownload.template.html',
+            templateUrl: 'app/o2rErcDownload/o2rErcDownload.template.html',
             link: link
         };
 
         function link(scope){
             scope.size = scope.filesize();
-            console.log(scope.size);
             scope.icons = icons;
             scope.excImg = exclude;
             scope.openMenu = function($mdOpenMenu, ev){

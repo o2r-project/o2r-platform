@@ -1,8 +1,8 @@
 <!--upper part -->
 {{code.name}}
-<div class="inspect-code">
+<div>
     <div layout="row">
-        {{selectedCode.name}}
+        <span class="o2r-grey-title">{{selectedCode.name}}</span>
         <span flex></span>
         <md-menu md-position-mode="target-right target" ng-if="(code.length > 1)">
             <md-button aria-label="Codefiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
@@ -17,7 +17,9 @@
             </md-menu-content>
         </md-menu>
     </div>
-    <o2r-display-files o2r-file="{{selectedCode}}"></o2r-display-files>
+    <div class="inspect-code">
+        <o2r-display-files o2r-file="{{selectedCode}}"></o2r-display-files>
+    </div>
 </div>
 
 

@@ -154,7 +154,6 @@
                     }
                 });
 
-                $log.debug(scope);
             }
 
             function ex(){

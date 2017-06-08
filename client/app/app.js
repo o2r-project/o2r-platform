@@ -8,6 +8,7 @@
             "starter.o2rCompare",
             "starter.o2rHttp",
             "starter.o2rInspect",
+            "starter.o2rErcDownload",
             "treeControl",
             "hljs",
             "ui.router", 
@@ -205,11 +206,11 @@
             })
             .state('erc', {
                 url: "/erc/:ercid",
-                templateUrl: "app/examineView/examine.html",
-                controller: 'ExamineController',
+                templateUrl: "app/ercView/erc.html",
+                controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
-                    examine: examineService
+                    erc: ercService
                 }
             })
             /*
@@ -346,10 +347,10 @@
         return metadata.callMetadata_search(term);
     }
 
-    examineService.$inject = ['$log', '$stateParams', 'publications'];
-    function examineService($log, $stateParams, publications){
+    ercService.$inject = ['$log', '$stateParams', 'publications'];
+    function ercService($log, $stateParams, publications){
         var ercId = $stateParams.ercid;
-        $log.debug('GET /examine/%s', ercId);
+        $log.debug('GET /erc/%s', ercId);
         return publications.getRequest(ercId);
     }
 })();  

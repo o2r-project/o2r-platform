@@ -1,5 +1,5 @@
 <div class="manipulate-interactive">
-    <md-tabs md-selected="vm.selectedTab" md-border-bottom md-autoselect>
+    <md-tabs class="manipulate-tabs" md-selected="vm.selectedTab" md-border-bottom md-autoselect>
         <md-tab ng-repeat="figure in vm.figures track by $index"
                 label="Figure {{$index + 1}}">
                 <o2r-display-files o2r-file="{{figure}}" ng-if="vm.selectedTab == $index"></o2r-display-files>
