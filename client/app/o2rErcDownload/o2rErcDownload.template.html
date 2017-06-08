@@ -5,6 +5,10 @@
     </md-button>
     <md-menu-content width="2">
         <md-menu-item>
+            <small ng-if="!excImg(excludeImg)">Uncompressed: {{size.dockerInclude | filesize : 1}}</small>
+            <small ng-if="excImg(excludeImg)">Uncompressed: {{size.dockerExclude | filesize : 1}}</small>
+        </md-menu-item>
+        <md-menu-item>
             <md-button ng-href="/api/v1/compendium/{{ercId}}.zip?image={{excImg(excludeImg)}}" download>
                 <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
                 .zip
@@ -23,7 +27,7 @@
             </md-button>
         </md-menu-item>
         <md-divider></md-divider>
-        <md-menu-item>
+        <md-menu-item class="o2r-download-exclude-image">
             <md-checkbox ng-model="excludeImg" aria-label="Exclude image files">
                 Exclude docker image
             </md-checkbox>

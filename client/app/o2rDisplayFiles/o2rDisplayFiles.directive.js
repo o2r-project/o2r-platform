@@ -39,7 +39,6 @@
 		};
 
 		function link(scope, iElement, attrs){		
-			$log.debug('in o2rDisplayFiles');
 			scope.file;
 			scope.sizeRestriction = env.sizeRestriction;
 			attrs.$observe('o2rFile', function(value){

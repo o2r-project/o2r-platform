@@ -7,6 +7,8 @@
             "starter.o2rDisplayFiles",
             "starter.o2rCompare",
             "starter.o2rHttp",
+            "starter.o2rInspect",
+            "starter.o2rErcDownload",
             "treeControl",
             "hljs",
             "ui.router", 
@@ -131,11 +133,12 @@
         $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
         $stateProvider
             .state('home', {
-                url: "/home",
+                url: "/home?inspect",
                 templateUrl: "app/homeView/home.html",
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
+            /*
             .state('erc', {
                 url: "/erc/:ercid",
                 templateUrl: "app/ercView/erc.html",
@@ -147,6 +150,7 @@
                     compSJob: compSJobService
                 }
             })
+            */
             .state('creationProcess', {
                 abstract: true,
                 url: "/creationProcess/:ercid",
@@ -200,13 +204,13 @@
                     searchResults: searchResultsService
                 }
             })
-            .state('examine', {
-                url: "/examine/:ercid",
-                templateUrl: "app/examineView/examine.html",
-                controller: 'ExamineController',
+            .state('erc', {
+                url: "/erc/:ercid",
+                templateUrl: "app/ercView/erc.html",
+                controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
-                    examine: examineService
+                    erc: ercService
                 }
             })
             /*
@@ -217,17 +221,26 @@
                 controllerAs: 'vm'
             })
             */
-            .state('examine.inspect', {
+            .state('erc.reproduce', {
+                templateUrl: "app/reproduceView/reproduce.html",
+                controller: 'ReproduceController',
+                controllerAs: 'vm',
+                resolve: {
+                    compFJob: compFJobService,
+                    compSJob: compSJobService
+                }
+            })
+            .state('erc.inspect', {
                 templateUrl: "app/inspectView/inspect.html",
                 controller: 'InspectController',
                 controllerAs: 'vm'
             })
-            .state('examine.manipulate', {
+            .state('erc.manipulate', {
                 templateUrl: "app/manipulateView/manipulate.html",
                 controller: 'ManipulateController',
                 controllerAs: 'vm'
             })
-            .state('examine.substitute', {
+            .state('erc.substitute', {
                 templateUrl: "app/substituteView/substitute.html",
                 controller: 'SubstituteController',
                 controllerAs: 'vm'
@@ -277,7 +290,9 @@
             {name: 'add', category: 'content', fn: 'add'},
             {name: 'edit', category: 'editor', fn: 'mode_edit'},
             {name: 'lock_open', category: 'action', fn: 'lock_open'},
-            {name: 'lock_outline', category: 'action', fn: 'lock_outline'}
+            {name: 'lock_outline', category: 'action', fn: 'lock_outline'},
+            {name: 'navigate_next', category: 'image', fn: 'navigate_next'},
+            {name: 'navigate_before', category: 'image', fn: 'navigate_before'}
         ];
 
         for(var i in icons){
@@ -332,10 +347,10 @@
         return metadata.callMetadata_search(term);
     }
 
-    examineService.$inject = ['$log', '$stateParams', 'publications'];
-    function examineService($log, $stateParams, publications){
+    ercService.$inject = ['$log', '$stateParams', 'publications'];
+    function ercService($log, $stateParams, publications){
         var ercId = $stateParams.ercid;
-        $log.debug('called /examine/%s', ercId);
+        $log.debug('GET /erc/%s', ercId);
         return publications.getRequest(ercId);
     }
 })();  

@@ -7,10 +7,10 @@
     
     cutLongName.$inject = ['$log'];
     function cutLongName($log){
-        var maxnumber = 40;
         return cutName;
 
-        function cutName(input){
+        function cutName(input, chars){
+            var maxnumber = chars || 40;
             //$log.debug(input);
             try {
                 if(input.length >= maxnumber){

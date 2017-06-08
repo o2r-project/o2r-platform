@@ -5,14 +5,15 @@
 		.module('starter')
 		.factory("publications", publications);
 		
-	publications.$inject = ['$q','$log', 'httpRequests'];
+	publications.$inject = ['$q','$log', 'httpRequests', 'env'];
 
-	function publications($q, $log, httpRequests){
+	function publications($q, $log, httpRequests, env){
 		var pub = {};
 		var service = {
 			getContentById: findContent,
 			addInteractive: addInteractive,
-			getRequest: getRequest
+			getRequest: getRequest,
+			getOverallSize: getOverallSize
 		};
 
 		return service;
@@ -84,5 +85,25 @@
 			} else return;
 		}
 
+		function getOverallSize(obj){
+			console.log(obj);
+			var result = {};
+			var imageSize = 0;
+			for(var i in obj.files.children){
+				if(obj.files.children[i].path == env.c_api + '/compendium/' + obj.id + '/data/data'){
+					result.dockerInclude = obj.files.children[i].size;
+					for(var j in obj.files.children[i].children){
+						if(obj.files.children[i].children[j].path == env.c_api + '/compendium/' + obj.id + '/data/data/dockerimage.tar'){
+							imageSize = obj.files.children[i].children[j].size;
+							break;
+						}
+
+					}
+					break;
+				}
+			}
+			result.dockerExclude = result.dockerInclude - imageSize;
+			return result;
+		}
 	}
 })();
