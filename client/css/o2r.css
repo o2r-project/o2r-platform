@@ -24,6 +24,14 @@ body{
 	color: white !important;
 }
 
+.o2r-grey-font{
+	color: rgba(0,0,0,0.54);
+}
+
+.o2r-dark-font{
+	color: rgb(67,69,83);
+}
+
 .footer{
 	height: 64px !important;
 }
@@ -66,13 +74,6 @@ md-card-header-text{
 	margin-left: 16px;
 }
 
-.o2r-grey-title{
-	color: rgba(0,0,0,0.54);
-}
-
-.o2r-dark-title{
-	color: rgb(67,69,83);
-}
 /************************
    End General
 *************************/
