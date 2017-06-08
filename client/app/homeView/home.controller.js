@@ -5,9 +5,10 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$location', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
+    HomeController.$inject = ['$log', '$scope', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
 
-    function HomeController($log, $scope, $location, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
+    function HomeController($log, $scope, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
+        var inspectQuery = $stateParams.inspect || '';
         var vm = this;
         vm.submit = submitter;
         vm.openDialog = openDialog;
@@ -16,7 +17,7 @@
         vm.isLoggedIn;
         vm.sendScieboUrl = sendScieboUrl;
         vm.validUrl = true;
-        
+        vm.ercID = inspectQuery;
         activate();
         
         $scope.$on('setUser', function(){

@@ -133,7 +133,7 @@
         $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
         $stateProvider
             .state('home', {
-                url: "/home",
+                url: "/home?inspect",
                 templateUrl: "app/homeView/home.html",
                 controller: 'HomeController',
                 controllerAs: 'vm'
