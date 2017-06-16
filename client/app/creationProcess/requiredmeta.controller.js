@@ -23,6 +23,11 @@
         $scope.$on('$destroy', function(){
             $log.debug('required metadata: ', angular.toJson(creationObject.getRequired()));
         });
+
+        $scope.$watch('requiredForm.$valid', function(newVal, oldVal){
+            $scope.$parent.vm.setFormValid(newVal);
+        });
+        
         vm.textLicense=[];
         vm.codeLicense=[];
         vm.dataLicense=[];

@@ -12,6 +12,8 @@
         var defView = 'creationProcess.requiredMetadata';
         var vm = this;
         vm.updateMetadata = updateMetadata;
+        vm.setFormValid = setFormValid;
+        vm.isValid = false;
 
         $scope.$on('$destroy', function(){
             creationObject.destroy();
@@ -40,6 +42,10 @@
                 .catch(function(e){
                     $log.debug(e);
                 })
+        }
+
+        function setFormValid(val){
+            vm.isValid = val;
         }
     }
 

@@ -27,7 +27,7 @@
                 </div>
                 <div layout="row">
                     <span flex></span>
-                    <md-button class="md-primary md-raised white-font metabuttons" ng-click="vm.updateMetadata()" style = "position: relative; margin-top:130%;">Save</md-button>
+                    <md-button ng-disabled="!vm.isValid" class="md-primary md-raised white-font metabuttons" ng-click="vm.updateMetadata()" style = "position: relative; margin-top:130%;">Save</md-button>
                     <span flex></span>
                 </div>
             </md-card-content>
