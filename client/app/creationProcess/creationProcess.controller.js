@@ -5,39 +5,41 @@
         .module('starter')
         .controller('CreationProcessController', CreationProcessController);
     
-    CreationProcessController.$inject = ['$rootScope', '$stateParams', 'httpRequests', '$log'];
+    CreationProcessController.$inject = ['$scope', '$log', '$state', 'creationService', 'creationObject', 'httpRequests'];
 
-    function CreationProcessController($rootScope, $stateParams, httpRequests, $log){
-        var cpctrl = this;
-        cpctrl.ercID = $stateParams.ercid;
-        cpctrl.getMetadata = getMetadata();
-        $rootScope.meta = {};
-        function getMetadata(){
-            httpRequests
-                .singleCompendium(cpctrl.ercID)
-                .then(response)
-                .catch(errorHandler);
-            
-            function response(res){
-                $log.debug("meta loaded")
-                $log.debug(res.data.metadata.o2r)
-                $rootScope.meta = res.data.metadata.o2r;
-            }
+    function CreationProcessController($scope, $log, $state, creationService, creationObject, httpRequests){
+        //default substate
+        var defView = 'creationProcess.requiredMetadata';
+        var vm = this;
+        vm.updateMetadata = updateMetadata;
 
-            function errorHandler(e){
-				$log.debug(e);
-				deferred.resolve(e);                
-            }
+        $scope.$on('$destroy', function(){
+            creationObject.destroy();
+        });
+
+        activate();
+
+        /////////
+
+        function activate(){
+            creationObject.set(creationService);
+            $state.go(defView);
         }
-        cpctrl.updateMetadata = function(){
-            $log.debug($rootScope.meta)
-            httpRequests.updateMetadata(cpctrl.ercID, $rootScope.meta)
-            .then(function(res){
-                 $log.debug(res);   
-            })
-            .catch(function(e){
-                $log.debug(e);
-            })
+
+        function updateMetadata(){
+            creationObject.removeArtifacts("keywords");
+            creationObject.removeArtifacts("paperLanguage");
+            creationObject.removeArtifacts("researchQuestions");
+            creationObject.removeArtifacts("researchHypotheses");
+            var erc = creationObject.get();
+            httpRequests
+                .updateMetadata(erc.id, erc.metadata.o2r)
+                .then(function(res){
+                    $log.debug(res);   
+                })
+                .catch(function(e){
+                    $log.debug(e);
+                })
         }
     }
 

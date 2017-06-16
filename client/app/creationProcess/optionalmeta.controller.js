@@ -5,32 +5,78 @@
         .module('starter')
         .controller('OptionalMetaController', OptionalMetaController);
     
-    OptionalMetaController.$inject = ['$scope','$rootScope', '$stateParams', 'httpRequests', '$log'];
+    OptionalMetaController.$inject = ['$scope', '$log', 'creationObject', 'icons'];
 
-    function OptionalMetaController($scope, $rootScope, $stateParams, httpRequests, $log){
-       
-       processKeywords();       
+    function OptionalMetaController($scope, $log, creationObject, icons){
+       var vm = this;
+       vm.icons = icons;
+       vm.optional = creationObject.getOptional();
 
-       $scope.updateKeywords = function(){
-           var keywords = $scope.keywords.split(';');
+       vm.updateKeywords = creationObject.updateKeywords;
+       vm.updatePaperLanguage = creationObject.updatePaperLanguage;
+       vm.updateResearchQuestions = creationObject.updateResearchQuestions;
+       vm.updateResearchHypotheses = creationObject.updateResearchHypotheses;
+
+       vm.addItem = addItem;
+      
+       $scope.$on('$destroy', function(){
+            $log.debug('optional metadata: ', angular.toJson(creationObject.getOptional()));
+        });
+    
+       activate();
+
+       /////////
+
+       function activate(){
+           prepareKeywords();
+           prepareLanguage();
+           prepareHypotheses();
+           prepareQuestions();
+       }
+
+       function prepareKeywords(){
+           //wenn komplett leer, füge "" hinzu, sonst mach nichts
+           if(vm.optional.keywords.length == 0) vm.optional.keywords.push("");
+       }
+
+       function prepareLanguage(){
+           if(vm.optional.paperLanguage.length == 0) vm.optional.paperLanguage.push("");
+       }
+
+       function prepareHypotheses(){
+           if(vm.optional.researchHypotheses.length == 0) vm.optional.researchHypotheses.push("");
+       }
+
+       function prepareQuestions(){
+           if(vm.optional.researchQuestions.length == 0) vm.optional.researchQuestions.push("");
+       }
+
+       function addItem(item){
+           vm.optional[item].push("");
+       }
+   
+       /*
+       function updateKeywords(){
+           var keywords = vm.keywords.split(';');
            $rootScope.meta.keywords = keywords;
        }
 
-       $scope.updateResearchquestion = function(){
-           $rootScope.meta.researchQuestion = $scope.changes.researchQuestion;
+       function updateResearchquestion(){
+           $rootScope.meta.researchQuestion = vm.changes.researchQuestion;
        }       
 
-       $scope.updateHypotheses = function(){
-           $rootScope.meta.hypotheses = $scope.changes.hypotheses;
+       function updateHypotheses(){
+           $rootScope.meta.hypotheses = vm.changes.hypotheses;
        }
 
        function processKeywords(){
-            $scope.keywords ="";
+            vm.keywords ="";
             for(var keyword in $rootScope.meta.keywords){
-                $scope.keywords=$scope.keywords + "; " + $rootScope.meta.keywords[keyword]; 
+                vm.keywords=vm.keywords + "; " + $rootScope.meta.keywords[keyword]; 
             }
-            $scope.keywords=$scope.keywords.substr(1,$scope.keywords.length);
+            vm.keywords=vm.keywords.substr(1,vm.keywords.length);
        }
+       */
     
     }
 

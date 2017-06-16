@@ -5,47 +5,69 @@
         .module('starter')
         .controller('RequiredMetaController', RequiredMetaController);
     
-    RequiredMetaController.$inject = ['$rootScope', '$stateParams', 'httpRequests', '$log'];
+    RequiredMetaController.$inject = ['$scope', '$log','httpRequests', 'creationObject'];
 
-    function RequiredMetaController($rootScope, $stateParams, httpRequests, $log){
+    function RequiredMetaController($scope, $log, httpRequests, creationObject){
         
-        var requiredctrl=this;
+        var vm = this;
+        vm.required = creationObject.getRequired();
+        vm.updateTitle = creationObject.updateTitle;
+        vm.updateDescription = creationObject.updateDescription;
+        vm.updateLicense = creationObject.updateLicense;
+        vm.updatePublicationDate = creationObject.updatePublicationDate;
+        vm.updateSoftwarePaperCitation = creationObject.updateSoftwarePaperCitation;
+        vm.updateAuthorName = creationObject.updateAuthorName;
+        vm.updateAuthorAffiliation = creationObject.updateAuthorAffiliation;
+        vm.updateAuthorOrcid = creationObject.updateAuthorOrcid;
 
-        requiredctrl.textLicense=[];
-        requiredctrl.codeLicense=[];
-        requiredctrl.dataLicense=[];
-        requiredctrl.ui_bindingLicense=[];
+        $scope.$on('$destroy', function(){
+            $log.debug('required metadata: ', angular.toJson(creationObject.getRequired()));
+        });
+        vm.textLicense=[];
+        vm.codeLicense=[];
+        vm.dataLicense=[];
+        vm.ui_bindingLicense=[];
         
-        requiredctrl.searchTerm='';
+        /*
+        vm.searchTerm='';
         
-        requiredctrl.finalCodeLicense='';
-        requiredctrl.finalDataLicense='';
-        requiredctrl.finalTextLicense='';
-        requiredctrl.finalBindingLicense='';
+        vm.finalCodeLicense='';
+        vm.finalDataLicense='';
+        vm.finalTextLicense='';
+        vm.finalBindingLicense='';
         
 
-        requiredctrl.codeLicenseSelected = codeLicenseSelected;
-        requiredctrl.dataLicenseSelected = dataLicenseSelected;
-        requiredctrl.textLicenseSelected = textLicenseSelected;
-        requiredctrl.bindingLicenseSelected = bindingLicenseSelected;
+        vm.codeLicenseSelected = codeLicenseSelected;
+        vm.dataLicenseSelected = dataLicenseSelected;
+        vm.textLicenseSelected = textLicenseSelected;
+        vm.bindingLicenseSelected = bindingLicenseSelected;
+        */
         
-        httpRequests.getLicenses().
-            then(function(result){
-                assignLicenses(result.data);        
-            })
-            .catch(function(err){
-                $log.debug(err)
-            });
-        
+        activate();
+
+        //////////
+
+        function activate(){
+
+            httpRequests.getLicenses()
+                .then(function(result){
+                   assignLicenses(result.data);        
+                })
+                .catch(function(err){
+                    $log.debug(err)
+                });
+
+        }
         function assignLicenses(licenses){
             for(var i in licenses){
-                licenses[i].domain_content ? requiredctrl.textLicense.push(licenses[i]) : null;
-                licenses[i].domain_data ? requiredctrl.dataLicense.push(licenses[i]) : null;
-                licenses[i].domain_software ? requiredctrl.codeLicense.push(licenses[i]) : null;
+                licenses[i].domain_content ? vm.textLicense.push(licenses[i]) : null;
+                licenses[i].domain_data ? vm.dataLicense.push(licenses[i]) : null;
+                licenses[i].domain_software ? vm.codeLicense.push(licenses[i]) : null;
             }
-            requiredctrl.ui_bindingLicense=requiredctrl.codeLicense;
-            $rootScope.meta.license==null ? requiredctrl.code="License: Code" : requiredctrl.code=$rootScope.meta.license.code.id;
+            vm.ui_bindingLicense = vm.codeLicense;
+            //$rootScope.meta.license==null ? requiredctrl.code="License: Code" : requiredctrl.code=$rootScope.meta.license.code.id;
         }
+        /*
 
         function codeLicenseSelected(){
             $rootScope.meta.license==null ?  $rootScope.meta.license={} : null; //can be deleted once the metadata object returns a license json object 
@@ -89,15 +111,8 @@
         };                                
         requiredctrl.updateSoftwarePaperCitation = function(){
             $rootScope.meta.softwarePaperCitation=requiredctrl.changes.softwarePaperCitation;
-        };   
+        }; 
+        */  
     }
 
-})();
-
-
-           
-           
-            
-           
-           
-            
+})();         

@@ -1,37 +1,62 @@
 <md-card>
     <md-card-content layout="column">
-        <form>
+        <form name="requiredForm">
                 <h1>Required metadata</h1>
                 <md-input-container class="md-block">
                     <label>Title</label>
-                    <input ng-model="requiredctrl.changes.title" ng-value="meta.title" ng-change="requiredctrl.updateTitle()">
+                    <input ng-model="vm.required.title" ng-value="vm.required.title" ng-change="vm.updateTitle(vm.required.title)" name="title" required>
+                    <div ng-messages="requiredForm.title.$error">
+                        <div ng-message="required">Required field</div>
+                    </div>
                 </md-input-container>
-                <div ng-repeat="author in meta.author" style="display:inline-flex">
+                <div ng-repeat="author in vm.required.author track by $index" style="display:inline-flex">
                     <md-input-container class="md-block">
                         <label>Author</label>
-                        <input ng-model="requiredctrl.changes.author" ng-value="author.name" ng-change="requiredctrl.updateAuthor()">
+                        <input ng-model="vm.required.author[$index].name" ng-value="author.name" ng-change="vm.updateAuthorName(vm.required.author[$index].name, $index)" name="authorname" required>
+                        <div ng-messages="requiredForm.authorname.$error">
+                            <div ng-message="required">Required field</div>
+                        </div>
                     </md-input-container> 
                     <md-input-container class="md-block">
                         <label>Affiliation</label>
-                        <input ng-model="requiredctrl.changes.affiliation" ng-value="author.affiliation" ng-change="requiredctrl.updateAffiliation()">
+                        <input ng-model="vm.required.author[$index].affiliation" ng-value="author.affiliation" ng-change="vm.updateAuthorAffiliation(vm.required.author[$index].affiliation, $index)" name="authoraffiliation">
                     </md-input-container> 
                     <md-input-container class="md-block">
                         <label>Orcid</label>
-                        <input ng-model="requiredctrl.changes.orcid" ng-value="author.orcid" ng-change="requiredctrl.updateOrcid()">
+                        <input ng-model="vm.required.author[$index].orcid" ng-value="author.orcid" ng-change="vm.updateAuthorOrcid(vm.required.author[$index].orcid, $index)" name="authororcid">
                     </md-input-container>                                        
                 </div>
                 <md-input-container class="md-block">
                     <label>Abstract</label>
-                    <textarea rows="5" ng-model="requiredctrl.changes.abstract" ng-value="meta.abstract" ng-change="requiredctrl.updateAbstract()"></textarea>
+                    <textarea rows="5" ng-model="vm.required.description" ng-value="vm.required.description" ng-change="vm.updateDescription(vm.required.description)" name="description" required></textarea>
+                    <div ng-messages="requiredForm.description.$error">
+                        <div ng-message="required">Required field</div>
+                    </div>
                 </md-input-container>
                 <md-input-container>
                     <label>Publication Date</label>
-                    <input ng-model="requiredctrl.changes.dateCreated" ng-value="meta.dateCreated" ng-change="requiredctrl.updateDateCreated()">
+                    <input ng-model="vm.required.publicationDate" ng-value="vm.required.publicationDate" ng-change="vm.updatePublicationDate(vm.required.publicationDate)" name="publicationDate" required>
+                    <div ng-messages="requiredForm.publicationDate.$error">
+                        <div ng-message="required">Required field</div>
+                    </div>
                 </md-input-container>
                 <md-input-container class="md-block">
                     <label>Citation</label>
-                    <input ng-model="requiredctrl.changes.softwarePaperCitation" ng-value="meta.softwarePaperCitation" ng-change="requiredctrl.updateSoftwarePaperCitation()">
+                    <input ng-model="vm.required.softwarePaperCitation" ng-value="vm.required.softwarePaperCitation" ng-change="vm.updateSoftwarePaperCitation(vm.required.softwarePaperCitation)" name="softwarePaperCitation" required>
+                    <div ng-messages="requiredForm.softwarePaperCitation.$error">
+                        <div ng-message="required">Required field</div>
+                    </div>
                 </md-input-container>
+                <!--
+                <md-input-container class="md-block md-select-width">
+                    <label>License</label>
+                    <md-select ng-model="vm.required.license">
+                        <md-option ng-repeat="license in vm.">
+                    </md-select>
+
+                </md-input-container>
+                -->
+                <!--
                 <div style="display:inline-flex">
                     <md-input-container class="md-block md-select-width">
                         <label>License: Dataset</label>
@@ -105,7 +130,8 @@
                         </md-optgroup>
                         </md-select>
                     </md-input-container>                                                   
-                </div>                
+                </div> 
+                -->               
         </form>
     </md-card-content>
 </md-card>

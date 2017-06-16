@@ -1,13 +1,13 @@
 <md-card class="cardHeight">
     <md-card-content layout="column">
         <h2>Specify the spatial properties of your dataset(s)</h2>
-        <leaflet lf-center="map.center" lf-draw="map.drawOptions" width="100%" height="400px"></leaflet>
+        <leaflet lf-center="vm.map.center" lf-draw="vm.map.drawOptions" width="100%" height="400px"></leaflet>
         <h2>Specify the temporal properties of your dataset(s)</h2>
         <div>
             <span class="edit-metadata-label-color">From</span>
-            <md-datepicker ng-model="startDate" md-placeholder="starting date" ng-change='changeDate("start", startDate)'></md-datepicker>
+            <md-datepicker ng-model="vm.startDate" md-placeholder="starting date" ng-change='vm.changeDate("start", startDate)'></md-datepicker>
             <span class="edit-metadata-label-color" style = "margin-left:20%;">To</span>
-            <md-datepicker ng-model="endDate" md-placeholder="end date" ng-change='changeDate("end", endDate)'></md-datepicker>          
+            <md-datepicker ng-model="vm.endDate" md-placeholder="end date" ng-change='vm.changeDate("end", endDate)'></md-datepicker>          
         </div>
     </md-card-content>
 </md-card>

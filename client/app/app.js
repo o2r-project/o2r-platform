@@ -152,12 +152,38 @@
             })
             */
             .state('creationProcess', {
-                abstract: true,
                 url: "/creationProcess/:ercid",
                 templateUrl: "app/creationProcess/creationProcess.html",
                 controller: "CreationProcessController",
-                controllerAs: "cpctrl"
-            })            
+                controllerAs: "vm",
+                resolve: {
+                    creationService: creationService
+                },
+                onExit: function(creationObject){
+                    creationObject.destroy();
+                }
+            })
+            .state('creationProcess.requiredMetadata', {
+                templateUrl: "app/creationProcess/requiredMetadata.html",
+                controller: 'RequiredMetaController',
+                controllerAs: 'vm'
+            })
+            .state('creationProcess.optionalMetadata', {
+                templateUrl: "app/creationProcess/optionalMetadata.html",
+                controller: 'OptionalMetaController',
+                controllerAs: 'vm'
+            })
+            .state('creationProcess.spacetimeMetadata', {
+                templateUrl: "app/creationProcess/spacetimeMetadata.html",
+                controller: 'SpaceTimeController',
+                controllerAs: 'vm'
+            })
+            .state('creationProcess.uibindings', {
+                templateUrl: "app/creationProcess/uibindings.html",
+                controller: 'UIBindingsController',
+                controllerAs: 'vm'
+            })
+            /*            
             .state('requiredMetadata',{
                 url:"/requiredMetadata",
                 parent: "creationProcess",
@@ -185,7 +211,8 @@
                 templateUrl: "app/creationProcess/uibindings.html",
                 controller: 'UIBindings',
                 controllerAs: 'vm'    
-            })                                    
+            })   
+            */                                 
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
@@ -349,6 +376,13 @@
 
     ercService.$inject = ['$log', '$stateParams', 'publications'];
     function ercService($log, $stateParams, publications){
+        var ercId = $stateParams.ercid;
+        $log.debug('GET /erc/%s', ercId);
+        return publications.getRequest(ercId);
+    }
+
+    creationService.$inject = ['$log', '$stateParams', 'publications'];
+    function creationService($log, $stateParams, publications){
         var ercId = $stateParams.ercid;
         $log.debug('GET /erc/%s', ercId);
         return publications.getRequest(ercId);

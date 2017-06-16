@@ -2,15 +2,35 @@
     <div flex-xs="" flex-gt-xs="80" layout="column">
         <ui-view/>
     </div>    
-<div flex-xs="100" flex-gt-xs="20" layout="column">
-    <md-card class="cardHeight">
-        <md-card-content>
-            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="requiredMetadata">Required metadata</md-button>
-            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="optionalMetadata">Optional metadata</md-button>
-            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="spacetimeMetadata">Space-time metadata</md-button>
-            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="uibindings">UI bindings</md-button>
-            <md-button class="md-primary md-raised white-font metabuttons" ng-click="cpctrl.updateMetadata()" style = "position: relative; margin-top:130%;">Save</md-button>
-        </md-card-content>
-    </md-card> 
-</div>   
+    <div flex-xs="100" flex-gt-xs="20" layout="column">
+        <md-card class="cardHeight">
+            <md-card-content>
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.requiredMetadata">Required metadata</md-button>
+                    <span flex></span>
+                </div>
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.optionalMetadata">Optional metadata</md-button>
+                    <span flex></span>
+                </div>
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.spacetimeMetadata">Space-time metadata</md-button>
+                    <span flex></span>
+                </div>
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.uibindings">UI bindings</md-button>
+                    <span flex></span>
+                </div>
+                <div layout="row">
+                    <span flex></span>
+                    <md-button class="md-primary md-raised white-font metabuttons" ng-click="vm.updateMetadata()" style = "position: relative; margin-top:130%;">Save</md-button>
+                    <span flex></span>
+                </div>
+            </md-card-content>
+        </md-card> 
+    </div>   
 </md-content>
