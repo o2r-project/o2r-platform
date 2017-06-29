@@ -5,9 +5,9 @@
         <h2>Specify the temporal properties of your dataset(s)</h2>
         <div>
             <span class="edit-metadata-label-color">From</span>
-            <md-datepicker ng-model="vm.startDate" md-placeholder="starting date" ng-change='vm.changeDate("start", startDate)'></md-datepicker>
+            <md-datepicker ng-model="vm.spacetime.temporal.begin" md-placeholder="starting date" ng-change="vm.updateTemporal('begin', vm.spacetime.temporal.begin)"></md-datepicker>
             <span class="edit-metadata-label-color" style = "margin-left:20%;">To</span>
-            <md-datepicker ng-model="vm.endDate" md-placeholder="end date" ng-change='vm.changeDate("end", endDate)'></md-datepicker>          
+            <md-datepicker ng-model="vm.spacetime.temporal.end" md-placeholder="end date" ng-change="vm.updateTemporal('end', vm.spacetime.temporal.end)"></md-datepicker>          
         </div>
     </md-card-content>
 </md-card>

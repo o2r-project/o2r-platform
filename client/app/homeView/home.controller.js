@@ -39,21 +39,51 @@
             vm.scieboPath = url.split('path=/')[1];
         }
 
-        function sendScieboUrl(){
+        function sendScieboUrl(url, path, analysis){
             var progressbar = ngProgressFactory.createInstance();
 			progressbar.setHeight('3px');
 			progressbar.start();
 
-            httpRequests.uploadViaSciebo(vm.scieboUrl, vm.scieboPath)
+            var id;
+            httpRequests
+                .uploadViaSciebo(url, path)
+                .then(scieboCallback)
+                .catch(errorHandler);
+
+            function scieboCallback(response){
+                id = response.data.id;
+                if(analysis){
+                    httpRequests
+                        .newJob({job_id: id})
+                        .then(goToCreation)
+                        .catch(errorHandler)
+                } else {
+                    goToCreation();
+                }
+            }
+
+            function goToCreation(){
+                progressbar.complete();
+                $location.path('/creationProcess/' + id);
+            }
+
+            function errorHandler(err){
+                $log.debug(err);
+                progressbar.complete();
+            }
+            /*
+            httpRequests
+                .uploadViaSciebo(url, path)
 				.then(function (response) {
                     vm.validUrl=true;
-					httpRequests.singleCompendium(response.data.id)
+					httpRequests
+                        .singleCompendium(response.data.id)
 						.then(responseMetadata)
 						.catch(errorHandlerMetadata);
 
 					function responseMetadata(data){
 						progressbar.complete();
-						$location.path('/creationProcess/' + data.data.id + '/requiredMetadata');
+						$location.path('/creationProcess/' + data.data.id);
 					}	
 
 					function errorHandlerMetadata(err){
@@ -66,6 +96,7 @@
 					progressbar.complete();
                     vm.validUrl=false;
 				});	
+                */
         }
 
         function activate(){

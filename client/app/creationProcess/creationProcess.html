@@ -1,36 +1,116 @@
-<md-content class="md-padding" layout-xs="column" layout="row">
+<md-content class="md-padding" layout-xs="column" layout="column">
+        <!--
     <div flex-xs="" flex-gt-xs="80" layout="column">
-        <ui-view/>
+        <md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="Options">
+            <md-nav-item md-nav-sref="creationProcess.requiredMetadata" name="required">Required metadata</md-nav-item>
+            <md-nav-item md-nav-sref="creationProcess.optionalMetadata" name="optional">Optional metadata</md-nav-item>
+            <md-nav-item md-nav-sref="creationProcess.spacetimeMetadata" name="spacetime">Space-time metadata</md-nav-item>
+            <md-nav-item md-nav-sref="creationProcess.uibindings" name="uibindings">UI bindings</md-nav-item>
+        </md-nav-bar>
     </div>    
-    <div flex-xs="100" flex-gt-xs="20" layout="column">
-        <md-card class="cardHeight">
-            <md-card-content>
-                <div layout="row">
-                    <span flex></span>
-                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.requiredMetadata">Required metadata</md-button>
-                    <span flex></span>
+        -->
+    <div layout="column">
+        <div>
+            <div layout="row" flex="75">
+                <div>
+                    <md-button  
+                        class="md-fab md-mini"
+                        ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'md-primary' : !vm.isValid ? 'md-warn' : ''" 
+                        ui-sref="creationProcess.requiredMetadata"
+                        aria-label="Required Metadata">
+                        <md-icon class="white-font" md-svg-src="{{vm.icons.required}}">
+                    </md-button>
+                    <strong ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'o2r-blue-font' : !vm.isValid ? 'o2r-red-font' : 'o2r-grey-font'">Required</strong>
                 </div>
-                <div layout="row">
-                    <span flex></span>
-                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.optionalMetadata">Optional metadata</md-button>
-                    <span flex></span>
+                <span flex></span>
+                <div>
+                    <md-button  
+                        class="md-fab md-mini" 
+                        ng-class="{'md-primary': vm.state.current.name == 'creationProcess.optionalMetadata'}"
+                        ui-sref="creationProcess.optionalMetadata"
+                        aria-label="Optional Metadata">
+                        <md-icon class="white-font" md-svg-src="{{vm.icons.assignment}}">
+                    </md-button>
+                    <strong ng-class="vm.state.current.name == 'creationProcess.optionalMetadata' ? 'o2r-blue-font' : 'o2r-grey-font'">Optional</strong>
                 </div>
-                <div layout="row">
-                    <span flex></span>
-                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.spacetimeMetadata">Space-time metadata</md-button>
-                    <span flex></span>
+                <span flex></span>
+                <div>
+                    <md-button 
+                        ng-class="{'md-primary': vm.state.current.name == 'creationProcess.spacetimeMetadata'}" 
+                        class="md-fab md-mini" 
+                        ui-sref="creationProcess.spacetimeMetadata"
+                        aria-label="Spacetime Metadata">
+                        <md-icon class="white-font" md-svg-src="{{vm.icons.compass}}">
+                    </md-button>
+                    <strong ng-class="vm.state.current.name == 'creationProcess.spacetimeMetadata' ? 'o2r-blue-font' : 'o2r-grey-font'">Spacetime</strong>
                 </div>
-                <div layout="row">
-                    <span flex></span>
-                    <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.uibindings">UI bindings</md-button>
-                    <span flex></span>
+                <span flex></span>
+                <div>
+                    <md-button 
+                        ng-class="{'md-primary': vm.state.current.name == 'creationProcess.uibindings'}" 
+                        class="md-fab md-mini" 
+                        ui-sref="creationProcess.uibindings"
+                        aria-label="UI Bindings">
+                        <md-icon class="white-font" md-svg-src="{{vm.icons.graph}}">
+                    </md-button>
+                    <strong ng-class="vm.state.current.name == 'creationProcess.uibindings' ? 'o2r-blue-font' : 'o2r-grey-font'">UI Bindings</strong>
                 </div>
-                <div layout="row">
-                    <span flex></span>
-                    <md-button ng-disabled="!vm.isValid" class="md-primary md-raised white-font metabuttons" ng-click="vm.updateMetadata()" style = "position: relative; margin-top:130%;">Save</md-button>
-                    <span flex></span>
-                </div>
-            </md-card-content>
-        </md-card> 
-    </div>   
+            </div>
+            <div flex></div>
+        </div>
+        <div layout="row">
+            <div ui-view flex="80"></div>
+
+            <div flex-xs="100" flex-gt-xs="20" layout="column">
+                <md-card class="md-padding">
+                <!--
+                <md-card class="cardHeight">
+                    <md-card-content>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.requiredMetadata">Required metadata</md-button>
+                            <span flex></span>
+                        </div>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.optionalMetadata">Optional metadata</md-button>
+                            <span flex></span>
+                        </div>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.spacetimeMetadata">Space-time metadata</md-button>
+                            <span flex></span>
+                        </div>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-primary md-raised white-font metabuttons" ui-sref="creationProcess.uibindings">UI bindings</md-button>
+                            <span flex></span>
+                        </div>
+                    -->
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button ng-disabled="vm.state.current.name == 'creationProcess.uibindings'" class="md-raised metabuttons" ng-click="vm.nextState(vm.state.current.name)">Next</md-button>
+                            <span flex></span>
+                        </div>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button ng-disabled="vm.state.current.name == 'creationProcess.requiredMetadata'" class="md-raised metabuttons" ng-click="vm.previousState(vm.state.current.name)">Previous</md-button>
+                            <span flex></span>
+                        </div>
+                        <md-divider class="creationProcess-divider"></md-divider>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button ng-disabled="!vm.isValid" ng-class="vm.isValid ? 'white-font' : ''" class="md-primary md-raised metabuttons" ng-click="vm.updateMetadata()">Save</md-button>
+                            <span flex></span>
+                        </div>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-primary metabuttons" ng-click="vm.cancel($event)">Cancel</md-button>
+                            <span flex></span>
+                        </div>
+                    </md-card-content>
+                </md-card> 
+            </div>   
+        </div>
+    </div>
 </md-content>

@@ -15,7 +15,8 @@
 
         function cutter (input){
             if(input){
-                var re = /(http[s]?:\/\/)?(localhost)?(\/api\/v\d\/.*\/)(data\/.*\.\w+)/;
+                var re = /tmp\/o2r\/compendium\/.*\/(data\/.*\.\w+)/;
+                //var re = /(http[s]?:\/\/)?(localhost)?(\/api\/v\d\/.*\/)(data\/.*\.\w+)/;
                 var cuts = input.match(re);
                 try {
                     var relPath = cuts[cuts.length-1];

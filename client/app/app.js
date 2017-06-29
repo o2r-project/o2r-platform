@@ -22,13 +22,14 @@
             'angularUtils.directives.dirPagination',
             'ngProgress',
             'ngIframeResizer',
-            'ui-leaflet'])
+            'ui-leaflet',
+            'angular-logger'])
         .constant('icons', icons())
         .config(config);
     
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env', 'logEnhancerProvider'];
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env, logEnhancerProvider){
         $compileProvider.preAssignBindingsEnabled(true);
         
         $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/']);
@@ -37,6 +38,7 @@
         if(env.disableTracking) console.log("Tracking globally disabled!");
 
         $logProvider.debugEnabled(env.enableDebug);
+        logEnhancerProvider.prefixPattern = '%2$s: '; 
         if(!env.enableDebug) console.log('Debug logs disabled!');
         /* eslint-enable angular/window-service, angular/log */
 
@@ -315,11 +317,16 @@
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
             {name: 'rowing', category: 'action', fn: 'rowing'},
             {name: 'add', category: 'content', fn: 'add'},
+            {name: 'remove', category: 'content', fn: 'remove'},
             {name: 'edit', category: 'editor', fn: 'mode_edit'},
             {name: 'lock_open', category: 'action', fn: 'lock_open'},
             {name: 'lock_outline', category: 'action', fn: 'lock_outline'},
             {name: 'navigate_next', category: 'image', fn: 'navigate_next'},
-            {name: 'navigate_before', category: 'image', fn: 'navigate_before'}
+            {name: 'navigate_before', category: 'image', fn: 'navigate_before'},
+            {name: 'required', category: 'action', fn: 'assignment_late'},
+            {name: 'graph', category: 'action', fn: 'assessment'},
+            {name: 'assignment', category: 'action', fn: 'assignment'},
+            {name: 'compass', category: 'action', fn: 'explore'}
         ];
 
         for(var i in icons){

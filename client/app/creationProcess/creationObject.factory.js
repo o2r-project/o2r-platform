@@ -5,33 +5,30 @@
         .module('starter')
         .factory('creationObject', creationObject);
     
-    creationObject.$inject = ['$log', '$rootScope'];
-    function creationObject($log, $rootScope){
+    creationObject.$inject = ['$log'];
+    function creationObject($log){
+        var logger = $log.getInstance('creationObject');
+
         var erc = {};
         var service = {
             get: get,
+            set: set,
+            destroy: destroy,
             getRequired: getRequired,
             getOptional: getOptional,
             getSpacetime: getSpacetime,
             getUibindings: getUibindings,
-            set: set,
-            updateTitle: updateTitle,
-            updateDescription: updateDescription,
-            updatePublicationDate: updatePublicationDate,
-            updateSoftwarePaperCitation: updateSoftwarePaperCitation,
+            simpleUpdate: simpleUpdate,
+            updateTemporal: updateTemporal,
+            updateViewfile: updateViewfile,
             updateLicense: updateLicense,
-            updateAuthorName: updateAuthorName,
-            updateAuthorAffiliation: updateAuthorAffiliation,
-            updateAuthorOrcid: updateAuthorOrcid,
-            updateKeywords: updateKeywords,
-            updatePaperLanguage: updatePaperLanguage,
-            updateResearchQuestions: updateResearchQuestions,
-            updateResearchHypotheses: updateResearchHypotheses,
+            updateAuthor: updateAuthor,
+            addAuthor: addAuthor,
+            removeAuthor: removeAuthor,
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
-            updateSpatialUnion: updateSpatialUnion,
-            removeArtifacts: removeArtifacts,
-            destroy: destroy
+            updateSpatialFiles: updateSpatialFiles,
+            removeArtifacts: removeArtifacts
         };
 
         return service;
@@ -44,13 +41,12 @@
 
         function set(obj){
             erc = obj;
-            $log.debug('Set creationobject successfully');
-            $rootScope.$broadcast('set-creationObject');
+            logger.info('Successfully set');
         }
 
         function destroy(){
             erc = {};
-            $log.debug('Destroyed creationObject successfully');
+            logger.info('Successfully destroyed');
         }
 
         function getOptional(){
@@ -70,7 +66,8 @@
                 publicationDate: erc.metadata.o2r.publicationDate,
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
-                author: erc.metadata.o2r.author
+                author: erc.metadata.o2r.author,
+                viewfile: erc.metadata.o2r.viewfile
             };
             return angular.copy(required);
         }
@@ -86,55 +83,41 @@
         function getUibindings(){
             return angular.copy(erc.metadata.o2r.interaction);
         }
-
-        function updateAuthorName(name, index){
-            erc.metadata.o2r.author[index].name = name;
+        
+        function updateAuthor(index, name, aff, orcid){
+            //if(angular.isUndefined(erc.metadata.o2r.author[index])) erc.metadata.o2r.author[index] = {affiliation: ""};
+            if(name) erc.metadata.o2r.author[index].name = name;
+            if(aff) erc.metadata.o2r.author[index].affiliation = aff;
+            if(orcid) erc.metadata.o2r.author[index].orcid = orcid;
         }
 
-        function updateAuthorAffiliation(aff, index){
-            erc.metadata.o2r.author[index].affiliation = aff;
+        function addAuthor(auth){
+            erc.metadata.o2r.author.push(auth);
         }
 
-        function updateAuthorOrcid(orcid, index){
-            erc.metadata.o2r.author[index].orcid = orcid;
+        function removeAuthor(index){
+            erc.metadata.o2r.author.splice(index, 1);
         }
 
-        function updateDescription(abs){
-            erc.metadata.o2r.description = abs;
+        function updateViewfile(path){
+            //TODO
+            //wait until metadata is updated so that one specific viewfile can be added
+            //erc.metadata.o2r.viewfile = path;
         }
 
-        function updateTitle(title){
-            erc.metadata.o2r.title = title;
+        function updateLicense(lic, index){
+            if(!index) erc.metadata.o2r.license = lic;
+            else erc.metadata.o2r.license[index] = lic;
         }
 
-        function updateSoftwarePaperCitation(cit){
-            erc.metadata.o2r.softwarePaperCitation = cit;
+        function simpleUpdate(attr, val){
+            erc.metadata.o2r[attr] = val;
+            logger.info('updated ', attr);
         }
 
-        // TODO
-        //check date format
-        function updatePublicationDate(dat){
-            erc.metadata.o2r.publicationDate = dat;
-        }
-
-        function updateLicense(lic){
-            erc.metadata.o2r.license = lic;
-        }
-
-        function updateKeywords(key, index){
-            erc.metadata.o2r.keywords[index] = key;
-        }
-
-        function updatePaperLanguage(lang, index){
-            erc.metadata.o2r.paperLanguage[index] = lang;
-        }
-
-        function updateResearchQuestions(quest, index){
-            erc.metadata.o2r.researchQuestions[index] = quest;
-        }
-
-        function updateResearchHypotheses(hypo, index){
-            erc.metadata.o2r.researchHypotheses[index] = hypo;
+        function updateTemporal(attr, val){
+            erc.metadata.o2r.temporal[attr] = val;
+            logger.info('updated temporal.', attr);
         }
 
         function updateTemporalBegin(dat){
@@ -145,8 +128,8 @@
             erc.metadata.o2r.temporal.end = dat;
         }
 
-        function updateSpatialUnion(spat){
-            erc.metadata.o2r.spatial.union = spat;
+        function updateSpatialFiles(spat){
+            erc.metadata.o2r.spatial.files = spat;
         }
 
         function removeArtifacts(attr){

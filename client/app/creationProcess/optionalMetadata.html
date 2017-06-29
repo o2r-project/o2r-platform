@@ -1,27 +1,46 @@
 <md-card class="cardHeight">
     <md-card-content layout="column">
         <form>
-                <h1>Optional metadata</h1>
+                <!--
                 <md-input-container ng-repeat="keyword in vm.optional.keywords track by $index">
                     <label>Keywords</label>
                     <input ng-model="vm.optional.keywords[$index]" ng-value="keyword" ng-change="vm.updateKeywords(vm.optional.keywords[$index], $index)">
                     <md-icon ng-if="$last" class="edit-button" md-svg-src="{{vm.icons.add}}" ng-click="vm.addItem('keywords')"></md-icon>
                 </md-input-container><br/>
+                -->
+                <h4>Keywords</h4>
+                <md-chips ng-model="vm.optional.keywords" readonly="false" md-on-remove="vm.simpleUpdate('keywords', vm.optional.keywords)" md-on-add="vm.simpleUpdate('keywords', vm.optional.keywords)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <h4>Language</h4>
+                <md-chips ng-model="vm.optional.paperLanguage" readonly="false" md-on-remove="vm.simpleUpdate('paperLanguage', vm.optional.paperLanguage)" md-on-add="vm.simpleUpdate('paperLanguage', vm.optional.paperLanguage)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <!--
                 <md-input-container ng-repeat="lang in vm.optional.paperLanguage track by $index">
                     <label>Paper Language</label>
                     <input ng-model="vm.optional.paperLanguage[$index]" ng-value="lang" ng-change="vm.updatePaperLanguage(vm.optional.paperLanguage[$index], $index)">
                     <md-icon ng-if="$last" class="edit-button" md-svg-src="{{vm.icons.add}}" ng-click="vm.addItem('paperLanguage')"></md-icon>
                 </md-input-container>
+                -->
+                <h4>Research question(s)</h4>
+                <md-chips ng-model="vm.optional.researchQuestions" readonly="false" md-on-remove="vm.simpleUpdate('researchQuestions', vm.optional.researchQuestions)" md-on-add="vm.simpleUpdate('researchQuestions', vm.optional.researchQuestions)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <!--
                 <md-input-container class="md-block" ng-repeat="quest in vm.optional.researchQuestions track by $index">
                     <label>Research question(s)</label>
                     <input ng-model="vm.optional.researchQuestions[$index]" ng-value="quest" ng-change="vm.updateResearchQuestions(vm.optional.researchQuestions[$index], $index)">
                     <md-icon ng-if="$last" class="edit-button" md-svg-src="{{vm.icons.add}}" ng-click="vm.addItem('researchQuestions')"></md-icon>
-                </md-input-container> 
+                </md-input-container>
+                -->
+                <h4>Hypotheses</h4>
+                <md-chips ng-model="vm.optional.researchHypotheses" readonly="false" md-on-remove="vm.simpleUpdate('researchHypotheses', vm.optional.researchHypotheses)" md-on-add="vm.simpleUpdate('researchHypotheses', vm.optional.researchHypotheses)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <!-- 
                 <md-input-container class="md-block" ng-repeat="hypo in vm.optional.researchHypotheses track by $index">
                     <label>Hypotheses</label>
                     <input ng-model="vm.optional.researchHypotheses[$index]" ng-value="hypo" ng-change="vm.updateResearchHypotheses(vm.optional.researchHypotheses[$index], $index)">
                     <md-icon ng-if="$last" class="edit-button" md-svg-src="{{vm.icons.add}}" ng-click="vm.addItem('researchHypotheses')"></md-icon>
-                </md-input-container>   
+                </md-input-container>
+                -->   
         </form>
     </md-card-content>
 </md-card>

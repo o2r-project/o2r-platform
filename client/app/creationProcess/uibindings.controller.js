@@ -8,6 +8,8 @@
     UIBindingsController.$inject = ['$scope', '$log', 'creationObject'];
 
     function UIBindingsController($scope, $log, creationObject){
+        var logger = $log.getInstance('UiBindings');
+
         var vm = this;
         vm.bindings = creationObject.getUibindings();
 
@@ -16,7 +18,7 @@
         vm.inferWidget = inferWidget;
 
         $scope.$on('$destroy', function(){
-            $log.debug('uibindings metadata: ', angular.toJson(creationObject.getUibindings()));
+            logger.info(angular.toJson(creationObject.getUibindings()));
         });
 
         ////////
