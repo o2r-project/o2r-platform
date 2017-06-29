@@ -15,12 +15,12 @@
                 <div>
                     <md-button  
                         class="md-fab md-mini"
-                        ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'md-primary' : !vm.isValid ? 'md-warn' : ''" 
+                        ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'md-primary' : (!vm.isValid ? 'md-warn' : '')" 
                         ui-sref="creationProcess.requiredMetadata"
                         aria-label="Required Metadata">
                         <md-icon class="white-font" md-svg-src="{{vm.icons.required}}">
                     </md-button>
-                    <strong ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'o2r-blue-font' : !vm.isValid ? 'o2r-red-font' : 'o2r-grey-font'">Required</strong>
+                    <strong ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'o2r-blue-font' : (!vm.isValid ? 'o2r-red-font' : 'o2r-grey-font')">Required</strong>
                 </div>
                 <span flex></span>
                 <div>
