@@ -22,7 +22,6 @@
         vm.nextState = nextState;
         vm.previousState = previousState;
 
-        logger.info(vm.state);
         $scope.$on('$destroy', function(){
             saved = false;
             creationObject.destroy();

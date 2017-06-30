@@ -40,7 +40,6 @@
         }
 
         function sendScieboUrl(url, path, analysis){
-            $log.debug(url, path, analysis);
             var progressbar = ngProgressFactory.createInstance();
 			progressbar.setHeight('3px');
 			progressbar.start();
@@ -52,7 +51,6 @@
                 .catch(errorHandler);
 
             function scieboCallback(response){
-                $log.debug(response.data);
                 id = response.data.id;
                 if(analysis){
                     httpRequests
