@@ -40,6 +40,7 @@
         }
 
         function sendScieboUrl(url, path, analysis){
+            $log.debug(url, path, analysis);
             var progressbar = ngProgressFactory.createInstance();
 			progressbar.setHeight('3px');
 			progressbar.start();
@@ -51,12 +52,13 @@
                 .catch(errorHandler);
 
             function scieboCallback(response){
+                $log.debug(response.data);
                 id = response.data.id;
                 if(analysis){
                     httpRequests
-                        .newJob({job_id: id})
+                        .newJob({compendium_id: id})
                         .then(goToCreation)
-                        .catch(errorHandler)
+                        .catch(errorHandler);
                 } else {
                     goToCreation();
                 }
