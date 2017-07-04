@@ -12,6 +12,7 @@
         //default substate
         var defView = 'creationProcess.requiredMetadata';
         var saved = false;
+        var cancelled = false;
         var vm = this;
         vm.icons = icons;
         vm.updateMetadata = updateMetadata;
@@ -24,14 +25,26 @@
 
         $scope.$on('$destroy', function(){
             saved = false;
+            cancelled = false;
             creationObject.destroy();
         });
 
-        $scope.$on('$locationChangeStart', function(event, url){
-            logger.info('on state change');
-            if(!saved){
-                $log.debug('did not change state');
-                event.preventDefault();
+        $scope.$on('$stateChangeStart', function(event, toState){
+            if(!(cancelled || saved)){
+                switch (toState.name) {
+                    case 'creationProcess.requiredMetadata':
+                        break;
+                    case 'creationProcess.optionalMetadata':
+                        break;
+                    case 'creationProcess.spacetimeMetadata':
+                        break;
+                    case 'creationProcess.uibindings':
+                        break;
+                    default:
+                        event.preventDefault();
+                        showNoStateChangeToast();
+                        break;
+                }
             }
         });
 
@@ -86,6 +99,18 @@
             );
         }
 
+        function showNoStateChangeToast(){
+            var text = 'Info: You need to Save or Cancel to leave page.';
+            $mdToast.show(
+                $mdToast
+                    .simple()
+                    .textContent(text)
+                    .position('top right')
+                    .hideDelay(3000)
+                    .parent($document[0].body.children.main.children["ui-view"])
+            );
+        }
+
         function cancel(ev){
             logger.info($mdDialog);
             var confirm = $mdDialog
@@ -106,11 +131,11 @@
                 //delete ERC metadata. When reponse, go to homeView
 
 
+                cancelled = true;
                 $state.go('home');
             }
 
             function cancelling(){
-
             }
                     
 

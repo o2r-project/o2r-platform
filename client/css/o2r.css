@@ -196,10 +196,6 @@ display-files-html iframe{
 	width:100%;
 }
 
-.cardHeight{
-	height:650px;
-}
-
 .selectdemoSelectHeader {
   /* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */ }
   .selectdemoSelectHeader .demo-header-searchbox {

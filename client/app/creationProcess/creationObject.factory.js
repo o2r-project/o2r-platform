@@ -67,6 +67,7 @@
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 author: erc.metadata.o2r.author,
+                viewfiles: erc.metadata.o2r.viewfiles,
                 viewfile: erc.metadata.o2r.viewfile
             };
             return angular.copy(required);
@@ -106,8 +107,8 @@
         }
 
         function updateLicense(lic, index){
-            if(!index) erc.metadata.o2r.license = lic;
-            else erc.metadata.o2r.license[index] = lic;
+            if(index || index == 0) erc.metadata.o2r.license[index] = lic;
+            else erc.metadata.o2r.license = lic;
         }
 
         function simpleUpdate(attr, val){

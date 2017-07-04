@@ -1,200 +1,161 @@
-<md-card>
-    <md-card-content layout="column">
-        <form name="requiredForm">
+<form name="requiredForm">
+    <!-- TITLE CARD -->
+    <md-card>
+        <md-card-content>
             <h4>Title</h4>
-                <md-input-container class="md-block">
-                    <label>Title</label>
-                    <input ng-model="vm.required.title" ng-value="vm.required.title" ng-change="vm.simpleUpdate('title', vm.required.title)" name="title" required>
-                    <div ng-messages="requiredForm.title.$error">
-                        <div ng-message="required">Required field</div>
-                    </div>
-                </md-input-container>
-                <h4>Author(s)</h4>
-                <md-list layout="row">
-                    <md-list-item 
-                        class="md-3-line" 
-                        ng-repeat="author in vm.required.author track by $index" 
-                        layout-wrap
-                        ng-mouseenter="vm.options[$index]=true"
-                        ng-mouseleave="vm.options[$index]=false">
-                        <div class="md-list-item-text md-whiteframe-z1" style="padding: 5px 5px 5px 5px;" layout="row">
-                            <div>
-                                <h3>{{author.name}}</h3>
-                                <h4>{{author.affiliation}}</h4>
-                                <p>{{author.orcid}}</p>
-                            </div>
-                            <span flex></span>
-                            <md-button ng-show="vm.options[$index]" class="md-fab md-mini" ng-click="vm.editAuthor=$index" aria-label="Edit Author">
-                                <md-icon class="white-font" md-svg-src="{{vm.icons.edit}}"></md-icon>
-                            </md-button>
-                            <md-button ng-if="!(vm.required.author.length == 1)" ng-click="vm.removeAuthor($index)" class="md-fab md-mini" aria-label="Delete Author">
-                                <md-icon class="white-font" md-svg-src="{{vm.icons.close}}"></md-icon>
-                            </md-button>
-                        </div>
-                    </md-list-item>
-                    <md-list-item class="md-3-line" ng-hide="vm.hideAddAuthorButton">
-                        <div class="md-list-item-text">
-                        <md-button ng-click="vm.newAuthor()" class="md-fab md-mini md-primary" aria-label="New Author">
-                            <md-icon class="white-font" md-svg-src="{{vm.icons.add}}"></md-icon>
-                        </md-button>
-                        </div>
-                    </md-list-item>
-                </md-list>
-<!--
-                <div layout="row">
-                    <div ng-repeat="author in vm.required.author track by $index"
-                        ng-mouseenter="vm.options[$index]=true" 
-                        ng-mouseleave="vm.options[$index]=false" 
-                        style="margin-left: 17px; padding-left: 5px; padding-right: 5px;" 
-                        class="md-item-text md-whiteframe-2dp">
-                        <div layout="row" style="position: relative">
-                            <md-button ng-show="vm.options[$index]" class="md-fab md-mini" style="position: absolute; bottom: -10vh; right: -2vh;">
-                                <md-icon class="white-font" md-svg-src="{{vm.icons.edit}}"></md-icon>
-                            </md-button>
-                            <span flex></span>
-                            <md-button class="md-fab md-mini" style="position: absolute; top: -2vh; right: -2vh;">
-                                <md-icon class="white-font" md-svg-src="{{vm.icons.close}}"></md-icon>
-                            </md-button>
-                        </div>
-                        <p>{{author.name}}</p>
-                        <p>{{author.affiliation}}</p>
-                        <p>{{author.orcid}}</p>
-                    </div>
-                    <div ng-click="" layout="row" style="margin-left: 12px; padding-left: 5px; padding-right: 5px; padding-top: 3vh; padding-bottom: 3vh; min-width: 9vh;" class="md-item-text md-whiteframe-2dp o2r-pointer">
-                        <span flex></span>
-                        <md-icon class="edit-button" md-svg-src="{{vm.icons.add}}"></md-icon>
-                        <span flex></span>
-                    </div>
-                </div>
--->
-                <!-- EDIT AUTHOR-->
-                <div ng-if="(vm.editAuthor == 0) || (vm.editAuthor)">
-                    <md-input-container>
-                        <label>Author</label>
-                        <input ng-model="vm.author.name" ng-value="vm.required.author[vm.editAuthor].name" name="authorname" required>
-                        <div ng-messages="requiredForm.authorname.$error">
-                            <div ng-message="required">Required field</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Affiliation</label>
-                        <input ng-model="vm.author.affiliation" ng-value="vm.required.author[vm.editAuthor].affiliation">
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Orcid</label>
-                        <input ng-model="vm.author.orcid" ng-value="vm.required.author[vm.editAuthor].orcid">
-                    </md-input-container>
-                    <md-button class="md-raised" ng-click="vm.updateAuthor(vm.editAuthor)" aria-label="Update Author">
-                        Update author
-                    </md-button>
-                    <md-button ng-click="vm.cancelUpdateAuthor()" aria-label="Cancel">
-                        Cancel
-                    </md-button>
-                </div>
-                <!-- ADD AUTHOR -->
-                <div ng-if="vm.newAuthorEdit">
-                    <md-input-container>
-                        <label>Author</label>
-                        <input ng-model="vm.author.name" name="authorname" required>
-                        <div ng-messages="requiredForm.authorname.$error">
-                            <div ng-message="required">Required field</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Affiliation</label>
-                        <input ng-model="vm.author.affiliation">
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Orcid</label>
-                        <input ng-model="vm.author.orcid">
-                    </md-input-container>
-                    <md-button class="md-raised" ng-disabled="requiredForm.authorname.$invalid" ng-click="vm.addNewAuthor()" aria-label="Add Author">
-                        Add author
-                    </md-button>
-                    <md-button ng-click="vm.cancelNewAuthor()" aria-label="Cancel">
-                        Cancel
-                    </md-button>
-                </div>
-
-<!--
-                <div ng-repeat="author in vm.required.author track by $index">
-                    <div layout="row">
-                        <md-input-container class="md-block" flex="50" ng-class="{'required-last-author': $last}">
-                            <label>Author</label>
-                            <input ng-model="vm.required.author[$index].name" ng-value="author.name" ng-change="vm.updateAuthor($index, vm.required.author[$index].name)" name="authorname" required>
-                            <div ng-messages="requiredForm.authorname.$error">
-                                <div ng-message="required">Required field</div>
-                            </div>
-                        </md-input-container> 
-                        <md-input-container class="md-block" flex ng-class="{'required-last-author': $last}">
-                            <label>Affiliation</label>
-                            <input ng-model="vm.required.author[$index].affiliation" ng-value="author.affiliation" ng-change="vm.updateAuthor($index, null, vm.required.author[$index].affiliation)" name="authoraffiliation">
-                        </md-input-container> 
-                        <md-input-container class="md-block" flex ng-class="{'required-last-author': $last}">
-                            <label>Orcid</label>
-                            <input ng-model="vm.required.author[$index].orcid" ng-value="author.orcid" ng-change="vm.updateAuthor($index, null, null, vm.required.author[$index].orcid)" name="authororcid">
-                        </md-input-container>
-                        <md-icon ng-if="$index > 0" class="edit-button" md-svg-src="{{vm.icons.remove}}" ng-click="vm.removeAuthor($index)"></md-icon>                                        
-                    </div>
-                    <md-button ng-if="$last" ng-click="vm.addAuthor()" class="required-add-author">
-                        <md-icon class="edit-button" md-svg-src="{{vm.icons.add}}"></md-icon>                                        
-                        Add Author
-                    </md-button>
-                </div>
--->
-                <h4>Abstract</h4>
-                <md-input-container class="md-block">
-                    <label>Abstract</label>
-                    <textarea rows="4" ng-model="vm.required.description" ng-value="vm.required.description" ng-change="vm.simpleUpdate('description', vm.required.description)" name="description" required></textarea>
-                    <div ng-messages="requiredForm.description.$error">
-                        <div ng-message="required">Required field</div>
-                    </div>
-                </md-input-container>
-                <h4>Publication Date</h4>
-                <md-datepicker ng-model="vm.required.publicationDate" ng-change="vm.simpleUpdate('publicationDate', vm.required.publicationDate)" md-placeholder="Enter date" name="publicationDate" required></md-datepicker>
-                <div ng-messages="requiredForm.publicationDate.$error">
+            <md-input-container class="md-block">
+                <label>Title</label>
+                <input ng-model="vm.required.title" ng-value="vm.required.title" ng-change="vm.simpleUpdate('title', vm.required.title)" name="title" required>
+                <div ng-messages="requiredForm.title.$error">
                     <div ng-message="required">Required field</div>
                 </div>
-                <!--
+            </md-input-container>
+        </md-card-content>
+    </md-card>
+    <!-- AUTHOR CARD -->
+    <md-card>
+        <md-card-content>
+            <h4>Author(s)</h4>
+            <md-list layout="row">
+                <md-list-item 
+                    class="md-3-line" 
+                    ng-repeat="author in vm.required.author track by $index" 
+                    layout-wrap
+                    ng-mouseenter="vm.options[$index]=true"
+                    ng-mouseleave="vm.options[$index]=false">
+                    <div class="md-list-item-text md-whiteframe-z1 required-whiteframe-padding" layout="row">
+                        <div>
+                            <h3>{{author.name}}</h3>
+                            <h4>{{author.affiliation}}</h4>
+                            <p>{{author.orcid}}</p>
+                        </div>
+                        <span flex></span>
+                        <md-button ng-show="vm.options[$index]" class="md-fab md-mini" ng-click="vm.editAuthor=$index" aria-label="Edit Author">
+                            <md-icon class="white-font" md-svg-src="{{vm.icons.edit}}"></md-icon>
+                        </md-button>
+                        <md-button ng-if="!(vm.required.author.length == 1)" ng-click="vm.removeAuthor($index)" class="md-fab md-mini" aria-label="Delete Author">
+                            <md-icon class="white-font" md-svg-src="{{vm.icons.close}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-3-line" ng-hide="vm.hideAddAuthorButton">
+                    <div class="md-list-item-text">
+                    <md-button ng-click="vm.newAuthor()" class="md-fab md-mini md-primary" aria-label="New Author">
+                        <md-icon class="white-font" md-svg-src="{{vm.icons.add}}"></md-icon>
+                    </md-button>
+                    </div>
+                </md-list-item>
+            </md-list>
+
+            <!-- EDIT AUTHOR-->
+            <div ng-if="(vm.editAuthor == 0) || (vm.editAuthor)">
                 <md-input-container>
-                    <label>Publication Date</label>
-                    <input ng-model="vm.required.publicationDate" ng-value="vm.required.publicationDate" ng-change="vm.simpleUpdate('publicationDate', vm.required.publicationDate)" name="publicationDate" required>
-                    <div ng-messages="requiredForm.publicationDate.$error">
+                    <label>Author</label>
+                    <input ng-model="vm.author.name" ng-value="vm.required.author[vm.editAuthor].name" name="authorname" required>
+                    <div ng-messages="requiredForm.authorname.$error">
                         <div ng-message="required">Required field</div>
                     </div>
                 </md-input-container>
-                -->
-                <h4>Citation</h4>
-                <md-input-container class="md-block" flex>
-                    <label>Citation</label>
-                    <input ng-model="vm.required.softwarePaperCitation" ng-value="vm.required.softwarePaperCitation" ng-change="vm.simpleUpdate('softwarePaperCitation', vm.required.softwarePaperCitation)" name="softwarePaperCitation" required>
-                    <div ng-messages="requiredForm.softwarePaperCitation.$error">
+                <md-input-container>
+                    <label>Affiliation</label>
+                    <input ng-model="vm.author.affiliation" ng-value="vm.required.author[vm.editAuthor].affiliation">
+                </md-input-container>
+                <md-input-container>
+                    <label>Orcid</label>
+                    <input ng-model="vm.author.orcid" ng-value="vm.required.author[vm.editAuthor].orcid">
+                </md-input-container>
+                <md-button class="md-raised" ng-click="vm.updateAuthor(vm.editAuthor)" aria-label="Update Author">
+                    Update author
+                </md-button>
+                <md-button ng-click="vm.cancelUpdateAuthor()" aria-label="Cancel">
+                    Cancel
+                </md-button>
+            </div>
+            <!-- ADD AUTHOR -->
+            <div ng-if="vm.newAuthorEdit">
+                <md-input-container>
+                    <label>Author</label>
+                    <input ng-model="vm.author.name" name="authorname" required>
+                    <div ng-messages="requiredForm.authorname.$error">
                         <div ng-message="required">Required field</div>
                     </div>
                 </md-input-container>
-                <h4>Main File</h4>
-                <md-input-container class="md-block">
-                    <label>Select view file</label>
-                    <md-select ng-model="vm.required.view" name="viewfile" ng-change="vm.updateViewfile" required>
-                        <md-option ng-repeat="input in vm.required.viewfile" value="{{input}}">
-                            {{input | cutPath}}
-                        </md-option>
-                    </md-select>
-                    <div ng-messages="requiredForm.viewfile.$error">
-                        <div ng-message="required">Required field</div>
-                    </div>
+                <md-input-container>
+                    <label>Affiliation</label>
+                    <input ng-model="vm.author.affiliation">
                 </md-input-container>
-                <h4>Licenses</h4>
-                <md-input-container class="md-block">
-                    <md-radio-group ng-model="vm.selectLicenses" ng-change="vm.updateAllLicenses">
-                        <md-radio-button value="open">Least restrictive - Text: <strong>CC-BY-4.0</strong> Code: <strong>BSD-2-Clause</strong> Data: <strong>CC-BY-4.0</strong> UI Bindings: <strong>MIT</strong></md-radio-button>
-                        <md-radio-button value="closed">Most restrictive - Text: <strong>asdf</strong> Code: <strong>GPL-3.0</strong> Data: <strong></strong> UI Bindings: <strong></strong></md-radio-button>
-                        <md-radio-button value="other">Other</md-radio-button>
-                    </md-radio-group>
+                <md-input-container>
+                    <label>Orcid</label>
+                    <input ng-model="vm.author.orcid">
                 </md-input-container>
-
-
-                <div ng-if="vm.selectLicenses == 'other'">
+                <md-button class="md-raised" ng-disabled="requiredForm.authorname.$invalid" ng-click="vm.addNewAuthor()" aria-label="Add Author">
+                    Add author
+                </md-button>
+                <md-button ng-click="vm.cancelNewAuthor()" aria-label="Cancel">
+                    Cancel
+                </md-button>
+            </div>
+        </md-card-content>
+    </md-card>
+    <!-- ABSTRACT CARD -->
+    <md-card>
+        <md-card-content>
+            <h4>Abstract</h4>
+            <md-input-container class="md-block">
+                <label>Abstract</label>
+                <textarea rows="4" ng-model="vm.required.description" ng-value="vm.required.description" ng-change="vm.simpleUpdate('description', vm.required.description)" name="description" required></textarea>
+                <div ng-messages="requiredForm.description.$error">
+                    <div ng-message="required">Required field</div>
+                </div>
+            </md-input-container>
+        </md-card-content>
+    </md-card>
+    <!-- PUBLICATION DATE AND CITATION CARD -->
+    <md-card>
+        <md-card-content>
+            <h4>Publication Date</h4>
+            <md-datepicker ng-model="vm.required.publicationDate" ng-change="vm.simpleUpdate('publicationDate', vm.required.publicationDate)" md-placeholder="Enter date" name="publicationDate" required></md-datepicker>
+            <div ng-messages="requiredForm.publicationDate.$error">
+                <div ng-message="required">Required field</div>
+            </div>
+            <h4>Citation</h4>
+            <md-input-container class="md-block" flex>
+                <label>Citation</label>
+                <input ng-model="vm.required.softwarePaperCitation" ng-value="vm.required.softwarePaperCitation" ng-change="vm.simpleUpdate('softwarePaperCitation', vm.required.softwarePaperCitation)" name="softwarePaperCitation" required>
+                <div ng-messages="requiredForm.softwarePaperCitation.$error">
+                    <div ng-message="required">Required field</div>
+                </div>
+            </md-input-container>
+        </md-card-content>
+    </md-card>
+    <!-- MAIN FILE CARD -->
+    <md-card>
+        <md-card-content>
+            <h4>Main File</h4>
+            <md-input-container class="md-block">
+                <label>Select main file</label>
+                <md-select ng-model="vm.required.view" name="viewfile" required>
+                    <md-option ng-repeat="input in vm.required.viewfiles track by $index" value="{{$index}}">
+                        {{input | cutPath}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="requiredForm.viewfile.$error">
+                    <div ng-message="required">Required field</div>
+                </div>
+            </md-input-container>
+        </md-card-content>
+    </md-card>
+    <!-- LICENSES CARD -->
+    <md-card>
+        <md-card-content>
+            <h4>Licenses</h4>
+            <div layout="row">
+                <div layout="column">
+                    <h5>Templates</h5>
+                    <md-button class="md-raised" ng-click="vm.useTemplateLicense('open')">Least Restrictive</md-button>
+                    <md-button class="md-raised" ng-click="vm.useTemplateLicense('closed')">Most Restrictive</md-button>
+                </div>
+                <div layout="column" flex>
                     <md-input-container flex>
                         <label>Text License</label>
                         <md-select ng-model="vm.required.textLicense" name="textlicense" required>
@@ -240,84 +201,8 @@
                         </div>
                     </md-input-container>
                 </div>
-                <!--
-                <div style="display:inline-flex">
-                    <md-input-container class="md-block md-select-width">
-                        <label>License: Dataset</label>
-                        <md-select ng-model="requiredctrl.finalCodeLicense"
-                                md-on-close="requiredctrl.codeLicenseSelected()"
-                                data-md-container-class="selectdemoSelectHeader"
-                                multiple="false">
-                        <md-select-header class="demo-select-header">
-                            <input ng-model="requiredctrl.searchTerm"
-                                type="search"
-                                placeholder="Search for a license"
-                                class="demo-header-searchbox md-text">
-                        </md-select-header>
-                        <md-optgroup label="licenses">
-                            <md-option ng-value="license" ng-repeat="license in requiredctrl.codeLicense |
-                            filter:searchTerm">{{license.id}}</md-option>
-                        </md-optgroup>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container class="md-block md-select-width md-select-margin">
-                        <label>License: Dataset</label>
-                        <md-select ng-model="requiredctrl.finalDataLicense"
-                                md-on-close="requiredctrl.dataLicenseSelected()"
-                                data-md-container-class="selectdemoSelectHeader"
-                                multiple="false">
-                        <md-select-header class="demo-select-header">
-                            <input ng-model="requiredctrl.searchTerm"
-                                type="search"
-                                placeholder="Search for a license"
-                                class="demo-header-searchbox md-text">
-                        </md-select-header>
-                        <md-optgroup label="licenses">
-                            <md-option ng-value="license" ng-repeat="license in requiredctrl.dataLicense |
-                            filter:searchTerm">{{license.id}}</md-option>
-                        </md-optgroup>
-                        </md-select>
-                    </md-input-container>       
-                    <md-input-container class="md-block md-select-width md-select-margin">
-                        <label>License: Text</label>
-                        <md-select ng-model="requiredctrl.finalTextLicense"
-                                md-on-close="requiredctrl.textLicenseSelected()"
-                                data-md-container-class="selectdemoSelectHeader"
-                                multiple="false">
-                        <md-select-header class="demo-select-header">
-                            <input ng-model="requiredctrl.searchTerm"
-                                type="search"
-                                placeholder="Search for a license"
-                                class="demo-header-searchbox md-text">
-                        </md-select-header>
-                        <md-optgroup label="licenses">
-                            <md-option ng-value="license" ng-repeat="license in requiredctrl.textLicense |
-                            filter:searchTerm">{{license.id}}</md-option>
-                        </md-optgroup>
-                        </md-select>
-                    </md-input-container>    
-                    <md-input-container class="md-block md-select-width md-select-margin">
-                        <label>License: UI Binding</label>
-                        <md-select ng-model="requiredctrl.finalBindingLicense"
-                                md-on-close="requiredctrl.bindingLicenseSelected()"
-                                data-md-container-class="selectdemoSelectHeader"
-                                multiple="false">
-                        <md-select-header class="demo-select-header">
-                            <input ng-model="requiredctrl.searchTerm"
-                                type="search"
-                                placeholder="Search for a license"
-                                class="demo-header-searchbox md-text">
-                        </md-select-header>
-                        <md-optgroup label="licenses">
-                            <md-option ng-value="license" ng-repeat="license in requiredctrl.ui_bindingLicense |
-                            filter:searchTerm">{{license.id}}</md-option>
-                        </md-optgroup>
-                        </md-select>
-                    </md-input-container>                                                   
-                </div> 
-                -->               
-        </form>
-    </md-card-content>
-</md-card>
-
+            </div>
+        </md-card-content>
+    </md-card>
+</form>
 

@@ -5,16 +5,15 @@
         .module('starter')
         .controller('SpaceTimeController', SpaceTimeController);
     
-    SpaceTimeController.$inject = ['$log', '$scope', 'leafletDrawEvents', 'leafletData', 'creationObject'];
+    SpaceTimeController.$inject = ['$log', '$scope', '$interval', 'leafletDrawEvents', 'leafletData', 'creationObject'];
 
-    function SpaceTimeController($log, $scope, leafletDrawEvents, leafletData, creationObject){
+    function SpaceTimeController($log, $scope, $interval, leafletDrawEvents, leafletData, creationObject){
       var logger = $log.getInstance('SpaceTime');
 
       var drawnItems = new L.FeatureGroup();
     
       var vm = this;
       vm.spacetime = creationObject.getSpacetime();
-      //vm.changeDate = changeDate;
       vm.updateTemporal = creationObject.updateTemporal;
       
       vm.updateTemporalBegin = creationObject.updateTemporalBegin;
@@ -27,6 +26,16 @@
 
       activate();
 
+      // TODO
+      //Just a bad workaround for loading all tiles of the map
+      //As soon as there is a better solution, rewrite this code
+      $scope.$on('$stateChangeSuccess', function(){
+        $interval(function(){
+          leafletData.getMap().then(function(map){
+            map.invalidateSize();
+          });
+        }, 1, 1);
+      });
       ////////
 
       function activate(){
@@ -62,14 +71,7 @@
                   }
                 },
                 polyline:false,
-                circle:false
-                /*circle: {
-                  showArea: true,
-                  metric: false,
-                  shapeOptions: {
-                    color: '#662d91'
-                  }
-                }*/,
+                circle:false,
                 marker: true
               },
               edit: {
@@ -116,15 +118,6 @@
             vm.updateSpatialFiles(drawnItems.toGeoJSON());
           })
         });
-      }
-
-      function changeDate(type, newDate){
-        if(type == "start"){
-          vm.updateTemporal('begin', newDate);
-        }
-        if(type == "end"){
-          vm.updateTemporal('end', newDate);
-        }
       }
         
       function prepareTemporal(){
