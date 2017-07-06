@@ -523,6 +523,14 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .required-add-author{
 	margin-top: 0 !important;
 }
+
+.required-author-placeholder{
+	height: 40px;
+	width: 28px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin: 6px 8px 6px 8px;
+}
 /***********************
 	End creationProcessView
 ************************/
