@@ -25,6 +25,10 @@
             vm.loggedIn = login.isLoggedIn();
             $log.debug(vm.user);
         });
+
+        $scope.$on('$destroy', function(){
+            $mdDialog.cancel();
+        });
         ///////////
 
         if($window.location.href.indexOf('shareURL') >= 0){

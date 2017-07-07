@@ -24,6 +24,11 @@
             vm.openDialog = openDialog;
 
             $log.debug('AuthorCtrl, vm.allPubs: %o',vm.allPubs);
+
+            $scope.$on('$destroy', function(){
+                $mdDialog.cancel();
+            })
+
             activate();
             
             //////////////////
