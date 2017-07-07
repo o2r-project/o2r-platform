@@ -5,9 +5,9 @@
         .module('starter')
         .controller('CreationProcessController', CreationProcessController);
     
-    CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'creationService', 'creationObject', 'httpRequests', 'icons'];
+    CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'creationService', 'creationObject', 'httpRequests', 'icons', '$window'];
 
-    function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, creationService, creationObject, httpRequests, icons){
+    function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, creationService, creationObject, httpRequests, icons, $window){
         var logger = $log.getInstance('CreationPro');
         //default substate
         var defView = 'creationProcess.requiredMetadata';
@@ -23,10 +23,13 @@
         vm.nextState = nextState;
         vm.previousState = previousState;
 
+        
+
         $scope.$on('$destroy', function(){
             saved = false;
             cancelled = false;
             creationObject.destroy();
+            removeUnloadEvent();
         });
 
         $scope.$on('$stateChangeStart', function(event, toState){
@@ -55,7 +58,30 @@
         function activate(){
             creationObject.set(creationService);
             $state.go(defView);
+            addUnloadEvent();
         }
+
+        function addUnloadEvent(){
+            if($window.addEventListener){
+                $window.addEventListener('beforeunload', handleUnloadEvent);
+            } else {
+                $window.attachEvent('onbeforeunload', handleUnloadEvent);
+            }
+        }
+
+        function handleUnloadEvent(event){
+            event.returnValue = 'Do you want to leave the page?';
+        }
+
+        function removeUnloadEvent(){
+            if($window.removeEventListener){
+                $window.removeEventListener('beforeunload', handleUnloadEvent);
+            } else {
+                $window.detachEvent('onbeforeunload', handleUnloadEvent);
+            }
+        }
+
+        
 
         function updateMetadata(){
             creationObject.removeArtifacts("keywords");
