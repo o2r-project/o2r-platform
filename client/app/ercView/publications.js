@@ -86,7 +86,6 @@
 		}
 
 		function getOverallSize(obj){
-			console.log(obj);
 			var result = {};
 			var imageSize = 0;
 			for(var i in obj.files.children){

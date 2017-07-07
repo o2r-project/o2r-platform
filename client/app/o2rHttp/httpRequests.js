@@ -5,9 +5,9 @@
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', 'env', '$window', '$q', 'ngProgressFactory', '$location'];
+	httpRequests.$inject = ['$http', '$log', 'env'];
 		
-	function httpRequests($http, $log, env, $window, $q, ngProgressFactory, $location){
+	function httpRequests($http, $log, env){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,

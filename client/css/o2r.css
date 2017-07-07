@@ -495,6 +495,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
 	Start creationProcessView
 ************************/
+
 .creationProcess-success-toast > .md-toast-content{
 	background-color: green !important;
 }
@@ -530,6 +531,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	padding-left: 6px;
 	padding-right: 6px;
 	margin: 6px 8px 6px 8px;
+}
+
+.required-whiteframe-padding{
+	padding: 5px 5px 5px 5px;
 }
 /***********************
 	End creationProcessView
