@@ -165,7 +165,7 @@ display-files-html iframe{
 	top: 10%;
 }
 
-#home-label{
+.home-label{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -173,7 +173,7 @@ display-files-html iframe{
 	color: #434553;
 }
 
-#home-logo-box{
+.home-logo-box{
 	padding-top: 5%;
 }
 

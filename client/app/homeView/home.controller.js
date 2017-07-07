@@ -5,9 +5,9 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
+    HomeController.$inject = ['$log', '$scope', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
 
-    function HomeController($log, $scope, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
+    function HomeController($log, $scope, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
         var inspectQuery = $stateParams.inspect || '';
         var vm = this;
         vm.submit = submitter;
@@ -27,8 +27,8 @@
         });
         ///////////
 
-        if(window.location.href.indexOf('shareURL') >= 0){
-            parseURL(window.location.href);
+        if($window.location.href.indexOf('shareURL') >= 0){
+            parseURL($window.location.href);
         }
         
         ///////////
