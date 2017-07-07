@@ -20,7 +20,6 @@
             getUibindings: getUibindings,
             simpleUpdate: simpleUpdate,
             updateTemporal: updateTemporal,
-            updateViewfile: updateViewfile,
             updateLicense: updateLicense,
             updateAuthor: updateAuthor,
             addAuthor: addAuthor,
@@ -100,15 +99,11 @@
             erc.metadata.o2r.author.splice(index, 1);
         }
 
-        function updateViewfile(path){
-            //TODO
-            //wait until metadata is updated so that one specific viewfile can be added
-            //erc.metadata.o2r.viewfile = path;
-        }
-
-        function updateLicense(lic, index){
-            if(index || index == 0) erc.metadata.o2r.license[index] = lic;
-            else erc.metadata.o2r.license = lic;
+        //allowed values for lic: 'text', 'code', 'data', 'uibindings'
+        function updateLicense(lic, val){
+            // if(index || index == 0) erc.metadata.o2r.license[index] = lic;
+            // else erc.metadata.o2r.license = lic;
+            erc.metadata.o2r.license[lic] = val;
         }
 
         function simpleUpdate(attr, val){

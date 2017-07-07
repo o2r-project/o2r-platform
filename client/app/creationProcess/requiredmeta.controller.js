@@ -64,32 +64,32 @@
                 .getLicenses()
                 .then(function(result){
                     assignLicenses(result.data);
-                    if(vm.required.license[0]) prepareLicense('textLicense', vm.required.license[0], vm.textLicense);
-                    if(vm.required.license[1]) prepareLicense('codeLicense', vm.required.license[1], vm.codeLicense);
-                    if(vm.required.license[2]) prepareLicense('dataLicense', vm.required.license[2], vm.dataLicense);
-                    if(vm.required.license[3]) prepareLicense('ui_bindingLicense', vm.required.license[3], vm.ui_bindingLicense);
+                    if(vm.required.license.text) prepareLicense('textLicense', vm.required.license.text, vm.textLicense);
+                    if(vm.required.license.code) prepareLicense('codeLicense', vm.required.license.code, vm.codeLicense);
+                    if(vm.required.license.data) prepareLicense('dataLicense', vm.required.license.data, vm.dataLicense);
+                    if(vm.required.license.uibindings) prepareLicense('ui_bindingLicense', vm.required.license.uibindings, vm.ui_bindingLicense);
 
                     $scope.$watch('vm.required.textLicense', function(newVal, oldVal){
                         try{
-                            vm.updateLicense(vm.textLicense[newVal].id, 0);
+                            vm.updateLicense('text', vm.textLicense[newVal].id);
                         } catch (e){}
                     });
 
                     $scope.$watch('vm.required.codeLicense', function(newVal, oldVal){
                         try{
-                            vm.updateLicense(vm.codeLicense[newVal].id, 1);
+                            vm.updateLicense('code', vm.codeLicense[newVal].id);
                         } catch (e){}
                     });
 
                     $scope.$watch('vm.required.dataLicense', function(newVal, oldVal){
                         try{
-                            vm.updateLicense(vm.dataLicense[newVal].id, 2);
+                            vm.updateLicense('data', vm.dataLicense[newVal].id);
                         } catch (e){}
                     });
 
                     $scope.$watch('vm.required.ui_bindingLicense', function(newVal, oldVal){
                         try{
-                            vm.updateLicense(vm.ui_bindingLicense[newVal].id, 3);
+                            vm.updateLicense('uibindings', vm.ui_bindingLicense[newVal].id);
                         } catch (e){}
                     });
                 })
