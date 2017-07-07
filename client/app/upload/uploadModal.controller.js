@@ -56,7 +56,7 @@
             .then(successCallback, errorCallback, progress);
             
             function successCallback(response){
-                console.log("bis hier gehts success")
+                $log.debug("bis hier gehts success");
                 uploadSuccess = true;
                 newErcId = response.data.id;
                 if(vm.checkRunAnalysis){
