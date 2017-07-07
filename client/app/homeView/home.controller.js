@@ -5,9 +5,9 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
+    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
 
-    function HomeController($log, $scope, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
+    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
         var inspectQuery = $stateParams.inspect || '';
         var vm = this;
         vm.submit = submitter;
@@ -104,11 +104,8 @@
             login.getUserCall();
         }
 
-        function submitter(){
-            if (angular.isDefined(vm.searchModel) && vm.searchModel.trim() != ""){
-                var _query = vm.searchModel.replace(/ /g, "+");
-                $location.path('/search').search('q=' + _query);
-            }
+        function submitter(id){
+            $state.go('erc', {ercid: id});
         };
 
         function openDialog(ev){

@@ -36,10 +36,10 @@
             <span class="md-headline">Inspect ERC</span>
           </md-card-title-text>					
         </md-card-title>
-				<form ng-submit="vm.submit()" flex-offset="20">
+				<form ng-submit="vm.submit(vm.ercID)" flex-offset="20">
 					<md-input-container md-no-float class="md-icon-float md-block" >
 						<input type="text" placeholder="Inspect ERC: Enter ID" flex="70" ng-model="vm.ercID">
-						<md-button ui-sref="erc({ercid: vm.ercID})" class="go-button md-primary md-raised white-font">Go</md-button>
+						<md-button type="submit" class="go-button md-primary md-raised white-font">Go</md-button>
 					</md-input-container>
 				</form>
       </md-card>
