@@ -25,7 +25,6 @@
                             <h4>Abstract</h4> {{o2r.description}}   
                             <h4>Publication Date</h4>{{o2r.publicationDate | date : 'yyyy-MM-dd'}}    
                             <h4>Citation</h4> {{o2r.softwarePaperCitation}} 
-                            <h4>Main file</h4> {{o2r.viewfile | cutPath}}
                             <!--Licenses--> 
                             <h4>Licenses</h4>
                             <div layout="column">
@@ -38,12 +37,6 @@
                             <span ng-if="o2r.keywords.length != 0">
                                 <h4>Keywords</h4>
                                 <span ng-repeat="keyword in o2r.keywords">{{keyword}}
-                                    <span ng-hide="$last">, </span>
-                                </span>
-                            </span>
-                            <span ng-if="o2r.paperLanguage.length != 0">
-                                <h4>Language</h4>
-                                <span ng-repeat="lang in o2r.paperLanguage">{{lang}}
                                     <span ng-hide="$last">, </span>
                                 </span>
                             </span>
