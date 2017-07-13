@@ -325,7 +325,7 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
    End pagination of search results
 ************************/
 /***********************
-	Start editMetadatView
+	Start MetadatView
 ************************/
 .edit-button:hover{
 	cursor: pointer;
@@ -334,8 +334,16 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 .edit-metadata-label-color{
 	color: rgba(0,0,0, 0.54);
 }
+
+.metadata-spacetime-padding{
+	padding-top: 5px;
+}
+
+.metadata-author-padding{
+	padding-bottom: 5px;
+}
 /***********************
-	End editMetadatView
+	End MetadatView
 ************************/
 /***********************
 	Start compareView

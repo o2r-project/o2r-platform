@@ -103,6 +103,7 @@
         function updateLicense(lic, val){
             // if(index || index == 0) erc.metadata.o2r.license[index] = lic;
             // else erc.metadata.o2r.license = lic;
+            logger.info('updating license.', lic);
             erc.metadata.o2r.license[lic] = val;
         }
 

@@ -9,6 +9,7 @@
             "starter.o2rHttp",
             "starter.o2rInspect",
             "starter.o2rErcDownload",
+            "starter.o2rMetadataView",
             "treeControl",
             "hljs",
             "ui.router", 

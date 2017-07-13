@@ -140,13 +140,11 @@
                 prepareLicense('codeLicense', openLicense[1], vm.codeLicense);
                 prepareLicense('dataLicense', openLicense[2], vm.dataLicense);
                 prepareLicense('ui_bindingLicense', openLicense[3], vm.ui_bindingLicense);
-                vm.updateLicense(openLicense);
             } else if(type == 'closed'){
                 prepareLicense('textLicense', closedLicense[0], vm.textLicense);
                 prepareLicense('codeLicense', closedLicense[1], vm.codeLicense);
                 prepareLicense('dataLicense', closedLicense[2], vm.dataLicense);
                 prepareLicense('ui_bindingLicense', closedLicense[3], vm.ui_bindingLicense);
-                vm.updateLicense(closedLicense);
             }
         }
 
