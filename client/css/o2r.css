@@ -402,6 +402,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	max-height: 88px !important;
 	margin-top: 27vh !important;
 }
+}
 
 .erc-side-content{
 	padding-right: 0 !important;
@@ -494,4 +495,5 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 
 /***********************
 	End reproduceView
+<<<<<<< HEAD
 ************************/
