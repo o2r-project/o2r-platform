@@ -4,7 +4,7 @@
     angular
         .module('starter')
         .controller('SpaceTimeController', SpaceTimeController);
-    
+
     SpaceTimeController.$inject = ['$rootScope', '$scope', 'leafletDrawEvents'];
 
     function SpaceTimeController($rootScope, $scope, leafletDrawEvents){
@@ -92,7 +92,7 @@
           handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
         });
     });
-        
+
     }
 
 })();

@@ -8,28 +8,7 @@
             "starter.o2rCompare",
             "starter.o2rHttp",
             "treeControl",
-            "ui.router",
-            "hljs",
-            "ngFileUpload",
-            "hljs",
-            "ui.router",
-            "ngFileUpload",
-            "hljs",
-            "ui.router",
-            "ngFileUpload",
-            "hljs",
-            "ui.router",
-            "ngFileUpload",
-            "hljs",
-            "ui.router",
-            "ngFileUpload",
-            "hljs",
-            "ui.router",
-            "ngFileUpload",
-            "hljs",
-            "ui.router",
-            "ngFileUpload",
-            "hljs",
+              "hljs",
             "ui.router",
             "ngFileUpload",
             'ngAnimate',
@@ -41,48 +20,10 @@
             'angularUtils.directives.dirPagination',
             'ngProgress',
             'ngIframeResizer',
+            'rzModule',
             'ui-leaflet'])
-        .constant('icons', icons())
+        .constant('icons')
         .config(config);
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider', '$compileProvider', '$mdDateLocaleProvider'];
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
-        $compileProvider.preAssignBindingsEnabled(true);
-
-
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
-        $compileProvider.preAssignBindingsEnabled(true);
-
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
-        $compileProvider.preAssignBindingsEnabled(true);
-
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
-        $compileProvider.preAssignBindingsEnabled(true);
-
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
-        $compileProvider.preAssignBindingsEnabled(true);
-
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
-        $compileProvider.preAssignBindingsEnabled(true);
-
 
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
 
@@ -310,6 +251,12 @@
                 controller: 'PrivacyController',
                 controllerAs: 'vm'
             })
+            .state('explore', {
+                url: "/explore",
+                templateUrl: "app/searchView/exploreERC.html",
+                controller: 'ExploreController',
+                controllerAs: 'vm'
+            })
             .state('404', {
                 url: "/404",
                 templateUrl: "app/templates/404.html"
@@ -341,14 +288,6 @@
         ];
 
         for(var i in icons){
-
-            object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
-
-
-
-
-
-
 
             object[icons[i].name] = path + icons[i].fn + path2;
         }
@@ -399,7 +338,6 @@
         $log.debug('searchResultsService, term: ' + term);
         return metadata.callMetadata_search(term);
     }
-})();
 
     examineService.$inject = ['$log', '$stateParams', 'publications'];
     function examineService($log, $stateParams, publications){
@@ -407,10 +345,4 @@
         $log.debug('called /examine/%s', ercId);
         return publications.getRequest(ercId);
     }
-})();
-})();
-})();
-})();
-})();
-})();
 })();

@@ -10,57 +10,49 @@
     SearchController.$inject = ['$scope','$stateParams','$q', '$log', 'httpRequests', '$location', 'searchResults', 'header', 'icons','leafletData'];
     function SearchController($scope,$stateParams, $q, $log, httpRequests, $location, searchResults, header, icons,leafletData){
       var coordinates_selected;
-      var endto;
-      var beginfrom;
-      var endfrom;
-      var endto;
-      var beginto;
+      var from;
+      var to;
+      var x;
+       var vm = this;
+       var date1 = new Date(2014, 3, 1);
+   var date2 = new Date();
+   var day;
+   var dateArray = [date1];
+   while(date1 <= date2) {
+       day = date1.getDate()
+       date1 = new Date(date1.setDate(++day));
+       dateArray.push(date1);
+   }
+   $scope.slider = {
+      minValue: dateArray[0],
+     maxValue: dateArray[dateArray.length-1],
+     value: dateArray[0], // or new Date(2016, 7, 10) is you want to use different instances
+     options: {
+       stepsArray: dateArray,
+       translate: function(date) {
+         if (date != null)
+         from =$scope.slider.minValue;
+         to =$scope.slider.maxValue;
+           return date.toISOString();
 
-      var vm = this;
-      $scope.beginfromDate = new Date();
-      $scope.begintoDate = new Date();
-      $scope.endfromDate =  new Date();
-      $scope.endtoDate = new Date();
-      $scope.month = 4;
-
-      vm.selectedendtodate=selectedendtodate;
-      vm.beginfromDate=beginfromDate;
-      vm.begintoDate=begintoDate;
-      vm.endfromDate=endfromDate;
-      vm.states = ('Geosciences Visualization Ecology Cartography').split(' ').map(function (state) { return { abbrev: state }; });
-      vm.options = ('Libraries Functions Data').split(' ').map(function (state) { return { abbrev: state }; });
-
-
-
-      function selectedendtodate(){
-  endto= $scope.endtoDate;
- console.log(JSON.stringify(endto,'end'));
-
-}
-function beginfromDate(){
-beginfrom= $scope.beginfromDate;
-console.log(JSON.stringify(beginfrom,'bf'));
-
-}
-function begintoDate(){
-beginto= $scope.begintoDate;
-console.log(JSON.stringify(beginto,'bt'));
-
-}
-function endfromDate(){
-endfrom= $scope.endfromDate;
-console.log(JSON.stringify(endfrom,'bt'));
-
-}
+       },
+       //onChange: callingtemporalsearch
+     }
+   };
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.allPubs = map(searchResults);
         vm.allPubs.data.hits.hits.length>0 ? vm.selectedComp = vm.allPubs.data.hits.hits[0]._source : null;
         vm.selectComp = (comp) => {vm.selectedComp = comp};
         vm.submit = search;
-        vm.button= callingspatialsearch;
-        vm.Button=callingtemporalsearch;
-        vm.Buttons=callingtemporalsearche;
+        vm.callingspatialsearch=callingspatialsearch;
+        vm.people = [
+          {name: "Theme" ,sub:"GEOSCIENCES",sub1:"ECOLOGY",sub2:"REMOTE SENSING" },
+          {name: "Libraries",sub:"GGPLOT",sub1:"PLYR",sub2:"SPLINE"},
+          {name: "Dataset",sub:"CSV",sub1:"TXT",sub2:"RMD"}
+        ];
+
+
 
 
         $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
@@ -78,7 +70,11 @@ console.log(JSON.stringify(endfrom,'bt'));
                 },
                 controls: {
                   scale:true,
-                  draw: {}
+                  draw: {draw: {
+                    polyline:false,
+                    circle:false
+
+                  }}
 
                 },
 
@@ -104,6 +100,7 @@ console.log(JSON.stringify(endfrom,'bt'));
                             name: 'draw',
                             type: 'group',
                             visible: true,
+
                             layerParams: {
                                 showOnSelector: false
                             }
@@ -132,6 +129,8 @@ console.log(JSON.stringify(endfrom,'bt'));
 
                     console.log(JSON.stringify(layer.toGeoJSON()));
                     coordinates_selected = layer.toGeoJSON();
+                    callingspatialsearch(coordinates_selected);
+
 
                   });
                });
@@ -192,7 +191,7 @@ function callingspatialsearch(){
   console.log('calling spatial search');
   var deferred = $q.defer();
  httpRequests.
- spatialsearch(coordinates_selected)
+ spatialsearch(coordinates_selected,from,to)
  .then(cb1)
  .catch(errorHandler);
 return deferred.promise;
@@ -200,12 +199,12 @@ return deferred.promise;
 
     function cb1(response){
       $log.debug('result of search2: %o', response);
-      var t= response.data.hits.hits;
+      vm.test= response.data.hits.hits;
       var c=[];
-      for (var x in t){
-        c.push(t[x]._source.metadata.o2r.spatial.geometry);
+      for (var x in vm.test){
+        c.push(vm.test[x]._source.metadata.o2r.spatial.geometry);
       }
-      console.log(c,'response array');
+      console.log(vm.test,'response array');
       deferred.resolve(response);
           angular.extend($scope, {
                   geojson: {
@@ -229,41 +228,46 @@ return deferred.promise;
 
   }
   //temporalsearching
-  function callingtemporalsearch(){
+
+  /*function callingtemporalsearch(){
     console.log('calling temporal search');
     var deferred = $q.defer();
    httpRequests.
-   temporalsearch(beginfrom,beginto)
+   temporalsearch(from,to)
    .then(cb1)
    .catch(errorHandler);
   return deferred.promise;
 
-  function cb1(response){
-    $log.debug('result of search: %o', response);
-  }
-  function errorHandler(e){
-    $log.debug('search error: %o', e);
-    deferred.resolve(e);
-  }
-}
 
-function callingtemporalsearche(){
-  console.log('calling temporal search');
-  var deferred = $q.defer();
- httpRequests.
- temporalsearch(endfrom,endto)
- .then(cb1)
- .catch(errorHandler);
-return deferred.promise;
+      function cb1(response){
+        $log.debug('result of search2: %o', response);
+        var t= response.data.hits.hits;
+        var c=[];
+        for (var x in t){
+          c.push(t[x]._source.metadata.o2r.spatial.geometry);
+        }
+        console.log(c,'response array');
+        deferred.resolve(response);
+            angular.extend($scope, {
+                    geojson: {
+                        data: c,
+                        style: {
+                            fillColor: "green",
+                            weight: 2,
+                            opacity: 1,
+                            color: 'white',
+                            dashArray: '3',
+                            fillOpacity: 0.7
+                        }
+                    }
+                });
+      }
 
-function cb1(response){
-  $log.debug('result of search: %o', response);
-}
-function errorHandler(e){
-  $log.debug('search error: %o', e);
-  deferred.resolve(e);
-}
-}
+      function errorHandler(e){
+        $log.debug('search error: %o', e);
+        deferred.resolve(e);
+      }
 
+    }*/
   }
 })();
