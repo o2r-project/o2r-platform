@@ -67,7 +67,7 @@
                     scope.original = scope.comp.metadata.o2r;
                 }
                 // create properties with arrays
-                if(scope.original.author.length == 0) scope.original.author.push({ affiliation: [{}] });
+                if(scope.original.author.length == 0) scope.original.author.push({ affiliation: [""] });
                 for(var i in scope.original.author){
                     if(scope.original.author[i].affiliation.length == 0) scope.original.author[i].affiliation.push("");
                 }

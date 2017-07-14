@@ -4,7 +4,7 @@
 <div flex></div>
 <div>
     <h3>Filesize is too big to display</h3>
-    <center id="erc-bigfile-par">Click <a ng-href="{{file.path}}" download>here</a> to download file.</center>
+    <center id="display-files-bigfile-par">Click <a ng-href="{{file.path}}" download>here</a> to download file.</center>
     <img ng-if="mime == 'image'" ng-src="{{file.path}}?width=140&height=140" />
 </div>
 <div flex></div>
@@ -13,13 +13,13 @@
 <script type="text/javascript" src="bower_components/iframe-resizer/js/iframeResizer.WindowContent.min.js"></script>
 -->
 <!-- display data depending on its mime type -->
-<object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="erc-pdf" type="application/pdf" data="{{file.path}}"></object>
-<img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="erc-img" ng-src="{{file.path}}" />
+<object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="display-files-pdf" type="application/pdf" data="{{file.path}}"></object>
+<img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="display-files-img" ng-src="{{file.path}}" />
 <audio controls ng-if="(mime =='audio') && (file.size <= sizeRestriction)"><source ng-src="{{file.path}}" type="{{file.type}}"></source>Your browser does not support audio element.</audio>
-<video class="erc-video" ng-if="(mime =='video') && (file.size <= sizeRestriction)" controls><source ng-src="{{file.path}}"></source>Your browser does not support the video tag.</video>
+<video class="display-files-video" ng-if="(mime =='video') && (file.size <= sizeRestriction)" controls><source ng-src="{{file.path}}"></source>Your browser does not support the video tag.</video>
 <hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs>
-<iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="erc-html"></iframe>
-<iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="erc-html"></iframe>
+<iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
+<iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <!--
-<div ng-include="file.path" ng-if="(!isInteractive(file.path)) && (file.type=='text/html') && (file.size <= sizeRestriction)" class="erc-html"></div>
+<div ng-include="file.path" ng-if="(!isInteractive(file.path)) && (file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></div>
 -->

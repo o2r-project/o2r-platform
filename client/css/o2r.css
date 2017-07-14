@@ -29,8 +29,21 @@ input {
 	color: white !important;
 }
 
+.o2r-grey-font{
+	color: rgba(0,0,0,0.54);
+}
+
+.o2r-dark-font{
+	color: rgb(67,69,83);
+}
+
 .footer{
 	height: 64px !important;
+}
+
+md-card-header-text{
+	width: 100%;
+	overflow-wrap: break-word;
 }
 
 #o2r-header{
@@ -63,72 +76,53 @@ input {
 .o2r-green-icon{
 	fill: green !important;
 }
+
+.o2r-download-exclude-image{
+	margin-left: 16px;
+}
+
 /************************
    End General
 *************************/
 /***********************
-   Start ERC view
+   Start Display files view
 ************************/
-.erc-pdf{
+.display-files-pdf{
 	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.erc-html{
+.display-files-html{
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	overflow-x: auto;
 }
 
-iframe.erc-html{
-	border-style: none;
-	/*min-height: 80vh;*/
-}
-
-erc-html iframe{
+iframe.display-files-html{
 	border-style: none;
 }
 
-.erc-img{
+display-files-html iframe{
+	border-style: none;
+}
+
+.display-files-img{
 	max-width: 100%;
 }
 
-.erc-video{
+.display-files-video{
 	max-width: 100%;
 }
 
-.erc-bigfile-par{
+.display-files-bigfile-par{
 	text-align: center;
 }
 
-.erc-comptitle{
-	padding-left: 5%;
-}
-
-#erc-treediv{
-		padding-top: 5%;
-}
-md-card-header-text{
-	width: 100%;
-	overflow-wrap: break-word;
-}
-
-treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
-    background: url("../img/o2r-folder.png") no-repeat !important;
-}
-
-treecontrol.tree-classic li.tree-collapsed i.tree-branch-head {
-    background: url("../img/o2r-folder-closed.png") no-repeat !important;
-}
-
-treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
-    background: url("../img/o2r-file.png") no-repeat !important;
-}
 /***********************
-   End ERC view
+   End Display files view
 ************************/
 /***********************
    Start Author-Landingpage view
@@ -356,21 +350,93 @@ o2r-compare md-card-content{
 	End compareView
 ************************/
 /***********************
-	Start examineView
+   Start ERC view
 ************************/
-.examine-main{
-	height: 85vh;
+treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
+    background: url("../img/o2r-folder.png") no-repeat !important;
 }
 
-.examine-main > md-card-content{
+treecontrol.tree-classic li.tree-collapsed i.tree-branch-head {
+    background: url("../img/o2r-folder-closed.png") no-repeat !important;
+}
+
+treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
+    background: url("../img/o2r-file.png") no-repeat !important;
+}
+
+.erc-main{
+	height: 85vh;
+	margin-left: 0;
+}
+
+.erc-main > md-card-content{
 	overflow-y: auto;
 }
 
-.examine-rightside{
+.erc-main > md-card-header{
+	min-height: 2vh;
+}
+.erc-rightside{
 	height: 85vh;
 }
+
+.erc-side-toggle{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	/*background-color: white;*/
+}
+
+.erc-side-toggle-button{
+	min-width: 15px !important;
+	/*max-width: 15px !important;*/
+	min-height: 88px !important;
+	margin: 0 !important;
+	margin-top: 40vh !important;
+	/*padding-bottom: 42vh !important;*/
+}
+
+.erc-side-collapse-button{
+	margin-right: 0 !important;
+	min-width: 15px !important;
+	min-height: 88px !important;
+	max-height: 88px !important;
+	margin-top: 27vh !important;
+}
+
+.erc-side-content{
+	padding-right: 0 !important;
+}
+
+.erc-side-checkbox{
+	margin-top: 12px !important;
+}
+
+.erc-side{
+	height: 85vh;
+	margin-top: calc(64px + 1vh + 8px); /* navbar height + padding top + margin top */
+	margin-bottom: 8px;
+	min-width: 35vw !important;
+}
+
+.erc-side-button-row{
+	margin-right: 15px;
+}
+
+.erc-codedata-header{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.erc-codedata-content{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.erc-backtopaper-button{
+	min-width: 113.344px !important;
+}
 /***********************
-	End examineView
+   End ERC view
 ************************/
 /***********************
 	Start inspectView
@@ -411,7 +477,21 @@ o2r-compare md-card-content{
 	overflow-y: auto;
 }
 
+.manipulate-tabs{
+	height: 70vh;
+}
 
 /***********************
 	End manipulateView
+************************/
+/***********************
+	Start reproduceView
+************************/
+
+.reproduce-dialog{
+	max-height: 85% !important;
+}
+
+/***********************
+	End reproduceView
 ************************/
