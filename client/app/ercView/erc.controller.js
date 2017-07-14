@@ -5,8 +5,8 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', '$mdSidenav', 'env'];
-    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, $mdSidenav, env){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env'];
+    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, header, $mdSidenav, env){
         var defView = {};
         defView.state = 'erc.reproduce';
         defView.name = 'reproduce';
@@ -52,7 +52,8 @@
         /////
 
         function activate(){
-           $state.go(defView.state);
+            header.setTitle('o2r - Discover ERC');
+            $state.go(defView.state);
         }
 
         function fixPath(path){

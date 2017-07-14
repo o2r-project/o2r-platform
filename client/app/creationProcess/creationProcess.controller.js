@@ -5,9 +5,9 @@
         .module('starter')
         .controller('CreationProcessController', CreationProcessController);
     
-    CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'creationService', 'creationObject', 'httpRequests', 'icons', '$window'];
+    CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'header', 'creationService', 'creationObject', 'httpRequests', 'icons', '$window'];
 
-    function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, creationService, creationObject, httpRequests, icons, $window){
+    function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, header, creationService, creationObject, httpRequests, icons, $window){
         var logger = $log.getInstance('CreationPro');
         //default substate
         var defView = 'creationProcess.requiredMetadata';
@@ -56,6 +56,7 @@
         /////////
 
         function activate(){
+            header.setTitle('o2r - Edit ERC');
             creationObject.set(creationService);
             $state.go(defView);
             addUnloadEvent();

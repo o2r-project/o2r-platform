@@ -304,12 +304,13 @@
     function authorInfoService($stateParams, $log, $q, metadata){
         var id = $stateParams.authorid;
         $log.debug('authorInfoService, authorid: ' + id);
-        return metadata.callMetadata_author(id).then(function(result){
-            if(result.status == 404){
-                return $q.reject('404 Not Found');
-            }
-            else return result;
-        });
+        // return metadata.callMetadata_author(id).then(function(result){
+        //     if(result.status == 404){
+        //         return $q.reject('404 Not Found');
+        //     }
+        //     else return result;
+        // });
+        return metadata.callMetadata_author(id);
     }
 
     compInfoService.$inject = ['$stateParams', '$log', '$q', 'publications'];
