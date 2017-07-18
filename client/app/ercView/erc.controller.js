@@ -52,7 +52,7 @@
         /////
 
         function activate(){
-            header.setTitle('o2r - Discover ERC');
+            header.setTitle('o2r - Examine ERC');
             $state.go(defView.state);
         }
 
