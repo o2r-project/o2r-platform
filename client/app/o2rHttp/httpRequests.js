@@ -16,6 +16,7 @@
 			listJobs: listJobs,
 			listSingleJob: listSingleJob,
 			getLoggedUser: getLoggedUser,
+			getSingleUser: getSingleUser,
 			searchComp: searchComp,
 			toZenodo: toZenodo,
 			getShipment: getShipment,
@@ -128,6 +129,15 @@
 		*/
 		function getLoggedUser(){
 			var _url = env.api + '/auth/whoami';
+			return $http.get(_url);
+		}
+
+		/*
+		* @Desc httpRequest for retrieving information of a single user
+		* @Param orcid, String containing an orcid
+		*/
+		function getSingleUser(orcid){
+			var _url = env.api + '/user/' + orcid;
 			return $http.get(_url);
 		}
 

@@ -300,17 +300,20 @@
         return object;
     }
 
-    authorInfoService.$inject = ['$stateParams', '$log', '$q', 'metadata'];
-    function authorInfoService($stateParams, $log, $q, metadata){
+    authorInfoService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'httpRequests'];
+    function authorInfoService($stateParams, $log, $q, metadata, httpRequests){
+        var logger = $log.getInstance('authorInfo');
         var id = $stateParams.authorid;
-        $log.debug('authorInfoService, authorid: ' + id);
-        // return metadata.callMetadata_author(id).then(function(result){
-        //     if(result.status == 404){
-        //         return $q.reject('404 Not Found');
-        //     }
-        //     else return result;
-        // });
-        return metadata.callMetadata_author(id);
+        logger.info('authorid: ' + id);
+        return httpRequests.getSingleUser(id)
+            .then(function(result){
+                logger.info(result);
+                return metadata.callMetadata_author(id);
+            })
+            .catch(function(e){
+                logger.info(e);
+                return $q.reject(e.statusText);
+            });
     }
 
     compInfoService.$inject = ['$stateParams', '$log', '$q', 'publications'];
