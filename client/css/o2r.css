@@ -185,6 +185,10 @@ display-files-html iframe{
 	margin-top: 0;
 	color: rgba(0, 0, 0, 0.54);
 }
+
+.home-example{
+	padding-top: 5vh;
+}
 /***********************
    End Home view
 ************************/

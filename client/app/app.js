@@ -289,7 +289,8 @@
             {name: 'required', category: 'action', fn: 'assignment_late'},
             {name: 'graph', category: 'action', fn: 'assessment'},
             {name: 'assignment', category: 'action', fn: 'assignment'},
-            {name: 'compass', category: 'action', fn: 'explore'}
+            {name: 'compass', category: 'action', fn: 'explore'},
+            {name: 'folder', category: 'file', fn: 'folder'}
         ];
 
         for(var i in icons){

@@ -5,13 +5,17 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
+    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory', 'icons'];
 
-    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
+    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory, icons){
         var inspectQuery = $stateParams.inspect || '';
         var vm = this;
+        vm.icons = icons;
+        vm.publicLink = 'https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA';
+        vm.useExample = useExample;
         vm.submit = submitter;
         vm.openDialog = openDialog;
+        vm.openMenu = openMenu;
         //vm.loggedIn = login.isLoggedIn;
         vm.user = {};
         vm.isLoggedIn;
@@ -28,6 +32,8 @@
 
         $scope.$on('$destroy', function(){
             $mdDialog.cancel();
+            vm.scieboUrl = '';
+            vm.scieboPath = '';
         });
         ///////////
 
@@ -122,6 +128,15 @@
                 clickOutsideToClose: true,
                 fullscreen: false
             });
+        }
+
+        function openMenu($mdMenu, ev){
+            $mdMenu.open(ev);
+        }
+
+        function useExample(publicLink, folder){
+            vm.scieboPath = folder;
+            vm.scieboUrl = publicLink;
         }
     }
 })();
