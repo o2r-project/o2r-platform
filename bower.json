@@ -37,7 +37,10 @@
     "leaflet-draw": "git://github.com/michaelguild13/Leaflet.draw.git#master",
     "angular-simple-logger": "^0.1.7",
     "ui-leaflet-draw": "^0.0.5",
-    "angular-logger": "^1.4.0"
+    "angular-logger": "^1.4.0",
+    "intro.js": "intro-js#^2.5.0",
+    "angular-intro.js": "^3.3.0",
+    "angular-cookies": "^1.6.5"
   },
   "devDependencies": {
     "angular-mocks": "1.6.2",
@@ -49,7 +52,7 @@
     "angular-ui-router": "^0.3.2"
   },
   "resolutions": {
-    "angular": "1.6.4",
+    "angular": "1.6.5",
     "leaflet": "1.0.3",
     "ui-leaflet": "1.0.3"
   }

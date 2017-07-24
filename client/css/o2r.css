@@ -551,3 +551,16 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
 	End creationProcessView
 ************************/
+/***********************
+	Start IntroJs
+************************/
+.introjs-donebutton{
+	color: #333 !important;
+}
+
+.introjs-helperNumberLayer{
+	background: linear-gradient(to bottom, #006599 0%, #004286 100%) !important;
+}
+/***********************
+	End IntroJs
+************************/

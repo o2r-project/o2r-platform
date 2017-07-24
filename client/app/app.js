@@ -24,7 +24,9 @@
             'ngProgress',
             'ngIframeResizer',
             'ui-leaflet',
-            'angular-logger'])
+            'angular-logger',
+            'angular-intro',
+            'ngCookies'])
         .constant('icons', icons())
         .config(config)
         .run(run);

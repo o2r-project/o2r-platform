@@ -31,6 +31,9 @@
 <script type="text/javascript" src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
 <script type="text/javascript" src="bower_components/ui-leaflet-draw/dist/ui-leaflet-draw.js"></script>
 <script type="text/javascript" src="bower_components/angular-logger/dist/angular-logger.min.js"></script>
+<script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-cookies/angular-cookies.min.js"></script>
 
 
 <!-- Libraries CSS -->
@@ -42,6 +45,7 @@
 <link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
 <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
+<link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -160,7 +164,7 @@
             </form>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
-            <md-button class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
+            <md-button id="o2r-login" class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
         </div>
     </md-toolbar>
     <!-- End header -->
