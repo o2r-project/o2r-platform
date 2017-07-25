@@ -5,8 +5,9 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env'];
-    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, header, $mdSidenav, env){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login'];
+    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login){
+        var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
         defView.name = 'reproduce';
@@ -15,6 +16,7 @@
         vm.icons = icons;
         vm.server = env.server;
         vm.publication = erc;
+        vm.ercId = vm.publication.id;
         vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.file.filepath));
         vm.originalfile = angular.copy(vm.file);
         vm.currentNavItem = defView.name;
@@ -43,9 +45,13 @@
             name: vm.publication.metadata.o2r.file.filename
         });
 
+        vm.loggedIn = login.isLoggedIn();
+        vm.shipped = false;
+        vm.publish = true;
+        vm.sendToZenodo = sendToZenodo;
+        vm.publishInZenodo = publishInZenodo;
 
-
-        $log.debug(vm.publication);
+        logger.info(vm.publication);
 
         activate();
 
@@ -54,13 +60,74 @@
         function activate(){
             header.setTitle('o2r - Examine ERC');
             $state.go(defView.state);
+            getShipment();
+        }
+
+        function getShipment(){
+            httpRequests.getShipment(vm.ercId)
+                .then(function (res){
+                    logger.info(res);
+                    if(res.data.length > 0){ 
+                        vm.shipped=true;
+                        httpRequests.getStatus(res.data[0])
+                        .then(function (res2){
+                            logger.info(res2);
+                            if (res2.data.status == "shipped"){
+                                vm.publish = false;
+                            }
+                            if (res2.data.status == "published"){
+                                vm.publish = true;
+                            }    
+                        })
+                        .catch(function (err2){
+                            logger.info(err2);
+                        })
+                    }
+                })
+                .catch(function (err){
+                    logger.info(err);
+                });
+        }
+
+        function sendToZenodo(){
+            var progressbar = ngProgressFactory.createInstance();
+			progressbar.setHeight('3px');
+			progressbar.start();
+
+            httpRequests.toZenodo(vm.ercId)
+            .then(function (res) {
+					logger.info(res);
+                    vm.shipped=true;
+                    vm.publish=false;
+                    progressbar.complete();
+			})
+            .catch(function (err){
+                logger.info(err);
+            })     
+        }
+
+        function publishInZenodo(){
+            httpRequests.getShipment(vm.ercId)
+                .then(function (res){
+                    httpRequests.publishERC(res.data[0])
+                    .then(function (res2){
+                        logger.info("published")  
+                        logger.info(res2) 
+                    })
+                    .catch(function (err2){
+                        logger.info(err2);
+                    })
+                })
+                .catch(function (err){
+                    logger.info(err);
+                });
         }
 
         function fixPath(path){
             var str = '/data/';
             path = '/api/v1/compendium/' + path;
             var newPath = path.replace(str, str+'data/');
-            $log.debug('fixed path is: %s', newPath);
+            logger.info('fixed path is: %s', newPath);
             return newPath;
         }
 
