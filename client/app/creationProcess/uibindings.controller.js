@@ -3,16 +3,26 @@
 
     angular
         .module('starter')
-        .controller('UIBindings', UIBindings);
+        .controller('UIBindingsController', UIBindingsController);
     
-    UIBindings.$inject = ['$scope', '$rootScope', '$stateParams', 'httpRequests', '$log'];
+    UIBindingsController.$inject = ['$scope', '$log', 'creationObject'];
 
-    function UIBindings($scope, $rootScope, $stateParams, httpRequests, $log){
+    function UIBindingsController($scope, $log, creationObject){
+        var logger = $log.getInstance('UiBindings');
+
         var vm = this;
+        vm.bindings = creationObject.getUibindings();
+
         vm.purposes = ["change variable", "change visualization", "exchange dataset"];
         vm.widgets = [];
         vm.inferWidget = inferWidget;
 
+        $scope.$on('$destroy', function(){
+            logger.info(angular.toJson(creationObject.getUibindings()));
+        });
+
+        ////////
+        
         function inferWidget(){
             
         }

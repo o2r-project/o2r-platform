@@ -30,7 +30,7 @@
 			return deferred.promise;	
 
 			function callback(response){
-				$log.debug('getRequest callback: %o', response);
+				$log.debug('getRequest callback: ', response);
 				publications = response.data;
 				deferred.resolve(response.data);
 			}
@@ -86,7 +86,6 @@
 		}
 
 		function getOverallSize(obj){
-			console.log(obj);
 			var result = {};
 			var imageSize = 0;
 			for(var i in obj.files.children){

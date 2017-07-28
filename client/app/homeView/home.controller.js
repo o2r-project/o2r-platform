@@ -5,19 +5,56 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory'];
+    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory', 'icons', 'ngIntroService', '$cookies'];
 
-    function HomeController($log, $scope, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory){
+    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory, icons, ngIntroService, $cookies){
+        var logger = $log.getInstance('HomeCtrl');
         var inspectQuery = $stateParams.inspect || '';
+        var cookie = 'introduction_was_seen';
         var vm = this;
+        vm.icons = icons;
+        vm.publicLink = 'https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA';
+        vm.useExample = useExample;
         vm.submit = submitter;
         vm.openDialog = openDialog;
+        vm.openMenu = openMenu;
         //vm.loggedIn = login.isLoggedIn;
         vm.user = {};
         vm.isLoggedIn;
         vm.sendScieboUrl = sendScieboUrl;
         vm.validUrl = true;
         vm.ercID = inspectQuery;
+        vm.autostart = false;
+        vm.introOptions = {
+            steps: [
+            {
+                element: '#o2r-login',
+                intro: 'Login with your Orcid Account, for uploading ERCs, etc...'
+            },
+            {
+                element: '#home-create-erc',
+                intro: 'You can upload ERC from your PC or directly from the cloud.'
+            },
+            {
+                element: '#home-create-examples',
+                intro: 'Check out our example ERCs, to see how it works.'
+            },
+            {
+                element: '#home-inspect-erc',
+                intro: 'Type in the ID of an existing ERC to directly see its content.'
+            },
+            {
+                element: '#home-inspect-examples',
+                intro: 'Check out our example ERCs, to see how it works.'
+            }
+            ],
+            tooltipPosition: 'auto',
+            hideNext: false,
+            showProgress: true,
+            scrollToElement: true,
+            showBullets: false
+        };
+
         activate();
         
         $scope.$on('setUser', function(){
@@ -25,13 +62,32 @@
             vm.loggedIn = login.isLoggedIn();
             $log.debug(vm.user);
         });
+
+        $scope.$on('$destroy', function(){
+            $mdDialog.cancel();
+            vm.scieboUrl = '';
+            vm.scieboPath = '';
+        });
         ///////////
 
-        if(window.location.href.indexOf('shareURL') >= 0){
-            parseURL(window.location.href);
+        function activate(){
+            if($window.location.href.indexOf('shareURL') >= 0){
+                parseURL($window.location.href);
+            }
+
+            header.setTitle('o2r - opening reproducible research');
+            login.getUserCall();
+
+            try {
+                var cookiecontent = $cookies.getObject(cookie);
+                if(cookiecontent != 'yes'){
+                    startIntro();
+                }
+            } catch (error) {
+                logger.info('Introduction has been seen already.');
+            }
         }
         
-        ///////////
         //Working example: http://localhost/#!/home?shareURL=https://uni-muenster.sciebo.de/index.php/s/m7k16mNmfDbSO0P&path=/metatainer
         function parseURL(url){
             url = url.split('%2F').join('/');
@@ -39,21 +95,51 @@
             vm.scieboPath = url.split('path=/')[1];
         }
 
-        function sendScieboUrl(){
+        function sendScieboUrl(url, path, analysis){
             var progressbar = ngProgressFactory.createInstance();
 			progressbar.setHeight('3px');
 			progressbar.start();
 
-            httpRequests.uploadViaSciebo(vm.scieboUrl, vm.scieboPath)
+            var id;
+            httpRequests
+                .uploadViaSciebo(url, path)
+                .then(scieboCallback)
+                .catch(errorHandler);
+
+            function scieboCallback(response){
+                id = response.data.id;
+                if(analysis){
+                    httpRequests
+                        .newJob({compendium_id: id})
+                        .then(goToCreation)
+                        .catch(errorHandler);
+                } else {
+                    goToCreation();
+                }
+            }
+
+            function goToCreation(){
+                progressbar.complete();
+                $location.path('/creationProcess/' + id);
+            }
+
+            function errorHandler(err){
+                $log.debug(err);
+                progressbar.complete();
+            }
+            /*
+            httpRequests
+                .uploadViaSciebo(url, path)
 				.then(function (response) {
                     vm.validUrl=true;
-					httpRequests.singleCompendium(response.data.id)
+					httpRequests
+                        .singleCompendium(response.data.id)
 						.then(responseMetadata)
 						.catch(errorHandlerMetadata);
 
 					function responseMetadata(data){
 						progressbar.complete();
-						$location.path('/creationProcess/' + data.data.id + '/requiredMetadata');
+						$location.path('/creationProcess/' + data.data.id);
 					}	
 
 					function errorHandlerMetadata(err){
@@ -66,18 +152,12 @@
 					progressbar.complete();
                     vm.validUrl=false;
 				});	
+                */
         }
 
-        function activate(){
-            header.setTitle('o2r - opening reproducible research');
-            login.getUserCall();
-        }
 
-        function submitter(){
-            if (angular.isDefined(vm.searchModel) && vm.searchModel.trim() != ""){
-                var _query = vm.searchModel.replace(/ /g, "+");
-                $location.path('/search').search('q=' + _query);
-            }
+        function submitter(id){
+            $state.go('erc', {ercid: id});
         };
 
         function openDialog(ev){
@@ -90,6 +170,20 @@
                 clickOutsideToClose: true,
                 fullscreen: false
             });
+        }
+
+        function openMenu($mdMenu, ev){
+            $mdMenu.open(ev);
+        }
+
+        function useExample(publicLink, folder){
+            vm.scieboPath = folder;
+            vm.scieboUrl = publicLink;
+        }
+
+        function startIntro(){
+            $cookies.put(cookie, 'yes');
+            vm.autostart = true;
         }
     }
 })();

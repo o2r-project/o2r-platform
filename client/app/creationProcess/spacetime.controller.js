@@ -4,95 +4,139 @@
     angular
         .module('starter')
         .controller('SpaceTimeController', SpaceTimeController);
+    
+    SpaceTimeController.$inject = ['$log', '$scope', '$interval', 'leafletDrawEvents', 'leafletData', 'creationObject'];
 
-    SpaceTimeController.$inject = ['$rootScope', '$scope', 'leafletDrawEvents'];
+    function SpaceTimeController($log, $scope, $interval, leafletDrawEvents, leafletData, creationObject){
+      var logger = $log.getInstance('SpaceTime');
 
-    function SpaceTimeController($rootScope, $scope, leafletDrawEvents){
-    var drawnItems = new L.FeatureGroup();
-    $rootScope.meta.temporal.begin = new Date();
-    $rootScope.meta.temporal.end = new Date();
+      var drawnItems = new L.FeatureGroup();
+    
+      var vm = this;
+      vm.spacetime = creationObject.getSpacetime();
+      vm.updateTemporal = creationObject.updateTemporal;
+      
+      vm.updateTemporalBegin = creationObject.updateTemporalBegin;
+      vm.updateTemporalEnd = creationObject.updateTemporalEnd;
+      vm.updateSpatialFiles = creationObject.updateSpatialFiles;
 
-    $scope.changeDate = function changeDate(type, newDate){
-      if(type == "start"){
-        $rootScope.meta.temporal.begin = newDate
-      }
-      if(type == "end"){
-        $rootScope.meta.temporal.end = newDate
-      }
-    }
+      $scope.$on('$destroy', function(){
+          logger.info(angular.toJson(creationObject.getSpacetime()));
+      });
 
-    angular.extend($scope, {
-      map: {
-        center: {
-          lat: 42.20133,
-          lng: 2.19110,
-          zoom: 2
-        },
-        drawOptions: {
-          position: "bottomright",
-          draw: {
-            polygon: {
-              metric: false,
-              showArea: true,
-              drawError: {
-                color: '#b00b00',
-                timeout: 1000
+      activate();
+
+      // TODO
+      //Just a bad workaround for loading all tiles of the map
+      //As soon as there is a better solution, rewrite this code
+      $scope.$on('$stateChangeSuccess', function(){
+        $interval(function(){
+          leafletData.getMap().then(function(map){
+            map.invalidateSize();
+          });
+        }, 1, 1);
+      });
+      ////////
+
+      function activate(){
+        prepareTemporal();
+
+        if(!angular.equals(vm.spacetime.spatial.files, {})){
+          L.geoJson(vm.spacetime.spatial.files, {
+            onEachFeature: function(feature, layer){
+              drawnItems.addLayer(layer);
+            }
+          });
+        }
+
+        angular.extend(vm, {
+          map: {
+            center: {
+              lat: 42.20133,
+              lng: 2.19110,
+              zoom: 2
+            },
+            drawOptions: {
+              position: "bottomright",
+              draw: {
+                polygon: {
+                  metric: false,
+                  showArea: true,
+                  drawError: {
+                    color: '#b00b00',
+                    timeout: 1000
+                  },
+                  shapeOptions: {
+                    color: 'blue'
+                  }
+                },
+                polyline:false,
+                circle:false,
+                marker: true
               },
-              shapeOptions: {
-                color: 'blue'
+              edit: {
+                featureGroup: drawnItems,
+                remove: true
               }
             },
-            polyline:false
-            ,
-            circle:false
-            /*circle: {
-              showArea: true,
-              metric: false,
-              shapeOptions: {
-                color: '#662d91'
+            layers: {
+              baselayers: {
+                xyz: {
+                    name: 'OpenStreetMap (XYZ)',
+                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    type: 'xyz'
+                }
+              },
+              overlays: {
+                "Geojson": {
+                  name: 'Union',
+                  type: 'geoJSONShape',
+                  data: vm.spacetime.spatial.files,
+                  visible: true
+                }
               }
-            }*/,
-            marker: true
-          },
-          edit: {
-            featureGroup: drawnItems,
-            remove: true
+            }
           }
-        }
-      }
-    });
-
-    var handle = {
-      created: function(e,leafletEvent, leafletObject, model, modelName) {
-        drawnItems.addLayer(leafletEvent.layer);
-        $rootScope.meta.spatial.union = (drawnItems.toGeoJSON());
-      },
-      edited: function(arg) {},
-      deleted: function(arg) {
-        var layers;
-        layers = arg.layers;
-        drawnItems.removeLayer(layer);
-      },
-      drawstart: function(arg) {},
-      drawstop: function(arg) {},
-      editstart: function(arg) {},
-      editstop: function(arg) {},
-      deletestart: function(arg) {},
-      deletestop: function(arg) {}
-    };
-
-    var drawEvents = leafletDrawEvents.getAvailableEvents();
-    drawEvents.forEach(function(eventName){
-        $scope.$on('leafletDirectiveDraw.' + eventName, function(e, payload) {
-          //{leafletEvent, leafletObject, model, modelName} = payload
-          var leafletEvent, leafletObject, model, modelName; //destructuring not supported by chrome yet :(
-          leafletEvent = payload.leafletEvent, leafletObject = payload.leafletObject, model = payload.model,
-          modelName = payload.modelName;
-
-          handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
         });
-    });
 
+        leafletData.getMap().then(function(map){
+          var drawnItems = vm.map.drawOptions.edit.featureGroup;
+          drawnItems.addTo(map);
+          map.on('draw:created', function(e){
+            var layer = e.layer;
+            drawnItems.addLayer(layer);
+            vm.updateSpatialFiles(drawnItems.toGeoJSON());
+          });
+
+          map.on('draw:deleted', function(e){
+            var layer = e.layer;
+            drawnItems.removeLayer(layer);
+            vm.updateSpatialFiles(drawnItems.toGeoJSON());
+          });
+
+          map.on('draw:edited', function(e){
+            vm.updateSpatialFiles(drawnItems.toGeoJSON());
+          })
+        });
+      }
+        
+      function prepareTemporal(){
+        if(angular.isUndefined(vm.spacetime.temporal.begin) || vm.spacetime.temporal.begin == null){
+           vm.spacetime.temporal.begin = new Date();
+           logger.info('setting new begin date');
+        } else {
+          vm.spacetime.temporal.begin = new Date(vm.spacetime.temporal.begin);
+          logger.info('found existing begin date');
+        }
+        if(angular.isUndefined(vm.spacetime.temporal.end) || vm.spacetime.temporal.end == null){
+          vm.spacetime.temporal.end = new Date();
+          logger.info('setting new end date');
+        } else {
+          vm.spacetime.temporal.end = new Date(vm.spacetime.temporal.end);
+          logger.info('found existing end date');
+        }
+        vm.updateTemporal('begin', vm.spacetime.temporal.begin);
+        vm.updateTemporal('end', vm.spacetime.temporal.end);
+      }
     }
-
 })();

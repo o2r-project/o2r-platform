@@ -9,6 +9,7 @@
             "starter.o2rHttp",
             "starter.o2rInspect",
             "starter.o2rErcDownload",
+            "starter.o2rMetadataView",
             "treeControl",
               "hljs",
             "ui.router",
@@ -23,13 +24,18 @@
             'ngProgress',
             'ngIframeResizer',
             'rzModule',
-            'ui-leaflet'])
-        .constant('icons')
-        .config(config);
+            'ui-leaflet',
+            'angular-logger',
+            'angular-intro',
+            'ngCookies',
+            'ngSanitize'])
+        .constant('icons', icons())
+        .config(config)
+        .run(run);
+    
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env', 'logEnhancerProvider'];
 
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env'];
-
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env){
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env, logEnhancerProvider){
         $compileProvider.preAssignBindingsEnabled(true);
 
         $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/']);
@@ -38,6 +44,7 @@
         if(env.disableTracking) console.log("Tracking globally disabled!");
 
         $logProvider.debugEnabled(env.enableDebug);
+        logEnhancerProvider.prefixPattern = '%2$s: '; 
         if(!env.enableDebug) console.log('Debug logs disabled!');
         /* eslint-enable angular/window-service, angular/log */
 
@@ -131,7 +138,9 @@
             .warnPalette('customWarn')
             .backgroundPalette('grey');
 
-        $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
+        $urlRouterProvider.when('', '/home');
+        $urlRouterProvider.when('/', '/home');
+        $urlRouterProvider.otherwise("/404"); // For any unmatched url, send to /404
         $stateProvider
             .state('home', {
                 url: "/home?inspect",
@@ -139,61 +148,46 @@
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
-            /*
-            .state('erc', {
-                url: "/erc/:ercid",
-                templateUrl: "app/ercView/erc.html",
-                controller: 'ErcController',
-                controllerAs: 'vm',
-                resolve: {
-                    compInfo: compInfoService,
-                    compFJob: compFJobService,
-                    compSJob: compSJobService
-                }
-            })
-            */
             .state('creationProcess', {
-                abstract: true,
                 url: "/creationProcess/:ercid",
                 templateUrl: "app/creationProcess/creationProcess.html",
                 controller: "CreationProcessController",
-                controllerAs: "cpctrl"
+                controllerAs: "vm",
+                resolve: {
+                    creationService: creationService
+                },
+                onExit: function(creationObject){
+                    creationObject.destroy();
+                }
             })
-            .state('requiredMetadata',{
-                url:"/requiredMetadata",
-                parent: "creationProcess",
+            .state('creationProcess.requiredMetadata', {
                 templateUrl: "app/creationProcess/requiredMetadata.html",
                 controller: 'RequiredMetaController',
-                controllerAs: 'requiredctrl'
+                controllerAs: 'vm'
             })
-            .state('optionalMetadata',{
-                url:"/optionalMetadata",
-                parent: "creationProcess",
+            .state('creationProcess.optionalMetadata', {
                 templateUrl: "app/creationProcess/optionalMetadata.html",
                 controller: 'OptionalMetaController',
                 controllerAs: 'vm'
             })
-            .state('spacetimeMetadata',{
-                url:"/spacetimeMetadata",
-                parent: "creationProcess",
+            .state('creationProcess.spacetimeMetadata', {
                 templateUrl: "app/creationProcess/spacetimeMetadata.html",
                 controller: 'SpaceTimeController',
                 controllerAs: 'vm'
             })
-            .state('uibindings',{
-                url:"/uibindings",
-                parent: "creationProcess",
+            .state('creationProcess.uibindings', {
                 templateUrl: "app/creationProcess/uibindings.html",
-                controller: 'UIBindings',
+                controller: 'UIBindingsController',
                 controllerAs: 'vm'
-            })
+            })                             
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
                 controller: 'AuthorController',
                 controllerAs: 'vm',
                 resolve: {
-                    authorInfo: authorInfoService
+                    authorInfo: authorInfoService,
+                    author: authorService
                 }
             })
             .state('search', {
@@ -214,14 +208,6 @@
                     erc: ercService
                 }
             })
-            /*
-            .state('examine.compare', {
-                //url: "/compare?left&right&lmime&rmime",
-                templateUrl: "app/compareView/compare.html",
-                controller: 'CompareController',
-                controllerAs: 'vm'
-            })
-            */
             .state('erc.reproduce', {
                 templateUrl: "app/reproduceView/reproduce.html",
                 controller: 'ReproduceController',
@@ -252,6 +238,15 @@
                 controller: "CompareAnalysisController",
                 controllerAs: 'vm'
             })
+            .state('admin', {
+                url: "/admin",
+                templateUrl: "app/adminView/admin.html",
+                controller: "AdminController",
+                controllerAs: 'vm',
+                resolve: {
+                    admin: adminService
+                }
+            })
             .state('impressum', {
                 url: "/impressum",
                 templateUrl: "app/templates/impressum.html",
@@ -276,6 +271,16 @@
             });
     }
 
+    run.$inject = ['$rootScope', '$state', '$log'];
+    function run($rootScope, $state, $log){
+        var logger = $log.getInstance('Run');
+        $rootScope.$on('$stateChangeError', function(event) {
+            logger.info('stateChangeError fired');
+            event.preventDefault();
+            return $state.go('404');
+        });
+    }
+
     function icons(){
         var path = 'img/ic_';
         var path2 = '_48px.svg';
@@ -295,11 +300,17 @@
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
             {name: 'rowing', category: 'action', fn: 'rowing'},
             {name: 'add', category: 'content', fn: 'add'},
+            {name: 'remove', category: 'content', fn: 'remove'},
             {name: 'edit', category: 'editor', fn: 'mode_edit'},
             {name: 'lock_open', category: 'action', fn: 'lock_open'},
             {name: 'lock_outline', category: 'action', fn: 'lock_outline'},
             {name: 'navigate_next', category: 'image', fn: 'navigate_next'},
-            {name: 'navigate_before', category: 'image', fn: 'navigate_before'}
+            {name: 'navigate_before', category: 'image', fn: 'navigate_before'},
+            {name: 'required', category: 'action', fn: 'assignment_late'},
+            {name: 'graph', category: 'action', fn: 'assessment'},
+            {name: 'assignment', category: 'action', fn: 'assignment'},
+            {name: 'compass', category: 'action', fn: 'explore'},
+            {name: 'folder', category: 'file', fn: 'folder'}
         ];
 
         for(var i in icons){
@@ -310,54 +321,116 @@
         return object;
     }
 
-    authorInfoService.$inject = ['$stateParams', '$log', 'metadata'];
-    function authorInfoService($stateParams, $log, metadata){
+    authorInfoService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'httpRequests'];
+    function authorInfoService($stateParams, $log, $q, metadata, httpRequests){
+        var logger = $log.getInstance('authorInfo');
         var id = $stateParams.authorid;
-        $log.debug('authorInfoService, authorid: ' + id);
-        return metadata.callMetadata_author(id);
+        logger.info('authorid: ' + id);
+        return httpRequests.getSingleUser(id)
+            .then(function(result){
+                logger.info(result);
+                return metadata.callMetadata_author(id);
+            })
+            .catch(function(e){
+                logger.info(e);
+                return $q.reject(e.statusText);
+            });
     }
 
-    compInfoService.$inject = ['$stateParams', '$log', 'publications'];
-    function compInfoService($stateParams, $log, publications){
+    authorService.$inject = ['$stateParams', '$q', 'httpRequests'];
+    function authorService($stateParams, $q, httpRequests){
+        var id = $stateParams.authorid;
+        return httpRequests.getSingleUser(id)
+            .then(function(result){
+                if(result.status == 404){
+                    return $q.reject('404 Not Found');
+                } else return result;
+            });
+    }
+
+    compInfoService.$inject = ['$stateParams', '$log', '$q', 'publications'];
+    function compInfoService($stateParams, $log, $q, publications){
         var ercId = $stateParams.ercid;
         $log.debug('compInfoService, ercid: ' + ercId);
-        return publications.getRequest(ercId);
+        return publications.getRequest(ercId).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
     //TODO
     //query param status might need to be changed to filter all finished jobs
-    compFJobService.$inject = ['$stateParams', 'jobs'];
-    function compFJobService($stateParams, jobs){
+    compFJobService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compFJobService($stateParams,$q, jobs){
         var ercId = $stateParams.ercid;
         var query = {
             compendium_id: ercId
             //status: 'success'
         };
-        return jobs.callJobs(query);
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
-    compSJobService.$inject = ['$stateParams', 'jobs'];
-    function compSJobService($stateParams, jobs){
+    compSJobService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compSJobService($stateParams, $q, jobs){
         var ercId = $stateParams.ercid;
         var query = {
             compendium_id: ercId,
             status: 'running'
         };
-        return jobs.callJobs(query);
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
-    searchResultsService.$inject = ['$stateParams', '$log', 'metadata'];
-    function searchResultsService($stateParams, $log, metadata){
+    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata'];
+    function searchResultsService($stateParams, $log, $q, metadata){
         $log.debug('searchResultsService, param: ', $stateParams);
         var term = $stateParams.q;
         $log.debug('searchResultsService, term: ' + term);
-        return metadata.callMetadata_search(term);
+        return metadata.callMetadata_search(term).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
-    ercService.$inject = ['$log', '$stateParams', 'publications'];
-    function ercService($log, $stateParams, publications){
+    ercService.$inject = ['$log', '$stateParams', '$q', 'publications'];
+    function ercService($log, $stateParams, $q, publications){
         var ercId = $stateParams.ercid;
         $log.debug('GET /erc/%s', ercId);
-        return publications.getRequest(ercId);
+        return publications.getRequest(ercId).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
+    }
+
+    creationService.$inject = ['$log', '$stateParams', '$q', 'publications'];
+    function creationService($log, $stateParams, $q, publications){
+        var ercId = $stateParams.ercid;
+        $log.debug('GET /erc/%s', ercId);
+        return publications.getRequest(ercId).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
+    }
+
+    adminService.$inject = ['$log', 'httpRequests'];
+    function adminService($log, httpRequests){
+        return httpRequests.getAllUsers();
     }
 })();

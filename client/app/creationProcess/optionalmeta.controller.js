@@ -5,33 +5,28 @@
         .module('starter')
         .controller('OptionalMetaController', OptionalMetaController);
     
-    OptionalMetaController.$inject = ['$scope','$rootScope', '$stateParams', 'httpRequests', '$log'];
+    OptionalMetaController.$inject = ['$scope', '$log', 'creationObject', 'icons'];
 
-    function OptionalMetaController($scope, $rootScope, $stateParams, httpRequests, $log){
-       
-       processKeywords();       
+    function OptionalMetaController($scope, $log, creationObject, icons){
+        var logger = $log.getInstance('OptMeta');
 
-       $scope.updateKeywords = function(){
-           var keywords = $scope.keywords.split(';');
-           $rootScope.meta.keywords = keywords;
-       }
+        var vm = this;
+        vm.icons = icons;
+        vm.optional = creationObject.getOptional();
 
-       $scope.updateResearchquestion = function(){
-           $rootScope.meta.researchQuestion = $scope.changes.researchQuestion;
-       }       
+        vm.simpleUpdate = creationObject.simpleUpdate;
+        
+        $scope.$on('$destroy', function(){
+            logger.info(angular.toJson(creationObject.getOptional()));
+        });
 
-       $scope.updateHypotheses = function(){
-           $rootScope.meta.hypotheses = $scope.changes.hypotheses;
-       }
+        activate();
 
-       function processKeywords(){
-            $scope.keywords ="";
-            for(var keyword in $rootScope.meta.keywords){
-                $scope.keywords=$scope.keywords + "; " + $rootScope.meta.keywords[keyword]; 
-            }
-            $scope.keywords=$scope.keywords.substr(1,$scope.keywords.length);
-       }
-    
+        /////////
+
+        function activate(){
+
+        }
     }
 
 })();

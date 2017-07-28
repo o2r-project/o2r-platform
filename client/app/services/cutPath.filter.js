@@ -15,12 +15,13 @@
 
         function cutter (input){
             if(input){
-                var re = /(http[s]?:\/\/)?(localhost)?(\/api\/v\d\/.*\/)(data\/.*\.\w+)/;
-                var cuts = input.match(re);
+                var re = /tmp\/o2r\/compendium\/.*\/(data\/.*\.\w+)/;
+                //var re = /(http[s]?:\/\/)?(localhost)?(\/api\/v\d\/.*\/)(data\/.*\.\w+)/;
                 try {
+                    var cuts = input.match(re);
                     var relPath = cuts[cuts.length-1];
                 } catch (error) {
-                    $log.info('cutPath.filter.js: No match found. Setting result to original');
+                    $log.info('cutPath.filter.js: No match found. No changes made.');
                     var relPath = input;
                 }
                 return relPath;

@@ -5,8 +5,8 @@
         .module('starter')
         .controller('CompareController', CompareController);
 
-    CompareController.$inject = ['$scope', '$stateParams', '$log', 'publications'];
-    function CompareController($scope, $stateParams, $log, publications){
+    CompareController.$inject = ['$scope', '$stateParams', '$log'];
+    function CompareController($scope, $stateParams, $log){
         
         var first = {};
         var second = {};
