@@ -5,9 +5,9 @@
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', 'env'];
+	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
 		
-	function httpRequests($http, $log, env){
+	function httpRequests($http, $log, $q, env){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -24,7 +24,9 @@
 			publishERC: publishERC,
 			updateMetadata: updateMetadata,
 			uploadViaSciebo: uploadViaSciebo,
-			getLicenses: getLicenses
+			getLicenses: getLicenses,
+			setUserLevel: setUserLevel,
+			getAllUsers: getAllUsers
 		};
 
 		return service;
@@ -185,6 +187,48 @@
 
 		function getLicenses(){
 			return $http.get("http://licenses.opendefinition.org/licenses/groups/all.json");
+		}
+
+		/**
+		 * @desc set level of user
+		 * @param {string} id, id of user whose level should be set
+		 * @param {integer} level, new level that should be set for user
+		 */
+		function setUserLevel(id, level){
+			var _url = env.api + '/user/' + id + '?level=' + level;
+			return $http.patch(_url);
+		}
+
+		/**
+		 * @desc gets information of all users
+		 * @return array of user objects
+		 */
+		function getAllUsers(){
+			var result = [];
+			var counter = 0;
+			var _url = env.api + '/user/';
+			var deferred = $q.defer();
+			$http.get(_url)
+				.then(cb)
+				.catch(function(e){
+					deferred.reject(e);
+				});
+			
+			return deferred.promise;
+			
+			function cb(res){
+				for(var i in res.data.results){
+					var _url2 = _url + res.data.results[i];
+					$http.get(_url2)
+						.then(function(r){
+							result.push(r.data);
+							counter++;	
+							if(counter == res.data.results.length){
+								deferred.resolve(result);
+							}
+						});
+				}
+			}
 		}
 	};
 })();

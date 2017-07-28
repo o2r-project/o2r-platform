@@ -20,8 +20,11 @@
 					<md-icon ng-show="vm.sortType == 'id' && !vm.sortReverse" md-svg-src="{{vm.icons.upArrow}}" class="o2r-icon"></md-icon>					
 				</md-button>
 				<md-divider></md-divider>
-				<md-button>
-					Other Options
+				<md-button ng-click="vm.showProfile($event)">
+					Profile
+				</md-button>
+				<md-button ng-if="vm.showAdmin()">
+					Admin Area
 				</md-button>
 				
 			</md-card-content>

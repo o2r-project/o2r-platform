@@ -7,4 +7,8 @@
     window.__env.disableTracking = /*true/false, default is false*/;
     window.__env.enableDebug = /*true/false, default is false*/;
     window.__env.piwik = /*String containing piwik server adress*/;
+    window.__env.userLevels = {};
+    window.__env.userLevels.admin = /*Integer containing the required user level for admin status*/;
+    window.__env.userLevels.regular = /*Integer containing the required user level for regular status*/;
+    window.__env.userLevels.restricted = /*Integer containing the required user level for restricted status*/;
 })();

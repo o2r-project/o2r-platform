@@ -10,7 +10,12 @@
         sizeRestriction: window.__env.sizeRestriction || 10000000,
         disableTracking: window.__env.disableTracking || false,
         enableDebug: window.__env.enableDebug || false,
-        version: window.__env.version || 'deployment'
+        version: window.__env.version || 'deployment',
+        userLevels: {
+            admin: window.__env.userLevels.admin || 1000,
+            regular: window.__env.userLevels.regular || 500,
+            restricted: window.__env.userLevels.restricted || 0
+        }
     };
     env.api = env.server + env.c_api;
 

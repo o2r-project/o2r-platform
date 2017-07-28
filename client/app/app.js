@@ -26,7 +26,8 @@
             'ui-leaflet',
             'angular-logger',
             'angular-intro',
-            'ngCookies'])
+            'ngCookies',
+            'ngSanitize'])
         .constant('icons', icons())
         .config(config)
         .run(run);
@@ -184,7 +185,8 @@
                 controller: 'AuthorController',
                 controllerAs: 'vm',
                 resolve: {
-                    authorInfo: authorInfoService
+                    authorInfo: authorInfoService,
+                    author: authorService
                 }
             })
             .state('search', {
@@ -234,6 +236,15 @@
                 templateUrl: "app/compareAnalysisView/compareAnalysis.html",
                 controller: "CompareAnalysisController",
                 controllerAs: 'vm'
+            })
+            .state('admin', {
+                url: "/admin",
+                templateUrl: "app/adminView/admin.html",
+                controller: "AdminController",
+                controllerAs: 'vm',
+                resolve: {
+                    admin: adminService
+                }
             })
             .state('impressum', {
                 url: "/impressum",
@@ -319,6 +330,17 @@
             });
     }
 
+    authorService.$inject = ['$stateParams', '$q', 'httpRequests'];
+    function authorService($stateParams, $q, httpRequests){
+        var id = $stateParams.authorid;
+        return httpRequests.getSingleUser(id)
+            .then(function(result){
+                if(result.status == 404){
+                    return $q.reject('404 Not Found');
+                } else return result;
+            });
+    }
+
     compInfoService.$inject = ['$stateParams', '$log', '$q', 'publications'];
     function compInfoService($stateParams, $log, $q, publications){
         var ercId = $stateParams.ercid;
@@ -398,5 +420,10 @@
             }
             else return result;
         });
+    }
+
+    adminService.$inject = ['$log', 'httpRequests'];
+    function adminService($log, httpRequests){
+        return httpRequests.getAllUsers();
     }
 })();  

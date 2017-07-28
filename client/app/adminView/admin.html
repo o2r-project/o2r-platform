@@ -1,0 +1,82 @@
+<div flex="100" layout="row">
+    <form name="adminForm" flex="70">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Admin Area</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-input-container>
+                    <label>Search</label>
+                    <input ng-model="vm.searchText">
+                </md-input-container>
+                <table>
+                    <tr><th>User Name</th><th>User Id</th><th>User Level</th><th>User Group</th><th></th></tr>
+                    <tr ng-repeat="user in vm.users | filter:vm.searchText">
+                        <td>
+                            <md-input-container>
+                                {{user.name}}
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container>
+                            {{user.id}}
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container>
+                                <label>User Level</label>
+                                <input type="number" ng-model="user.level" name="userlevel" required>
+                                <div class="errors" ng-messages="adminForm.userlevel.$error">
+                                    <div ng-message="required">Required</div>
+                                </div>
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container>
+                                <label>User Group</label>
+                                <md-select ng-model="user.level">
+                                    <md-option ng-value="vm.levels.restricted">Restricted</md-option>
+                                    <md-option ng-value="vm.levels.regular">Regular</md-option>
+                                    <md-option ng-value="vm.levels.admin">Admin</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </td>
+                        <td><md-button ng-disabled="vm.disable(user)" class="md-primary" ng-click="vm.updateUser(user.id, user.level, $event)">Save</md-button></td>
+                    </tr>
+                </table>
+            </md-card-content>
+        </md-card>
+    </form>
+    <div flex="30">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Description of user groups</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                So far, there are 3 possible user groups. <br> 
+                See a detailed description of permissions and restrictions for each group below. 
+                <h2 class="md-headline">Restricted</h2>
+                <table>
+                    <tr><td>Permissions</td><td>See ERC</td></tr>
+                    <tr><td>Restrictions</td><td>UPload ERC, Execute ERC, Change User Levels</td></tr>
+                </table>
+                <md-divider></md-divider>
+                <h2 class="md-headline">Regular</h2>
+                <table>
+                    <tr><td>Permissions</td><td>See ERC, Upload ERC, Execute ERC</td></tr>
+                    <tr><td>Restrictions</td><td>Change User Levels</td></tr>
+                </table>
+                <md-divider></md-divider>
+                <h2 class="md-headline">Admin</h2>
+                <table>
+                    <tr><td>Permissions</td><td>See ERC, Upload ERC, Execute ERC, Change User Levels</td></tr>
+                    <tr><td>Restrictions</td><td>none</td></tr>
+                </table>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
