@@ -9,7 +9,8 @@
 
     function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs, $location){
         var authorId = $stateParams.authorid; // id from author
-
+        var uploadSuccess = false;
+        var newErcId = '';
         var vm = this;
         vm.icons = icons;
         vm.checkRunAnalysis = true;
@@ -19,7 +20,9 @@
                     };
         vm.done = function() {
                         $mdDialog.cancel();
-                        $location.path('/creationProcess/' + vm.uploadedERCid + '/requiredMetadata');
+                        if(uploadSuccess){
+                            $location.path('/creationProcess/' + newErcId);
+                        }
                     };            
         vm.selected = (file) => {vm.f = file;};
         vm.onLoad = false;
@@ -53,7 +56,9 @@
             .then(successCallback, errorCallback, progress);
             
             function successCallback(response){
-                console.log("bis hier gehts success")
+                $log.debug("bis hier gehts success");
+                uploadSuccess = true;
+                newErcId = response.data.id;
                 if(vm.checkRunAnalysis){
                     jobs.executeJob(response.data.id)
                         .then(execJobCallback, errorCallback);
@@ -72,6 +77,7 @@
                 vm.doneButton = true;
                 vm.checkUpload = false;
                 vm.uploadError = response;
+                uploadSuccess = false;
             }
             function progress(evt){
                 file.progress = parseInt(95.0 * evt.loaded/evt.total);

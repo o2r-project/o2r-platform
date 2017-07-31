@@ -36,7 +36,7 @@
 				.catch(errorHandler);
 			
 			function callback(user){
-				$log.debug('getUserCall callback: %o', user);
+				$log.debug('getUserCall callback: ', user);
 				setUser(user.data);
 				return;
 			}

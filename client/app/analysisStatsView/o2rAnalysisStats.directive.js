@@ -113,6 +113,9 @@
             activate();
 
             ////////
+            scope.$on('$destroy', function(){
+                $mdDialog.cancel();
+            })
 
             scope.$on('set liveStatus', function(event, data){
                 $log.debug(data);

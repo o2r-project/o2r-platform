@@ -10,6 +10,7 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
@@ -30,7 +31,10 @@
 <script type="text/javascript" src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
 <script type="text/javascript" src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
 <script type="text/javascript" src="bower_components/ui-leaflet-draw/dist/ui-leaflet-draw.js"></script>
-<script type="text/javascript" src="bower_components/angular-resizable/angular-resizable.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-logger/dist/angular-logger.min.js"></script>
+<script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-cookies/angular-cookies.min.js"></script>
 
 
 <!-- Libraries CSS -->
@@ -42,7 +46,7 @@
 <link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
 <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
-<link rel="stylesheet" href="bower_components/angular-resizable/angular-resizable.min.css" />
+<link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -78,6 +82,7 @@
 <script src="app/o2rHttp/o2rHttp.module.js"></script>
 <script src="app/o2rInspect/o2rInspect.module.js"></script>
 <script src="app/o2rErcDownload/o2rErcDownload.module.js"></script>
+<script src="app/o2rMetadataView/o2rMetadataView.module.js"></script>
 
 <!-- Services -->
 <script src="app/o2rHttp/httpRequests.js"></script>
@@ -87,6 +92,7 @@
 <script src="app/login/login.js"></script>
 <script src="app/services/header.js"></script>
 <script src="app/sockets/socket.js"></script>
+<script src="app/creationProcess/creationObject.factory.js"></script>
 
 
 <!-- Controllers -->
@@ -111,13 +117,14 @@
 <script src="app/manipulateView/manipulate.controller.js"></script>
 <script src="app/substituteView/substitute.controller.js"></script>
 <script src="app/reproduceView/reproduce.controller.js"></script>
+<script src="app/adminView/admin.controller.js"></script>
 
 <!-- Directives -->
 <script src="app/o2rDisplayFiles/o2rSetIframeHeight.directive.js"></script>
 <script src="app/o2rDisplayFiles/o2rDisplayFiles.directive.js"></script>
 <script src="app/metadataPanel/o2rMetadata.directive.js"></script>
 <script src="app/analysisStatsView/o2rAnalysisStats.directive.js"></script>
-<script src="app/editMetadataView/o2rEditMetadata.directive.js"></script>
+<script src="app/o2rMetadataView/o2rMetadataView.directive.js"></script>
 <script src="app/o2rCompare/o2rCompare.directive.js"></script>
 <script src="app/o2rInspect/o2rInspect.directive.js"></script>
 <script src="app/o2rErcDownload/o2rErcDownload.directive.js"></script>
@@ -159,7 +166,7 @@
             </form>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
-            <md-button class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
+            <md-button id="o2r-login" class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
         </div>
     </md-toolbar>
     <!-- End header -->
@@ -175,7 +182,7 @@
     <md-toolbar class="footer">
         <div class="md-toolbar-tools white-font">
             <span flex></span>
-            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>
+            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>&nbsp;|&nbsp;<a href="http://o2r.info/o2r-web-api/" title="API specification"><small>API</small></a>&nbsp;<a><small>endpoint:</small></a>&nbsp;<a href="https://o2r.uni-muenster.de/api/v1/"><small>https://o2r.uni-muenster.de/api/v1/</small></a>
             <span flex></span>
         </div>
     </md-toolbar>

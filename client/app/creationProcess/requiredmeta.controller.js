@@ -5,99 +5,210 @@
         .module('starter')
         .controller('RequiredMetaController', RequiredMetaController);
     
-    RequiredMetaController.$inject = ['$rootScope', '$stateParams', 'httpRequests', '$log'];
+    RequiredMetaController.$inject = ['$scope', '$log','httpRequests', 'creationObject', 'icons'];
 
-    function RequiredMetaController($rootScope, $stateParams, httpRequests, $log){
-        
-        var requiredctrl=this;
+    function RequiredMetaController($scope, $log, httpRequests, creationObject, icons){
+        var logger = $log.getInstance('RequiredMeta');
 
-        requiredctrl.textLicense=[];
-        requiredctrl.codeLicense=[];
-        requiredctrl.dataLicense=[];
-        requiredctrl.ui_bindingLicense=[];
+        var openLicense = ["CC0-1.0", "MIT", "CC0-1.0", "MIT"];
+        var closedLicense = ["CC-BY-NC-4.0", "GPL-3.0", "CC-BY-NC-4.0", "GPL-3.0"];
         
-        requiredctrl.searchTerm='';
-        
-        requiredctrl.finalCodeLicense='';
-        requiredctrl.finalDataLicense='';
-        requiredctrl.finalTextLicense='';
-        requiredctrl.finalBindingLicense='';
-        
+        var vm = this;
+        vm.icons = icons;
+        vm.required = creationObject.getRequired();
+        vm.simpleUpdate = creationObject.simpleUpdate;
 
-        requiredctrl.codeLicenseSelected = codeLicenseSelected;
-        requiredctrl.dataLicenseSelected = dataLicenseSelected;
-        requiredctrl.textLicenseSelected = textLicenseSelected;
-        requiredctrl.bindingLicenseSelected = bindingLicenseSelected;
+        vm.selectLicenses = 'open';
+        vm.updateLicense = creationObject.updateLicense;
+        vm.useTemplateLicense = useTemplateLicense;
+
+        vm.updateAuthor = updateAuthor;
+        vm.removeAuthor = removeAuthor;
+        vm.addAuthor = creationObject.addAuthor;
+        vm.addNewAuthor = addNewAuthor;
+        vm.newAuthor = newAuthor;
+        vm.newAuthorEdit = false;
+        vm.hideAddAuthorButton = false;
+        vm.cancelNewAuthor = cancelNewAuthor;
+        vm.cancelUpdateAuthor = cancelUpdateAuthor;
+
+        vm.textLicense=[];
+        vm.codeLicense=[];
+        vm.dataLicense=[];
+        vm.ui_bindingLicense=[];
+
+        logger.info(vm);
+        $scope.$on('$destroy', function(){
+            logger.info(angular.toJson(creationObject.getRequired()));
+        });
+
+        $scope.$watch('requiredForm.$valid', function(newVal, oldVal){
+            $scope.$parent.vm.setFormValid(newVal);
+        });
         
-        httpRequests.getLicenses().
-            then(function(result){
-                assignLicenses(result.data);        
-            })
-            .catch(function(err){
-                $log.debug(err)
-            });
-        
+        $scope.$watch('vm.required.view', function(newVal, oldVal){
+            try {
+                vm.simpleUpdate('viewfile', vm.required.viewfiles[newVal]);
+            } catch (e) {}
+        });
+
+        activate();
+
+        //////////
+
+        function activate(){
+            preparePublicationDate();
+            prepareViewfile();
+
+            httpRequests
+                .getLicenses()
+                .then(function(result){
+                    assignLicenses(result.data);
+                    if(vm.required.license.text) prepareLicense('textLicense', vm.required.license.text, vm.textLicense);
+                    if(vm.required.license.code) prepareLicense('codeLicense', vm.required.license.code, vm.codeLicense);
+                    if(vm.required.license.data) prepareLicense('dataLicense', vm.required.license.data, vm.dataLicense);
+                    if(vm.required.license.uibindings) prepareLicense('ui_bindingLicense', vm.required.license.uibindings, vm.ui_bindingLicense);
+
+                    $scope.$watch('vm.required.textLicense', function(newVal, oldVal){
+                        try{
+                            vm.updateLicense('text', vm.textLicense[newVal].id);
+                        } catch (e){}
+                    });
+
+                    $scope.$watch('vm.required.codeLicense', function(newVal, oldVal){
+                        try{
+                            vm.updateLicense('code', vm.codeLicense[newVal].id);
+                        } catch (e){}
+                    });
+
+                    $scope.$watch('vm.required.dataLicense', function(newVal, oldVal){
+                        try{
+                            vm.updateLicense('data', vm.dataLicense[newVal].id);
+                        } catch (e){}
+                    });
+
+                    $scope.$watch('vm.required.ui_bindingLicense', function(newVal, oldVal){
+                        try{
+                            vm.updateLicense('uibindings', vm.ui_bindingLicense[newVal].id);
+                        } catch (e){}
+                    });
+                })
+                .catch(function(err){
+                    logger.info(err)
+                });
+
+        }
+
         function assignLicenses(licenses){
             for(var i in licenses){
-                licenses[i].domain_content ? requiredctrl.textLicense.push(licenses[i]) : null;
-                licenses[i].domain_data ? requiredctrl.dataLicense.push(licenses[i]) : null;
-                licenses[i].domain_software ? requiredctrl.codeLicense.push(licenses[i]) : null;
+                licenses[i].domain_content ? vm.textLicense.push(licenses[i]) : null;
+                licenses[i].domain_data ? vm.dataLicense.push(licenses[i]) : null;
+                licenses[i].domain_software ? vm.codeLicense.push(licenses[i]) : null;
             }
-            requiredctrl.ui_bindingLicense=requiredctrl.codeLicense;
-            $rootScope.meta.license==null ? requiredctrl.code="License: Code" : requiredctrl.code=$rootScope.meta.license.code.id;
+            vm.ui_bindingLicense = vm.codeLicense;
         }
 
-        function codeLicenseSelected(){
-            $rootScope.meta.license==null ?  $rootScope.meta.license={} : null; //can be deleted once the metadata object returns a license json object 
-            $rootScope.meta.license.code=requiredctrl.finalCodeLicense;
+        function getLicenseIndex(id, licenses){
+            var result;
+            for(var i in licenses){
+                if (licenses[i].id.toUpperCase() == id.toUpperCase()) result = i;
+            }
+            if(!result) {
+                logger.info('No matching license found. Setting result to null');
+                result = null;
+            }
+            return result;
         }
 
-        function dataLicenseSelected(){
-            $rootScope.meta.license==null ?  $rootScope.meta.license={} : null; //can be deleted once the metadata object returns a license json object
-            $rootScope.meta.license.data=requiredctrl.finalDataLicense;
-        }        
-
-        function textLicenseSelected(){
-            $rootScope.meta.license==null ?  $rootScope.meta.license={} : null; //can be deleted once the metadata object returns a license json object
-            $rootScope.meta.license.text=requiredctrl.finalTextLicense;
-        }        
-
-        function bindingLicenseSelected(){
-            $rootScope.meta.license==null ?  $rootScope.meta.license={} : null; //can be deleted once the metadata object returns a license json object
-            $rootScope.meta.license.binding=requiredctrl.finalBindingLicense;
+        function prepareLicense(type, id, licenses){
+            vm.required[type] = getLicenseIndex(id, licenses);
         }
 
-        requiredctrl.updateTitle = function(){
-            $rootScope.meta.title=requiredctrl.changes.title;
-            console.log(requiredctrl.changes.title)
-            
-        };  
-        requiredctrl.updateAuthor = function(){
-             
-        };  
-        requiredctrl.updateAffiliation = function(){
-            $rootScope.meta.affiliation=requiredctrl.changes.affiliation;
-        };  
-        requiredctrl.updateOrcid = function(){
-            $rootScope.meta.orcid=requiredctrl.changes.orcid;
-        };        
-        requiredctrl.updateAbstract = function(){
-            $rootScope.meta.abstract=requiredctrl.changes.abstract;
-        };  
-        requiredctrl.updateDateCreated = function(){
-            $rootScope.meta.dateCreated=requiredctrl.changes.dateCreated;
-        };                                
-        requiredctrl.updateSoftwarePaperCitation = function(){
-            $rootScope.meta.softwarePaperCitation=requiredctrl.changes.softwarePaperCitation;
-        };   
+        function prepareViewfile(){
+            for(var i in vm.required.viewfiles){
+                if(vm.required.viewfiles[i] == vm.required.viewfile){
+                    vm.required.view = i;
+                    break; 
+                }
+                vm.required.view = 0;
+            }
+        }
+
+        function useTemplateLicense(type){
+            if(type == 'open'){
+                prepareLicense('textLicense', openLicense[0], vm.textLicense);
+                prepareLicense('codeLicense', openLicense[1], vm.codeLicense);
+                prepareLicense('dataLicense', openLicense[2], vm.dataLicense);
+                prepareLicense('ui_bindingLicense', openLicense[3], vm.ui_bindingLicense);
+            } else if(type == 'closed'){
+                prepareLicense('textLicense', closedLicense[0], vm.textLicense);
+                prepareLicense('codeLicense', closedLicense[1], vm.codeLicense);
+                prepareLicense('dataLicense', closedLicense[2], vm.dataLicense);
+                prepareLicense('ui_bindingLicense', closedLicense[3], vm.ui_bindingLicense);
+            }
+        }
+
+        function removeAuthor(index){
+            vm.required.author.splice(index, 1);
+            creationObject.removeAuthor(index);
+        }
+
+        function addNewAuthor(){
+            var author = {};
+            author.name = vm.author.name;
+            author.affiliation = vm.author.affiliation || "";
+            author.orcid = vm.author.orcid || "";
+            vm.required.author.push(author);
+            vm.addAuthor(author);
+            //reset values
+            vm.cancelNewAuthor();
+        }
+
+        function newAuthor(){
+            vm.newAuthorEdit = true;
+            vm.hideAddAuthorButton = true;
+        }
+
+        function cancelNewAuthor(){
+            vm.newAuthorEdit = false;
+            vm.hideAddAuthorButton = false;
+            if(vm.author){
+                vm.author.name = null;
+                vm.author.affiliation = null;
+                vm.author.orcid = null;
+            }
+        }
+
+        function updateAuthor(index){
+            var author = {};
+            author.name = vm.author.name || vm.required.author[index].name;
+            author.affiliation = vm.author.affiliation || vm.required.author[index].affiliation;
+            author.orcid = vm.author.orcid || vm.required.author[index].orcid;
+            vm.required.author[index].name = author.name;
+            vm.required.author[index].affiliation = author.affiliation;
+            vm.required.author[index].orcid = author.orcid;
+            creationObject.updateAuthor(index, author.name, author.affiliation, author.orcid);
+            vm.cancelUpdateAuthor();
+        }
+
+        function cancelUpdateAuthor(){
+            vm.editAuthor = null;
+            if(vm.author){
+                vm.author.name = null;
+                vm.author.affiliation = null;
+                vm.author.orcid = null;
+            }
+        }
+
+        function preparePublicationDate(){
+            if(angular.isUndefined(vm.required.publicationDate) || vm.required.publicationDate == null){
+                vm.required.publicationDate = new Date();
+                logger.info('setting new publicationDate');
+            } else {
+                vm.required.publicationDate = new Date(vm.required.publicationDate);
+                logger.info('found existing publication date')
+            }
+            vm.simpleUpdate('publicationDate', vm.required.publicationDate);
+        }
     }
-
-})();
-
-
-           
-           
-            
-           
-           
-            
+})();         

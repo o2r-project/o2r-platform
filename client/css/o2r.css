@@ -28,8 +28,16 @@ body{
 	color: rgba(0,0,0,0.54);
 }
 
+.o2r-red-font{
+	color: rgb(120,17,24);
+}
+
 .o2r-dark-font{
 	color: rgb(67,69,83);
+}
+
+.o2r-blue-font{
+	color: rgb(0,66,134);
 }
 
 .footer{
@@ -63,7 +71,7 @@ md-card-header-text{
 }
 
 .o2r-red-icon{
-	fill: #8e141c !important;
+	fill: rgb(120,17,24) !important;
 }
 
 .o2r-green-icon{
@@ -157,7 +165,7 @@ display-files-html iframe{
 	top: 10%;
 }
 
-#home-label{
+.home-label{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -165,9 +173,21 @@ display-files-html iframe{
 	color: #434553;
 }
 
-
-#home-logo-box{
+.home-logo-box{
 	padding-top: 5%;
+}
+
+.home-input-folder{
+	margin-bottom: 0;
+}
+
+.home-input-analysis{
+	margin-top: 0;
+	color: rgba(0, 0, 0, 0.54);
+}
+
+.home-example{
+	padding-top: 5vh;
 }
 /***********************
    End Home view
@@ -178,10 +198,6 @@ display-files-html iframe{
 ************************/
 .metabuttons{
 	width:100%;
-}
-
-.cardHeight{
-	height:650px;
 }
 
 .selectdemoSelectHeader {
@@ -225,10 +241,6 @@ display-files-html iframe{
 .search-metadata{
 	width: 25vw;
 	right: 5vw;
-}
-
-.go-button{
-	bottom:1em;
 }
 
 .search-button{
@@ -317,7 +329,7 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
    End pagination of search results
 ************************/
 /***********************
-	Start editMetadatView
+	Start MetadatView
 ************************/
 .edit-button:hover{
 	cursor: pointer;
@@ -326,8 +338,16 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 .edit-metadata-label-color{
 	color: rgba(0,0,0, 0.54);
 }
+
+.metadata-spacetime-padding{
+	padding-top: 5px;
+}
+
+.metadata-author-padding{
+	padding-bottom: 5px;
+}
 /***********************
-	End editMetadatView
+	End MetadatView
 ************************/
 /***********************
 	Start compareView
@@ -483,4 +503,64 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 
 /***********************
 	End reproduceView
+************************/
+/***********************
+	Start creationProcessView
+************************/
+
+.creationProcess-success-toast > .md-toast-content{
+	background-color: green !important;
+}
+
+.creationProcess-failure-toast > .md-toast-content{
+	background-color: red !important;
+}
+
+.creationProcess-divider{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+/*
+.creationProcess-confirm-cancel{
+	z-index: 100;
+}
+*/
+.md-dialog-container{
+	z-index: 100 !important;
+}
+
+.required-last-author{
+	margin-bottom: 0;
+}
+
+.required-add-author{
+	margin-top: 0 !important;
+}
+
+.required-author-placeholder{
+	height: 40px;
+	width: 28px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin: 6px 8px 6px 8px;
+}
+
+.required-whiteframe-padding{
+	padding: 5px 5px 5px 5px;
+}
+/***********************
+	End creationProcessView
+************************/
+/***********************
+	Start IntroJs
+************************/
+.introjs-donebutton{
+	color: #333 !important;
+}
+
+.introjs-helperNumberLayer{
+	background: linear-gradient(to bottom, #006599 0%, #004286 100%) !important;
+}
+/***********************
+	End IntroJs
 ************************/
