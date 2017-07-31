@@ -3,7 +3,7 @@
 
     /* eslint-disable angular/window-service */
     window.__env = window.__env || {};
-
+    window.__env.userLevels = {};
     var env = {
         server : window.__env.server || 'http://localhost',
         c_api: window.__env.api || '/api/v1',
