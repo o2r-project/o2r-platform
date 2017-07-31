@@ -264,6 +264,18 @@ display-files-html iframe{
 	width: 5vw;
 }
 
+.search-searchbar{
+	margin: 8px 8px 8px 8px;
+}
+
+.rzslider .rz-selection{
+	background: #004286;
+}
+
+.rzslider .rz-pointer{
+	background-color: #004286;
+}
+
 /***********************
    End Search view
 ************************/

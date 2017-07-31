@@ -7,38 +7,39 @@
         .module('starter')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope','$stateParams','$q', '$log', 'httpRequests', '$location', 'searchResults', 'header', 'icons','leafletData'];
-    function SearchController($scope,$stateParams, $q, $log, httpRequests, $location, searchResults, header, icons,leafletData){
-      var coordinates_selected;
-      var from;
-      var to;
-      var x;
-       var vm = this;
-       var date1 = new Date(2014, 3, 1);
-   var date2 = new Date();
-   var day;
-   var dateArray = [date1];
-   while(date1 <= date2) {
-       day = date1.getDate()
-       date1 = new Date(date1.setDate(++day));
-       dateArray.push(date1);
-   }
-   $scope.slider = {
-      minValue: dateArray[0],
-     maxValue: dateArray[dateArray.length-1],
-     value: dateArray[0], // or new Date(2016, 7, 10) is you want to use different instances
-     options: {
-       stepsArray: dateArray,
-       translate: function(date) {
-         if (date != null)
-         from =$scope.slider.minValue;
-         to =$scope.slider.maxValue;
-           return date.toISOString();
+    SearchController.$inject = ['$scope','$stateParams','$q', '$log', 'httpRequests', '$location', 'searchResults', 'header', 'icons','leafletData', 'spatialSearch'];
+    function SearchController($scope,$stateParams, $q, $log, httpRequests, $location, searchResults, header, icons,leafletData, spatialSearch){
+        var logger = $log.getInstance('SearchCtrl');
+        var coordinates_selected;
+        var from;
+        var to;
+        var x;
+        var vm = this;
+        var date1 = new Date(2014, 3, 1);
+        var date2 = new Date();
+        var day;
+        var dateArray = [date1];
+        while(date1 <= date2) {
+            day = date1.getDate()
+            date1 = new Date(date1.setDate(++day));
+            dateArray.push(date1);
+        }
+        vm.slider = {
+            minValue: dateArray[0],
+            maxValue: dateArray[dateArray.length-1],
+            value: dateArray[0], // or new Date(2016, 7, 10) is you want to use different instances
+            options: {
+                stepsArray: dateArray,
+                translate: function(date) {
+                    if (date != null)
+                    from = vm.slider.minValue;
+                    to = vm.slider.maxValue;
+                    return date.toISOString();
 
-       },
-       //onChange: callingtemporalsearch
-     }
-   };
+                }
+                //onChange: callingtemporalsearch
+            }
+        };
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.allPubs = map(searchResults);
@@ -51,9 +52,6 @@
           {name: "Libraries",sub:"GGPLOT",sub1:"PLYR",sub2:"SPLINE"},
           {name: "Dataset",sub:"CSV",sub1:"TXT",sub2:"RMD"}
         ];
-
-
-
 
         $log.debug('SearchCtrl, vm.allPubs %o', vm.allPubs);
         $log.debug('SearchCtrl, searchTerm %s', vm.searchTerm);
@@ -69,16 +67,14 @@
                     zoom: 3
                 },
                 controls: {
-                  scale:true,
-                  draw: {draw: {
-                    polyline:false,
-                    circle:false
-
-                  }}
-
+                    scale:true,
+                    draw: {
+                        draw: {
+                        polyline:false,
+                        circle:false
+                        }
+                    }
                 },
-
-
                 layers: {
                     baselayers: {
                         mapbox_light: {
@@ -100,38 +96,23 @@
                             name: 'draw',
                             type: 'group',
                             visible: true,
-
                             layerParams: {
                                 showOnSelector: false
                             }
                         }
-
-
                     }
                 }
-
            });
 
-
            leafletData.getMap().then(function(map) {
-
                leafletData.getLayers().then(function(baselayers) {
-                 var drawnItems = baselayers.overlays.draw;
-
-                  map.on('draw:created', function (e) {
-
+                    var drawnItems = baselayers.overlays.draw;
+                    map.on('draw:created', function (e) {
                     var layer = e.layer;
-
-
                     drawnItems.addLayer(layer);
-
-
-
-                    console.log(JSON.stringify(layer.toGeoJSON()));
+                    logger.info(angular.toJson(layer.toGeoJSON()));
                     coordinates_selected = layer.toGeoJSON();
                     callingspatialsearch(coordinates_selected);
-
-
                   });
                });
            });
@@ -148,19 +129,17 @@
         }
 
         function map(obj){
-
            var o = obj.data.hits.hits;
            var b=[];
             for(var i in o){
                 o[i]._source.id = o[i]._source.compendium_id;
                 try{
                 b.push(o[i]._source.metadata.o2r.spatial.union.features[0]);
+                // {
 
-                {
 
-
-                }
-                throw error()
+                // }
+                // throw error()
               }
               catch (g){
                 console.error("missing spatial");
@@ -168,65 +147,64 @@
             }
             $log.debug('mconfiging result: %o', o,b);
             angular.extend($scope, {
-                        geojson: {
-                            data: b,
-                            style: {
-                                fillColor: "green",
-                                weight: 2,
-                                opacity: 1,
-                                color: 'white',
-                                dashArray: '3',
-                                fillOpacity: 0.7
-                            }
-                        }
-                    });
-
-
+                geojson: {
+                    data: b,
+                    style: {
+                        fillColor: "green",
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        dashArray: '3',
+                        fillOpacity: 0.7
+                    }
+                }
+            });
             return obj;
         }
 //myLayer.addData(b);
 //var myLayer = L.geoJSON().addTo(map);
 
-function callingspatialsearch(){
-  console.log('calling spatial search');
-  var deferred = $q.defer();
- httpRequests.
- spatialsearch(coordinates_selected,from,to)
- .then(cb1)
- .catch(errorHandler);
-return deferred.promise;
+        function callingspatialsearch(){
+            logger.info('calling spatial search');
+            var deferred = $q.defer();
+            var term = spatialSearch.spatialSearch(coordinates_selected, from, to);
+            httpRequests.
+                spatialSearch(term)
+                .then(cb1)
+                .catch(errorHandler);
 
+            return deferred.promise;
 
-    function cb1(response){
-      $log.debug('result of search2: %o', response);
-      vm.test= response.data.hits.hits;
-      var c=[];
-      for (var x in vm.test){
-        c.push(vm.test[x]._source.metadata.o2r.spatial.geometry);
-      }
-      console.log(vm.test,'response array');
-      deferred.resolve(response);
-          angular.extend($scope, {
-                  geojson: {
-                      data: c,
-                      style: {
-                          fillColor: "green",
-                          weight: 2,
-                          opacity: 1,
-                          color: 'white',
-                          dashArray: '3',
-                          fillOpacity: 0.7
-                      }
-                  }
-              });
-    }
+            function cb1(response){
+                $log.debug('result of search2: %o', response);
+                vm.test= response.data.hits.hits;
+                var c=[];
+                for (var x in vm.test){
+                    c.push(vm.test[x]._source.metadata.o2r.spatial.geometry);
+                }
+                logger.info(vm.test,'response array');
+                deferred.resolve(response);
+                angular.extend($scope, {
+                    geojson: {
+                        data: c,
+                        style: {
+                            fillColor: "green",
+                            weight: 2,
+                            opacity: 1,
+                            color: 'white',
+                            dashArray: '3',
+                            fillOpacity: 0.7
+                        }
+                    }
+                });
+            }
 
-    function errorHandler(e){
-      $log.debug('search error: %o', e);
-      deferred.resolve(e);
-    }
+            function errorHandler(e){
+                $log.debug('search error: %o', e);
+                deferred.resolve(e);
+            }
 
-  }
+        }
   //temporalsearching
 
   /*function callingtemporalsearch(){

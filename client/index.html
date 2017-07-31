@@ -39,7 +39,6 @@
 
 
 <!-- Libraries CSS -->
-<link rel="stylesheet" type="text/css" href="css/o2r.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
 <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -49,6 +48,7 @@
 <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
 <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
 <link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
+<link rel="stylesheet" type="text/css" href="css/o2r.css">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -95,6 +95,7 @@
 <script src="app/services/header.js"></script>
 <script src="app/sockets/socket.js"></script>
 <script src="app/creationProcess/creationObject.factory.js"></script>
+<script src="app/searchView/spatialSearch.factory.js"></script>
 
 
 <!-- Controllers -->
@@ -178,7 +179,7 @@
     <md-toolbar class="footer">
         <div class="md-toolbar-tools white-font">
             <span flex></span>
-            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>&nbsp;|&nbsp;<a href="http://o2r.info/o2r-web-api/" title="API specification"><small>API</small></a>&nbsp;<a><small>endpoint:</small></a>&nbsp;<a href="https://o2r.uni-muenster.de/api/v1/"><small>https://o2r.uni-muenster.de/api/v1/</small></a>
+            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>&nbsp;|&nbsp;<a href="http://o2r.info/o2r-web-api/" title="API specification"><small>API</small></a>&nbsp;<a><small>endpoint:</small></a>&nbsp;<a href="https://o2r.uni-muenster.de/api/v1/"><small>https://o2r.uni-muenster.de/api/v1/</small></a>&nbsp;|&nbsp;<a id="o2r-erc-info" href="http://www.dlib.org/dlib/january17/nuest/01nuest.html"><small>More information about ERC</small></a>
             <span flex></span>
         </div>
     </md-toolbar>

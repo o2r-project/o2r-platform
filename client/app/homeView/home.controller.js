@@ -46,6 +46,10 @@
             {
                 element: '#home-inspect-examples',
                 intro: 'Check out our example ERCs, to see how it works.'
+            },
+            {
+                element: '#o2r-erc-info',
+                intro: 'More information about ERC can be found here.'
             }
             ],
             tooltipPosition: 'auto',

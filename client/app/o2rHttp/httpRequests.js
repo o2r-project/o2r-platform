@@ -5,9 +5,9 @@
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
+	httpRequests.$inject = ['$http', '$log', '$q', '$stateParams', 'env'];
 		
-	function httpRequests($http, $log, $q, env){
+	function httpRequests($http, $log, $q, $stateParams, env){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -26,7 +26,8 @@
 			uploadViaSciebo: uploadViaSciebo,
 			getLicenses: getLicenses,
 			setUserLevel: setUserLevel,
-			getAllUsers: getAllUsers
+			getAllUsers: getAllUsers,
+			spatialSearch: spatialSearch
 		};
 
 		return service;
@@ -230,5 +231,14 @@
 				}
 			}
 		}
+
+		/**
+		 * @desc performs a spatial search
+		 * @param {Object} searchObj, contains search term following elasticsearch documentation 
+		 */
+		function spatialSearch(searchObj) {
+            var _url = env.api + '/search';
+            return $http.get(_url, searchObj);
+        }
 	};
 })();
