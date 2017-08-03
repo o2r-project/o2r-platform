@@ -2,7 +2,7 @@
 set -e
 
 # https://docs.docker.com/docker-cloud/builds/advanced/#custom-build-phase-hooks
-PACKAGE_VERSION=$(cat ../README.md | grep -i --after-context 2 "platform version" | tail -1)
+PACKAGE_VERSION=$(cat README.md | grep -i --after-context 2 "platform version" | tail -1)
 echo Add version tag $PACKAGE_VERSION to index.html
 
 sed -i "s/#dev#/$PACKAGE_VERSION/g" ../client/index.html
