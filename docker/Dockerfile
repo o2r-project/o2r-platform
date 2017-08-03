@@ -17,20 +17,23 @@ MAINTAINER o2r-project, https://o2r.info
 
 RUN apk add --no-cache \
     nodejs \
+    # needed for installing dependencies from source:
     git \
-  && git clone --depth 1 -b master https://github.com/o2r-project/o2r-platform /platform \
   && npm install -g bower \
   && echo '{ "allow_root": true }' > /root/.bowerrc
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-WORKDIR /platform
+WORKDIR /etc/nginx/html
+
+COPY client .
+COPY bower.json bower.json
+COPY docker/browserconfig.xml browserconfig.xml
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
 RUN bower install
 
-WORKDIR /etc/nginx/html
-RUN cp -r /platform/client/* .
-
-RUN rm -r /platform \
+RUN rm bower.json \
   && npm uninstall -g bower \
   && apk del \
     git \

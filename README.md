@@ -162,7 +162,7 @@ Otherwise, new compendia will not be indexed anymore.
 
 ## Platform Version
 
-0.9.0
+0.9.1
 
 ## License
 
