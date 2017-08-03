@@ -26,7 +26,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /etc/nginx/html
 
-COPY client .
+COPY ../client .
 COPY bower.json bower.json
 COPY docker/browserconfig.xml browserconfig.xml
 COPY docker/nginx.conf /etc/nginx/nginx.conf
