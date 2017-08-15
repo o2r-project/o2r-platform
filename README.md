@@ -160,6 +160,10 @@ curl -XDELETE 'http://172.17.0.3:9200/o2r'
 
 Otherwise, new compendia will not be indexed anymore.
 
+## Platform Version
+
+0.9.2
+
 ## License
 
 o2r-platform is licensed under Apache License, Version 2.0, see file LICENSE.
