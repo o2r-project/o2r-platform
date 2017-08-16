@@ -10,7 +10,7 @@
                         aria-label="Required Metadata">
                         <md-icon class="white-font" md-svg-src="{{vm.icons.required}}">
                     </md-button>
-                    <strong ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'o2r-blue-font' : (!vm.isValid ? 'o2r-red-font' : 'o2r-grey-font')">Required{{(!vm.isValid && vm.state.current.name != 'creationProcess.requiredMetadata')? ' *' : ''}}</strong>
+                    <strong ng-click="vm.goTo('creationProcess.requiredMetadata')" class="o2r-pointer" ng-class="vm.state.current.name == 'creationProcess.requiredMetadata' ? 'o2r-blue-font' : (!vm.isValid ? 'o2r-red-font' : 'o2r-grey-font')">Required{{(!vm.isValid && vm.state.current.name != 'creationProcess.requiredMetadata')? ' *' : ''}}</strong>
                 </div>
                 <span flex></span>
                 <div>
@@ -21,7 +21,7 @@
                         aria-label="Optional Metadata">
                         <md-icon class="white-font" md-svg-src="{{vm.icons.assignment}}">
                     </md-button>
-                    <strong ng-class="vm.state.current.name == 'creationProcess.optionalMetadata' ? 'o2r-blue-font' : 'o2r-grey-font'">Optional</strong>
+                    <strong ng-click="vm.goTo('creationProcess.optionalMetadata')" class="o2r-pointer" ng-class="vm.state.current.name == 'creationProcess.optionalMetadata' ? 'o2r-blue-font' : 'o2r-grey-font'">Optional</strong>
                 </div>
                 <span flex></span>
                 <div>
@@ -32,7 +32,7 @@
                         aria-label="Spacetime Metadata">
                         <md-icon class="white-font" md-svg-src="{{vm.icons.compass}}">
                     </md-button>
-                    <strong ng-class="vm.state.current.name == 'creationProcess.spacetimeMetadata' ? 'o2r-blue-font' : 'o2r-grey-font'">Spacetime</strong>
+                    <strong ng-click="vm.goTo('creationProcess.spacetimeMetadata')" class="o2r-pointer" ng-class="vm.state.current.name == 'creationProcess.spacetimeMetadata' ? 'o2r-blue-font' : 'o2r-grey-font'">Spacetime</strong>
                 </div>
                 <span flex></span>
                 <div>
@@ -43,7 +43,7 @@
                         aria-label="UI Bindings">
                         <md-icon class="white-font" md-svg-src="{{vm.icons.graph}}">
                     </md-button>
-                    <strong ng-class="vm.state.current.name == 'creationProcess.uibindings' ? 'o2r-blue-font' : 'o2r-grey-font'">UI Bindings</strong>
+                    <strong ng-click="vm.goTo('creationProcess.uibindings')" class="o2r-pointer" ng-class="vm.state.current.name == 'creationProcess.uibindings' ? 'o2r-blue-font' : 'o2r-grey-font'">UI Bindings</strong>
                 </div>
             </div>
             <div flex></div>
