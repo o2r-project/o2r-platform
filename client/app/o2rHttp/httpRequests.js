@@ -237,8 +237,20 @@
 		 * @param {Object} searchObj, contains search term following elasticsearch documentation 
 		 */
 		function spatialSearch(searchObj) {
+			// var deferred = $q.defer();
             var _url = env.api + '/search';
-            return $http.get(_url, searchObj);
+			return $http.post(_url, searchObj);
+			// $.ajax({
+			// 	url:_url, searchObj,
+			// 	data: searchObj,
+			// 	success: function(data, textStauts, xhr){
+			// 		deferred.resolve({data: data, status: textStatus})
+			// 	},
+			// 	error: function(xhr, textStatus, errorThrown){
+			// 		deferred.resolve(errorThrown)
+			// 	}
+			// });
+			// return deferred.promise;
         }
 	};
 })();

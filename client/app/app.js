@@ -11,7 +11,7 @@
             "starter.o2rErcDownload",
             "starter.o2rMetadataView",
             "treeControl",
-              "hljs",
+            "hljs",
             "ui.router",
             "ngFileUpload",
             'ngAnimate',
@@ -28,7 +28,8 @@
             'angular-logger',
             'angular-intro',
             'ngCookies',
-            'ngSanitize'])
+            'ngSanitize',
+            'elasticsearch'])
         .constant('icons', icons())
         .config(config)
         .run(run);
@@ -191,7 +192,7 @@
                 }
             })
             .state('search', {
-                url: "/search?q",
+                url: "/search?q&coords&from&to",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchController',
                 controllerAs: 'vm',
@@ -392,17 +393,18 @@
         });
     }
 
-    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata'];
-    function searchResultsService($stateParams, $log, $q, metadata){
-        $log.debug('searchResultsService, param: ', $stateParams);
-        var term = $stateParams.q;
-        $log.debug('searchResultsService, term: ' + term);
-        return metadata.callMetadata_search(term).then(function(result){
-            if(result.status == 404){
-                return $q.reject('404 Not Found');
-            }
-            else return result;
-        });
+    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'search'];
+    function searchResultsService($stateParams, $log, $q, metadata, search){
+        var logger = $log.getInstance('searchResultsService');
+        var index = 'o2r';
+        logger.info('param: ', $stateParams);
+        var term, coords, from, to = null;
+        if($stateParams.q) term = $stateParams.q;
+        if($stateParams.coords) coords = angular.fromJson($stateParams.coords);
+        if($stateParams.from) from = angular.fromJson($stateParams.from);
+        if($stateParams.to) to = angular.fromJson($stateParams.to);
+        var query = search.prepareQuery(index, term, coords, from, to);
+        return search.search(query);
     }
 
     ercService.$inject = ['$log', '$stateParams', '$q', 'publications'];
