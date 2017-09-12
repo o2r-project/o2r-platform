@@ -26,8 +26,7 @@
 			uploadViaSciebo: uploadViaSciebo,
 			getLicenses: getLicenses,
 			setUserLevel: setUserLevel,
-			getAllUsers: getAllUsers,
-			spatialSearch: spatialSearch
+			getAllUsers: getAllUsers
 		};
 
 		return service;
@@ -231,26 +230,5 @@
 				}
 			}
 		}
-
-		/**
-		 * @desc performs a spatial search
-		 * @param {Object} searchObj, contains search term following elasticsearch documentation 
-		 */
-		function spatialSearch(searchObj) {
-			// var deferred = $q.defer();
-            var _url = env.api + '/search';
-			return $http.post(_url, searchObj);
-			// $.ajax({
-			// 	url:_url, searchObj,
-			// 	data: searchObj,
-			// 	success: function(data, textStauts, xhr){
-			// 		deferred.resolve({data: data, status: textStatus})
-			// 	},
-			// 	error: function(xhr, textStatus, errorThrown){
-			// 		deferred.resolve(errorThrown)
-			// 	}
-			// });
-			// return deferred.promise;
-        }
 	};
 })();

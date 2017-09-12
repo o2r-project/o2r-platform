@@ -56,7 +56,7 @@
                         to = vm.slider.maxValue;
                         return $filter('date')(date, 'd/M/yy');
                     },
-                    onChange: callingsearch
+                    onEnd: callingsearch
                 }
             };
             angular.extend(vm, {
