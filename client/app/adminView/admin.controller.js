@@ -22,7 +22,9 @@
             // if user has not the right user level, the user will be forwarded to 404 page
             httpRequests.getSingleUser(login.getUser().orcid)
                 .then(function(res){
-                    if(res.data.level != vm.levels.admin) $state.go('404');
+                    if(res.data.level < vm.levels.editors){
+                        $state.go('404');
+                    }
                 });
         }
 

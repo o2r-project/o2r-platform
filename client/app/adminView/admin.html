@@ -12,7 +12,7 @@
                     <input ng-model="vm.searchText">
                 </md-input-container>
                 <table>
-                    <tr><th>User Name</th><th>User Id</th><th>User Level</th><th>User Group</th><th></th></tr>
+                    <tr><th>User Name</th><th>User Id</th><th>User Group</th><th></th></tr>
                     <tr ng-repeat="user in vm.users | filter:vm.searchText">
                         <td>
                             <md-input-container>
@@ -26,20 +26,12 @@
                         </td>
                         <td>
                             <md-input-container>
-                                <label>User Level</label>
-                                <input type="number" ng-model="user.level" name="userlevel" required>
-                                <div class="errors" ng-messages="adminForm.userlevel.$error">
-                                    <div ng-message="required">Required</div>
-                                </div>
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-input-container>
                                 <label>User Group</label>
                                 <md-select ng-model="user.level">
-                                    <md-option ng-value="vm.levels.restricted">Restricted</md-option>
-                                    <md-option ng-value="vm.levels.regular">Regular</md-option>
-                                    <md-option ng-value="vm.levels.admin">Admin</md-option>
+                                    <md-option ng-value="vm.levels.users">New Users</md-option>
+                                    <md-option ng-value="vm.levels.knowns">Known Users</md-option>
+                                    <md-option ng-value="vm.levels.editors">Editors</md-option>
+                                    <md-option ng-value="vm.levels.admins">Admins</md-option>
                                 </md-select>
                             </md-input-container>
                         </td>
@@ -57,25 +49,19 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                So far, there are 3 possible user groups. <br> 
-                See a detailed description of permissions and restrictions for each group below. 
-                <h2 class="md-headline">Restricted</h2>
-                <table>
-                    <tr><td>Permissions</td><td>See ERC</td></tr>
-                    <tr><td>Restrictions</td><td>UPload ERC, Execute ERC, Change User Levels</td></tr>
-                </table>
+                So far, there are 4 possible user groups. <br> 
+                See a detailed description of <strong>permissions</strong> below. 
+                <h2 class="md-headline">New Users</h2>
+                Create new jobs. View compendia, jobs, user details.
                 <md-divider></md-divider>
-                <h2 class="md-headline">Regular</h2>
-                <table>
-                    <tr><td>Permissions</td><td>See ERC, Upload ERC, Execute ERC</td></tr>
-                    <tr><td>Restrictions</td><td>Change User Levels</td></tr>
-                </table>
+                <h2 class="md-headline">Known Users</h2>
+                Upload new compendium. Create shipments. Create substitutions.
                 <md-divider></md-divider>
-                <h2 class="md-headline">Admin</h2>
-                <table>
-                    <tr><td>Permissions</td><td>See ERC, Upload ERC, Execute ERC, Change User Levels</td></tr>
-                    <tr><td>Restrictions</td><td>none</td></tr>
-                </table>
+                <h2 class="md-headline">Editors</h2>
+                Edit user levels. Edit metadata of other user's compendia.
+                <md-divider></md-divider>
+                <h2 class="md-headline">Admins</h2>
+                View status pages of microservices.
             </md-card-content>
         </md-card>
     </div>
