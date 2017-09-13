@@ -28,7 +28,6 @@
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.callingsearch=callingsearch;
         vm.hits = searchResults.hits.total;
-        vm.clearSearch = clearSearch;
 
         activate();
         
@@ -66,14 +65,12 @@
             vm.slider = {
                 minValue: fromVal,
                 maxValue: toVal,
-                //value: dates[0], // or new Date(2016, 7, 10) is you want to use different instances
                 options : {
                     stepsArray: dates,
                     translate: function(date) {
                         if (date != null)
                         from = vm.slider.minValue;
                         to = vm.slider.maxValue;
-                        //logger.info('in translate', from);
                         return $filter('date')(date, 'MM/yyyy');
                     },
                     onEnd: callingsearch
@@ -170,8 +167,6 @@
             }
             mindate = angular.copy(min);
             maxdate = angular.copy(max);
-            logger.info(mindate);
-            logger.info(maxdate);
             dates = [mindate];
             // add steps for slider
             while(min < maxdate){
@@ -179,7 +174,6 @@
                 min.setUTCMonth(min.getUTCMonth() + 1);
                 dates.push(angular.copy(min));
             }
-            logger.info('dates', dates);
             return;
         }
 
@@ -229,13 +223,6 @@
                 to: angular.toJson(to.toISOString()), 
                 coords: coords
             });
-        }
-
-        function clearSearch(){
-            vm.searchTerm = '';
-            from = null;
-            to = null;
-            coordinates_selected = null;
         }
   }
 })();
