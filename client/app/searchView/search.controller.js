@@ -50,10 +50,18 @@
             var fromVal, toVal;
             //check if from value is defined and set slider position to this value, otherwise set it to start value
             if((angular.isUndefined($stateParams.from) || ($stateParams.from == "null"))) fromVal = dates[0];
-            else fromVal = new Date($stateParams.from);
+            else {
+                // remove double quotes
+                var tmp_from = $stateParams.from.substring(1, $stateParams.from.length-1);
+                fromVal = angular.fromJson(new Date(tmp_from));
+            }
             //check if to value is defined and set slider position to this value, otherwise set it to start value
-            if((angular.isUndefined($stateParams.to) || ($stateParams.to = "null"))) toVal = dates[dates.length-1];
-            else toVal = new Date($stateParams.to);
+            if((angular.isUndefined($stateParams.to) || ($stateParams.to == "null"))) toVal = dates[dates.length-1];
+            else {
+                // remove double quotes
+                var tmp_to = $stateParams.to.substring(1, $stateParams.to.length-1);
+                toVal = angular.fromJson(new Date(tmp_to));
+            }
 
             vm.slider = {
                 minValue: fromVal,
