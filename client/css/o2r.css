@@ -284,6 +284,19 @@ display-files-html iframe{
 	text-align: justify;
 }
 
+.search-keyword-container{
+	padding-left: 0 !important;
+}
+
+.search-keyword-trigger{
+	padding: 5px 5px 5px 5px;
+	border-radius: 2px;
+}
+
+.search-keyword-trigger:hover{
+	background: rgba(0, 0, 0, 0.12);
+}
+
 .rzslider .rz-selection{
 	background: #004286;
 }
