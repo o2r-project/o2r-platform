@@ -42,7 +42,7 @@
 
 		<!-- right side -->
 		<div layout="column" flex="50">
-			<md-card>
+			<md-card ng-if="vm.showResults">
 				<md-card-content ng-if="vm.hits != 0">
 					<div class="search-results" dir-paginate="text in vm.allPubs | itemsPerPage:5" layout="column">
 						<a ui-sref="erc({ercid: text._source.compendium_id})">{{text._source.metadata.o2r.title}}</a>

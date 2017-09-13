@@ -7,10 +7,11 @@
         .module('starter')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', 'httpRequests', '$location', 'searchResults', 'header', 'icons','leafletData', 'search'];
-    function SearchController($scope,$stateParams, $state, $q, $filter, $log, httpRequests, $location, searchResults, header, icons,leafletData, search){
+    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search'];
+    function SearchController($scope,$stateParams, $state, $q, $filter, $log, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search){
         var logger = $log.getInstance('SearchCtrl');
         var abstractLimit = 200;
+        var fullSearch = searchAll.hits.hits;
         var coordinates_selected;
         var from;
         var to;
@@ -20,6 +21,7 @@
 
         var vm = this;
         vm.allPubs;
+        vm.showResults;
         vm.toggleAbstract = toggleAbstract;
         vm.cutAbstract = [];
         vm.icons = icons;
@@ -27,7 +29,7 @@
         vm.callingsearch=callingsearch;
         vm.hits = searchResults.hits.total;
         vm.clearSearch = clearSearch;
-        
+
         activate();
         
         //////////////
@@ -35,30 +37,41 @@
             
         function activate(){
             header.setTitle('o2r - Search');
-            if(searchResults.hits.total != 0){
-                map(searchResults);
-                calcDateRange(vm.allPubs);
-            } else {
-                var tmp_begin = new Date(2000, 1, 1);
-                var tmp_end = new Date();
-                var tmp_date = [{"_source":{"metadata":{"o2r":{"temporal":{"begin": tmp_begin, "end": tmp_end}}}}}];
-                calcDateRange(tmp_date);
-            }
+            if(angular.isUndefined($stateParams.q) 
+                && (angular.isUndefined($stateParams.from) || ($stateParams.from == "null")) 
+                && (angular.isUndefined($stateParams.to) || ($stateParams.to == "null")) 
+                && (angular.isUndefined($stateParams.coords) || ($stateParams.coords == "null"))
+            ){
+                vm.showResults = false;
+            } else vm.showResults = true;
+            
+            map(searchResults);
+            calcDateRange(fullSearch);
+            var fromVal, toVal;
+            //check if from value is defined and set slider position to this value, otherwise set it to start value
+            if((angular.isUndefined($stateParams.from) || ($stateParams.from == "null"))) fromVal = dates[0];
+            else fromVal = new Date($stateParams.from);
+            //check if to value is defined and set slider position to this value, otherwise set it to start value
+            if((angular.isUndefined($stateParams.to) || ($stateParams.to = "null"))) toVal = dates[dates.length-1];
+            else toVal = new Date($stateParams.to);
+
             vm.slider = {
-                minValue: dates[0],
-                maxValue: dates[dates.length-1],
+                minValue: fromVal,
+                maxValue: toVal,
                 //value: dates[0], // or new Date(2016, 7, 10) is you want to use different instances
-                options: {
+                options : {
                     stepsArray: dates,
                     translate: function(date) {
                         if (date != null)
                         from = vm.slider.minValue;
                         to = vm.slider.maxValue;
-                        return $filter('date')(date, 'd/M/yy');
+                        //logger.info('in translate', from);
+                        return $filter('date')(date, 'MM/yyyy');
                     },
                     onEnd: callingsearch
                 }
             };
+
             angular.extend(vm, {
                 center: {
                     lat: 51.505,
@@ -126,25 +139,39 @@
         }
 
         function calcDateRange(pubs){
+            // set min and max dates to first date in array
             var min = new Date(pubs[0]._source.metadata.o2r.temporal.begin);
             var max = new Date(pubs[0]._source.metadata.o2r.temporal.end);
+            //check if following dates are later or earlier
             for(var i in pubs){
                 var tmp_begin = new Date(pubs[i]._source.metadata.o2r.temporal.begin);
+                var tmp_bg_year = angular.toJson(tmp_begin.getUTCFullYear());
+                var tmp_bg_month = angular.toJson(tmp_begin.getUTCMonth()+1);
+                if(tmp_bg_month.length == 1) tmp_bg_month = '0' + tmp_bg_month;
+                tmp_begin = new Date(tmp_bg_year + '-' + tmp_bg_month);
+
                 var tmp_end = new Date(pubs[i]._source.metadata.o2r.temporal.end);
+                var tmp_en_year = angular.toJson(tmp_end.getUTCFullYear());
+                var tmp_en_month = angular.toJson(tmp_end.getUTCMonth()+2);
+                if(tmp_en_month.length == 1) tmp_en_month = '0' + tmp_en_month;
+                tmp_end = new Date(tmp_en_year + '-' + tmp_en_month);
+
                 if(tmp_begin < min) min = tmp_begin;
                 if(tmp_end > max) max = tmp_end;
 
             }
             mindate = angular.copy(min);
             maxdate = angular.copy(max);
-            var tmp_min = angular.copy(min);
+            logger.info(mindate);
+            logger.info(maxdate);
             dates = [mindate];
-            var day;
-            while(tmp_min < maxdate){
-                day = tmp_min.getDate();
-                tmp_min = new Date(tmp_min.setDate(++day));
-                dates.push(tmp_min);
+            // add steps for slider
+            while(min < maxdate){
+                // always use first of month for slider
+                min.setUTCMonth(min.getUTCMonth() + 1);
+                dates.push(angular.copy(min));
             }
+            logger.info('dates', dates);
             return;
         }
 
@@ -186,10 +213,12 @@
                 logger.info('No coordinates defined. Setting to null');
                 coords = null;
             }
+            logger.info(to);
+            logger.info(to.toISOString());
             $state.go('search', {
                 q: vm.searchTerm, 
-                from: angular.toJson(from), 
-                to: angular.toJson(to), 
+                from: angular.toJson(from.toISOString()), 
+                to: angular.toJson(to.toISOString()), 
                 coords: coords
             });
         }

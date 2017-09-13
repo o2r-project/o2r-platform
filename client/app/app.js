@@ -197,6 +197,7 @@
                 controller: 'SearchController',
                 controllerAs: 'vm',
                 resolve: {
+                    searchAll: searchAllService,
                     searchResults: searchResultsService
                 }
             })
@@ -391,6 +392,13 @@
             }
             else return result;
         });
+    }
+
+    searchAllService.$inject = ['search'];
+    function searchAllService(search){
+        var index = 'o2r';
+        var query = search.prepareQuery(index);
+        return search.search(query);
     }
 
     searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'search'];
