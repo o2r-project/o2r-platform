@@ -5,9 +5,9 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory', 'icons', 'ngIntroService', '$cookies'];
+    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$mdToast', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory', 'icons', 'ngIntroService', '$cookies'];
 
-    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory, icons, ngIntroService, $cookies){
+    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $mdToast, $document, $mdDialog, login, httpRequests, ngProgressFactory, icons, ngIntroService, $cookies){
         var logger = $log.getInstance('HomeCtrl');
         var inspectQuery = $stateParams.inspect || '';
         var cookie = 'introduction_was_seen';
@@ -126,6 +126,22 @@
             function errorHandler(err){
                 $log.debug(err);
                 progressbar.complete();
+                showToast(err);
+            }
+
+            function showToast(error){
+                var text = error;
+                var toastClass = 'creationProcess-failure-toast';
+                $mdToast.show(
+                    $mdToast
+                        .simple()
+                        .textContent(text)
+                        .action('Close')
+                        .position('top right')
+                        .toastClass(toastClass)
+                        .hideDelay(false)
+                        .parent($document[0].body.children.main.children["ui-view"])
+                );
             }
             /*
             httpRequests
