@@ -97,7 +97,7 @@
 
         function sendScieboUrl(url, path, analysis){
             var progressbar = ngProgressFactory.createInstance();
-			progressbar.setHeight('6px');
+			progressbar.setHeight('10px');
 			progressbar.start();
 
             var id;
