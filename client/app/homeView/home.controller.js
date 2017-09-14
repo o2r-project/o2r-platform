@@ -13,7 +13,7 @@
         var cookie = 'introduction_was_seen';
         var vm = this;
         vm.icons = icons;
-        vm.publicLink = 'https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA';
+        vm.publicLink = 'https://uni-muenster.sciebo.de/index.php/s/8u8dKMpnLFN9ix7';
         vm.useExample = useExample;
         vm.submit = submitter;
         vm.openDialog = openDialog;
