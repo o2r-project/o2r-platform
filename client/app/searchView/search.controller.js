@@ -12,7 +12,9 @@
         var logger = $log.getInstance('SearchCtrl');
         var abstractLimit = 200;
         var fullSearch = searchAll.hits.hits;
-        var coordinates_selected;
+        var coordinates_selected = {};
+        coordinates_selected.geometry = {};
+        coordinates_selected.geometry.coordinates = angular.fromJson($stateParams.coords);
         var from;
         var to;
         var mindate;
@@ -29,6 +31,7 @@
         vm.callingsearch=callingsearch;
         vm.hits = searchResults.hits.total;
 
+        logger.log('coords', coordinates_selected);
         activate();
         
         //////////////
@@ -127,11 +130,11 @@
                 leafletData.getLayers().then(function(baselayers) {
                     var drawnItems = baselayers.overlays.draw;
                     map.on('draw:created', function (e) {
-                    var layer = e.layer;
-                    drawnItems.addLayer(layer);
-                    logger.info(angular.toJson(layer.toGeoJSON()));
-                    coordinates_selected = layer.toGeoJSON();
-                    callingsearch(coordinates_selected);
+                        var layer = e.layer;
+                        drawnItems.addLayer(layer);
+                        logger.info(angular.toJson(layer.toGeoJSON()));
+                        coordinates_selected = layer.toGeoJSON();
+                        callingsearch(coordinates_selected);
                     });
                 });
             });
@@ -215,8 +218,6 @@
                 logger.info('No coordinates defined. Setting to null');
                 coords = null;
             }
-            logger.info(to);
-            logger.info(to.toISOString());
             $state.go('search', {
                 q: vm.searchTerm, 
                 from: angular.toJson(from.toISOString()), 

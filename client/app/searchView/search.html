@@ -6,14 +6,15 @@
 			<md-card-content>
 				<div layout="column">
 					<div layout="row">
-						<h4>Keyword Search</h4>
+						<h3>Search</h3>
 						<span flex></span>
 						<md-input-container md-no-float class="md-icon-float">
 							<md-button type="button" ui-sref="search()" ui-sref-opts="{inherit:false}" class="search-button md-raised">Clear Search</md-button>
 						</md-input-container>
 					</div>
+					<h4>Keyword Search</h4>
 					<div layout="row">
-						<form ng-submit="callingsearch()" flex="100">
+						<form ng-submit="vm.callingsearch()" flex="100">
 							<md-input-container md-no-float class="search-keyword-container md-icon-float md-icon-right" layout="row">
 								<md-icon class="o2r-pointer search-keyword-trigger" ng-click="vm.callingsearch()" md-svg-src="{{vm.icons.search}}"></md-icon>
 								<input type="text" placeholder="Keyword" ng-model="vm.searchTerm" ng-value="vm.searchTerm" autofocus>
