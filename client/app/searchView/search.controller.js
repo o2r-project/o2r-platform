@@ -154,7 +154,7 @@
                         visible: true,
                         layerOptions: {
                             style: {
-                                color: 'white',
+                                color: '#434553',
                                 weight: 2,
                                 fillColor: '#434553',
                                 opacity: 0.6,
