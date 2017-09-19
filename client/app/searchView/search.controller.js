@@ -61,39 +61,6 @@
                 vm.showResults = false;
             } else vm.showResults = true;
             
-            map(searchResults);
-            calcDateRange(fullSearch);
-            var fromVal, toVal;
-            //check if from value is defined and set slider position to this value, otherwise set it to start value
-            if((angular.isUndefined($stateParams.from) || ($stateParams.from == "null"))) fromVal = dates[0];
-            else {
-                // remove double quotes
-                var tmp_from = $stateParams.from.substring(1, $stateParams.from.length-1);
-                fromVal = angular.fromJson(new Date(tmp_from));
-            }
-            //check if to value is defined and set slider position to this value, otherwise set it to start value
-            if((angular.isUndefined($stateParams.to) || ($stateParams.to == "null"))) toVal = dates[dates.length-1];
-            else {
-                // remove double quotes
-                var tmp_to = $stateParams.to.substring(1, $stateParams.to.length-1);
-                toVal = angular.fromJson(new Date(tmp_to));
-            }
-
-            vm.slider = {
-                minValue: fromVal,
-                maxValue: toVal,
-                options : {
-                    stepsArray: dates,
-                    translate: function(date) {
-                        if (date != null)
-                        from = vm.slider.minValue;
-                        to = vm.slider.maxValue;
-                        return $filter('date')(date, 'MM/yyyy');
-                    },
-                    onEnd: callingsearch
-                }
-            };
-
             angular.extend(vm, {
                 controls: {
                     scale:true,
@@ -143,6 +110,40 @@
                     }
                 }
             });
+
+            map(searchResults);
+            calcDateRange(fullSearch);
+            var fromVal, toVal;
+            //check if from value is defined and set slider position to this value, otherwise set it to start value
+            if((angular.isUndefined($stateParams.from) || ($stateParams.from == "null"))) fromVal = dates[0];
+            else {
+                // remove double quotes
+                var tmp_from = $stateParams.from.substring(1, $stateParams.from.length-1);
+                fromVal = angular.fromJson(new Date(tmp_from));
+            }
+            //check if to value is defined and set slider position to this value, otherwise set it to start value
+            if((angular.isUndefined($stateParams.to) || ($stateParams.to == "null"))) toVal = dates[dates.length-1];
+            else {
+                // remove double quotes
+                var tmp_to = $stateParams.to.substring(1, $stateParams.to.length-1);
+                toVal = angular.fromJson(new Date(tmp_to));
+            }
+
+            vm.slider = {
+                minValue: fromVal,
+                maxValue: toVal,
+                options : {
+                    stepsArray: dates,
+                    translate: function(date) {
+                        if (date != null)
+                        from = vm.slider.minValue;
+                        to = vm.slider.maxValue;
+                        return $filter('date')(date, 'MM/yyyy');
+                    },
+                    onEnd: callingsearch
+                }
+            };
+
             
             if(angular.isDefined(coordinates_selected.geometry.coordinates)){
                 angular.extend(vm.layers.overlays, {
@@ -174,6 +175,11 @@
                         coordinates_selected = layer.toGeoJSON();
                         callingsearch(coordinates_selected);
                     });
+                    
+                    if(angular.isDefined(baselayers.overlays.geojson)){
+                        baselayers.overlays.geojson.bringToFront();
+                    }
+
                 });
             });
         }
@@ -244,15 +250,23 @@
             });
             
 
-            angular.extend(vm, {
+            angular.extend(vm.layers.overlays, {
                 geojson: {
+                    name: 'searchResults',
+                    type: 'geoJSONShape',
                     data: b,
-                    style: {
-                        fillColor: "#004286",
-                        weight: 2,
-                        opacity: 1,
-                        color: '#004286',
-                        fillOpacity: 0.6
+                    visible: true,
+                    layerOptions: {
+                        style: {
+                            fillColor: "#004286",
+                            weight: 2,
+                            opacity: 1,
+                            color: '#004286',
+                            fillOpacity: 0.6
+                        }
+                    },
+                    layerParams: {
+                        showOnSelector: false
                     }
                 }
             });
