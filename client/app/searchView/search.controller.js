@@ -7,14 +7,18 @@
         .module('starter')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search'];
-    function SearchController($scope,$stateParams, $state, $q, $filter, $log, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search){
+    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', '$interval', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search'];
+    function SearchController($scope,$stateParams, $state, $q, $filter, $log, $interval, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search){
         var logger = $log.getInstance('SearchCtrl');
         var abstractLimit = 200;
         var fullSearch = searchAll.hits.hits;
-        var coordinates_selected = {};
-        coordinates_selected.geometry = {};
-        coordinates_selected.geometry.coordinates = angular.fromJson($stateParams.coords);
+        var coordinates_selected = {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: angular.fromJson($stateParams.coords)
+            }
+        };
         var from;
         var to;
         var mindate;
@@ -31,9 +35,19 @@
         vm.callingsearch=callingsearch;
         vm.hits = searchResults.hits.total;
 
-        logger.log('coords', coordinates_selected);
         activate();
         
+        // TODO
+        //Just a bad workaround for loading all tiles of the map
+        //As soon as there is a better solution, rewrite this code
+        $scope.$on('$stateChangeSuccess', function(){
+            $interval(function(){
+                leafletData.getMap().then(function(map){
+                    map.invalidateSize();
+                });
+            }, 1, 1);
+        });
+
         //////////////
             
             
@@ -81,19 +95,23 @@
             };
 
             angular.extend(vm, {
-                center: {
-                    lat: 51.505,
-                    lng: 10.09,
-                    zoom: 3
-                },
                 controls: {
                     scale:true,
                     draw: {
                         draw: {
-                        polyline:false,
-                        circle:false,
-                        polygon: false,
-                        marker: false
+                            rectangle: {
+                                shapeOptions: {
+                                    color: '#434553',
+                                    weight: 2,
+                                    fillColor: '#434553',
+                                    opacity: 0.6,
+                                    fillOpacity: 0.6
+                                }
+                            },
+                            polyline:false,
+                            circle:false,
+                            polygon: false,
+                            marker: false
                         }
                     }
                 },
@@ -125,6 +143,26 @@
                     }
                 }
             });
+            
+            if(angular.isDefined(coordinates_selected.geometry.coordinates)){
+                angular.extend(vm.layers.overlays, {
+                    searchFrame: {
+                        name: 'Search Box',
+                        type: 'geoJSONShape',
+                        data: coordinates_selected,
+                        visible: true,
+                        layerOptions: {
+                            style: {
+                                color: '#434553',
+                                weight: 2,
+                                fillColor: '#434553',
+                                opacity: 0.6,
+                                fillOpacity: 0.6
+                            }
+                        }
+                    }
+                });
+            }
 
             leafletData.getMap().then(function(map) {
                 leafletData.getLayers().then(function(baselayers) {
@@ -192,17 +230,29 @@
                 }
                 vm.cutAbstract[i] = abstractLimit;
             }
+            
+
+            // dynamically set zoom level to full extend of objects
+            var group;
+            if(angular.isDefined(coordinates_selected.geometry.coordinates)){
+                group = new L.geoJson(coordinates_selected);
+            } else if(b.length > 0){
+                var group = new L.geoJson(b);
+            }
+            leafletData.getMap().then(function(map){
+                map.fitBounds(group.getBounds(), {padding: [50,50]});
+            });
+            
 
             angular.extend(vm, {
                 geojson: {
                     data: b,
                     style: {
-                        fillColor: "green",
+                        fillColor: "#004286",
                         weight: 2,
                         opacity: 1,
-                        color: 'white',
-                        dashArray: '3',
-                        fillOpacity: 0.7
+                        color: '#004286',
+                        fillOpacity: 0.6
                     }
                 }
             });
