@@ -72,7 +72,7 @@
                                     weight: 2,
                                     fillColor: '#434553',
                                     opacity: 0.6,
-                                    fillOpacity: 0.6
+                                    fillOpacity: 0.2
                                 }
                             },
                             polyline:false,
@@ -154,11 +154,11 @@
                         visible: true,
                         layerOptions: {
                             style: {
-                                color: '#434553',
+                                color: 'white',
                                 weight: 2,
                                 fillColor: '#434553',
                                 opacity: 0.6,
-                                fillOpacity: 0.6
+                                fillOpacity: 0.2
                             }
                         }
                     }
@@ -259,9 +259,9 @@
                     layerOptions: {
                         style: {
                             fillColor: "#004286",
-                            weight: 2,
+                            weight: 1,
                             opacity: 1,
-                            color: '#004286',
+                            color: 'white',
                             fillOpacity: 0.6
                         }
                     },
