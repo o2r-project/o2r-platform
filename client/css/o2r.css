@@ -272,6 +272,15 @@ display-files-html iframe{
 	padding-top: 8px;
 }
 
+.search-results-wrapper{
+	overflow-y: auto;
+	height: 80vh;
+}
+
+.search-left-side{
+	height: 80vh;
+}
+
 .search-results:hover{
 	background-color: rgba(0, 0, 0, 0.12);
 }

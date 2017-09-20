@@ -16,13 +16,15 @@
 
         //////////
 
-        function prepareQuery(index, term, coordinates_selected,from,to) {
+        function prepareQuery(index, term, coordinates_selected, from, to, start, size) {
             if(!index) throw 'Error: No search index defined';
             // helper to indicate which parameters are (un)defined
             if(!term) logger.info('No search term defined');
             if(!coordinates_selected) logger.info('No coordinates defined');
             if(!from) logger.info('No start time defined');
             if(!to) logger.info('No end time defined');
+            if(!start) logger.info('No start index defined');
+            if(!size) logger.info('No size defined');
             
             var query = {
                 index: index,
@@ -78,6 +80,12 @@
                         }
                     }
                 });
+            }
+            if(start){
+                query.body.from = start;
+            }
+            if(size){
+                query.body.size = size;
             }
             
             return query;

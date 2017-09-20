@@ -29,6 +29,7 @@
             'angular-intro',
             'ngCookies',
             'ngSanitize',
+            'infinite-scroll',
             'elasticsearch'])
         .constant('icons', icons())
         .config(config)
@@ -192,7 +193,7 @@
                 }
             })
             .state('search', {
-                url: "/search?q&coords&from&to",
+                url: "/search?q&coords&from&to&start&size",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchController',
                 controllerAs: 'vm',
@@ -406,12 +407,14 @@
         var logger = $log.getInstance('searchResultsService');
         var index = 'o2r';
         logger.info('param: ', $stateParams);
-        var term, coords, from, to = null;
+        var term, coords, from, to, start, size = null;
         if($stateParams.q) term = $stateParams.q;
         if($stateParams.coords) coords = angular.fromJson($stateParams.coords);
         if($stateParams.from) from = angular.fromJson($stateParams.from);
         if($stateParams.to) to = angular.fromJson($stateParams.to);
-        var query = search.prepareQuery(index, term, coords, from, to);
+        if($stateParams.start) start = angular.fromJson($stateParams.start);
+        if($stateParams.size) size = angular.fromJson($stateParams.size);
+        var query = search.prepareQuery(index, term, coords, from, to, start, size);
         return search.search(query);
     }
 

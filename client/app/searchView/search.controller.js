@@ -24,6 +24,8 @@
         var mindate;
         var maxdate;
         var dates;
+        var startindex = 0;
+        var size = 20;
 
         var vm = this;
         vm.allPubs;
@@ -286,7 +288,9 @@
                 q: vm.searchTerm, 
                 from: angular.toJson(from.toISOString()), 
                 to: angular.toJson(to.toISOString()), 
-                coords: coords
+                coords: coords,
+                start: startindex,
+                size: size
             });
         }
   }
