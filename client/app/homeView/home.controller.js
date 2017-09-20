@@ -5,15 +5,15 @@
         .module('starter')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory', 'icons', 'ngIntroService', '$cookies'];
+    HomeController.$inject = ['$log', '$scope', '$state', '$window', '$location', '$stateParams', 'header', '$mdToast', '$document', '$mdDialog', 'login', 'httpRequests', 'ngProgressFactory', 'icons', 'ngIntroService', '$cookies'];
 
-    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $document, $mdDialog, login, httpRequests, ngProgressFactory, icons, ngIntroService, $cookies){
+    function HomeController($log, $scope, $state, $window, $location, $stateParams, header, $mdToast, $document, $mdDialog, login, httpRequests, ngProgressFactory, icons, ngIntroService, $cookies){
         var logger = $log.getInstance('HomeCtrl');
         var inspectQuery = $stateParams.inspect || '';
         var cookie = 'introduction_was_seen';
         var vm = this;
         vm.icons = icons;
-        vm.publicLink = 'https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA';
+        vm.publicLink = 'https://uni-muenster.sciebo.de/index.php/s/8u8dKMpnLFN9ix7';
         vm.useExample = useExample;
         vm.submit = submitter;
         vm.openDialog = openDialog;
@@ -101,7 +101,7 @@
 
         function sendScieboUrl(url, path, analysis){
             var progressbar = ngProgressFactory.createInstance();
-			progressbar.setHeight('3px');
+			progressbar.setHeight('10px');
 			progressbar.start();
 
             var id;
@@ -130,6 +130,22 @@
             function errorHandler(err){
                 $log.debug(err);
                 progressbar.complete();
+                showToast(err);
+            }
+
+            function showToast(error){
+                var text = error;
+                var toastClass = 'creationProcess-failure-toast';
+                $mdToast.show(
+                    $mdToast
+                        .simple()
+                        .textContent(text)
+                        .action('Close')
+                        .position('top right')
+                        .toastClass(toastClass)
+                        .hideDelay(false)
+                        .parent($document[0].body.children.main.children["ui-view"])
+                );
             }
             /*
             httpRequests

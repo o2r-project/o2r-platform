@@ -22,7 +22,7 @@
             vm.selected = []; //required for md-data-table
             vm.openDialog = openDialog;
             vm.showProfile = showProfile;
-            vm.showAdmin = () => getUserGroup(author.data.level) == 'Admin';
+            vm.showAdmin = () => ((getUserGroup(author.data.level) == 'Admins') || (getUserGroup(author.data.level) == 'Editors'));
 
             logger.info('vm.allPubs: ',vm.allPubs);
 
@@ -83,7 +83,6 @@
                             '<table>' + 
                             '<tr><td>Name: </td><td>' + author.data.name + '</td></tr>' +
                             '<tr><td>Orcid: </td><td>' + author.data.id + '</td></tr>' +
-                            '<tr><td>User Level: </td><td>' + author.data.level + '</td></tr>' +
                             '<tr><td>User Group: </td><td>' + getUserGroup(author.data.level) + '</td></tr>' +
                             '</table>' +
                             '<br><br>If you want to change your user level, please send an email to daniel.nuest@uni-muenster.de.'
@@ -94,9 +93,10 @@
             }
 
             function getUserGroup(level){
-                if(level >= env.userLevels.admin) return 'Admin';
-                if(level >= env.userLevels.regular) return 'Regular';
-                if(level >= env.userLevels.restricted) return 'Restricted';
+                if(level >= env.userLevels.admins) return 'Admins';
+                if(level >= env.userLevels.editors) return 'Editors'
+                if(level >= env.userLevels.knowns) return 'Known Users';
+                if(level >= env.userLevels.users) return 'New Users';
             }
 
         }

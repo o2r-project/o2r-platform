@@ -91,7 +91,7 @@
 
         function sendToZenodo(){
             var progressbar = ngProgressFactory.createInstance();
-			progressbar.setHeight('3px');
+			progressbar.setHeight('10px');
 			progressbar.start();
 
             httpRequests.toZenodo(vm.ercId)

@@ -79,7 +79,7 @@
         */
         function executeJob(id){
             $rootScope.progressbar = ngProgressFactory.createInstance();
-			$rootScope.progressbar.setHeight('3px');
+			$rootScope.progressbar.setHeight('10px');
 			$rootScope.progressbar.start();
 			//$timeout($rootScope.progressbar.complete(),100);            
             var deferred = $q.defer();

@@ -24,7 +24,9 @@
           logger.info(angular.toJson(creationObject.getSpacetime()));
       });
 
-      activate();
+      if (vm.spacetime.spatial!=undefined){
+        activate();
+      }  
 
       // TODO
       //Just a bad workaround for loading all tiles of the map
@@ -40,7 +42,7 @@
 
       function activate(){
         prepareTemporal();
-
+        
         if(!angular.equals(vm.spacetime.spatial.files, {})){
           L.geoJson(vm.spacetime.spatial.files, {
             onEachFeature: function(feature, layer){
@@ -48,6 +50,8 @@
             }
           });
         }
+        
+
 
         angular.extend(vm, {
           map: {

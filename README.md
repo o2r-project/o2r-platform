@@ -89,6 +89,7 @@ The parameters are as follows:
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
 - `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication (start with machine IP when using Docker Toolbox)
 - `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo (sandbox)
+- `SLACK_BOT_TOKEN` and `SLACK_VERIFICATION_TOKEN`, required for monitoring into Slack (optional)
 
 #### Database adminstration
 

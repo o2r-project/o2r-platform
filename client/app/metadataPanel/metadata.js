@@ -65,7 +65,7 @@
 			var query = searchTerm;
 			var deferred = $q.defer();
 			var progressbar = ngProgressFactory.createInstance();
-				progressbar.setHeight('3px');
+				progressbar.setHeight('10px');
 				progressbar.start();
 			httpRequests
 				.searchComp(query, 0)

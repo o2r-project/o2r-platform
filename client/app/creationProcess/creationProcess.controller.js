@@ -22,6 +22,7 @@
         vm.state = $state;
         vm.nextState = nextState;
         vm.previousState = previousState;
+        vm.goTo = (to) => $state.go(to);
 
         
 
