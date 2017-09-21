@@ -273,7 +273,7 @@ display-files-html iframe{
 }
 
 .search-results-wrapper{
-	overflow-y: auto;
+	/* overflow-y: auto; */
 	height: 80vh;
 }
 
@@ -304,6 +304,16 @@ display-files-html iframe{
 
 .search-keyword-trigger:hover{
 	background: rgba(0, 0, 0, 0.12);
+}
+
+#search-virtual-repeat-container{
+	height: 80vh;
+}
+
+#search-results-md-card-content{
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .rzslider .rz-selection{

@@ -38,21 +38,26 @@
 	<!-- right side -->
 	<div flex-xs="" flex-gt-xs="50" layout="row">
 		<md-card flex="100" class="search-results-wrapper" ng-if="vm.showResults" layout="row">
-			<md-card-content ng-if="vm.hits != 0" flex="100">
-				<div class="search-results" ng-repeat="text in vm.allPubs" layout="column">
-					<a ui-sref="erc({ercid: text._source.compendium_id})">{{text._source.metadata.o2r.title}}</a>
-					<div layout="row">
-						<span class="md-body-2" ng-repeat="author in text._source.metadata.o2r.author">{{author.name}},&nbsp;</span>
-						<span class="md-body-2">{{text._source.metadata.o2r.publicationDate | date : 'yyyy'}}</span>
+			<md-card-content id="search-results-md-card-content" ng-if="vm.hits != 0" flex="100">
+				<md-virtual-repeat-container id="search-virtual-repeat-container">
+					<div class="search-result" md-virtual-repeat="text in vm.infiniteItems" md-on-demand>
+						<a ui-sref="erc({ercid: text._source.compendium_id})">{{text._source.metadata.o2r.title}}</a>
+						<div layout="row">
+							<span class="md-body-2" ng-repeat="author in text._source.metadata.o2r.author">{{author.name}}<span ng-if="!$last">,&nbsp;</span></span>
+							<span class="md-body-2">{{text._source.metadata.o2r.publicationDate | date : 'yyyy'}}</span>
+						</div>
+						<div class="search-results-abstract">
+							<span class="md-body-2">Abstract:</span> 
+							{{text._source.metadata.o2r.description | cutLongName : vm.cutAbstract[$index]}}
+							<md-icon ng-show="vm.cutAbstract[$index] == 200" class="o2r-icon o2r-pointer" aria-label="expand" md-svg-src="{{vm.icons.downArrow}}" ng-click="vm.toggleAbstract($index)"></md-icon>
+							<md-icon ng-hide="vm.cutAbstract[$index] == 200" class="o2r-icon o2r-pointer" aria-label="expand" md-svg-src="{{vm.icons.upArrow}}" ng-click="vm.toggleAbstract($index)"></md-icon>
+						</div>
+						<md-divider class="search-results-divider" ng-if="!$last"></md-divider>
 					</div>
-					<div class="search-results-abstract">
-						<span class="md-body-2">Abstract:</span> 
-						{{text._source.metadata.o2r.description | cutLongName : vm.cutAbstract[$index]}}
-						<md-icon ng-show="vm.cutAbstract[$index] == 200" class="o2r-icon o2r-pointer" aria-label="expand" md-svg-src="{{vm.icons.downArrow}}" ng-click="vm.toggleAbstract($index)"></md-icon>
-						<md-icon ng-hide="vm.cutAbstract[$index] == 200" class="o2r-icon o2r-pointer" aria-label="expand" md-svg-src="{{vm.icons.upArrow}}" ng-click="vm.toggleAbstract($index)"></md-icon>
+					<div ng-show="vm.busyLoading" layout="row" layout-padding layout-align="space-around">
+						<md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
 					</div>
-					<md-divider class="search-results-divider" ng-if="!$last"></md-divider>
-				</div>
+				</md-virtual-repeat-container>
 			</md-card-content>
 			<md-card-content ng-if="vm.hits == 0" layout="row" layout-fill>
 				<span flex></span><h4>Sorry, no matching results were found.</h4><span flex></span>

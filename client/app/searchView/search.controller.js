@@ -24,8 +24,8 @@
         var mindate;
         var maxdate;
         var dates;
-        var startindex = 0;
-        var size = 20;
+        var startindex = parseInt($stateParams.start) || 0;
+        var size = parseInt($stateParams.size) || 10;
 
         var vm = this;
         vm.allPubs;
@@ -36,6 +36,40 @@
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.callingsearch=callingsearch;
         vm.hits = searchResults.hits.total;
+        vm.busyLoading = false;
+        vm.infiniteItems = {
+            numLoaded_: searchResults.hits.hits.length,
+            total_: vm.hits,
+            size_: size,
+            startindex_: startindex,
+            getItemAtIndex: function(index) {
+                if (index > this.numLoaded_){
+                    this.fetchMoreItems_(index);
+                    return null;
+                }
+                return vm.allPubs[index];
+            },
+            getLength: function() {
+                return this.numLoaded_;
+            },
+            fetchMoreItems_: function(index) {
+                if (this.total_ > this.numLoaded_) {
+                    vm.busyLoading = true;
+                    this.numLoaded_ = this.total_;
+                    var coords = angular.fromJson(coordinates_selected.geometry.coordinates);
+                    this.startindex_ += this.size_;
+                    var q = search.prepareQuery('o2r', vm.searchTerm, coords, from.toISOString(), to.toISOString(), this.startindex_, this.size_);
+                    search.search(q)
+                        .then(angular.bind(this, function(response){
+                            searchResults.hits.hits = searchResults.hits.hits.concat(response.hits.hits);
+                            this.numLoaded_ = searchResults.hits.hits.length;
+                            map(searchResults);
+                        }));
+                } else {
+                    vm.busyLoading = false;
+                } 
+            }
+        };
 
         activate();
         
@@ -154,6 +188,7 @@
                         type: 'geoJSONShape',
                         data: coordinates_selected,
                         visible: true,
+                        doRefresh: true,
                         layerOptions: {
                             style: {
                                 color: '#434553',
@@ -258,6 +293,7 @@
                     type: 'geoJSONShape',
                     data: b,
                     visible: true,
+                    doRefresh: true,
                     layerOptions: {
                         style: {
                             fillColor: "#004286",

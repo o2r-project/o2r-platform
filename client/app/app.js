@@ -29,7 +29,6 @@
             'angular-intro',
             'ngCookies',
             'ngSanitize',
-            'infinite-scroll',
             'elasticsearch'])
         .constant('icons', icons())
         .config(config)

@@ -15,7 +15,16 @@
         return service;
 
         //////////
-
+        /**
+         * Prepares the search query for a spatio-temporal search
+         * @param {String} index 
+         * @param {String} term 
+         * @param {Array} coordinates_selected 
+         * @param {Date} from 
+         * @param {Date} to 
+         * @param {Integer} start 
+         * @param {Integer} size 
+         */
         function prepareQuery(index, term, coordinates_selected, from, to, start, size) {
             if(!index) throw 'Error: No search index defined';
             // helper to indicate which parameters are (un)defined
@@ -81,7 +90,7 @@
                     }
                 });
             }
-            if(start){
+            if((start == 0) || start){
                 query.body.from = start;
             }
             if(size){
