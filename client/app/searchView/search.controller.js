@@ -7,8 +7,8 @@
         .module('starter')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', '$interval', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search'];
-    function SearchController($scope,$stateParams, $state, $q, $filter, $log, $interval, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search){
+    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', '$interval', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search', 'customLeaflet'];
+    function SearchController($scope,$stateParams, $state, $q, $filter, $log, $interval, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search, customLeaflet){
         var logger = $log.getInstance('SearchCtrl');
         var abstractLimit = 200;
         var fullSearch = searchAll.hits.hits;
@@ -36,6 +36,8 @@
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.callingsearch=callingsearch;
         vm.hits = searchResults.hits.total;
+        vm.highlightMap = customLeaflet.highlightMap;
+        vm.resetAllUnhoveredList = resetAllUnhoveredList;
         vm.busyLoading = false;
         vm.infiniteItems = {
             numLoaded_: searchResults.hits.hits.length,
@@ -100,53 +102,20 @@
             angular.extend(vm, {
                 controls: {
                     scale:true,
-                    draw: {
-                        draw: {
-                            rectangle: {
-                                shapeOptions: {
-                                    color: '#434553',
-                                    weight: 2,
-                                    fillColor: '#434553',
-                                    opacity: 0.6,
-                                    fillOpacity: 0.2
-                                }
-                            },
-                            polyline:false,
-                            circle:false,
-                            polygon: false,
-                            marker: false
-                        }
-                    }
+                    draw: customLeaflet.getDrawControls(),
+                    custom: []
                 },
                 layers: {
                     baselayers: {
-                        mapbox_light: {
-                            name: 'Mapbox Streets',
-                            url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoicmVoYW5zNTE2IiwiYSI6ImNpeWxjcWNkODAwNGwzM3FxamR6a2gxOXkifQ.PuUfs90MyfmVGYVqx0AoUw',
-                            type: 'xyz',
-                            layerOptions: {
-                                apikey: 'pk.eyJ1IjoicmVoYW5zNTE2IiwiYSI6ImNpeWxjcWNkODAwNGwzM3FxamR6a2gxOXkifQ.PuUfs90MyfmVGYVqx0AoUw',
-                                mapid: 'mapbox.streets',
-                                format: '@2x.png'
-                            },
-                            layerParams: {
-                                showOnSelector: false
-                            }
-                        }
+                        mapbox_light: customLeaflet.getMapBoxLight()
                     },
                     overlays: {
-                        draw: {
-                            name: 'draw',
-                            type: 'group',
-                            visible: true,
-                            layerParams: {
-                                showOnSelector: false
-                            }
-                        }
+                        draw: customLeaflet.getDrawOverlays()
                     }
                 }
             });
 
+            vm.controls.custom.push(customLeaflet.createResetHighlightControl(resetAllUnhoveredList));
             map(searchResults);
             calcDateRange(fullSearch);
             var fromVal, toVal;
@@ -190,13 +159,8 @@
                         visible: true,
                         doRefresh: true,
                         layerOptions: {
-                            style: {
-                                color: '#434553',
-                                weight: 2,
-                                fillColor: '#434553',
-                                opacity: 0.6,
-                                fillOpacity: 0.2
-                            }
+                            clickable: false,
+                            style: customLeaflet.getSearchBoxStyle()
                         }
                     }
                 });
@@ -267,6 +231,9 @@
             var b=[];
             for(var i in vm.allPubs){
                 try{
+                    vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson.properties = {
+                        id: i
+                    };
                     b.push(vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson);
                 } catch (g){
                     logger.error("missing spatial in ", i);
@@ -282,9 +249,13 @@
             } else if(b.length > 0){
                 var group = new L.geoJson(b);
             }
-            leafletData.getMap().then(function(map){
-                map.fitBounds(group.getBounds(), {padding: [50,50]});
-            });
+
+            // only set zoomlevel, if search returns results
+            if(vm.hits){
+                leafletData.getMap().then(function(map){
+                    map.fitBounds(group.getBounds(), {padding: [50,50]});
+                });
+            }
             
 
             angular.extend(vm.layers.overlays, {
@@ -295,13 +266,17 @@
                     visible: true,
                     doRefresh: true,
                     layerOptions: {
-                        style: {
-                            fillColor: "#004286",
-                            weight: 1,
-                            opacity: 1,
-                            color: 'white',
-                            fillOpacity: 0.6
-                        }
+                        onEachFeature: function(feat, featLyr){
+                            featLyr.on('mouseover', function(event){
+                                customLeaflet.resetAllUnhoveredMap().then(function(){
+                                    featLyr.setStyle(customLeaflet.getHighlightStyle());
+                                    featLyr.bringToFront();
+                                    highlightList(feat.geometry.coordinates);
+                                });
+                            });
+                        },
+                        clickable: true,
+                        style: customLeaflet.getDefaultStyle()
                     },
                     layerParams: {
                         showOnSelector: false
@@ -328,6 +303,25 @@
                 start: startindex,
                 size: size
             });
+        }
+
+        function highlightList(coords){
+            // check if coords of list entry match those of hovered object
+            for(var i in vm.allPubs){
+                var match = angular.equals(coords, vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson.geometry.coordinates);
+                // if true, highlight list entry
+                if(match){
+                    vm.allPubs[i].highlight = true;
+                } else {
+                    vm.allPubs[i].highlight = false;
+                }
+            }
+        }
+
+        function resetAllUnhoveredList(){
+            for(var i in vm.allPubs){
+                vm.allPubs[i].highlight = false;
+            }
         }
   }
 })();

@@ -268,10 +268,16 @@ display-files-html iframe{
 	margin: 8px 8px 8px 8px;
 }
 
-.search-results{
+/* .search-results{
 	padding-top: 8px;
-}
+} */
 
+.search-result-list-item:hover{
+	background-color: rgba(0, 0, 0, 0.12);
+}
+.search-highlight-result{
+	background-color: rgba(0, 0, 0, 0.12);
+}
 .search-results-wrapper{
 	/* overflow-y: auto; */
 	height: 80vh;

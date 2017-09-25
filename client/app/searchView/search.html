@@ -40,7 +40,12 @@
 		<md-card flex="100" class="search-results-wrapper" ng-if="vm.showResults" layout="row">
 			<md-card-content id="search-results-md-card-content" ng-if="vm.hits != 0" flex="100">
 				<md-virtual-repeat-container id="search-virtual-repeat-container">
-					<div class="search-result" md-virtual-repeat="text in vm.infiniteItems" md-on-demand>
+					<div 
+						class="search-result-list-item" 
+						ng-class="{'search-highlight-result' : text.highlight == true}"
+						md-virtual-repeat="text in vm.infiniteItems" 
+						ng-mouseover="vm.highlightMap(text._source.metadata.o2r.spatial.spatial.union.geojson.properties.id, vm.resetAllUnhoveredList)" 
+						md-on-demand>
 						<a ui-sref="erc({ercid: text._source.compendium_id})">{{text._source.metadata.o2r.title}}</a>
 						<div layout="row">
 							<span class="md-body-2" ng-repeat="author in text._source.metadata.o2r.author">{{author.name}}<span ng-if="!$last">,&nbsp;</span></span>

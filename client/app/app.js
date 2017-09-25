@@ -312,6 +312,7 @@
             {name: 'graph', category: 'action', fn: 'assessment'},
             {name: 'assignment', category: 'action', fn: 'assignment'},
             {name: 'compass', category: 'action', fn: 'explore'},
+            {name: 'highlight_off', category: 'toggle', fn: 'highlight_off'},
             {name: 'folder', category: 'file', fn: 'folder'}
         ];
 
