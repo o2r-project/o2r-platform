@@ -58,22 +58,6 @@ services:
     networks:
       - "o2rnet"
 
-  contentbutler:
-    image: contentbutler
-    restart: unless-stopped
-    volumes:
-      - o2r_test_storage:/tmp/o2r
-    external_links:
-      - "test_mongodb_1:mongodb"
-    environment:
-      - "CONTENTBUTLER_MONGODB=mongodb://mongodb"
-      - CONTENTBUTLER_PORT=8081
-      - DEBUG=*
-    ports:
-      - "8081:8081"
-    networks:
-      - "o2rnet"
-
   informer:
     image: informer
     restart: unless-stopped
@@ -129,8 +113,8 @@ services:
     networks:
       - "o2rnet"
 
-  transportar:
-    image: transportar
+  transporter:
+    image: transporter
     restart: unless-stopped
     volumes:
       - o2r_test_storage:/tmp/o2r
@@ -138,11 +122,11 @@ services:
     external_links:
       - "test_mongodb_1:mongodb"
     environment:
-      - "TRANSPORTAR_MONGODB=mongodb://mongodb"
-      - TRANSPORTAR_PORT=8086
-      - DEBUG=transportar
+      - "TRANSPORTER_MONGODB=mongodb://mongodb"
+      - TRANSPORTER_PORT=8081
+      - DEBUG=transporter,transporter:*
     ports:
-      - "8086:8086"
+      - "8081:8081"
     networks:
       - "o2rnet"
 
@@ -174,9 +158,8 @@ services:
     image: nginx:latest
     depends_on:
       - muncher
-      - contentbutler
       - bouncer
-      - transportar
+      - transporter
       - platform
       - informer
       - shipper
