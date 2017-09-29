@@ -59,6 +59,9 @@
         }
 
         function getRequired(){
+            let viewfiles_fix = erc.metadata.o2r.viewfiles;
+            viewfiles_fix.push(erc.metadata.o2r.paperSource);
+
             var required = {
                 title: erc.metadata.o2r.title,
                 description: erc.metadata.o2r.description,
@@ -66,7 +69,7 @@
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 author: erc.metadata.o2r.author,
-                viewfiles: erc.metadata.o2r.viewfiles,
+                viewfiles: viewfiles_fix,
                 viewfile: erc.metadata.o2r.viewfile
             };
             return angular.copy(required);
