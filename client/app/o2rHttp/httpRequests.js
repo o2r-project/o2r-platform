@@ -155,8 +155,8 @@
 		}
 
 		function uploadViaSciebo(url, path){
-			var _url = 'http://localhost/api/v1/compendium/';		
-			return $http.post(_url, {content_type:"compendium_v1", share_url:url, path:"/"+path});	
+			var _url = env.api + '/compendium/';		
+			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});	
 		}
 
 		function toZenodo(compendiumID) {

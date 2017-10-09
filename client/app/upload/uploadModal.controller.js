@@ -51,7 +51,7 @@
         function uploader(file){
             Upload.upload({
                 url: env.api + '/compendium',
-                data: {compendium: file, 'content_type': 'compendium_v1'}
+                data: {compendium: file, 'content_type': 'workspace'}
             })
             .then(successCallback, errorCallback, progress);
             
