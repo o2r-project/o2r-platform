@@ -43,6 +43,8 @@ To be able to log in to the o2r platform you must register a public API client a
 In the developer tools, use any name, website URL, and description.
 Important is the `Redirect URIs` list, which must include `http://localhost` for local testing with an nginx proxy.
 
+The client ID, secret and redirect URI must then be provided to the docker-compose configurations via environment variables as shown below.
+
 ### Disable tracking
 
 During development it is reasonable to disable the user tracking in the config file.
