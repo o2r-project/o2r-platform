@@ -34,8 +34,14 @@ window.__env.userLevels.regular = /*Integer containing the required user level f
 window.__env.userLevels.restricted = /*Integer containing the required user level for restricted status*/;
 ```
 
-
 ## Development
+
+### Get ORCID credentials
+
+To be able to log in to the o2r platform you must register a public API client application with ORCID as [described here](https://support.orcid.org/knowledgebase/articles/343182-register-a-public-api-client-application).
+
+In the developer tools, use any name, website URL, and description.
+Important is the `Redirect URIs` list, which must include `http://localhost` for local testing with an nginx proxy.
 
 ### Disable tracking
 
@@ -139,6 +145,23 @@ You can remove all containers and images by o2r with the following two commands 
 docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 ```
+
+#### Configure adminMongo
+
+The docker compose configuration includes an [adminMongo](https://adminmongo.markmoffat.com/) instance.
+Open it at **http://localhost:1234**, create a new connection with the following settings:
+
+- Connection name: `any name`
+- Connection string: `mongodb://db:27017` (default port, not password)
+- Connection options: `{}` (empty/default)
+
+Click on "Add connection", then on "Connections" at the top right corner, and then "Connect" using the just created connection.
+
+#### Set user levels after first login
+
+The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
+
+Configure adminMongo (see above), open the collection `users` in the database `muncher` and adjust the level property in the database document.
 
 ### Proxy for o2r microservices
 
