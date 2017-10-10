@@ -148,7 +148,6 @@
                     onEnd: callingsearch
                 }
             };
-
             
             if(angular.isDefined(coordinates_selected.geometry.coordinates)){
                 angular.extend(vm.layers.overlays, {
@@ -267,11 +266,12 @@
                     doRefresh: true,
                     layerOptions: {
                         onEachFeature: function(feat, featLyr){
-                            featLyr.on('mouseover', function(event){
+                            featLyr.on('click', function(event){
                                 customLeaflet.resetAllUnhoveredMap().then(function(){
                                     featLyr.setStyle(customLeaflet.getHighlightStyle());
                                     featLyr.bringToFront();
-                                    highlightList(feat.geometry.coordinates);
+                                    //call highlightList with location of click event
+                                    highlightList(turf.helpers.point([event.latlng.lng, event.latlng.lat]));
                                 });
                             });
                         },
@@ -305,10 +305,10 @@
             });
         }
 
-        function highlightList(coords){
-            // check if coords of list entry match those of hovered object
+        function highlightList(point){
+            // check if point is inside of polygon. If true, highlight list elements of respective erc
             for(var i in vm.allPubs){
-                var match = angular.equals(coords, vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson.geometry.coordinates);
+                var match = turf.inside(point, vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson);
                 // if true, highlight list entry
                 if(match){
                     vm.allPubs[i].highlight = true;
