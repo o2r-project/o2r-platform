@@ -146,6 +146,22 @@ services:
     networks:
       - "o2rnet"
 
+  substituter:
+    image: o2rproject/o2r-substituter:latest
+    restart: unless-stopped
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "SUBSTITUTER_MONGODB=mongodb://mongodb"
+      - SUBSTITUTER_PORT=8089
+      - DEBUG=substituter,substituter:*
+    ports:
+      - "8089:8089"
+    networks:
+      - "o2rnet"
+
   platform:
     image: nginx:latest
     depends_on:
