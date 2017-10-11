@@ -155,10 +155,10 @@ services:
       - "test_mongodb_1:mongodb"
     environment:
       - "SUBSTITUTER_MONGODB=mongodb://mongodb"
-      - SUBSTITUTER_PORT=8089
+      - SUBSTITUTER_PORT=8090
       - DEBUG=substituter,substituter:*
     ports:
-      - "8089:8089"
+      - "8090:8090"
     networks:
       - "o2rnet"
 
