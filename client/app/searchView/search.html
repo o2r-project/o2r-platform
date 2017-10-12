@@ -1,51 +1,72 @@
-<div layout="column">
-	<!-- search bar -->
-	<form ng-submit="vm.submit()" flex="50" flex-offset="5">
-		<md-input-container md-no-float class="md-icon-float md-block" >
-			<md-icon md-svg-src="{{vm.icons.search}}"></md-icon>
-			<input type="text" placeholder="Search" ng-model="vm.searchModel" ng-value="vm.searchTerm" flex="40" autofocus>
-			<md-button ng-click="vm.submit()" class="search-button md-primary md-raised white-font">Search</md-button>
-		</md-input-container>
-	</form>
-	<span flex></span>
-	<!-- End search bar -->
-
-	<!-- Show only in case of no search results -->
-	<div layout="row" ng-if="vm.allPubs.data.hits.hits.length<=0">
-		<div>
-			<h3>No results. Please try again.</h3>
-		</div>
+<div layout="row" flex="100">
+	<!--left side -->
+	<div flex-xs="" flex-gt-xs="50">
+		<!-- Start keyword, spatial and temporal search -->
+		<md-card>
+			<md-card-content>
+				<div layout="column">
+					<div layout="row">
+						<h3>Search</h3>
+						<span flex></span>
+						<md-input-container md-no-float class="md-icon-float">
+							<md-button type="button" ui-sref="search()" ui-sref-opts="{inherit:false}" class="search-button md-raised">Clear Search</md-button>
+						</md-input-container>
+					</div>
+					<h4>Keyword Search</h4>
+					<div layout="row">
+						<form ng-submit="vm.callingsearch()" flex="100">
+							<md-input-container md-no-float class="search-keyword-container md-icon-float md-icon-right" layout="row">
+								<md-icon class="o2r-pointer search-keyword-trigger" ng-click="vm.callingsearch()" md-svg-src="{{vm.icons.search}}"></md-icon>
+								<input type="text" placeholder="Keyword" ng-model="vm.searchTerm" ng-value="vm.searchTerm" autofocus>
+								<span flex></span>
+								<!-- <md-button type="submit" ng-click="vm.callingsearch()" class="search-button md-primary md-raised white-font">Search Articles</md-button> -->
+							</md-input-container>
+						</form>
+					</div>
+					<h4>Spatial Search</h4>
+					<leaflet controls="vm.controls" layers="vm.layers" width="100%" height="400px"></leaflet>
+					<h4>Temporal Search</h4>
+					<div>
+						<rzslider rz-slider-model="vm.slider.minValue" rz-slider-high="vm.slider.maxValue" rz-slider-options="vm.slider.options"></rzslider>
+					</div>
+				</div>
+			</md-card-content>
+		</md-card>
+		<!-- End keyword, spatial and temporal search -->
 	</div>
 
-	<!-- Visible if there are search results -->
-	<div layout="row" flex-offset="5" ng-if="vm.allPubs.data.hits.hits.length>0">
-		<!-- search results -->
-		<div layout="column" flex="50">
-			<span flex-offset="5">Results for: "{{vm.searchTerm}}"</span>
-			<!--<md-card class="o2r-pointer" ng-repeat="pub in vm.allPubs | orderBy:'-created'" ng-click="vm.setId(pub.id)">
-			-->
-			<md-card class="o2r-pointer" dir-paginate="pub in vm.allPubs.data.hits.hits | itemsPerPage:10" ng-click="vm.selectComp(pub._source)">				
-				<md-card-title>
-					<md-card-title-text >
-						<div>
-							<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><b class="search-clickOnName">{{pub._source.metadata.o2r.title}}</b></md-button>
-						</div>
-					</md-card-title-text>
-					<!--<md-button ui-sref="erc({ercid: pub._source.compendium_id})"><md-icon aria-label md-svg-src="{{vm.icons.forward}}"></md-icon></md-button>-->
-					<md-button ng-click="vm.selectComp(pub._source)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
-				</md-card-title>
-				<md-card-content>
-					<!--<span class="md-subhead"><b>Created on:</b> {{pub._source.created | date : 'yyyy-MM-dd HH:mm'}}</span>-->
-				</md-card-content>
-			</md-card>
-		</div>
-		<!-- End search results -->
-
-		<!-- Metadata -->
-		<div class="o2r-fixed search-metadata">
-			<o2r-metadata o2r-comp="{{vm.selectedComp}}"></o2r-metadata>
-		</div>
-		<!-- End Metadata -->
+	<!-- right side -->
+	<div flex-xs="" flex-gt-xs="50" layout="row">
+		<md-card flex="100" ng-if="vm.showResults" layout="row">
+			<md-card-content ng-if="vm.hits != 0" flex="100">
+				<div class="search-results" dir-paginate="text in vm.allPubs | itemsPerPage:5" layout="column">
+					<a ui-sref="erc({ercid: text._source.compendium_id})">{{text._source.metadata.o2r.title}}</a>
+					<div layout="row">
+						<span class="md-body-2" ng-repeat="author in text._source.metadata.o2r.author">{{author.name}},&nbsp;</span>
+						<span class="md-body-2">{{text._source.metadata.o2r.publicationDate | date : 'yyyy'}}</span>
+					</div>
+					<div class="search-results-abstract">
+						<span class="md-body-2">Abstract:</span> 
+						{{text._source.metadata.o2r.description | cutLongName : vm.cutAbstract[$index]}}
+						<md-icon ng-show="vm.cutAbstract[$index] == 200" class="o2r-icon o2r-pointer" aria-label="expand" md-svg-src="{{vm.icons.downArrow}}" ng-click="vm.toggleAbstract($index)"></md-icon>
+						<md-icon ng-hide="vm.cutAbstract[$index] == 200" class="o2r-icon o2r-pointer" aria-label="expand" md-svg-src="{{vm.icons.upArrow}}" ng-click="vm.toggleAbstract($index)"></md-icon>
+					</div>
+					<md-divider class="search-results-divider" ng-if="!$last"></md-divider>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<dir-pagination-controls template-url="/app/searchView/dirPagination.tpl.html"></dir-pagination-controls>
+					<span flex></span>
+				</div>
+			</md-card-content>
+			<md-card-content ng-if="vm.hits == 0" layout="row" layout-fill>
+				<span flex></span><h4>Sorry, no matching results were found.</h4><span flex></span>
+			</md-card-content>
+		</md-card>
+		<md-card flex="100" ng-if="!vm.showResults" layout="row">
+			<md-card-content layout="row" layout-fill>
+				<span flex></span><h4>Use the search options on the left side to discover ERC.</h4><span flex></span>
+			</md-card-content>
+		</md-card>
 	</div>
-	<dir-pagination-controls template-url="/app/searchView/dirPagination.tpl.html"></dir-pagination-controls>
 </div>

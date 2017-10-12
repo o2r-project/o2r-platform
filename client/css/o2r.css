@@ -243,8 +243,12 @@ display-files-html iframe{
 	right: 5vw;
 }
 
+.gobutton{
+	bottom: 1em;
+}
+
 .search-button{
-	bottom:1em;
+	bottom: 1em;
 }
 
 .search-clickOnName:hover{
@@ -253,6 +257,52 @@ display-files-html iframe{
 
 .search-clickOnName{
 	font-size: 1.5em;
+}
+
+.search-right-nav{
+	right: 1vw;
+	width: 5vw;
+}
+
+.search-searchbar{
+	margin: 8px 8px 8px 8px;
+}
+
+.search-results{
+	padding-top: 8px;
+}
+
+.search-results:hover{
+	background-color: rgba(0, 0, 0, 0.12);
+}
+
+.search-results-divider{
+	margin-top: 8px;
+}
+
+.search-results-abstract{
+	text-align: justify;
+}
+
+.search-keyword-container{
+	padding-left: 0 !important;
+}
+
+.search-keyword-trigger{
+	padding: 5px 5px 5px 5px;
+	border-radius: 2px;
+}
+
+.search-keyword-trigger:hover{
+	background: rgba(0, 0, 0, 0.12);
+}
+
+.rzslider .rz-selection{
+	background: #004286;
+}
+
+.rzslider .rz-pointer{
+	background-color: #004286;
 }
 
 /***********************
@@ -305,7 +355,8 @@ display-files-html iframe{
 ************************/
 ul.pagination {
     display: inline-block;
-    padding: 0;
+	padding: 0;
+	padding-top: 5%;
     margin: 0;
 }
 

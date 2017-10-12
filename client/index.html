@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderController as vm">
-<head>	
+<head>
 
 <title ng-bind="vm.page.title()"></title>
 <meta charset="utf-8" />
@@ -10,6 +10,7 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/elasticsearch/elasticsearch.angular.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
@@ -31,6 +32,7 @@
 <script type="text/javascript" src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
 <script type="text/javascript" src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
 <script type="text/javascript" src="bower_components/ui-leaflet-draw/dist/ui-leaflet-draw.js"></script>
+<script type="text/javascript" src="bower_components/angularjs-slider/dist/rzslider.js"></script>
 <script type="text/javascript" src="bower_components/angular-logger/dist/angular-logger.min.js"></script>
 <script type="text/javascript" src="bower_components/intro.js/minified/intro.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
@@ -38,7 +40,6 @@
 
 
 <!-- Libraries CSS -->
-<link rel="stylesheet" type="text/css" href="css/o2r.css">
 <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
 <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -46,7 +47,9 @@
 <link rel="stylesheet" type="text/css" href="bower_components/ngprogress/ngProgress.css">
 <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="bower_components/leaflet-draw/dist/leaflet.draw.css" />
+<link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
 <link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
+<link rel="stylesheet" type="text/css" href="css/o2r.css">
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
@@ -93,6 +96,8 @@
 <script src="app/services/header.js"></script>
 <script src="app/sockets/socket.js"></script>
 <script src="app/creationProcess/creationObject.factory.js"></script>
+<script src="app/searchView/search.factory.js"></script>
+<script src="app/searchView/elasticsearch.factory.js"></script>
 
 
 <!-- Controllers -->
@@ -154,16 +159,10 @@
 <body ng-controller="LoginController as vm">
     <!-- header -->
     <md-toolbar class="o2r-fixed" id="o2r-header">
-        <div class="md-toolbar-tools">
+      <div class="md-toolbar-tools">
             <img class="o2r-pointer" src="img/o2r-logo-only-white.svg" alt="o2r logo" height="60%" ui-sref="home">
             <span flex></span>
-            <form ng-submit="vm.submitSearch()" ng-if="vm.showSearchBar()">
-                <md-input-container md-no-float layout="row" class="md-icon-float white-font">
-                    <label class="white-font">Search</label>
-                    <input ng-model="vm.searchInput" class="white-font">
-                    <md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.search}}"></md-icon>
-                </md-input-container>
-            </form>
+            <md-button class="white-font" ui-sref="search()" ui-sref-opts="{inherit: false}" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Discover ERC</md-button>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button id="o2r-login" class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
@@ -173,16 +172,16 @@
 
     <!-- Main content and injected views -->
     <div id="main">
-        
-        <div id="ui-view" ui-view></div>  
-        
+
+        <div id="ui-view" ui-view></div>
+
     </div>
 
     <!-- footer -->
     <md-toolbar class="footer">
         <div class="md-toolbar-tools white-font">
             <span flex></span>
-            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>&nbsp;|&nbsp;<a href="http://o2r.info/o2r-web-api/" title="API specification"><small>API</small></a>&nbsp;<a><small>endpoint:</small></a> <a href="https://o2r.uni-muenster.de/api/v1/"><small>https://o2r.uni-muenster.de/api/v1/</small></a>&nbsp;|&nbsp;<small>Version&nbsp;<code>#dev#</code></small>
+            <a ui-sref="impressum"><small>Impressum</small></a>&nbsp;|&nbsp;<a ui-sref="privacy"><small>Privacy Policy</small></a>&nbsp;|&nbsp;<a href="http://o2r.info/o2r-web-api/" title="API specification"><small>API</small></a>&nbsp;<a><small>endpoint:</small></a> <a href="https://o2r.uni-muenster.de/api/v1/"><small>https://o2r.uni-muenster.de/api/v1/</small></a>&nbsp;|&nbsp;<small>Version&nbsp;<code>#dev#</code></small>&nbsp;|&nbsp;<a id="o2r-erc-info" href="http://www.dlib.org/dlib/january17/nuest/01nuest.html"><small>More information about ERC</small></a>
             <span flex></span>
         </div>
     </md-toolbar>

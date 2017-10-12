@@ -12,22 +12,24 @@
             "starter.o2rMetadataView",
             "treeControl",
             "hljs",
-            "ui.router", 
-            "ngFileUpload", 
+            "ui.router",
+            "ngFileUpload",
             'ngAnimate',
-            'ngAria', 
+            'ngAria',
             'ngMaterial',
             'ngMessages',
-            'angulartics', 
+            'angulartics',
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress',
             'ngIframeResizer',
+            'rzModule',
             'ui-leaflet',
             'angular-logger',
             'angular-intro',
             'ngCookies',
-            'ngSanitize'])
+            'ngSanitize',
+            'elasticsearch'])
         .constant('icons', icons())
         .config(config)
         .run(run);
@@ -36,7 +38,7 @@
 
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env, logEnhancerProvider){
         $compileProvider.preAssignBindingsEnabled(true);
-        
+
         $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
@@ -190,11 +192,12 @@
                 }
             })
             .state('search', {
-                url: "/search?q",
+                url: "/search?q&coords&from&to",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchController',
                 controllerAs: 'vm',
                 resolve: {
+                    searchAll: searchAllService,
                     searchResults: searchResultsService
                 }
             })
@@ -258,6 +261,12 @@
                 controller: 'PrivacyController',
                 controllerAs: 'vm'
             })
+            .state('explore', {
+                url: "/explore",
+                templateUrl: "app/searchView/exploreERC.html",
+                controller: 'ExploreController',
+                controllerAs: 'vm'
+            })
             .state('404', {
                 url: "/404",
                 templateUrl: "app/templates/404.html"
@@ -307,10 +316,10 @@
         ];
 
         for(var i in icons){
-            
+
             object[icons[i].name] = path + icons[i].fn + path2;
         }
-        
+
         return object;
     }
 
@@ -385,17 +394,25 @@
         });
     }
 
-    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata'];
-    function searchResultsService($stateParams, $log, $q, metadata){
-        $log.debug('searchResultsService, param: ', $stateParams);
-        var term = $stateParams.q;
-        $log.debug('searchResultsService, term: ' + term);
-        return metadata.callMetadata_search(term).then(function(result){
-            if(result.status == 404){
-                return $q.reject('404 Not Found');
-            }
-            else return result;
-        });
+    searchAllService.$inject = ['search'];
+    function searchAllService(search){
+        var index = 'o2r';
+        var query = search.prepareQuery(index);
+        return search.search(query);
+    }
+
+    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'search'];
+    function searchResultsService($stateParams, $log, $q, metadata, search){
+        var logger = $log.getInstance('searchResultsService');
+        var index = 'o2r';
+        logger.info('param: ', $stateParams);
+        var term, coords, from, to = null;
+        if($stateParams.q) term = $stateParams.q;
+        if($stateParams.coords) coords = angular.fromJson($stateParams.coords);
+        if($stateParams.from) from = angular.fromJson($stateParams.from);
+        if($stateParams.to) to = angular.fromJson($stateParams.to);
+        var query = search.prepareQuery(index, term, coords, from, to);
+        return search.search(query);
     }
 
     ercService.$inject = ['$log', '$stateParams', '$q', 'publications'];
@@ -426,4 +443,4 @@
     function adminService($log, httpRequests){
         return httpRequests.getAllUsers();
     }
-})();  
+})();

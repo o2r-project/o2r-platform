@@ -129,6 +129,7 @@
         }
 
         function updateSpatialFiles(spat){
+            logger.info('updateSpatialFiles', spat);
             erc.metadata.o2r.spatial.files = spat;
         }
 

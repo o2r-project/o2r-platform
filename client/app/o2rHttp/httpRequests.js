@@ -5,9 +5,9 @@
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 		
-	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
+	httpRequests.$inject = ['$http', '$log', '$q', '$stateParams', 'env'];
 		
-	function httpRequests($http, $log, $q, env){
+	function httpRequests($http, $log, $q, $stateParams, env){
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
