@@ -12,13 +12,13 @@
             "starter.o2rMetadataView",
             "treeControl",
             "hljs",
-            "ui.router", 
-            "ngFileUpload", 
+            "ui.router",
+            "ngFileUpload",
             'ngAnimate',
-            'ngAria', 
+            'ngAria',
             'ngMaterial',
             'ngMessages',
-            'angulartics', 
+            'angulartics',
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
             'ngProgress',
@@ -31,19 +31,19 @@
         .constant('icons', icons())
         .config(config)
         .run(run);
-    
+
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env', 'logEnhancerProvider'];
 
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env, logEnhancerProvider){
         $compileProvider.preAssignBindingsEnabled(true);
-        
+
         $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
         if(env.disableTracking) console.log("Tracking globally disabled!");
 
         $logProvider.debugEnabled(env.enableDebug);
-        logEnhancerProvider.prefixPattern = '%2$s: '; 
+        logEnhancerProvider.prefixPattern = '%2$s: ';
         if(!env.enableDebug) console.log('Debug logs disabled!');
         /* eslint-enable angular/window-service, angular/log */
 
@@ -178,7 +178,7 @@
                 templateUrl: "app/creationProcess/uibindings.html",
                 controller: 'UIBindingsController',
                 controllerAs: 'vm'
-            })                             
+            })
             .state('author', {
                 url: "/author/:authorid",
                 templateUrl: "app/authorView/author.html",
@@ -229,7 +229,10 @@
             .state('erc.substitute', {
                 templateUrl: "app/substituteView/substitute.html",
                 controller: 'SubstituteController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    substituteInfoService: substituteInfoService
+                }
             })
             .state('compareanalysis', {
                 url: "/compare/analysis?o&r&d&om&rm&dm",
@@ -307,10 +310,10 @@
         ];
 
         for(var i in icons){
-            
+
             object[icons[i].name] = path + icons[i].fn + path2;
         }
-        
+
         return object;
     }
 
@@ -398,6 +401,22 @@
         });
     }
 
+    // provides metadata for all compendia TODO: not all but similar compendia
+    substituteInfoService.$inject = ['$log', '$q', 'metadataSimComp'];
+    function substituteInfoService($log, $q, metadataSimComp){
+        $log.debug('substituteInfoService');
+        return metadataSimComp.callMetadata_simComp().then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else {
+              console.log("substituteInfoService : result");
+              console.log(result);
+              return result;
+            }
+      });
+    }
+
     ercService.$inject = ['$log', '$stateParams', '$q', 'publications'];
     function ercService($log, $stateParams, $q, publications){
         var ercId = $stateParams.ercid;
@@ -426,4 +445,4 @@
     function adminService($log, httpRequests){
         return httpRequests.getAllUsers();
     }
-})();  
+})();

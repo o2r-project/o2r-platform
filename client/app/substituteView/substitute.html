@@ -1,1 +1,34 @@
-<img src="img/spatialsearch.png" alt="search" flex="100"/>
+<div>
+
+<!-- list of similar compendia -->
+  <md-card ng-if="vm.similarPubs">
+    <md-card-content>
+      <md-list>
+
+        <md-list-item class="md-2-line" ng-repeat="pub in vm.similarPubs">
+          <div class="md-list-item-text" layout="row">
+            <div  flex="70">
+              <h4 flex><b>{{pub.metadata.o2r.title}}</b></h4> <!-- TODO: | cutLongName -->
+              <p flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</p>
+              <p flex><b>by</b> {{pub.user}}</p>
+              <p flex><b>{{pub.metadata.raw.description}}</b></p> <!-- TODO: | cutLongName -->
+            </div>
+            <div flex>
+            <md-button title="show options" class="md-raised" ng-click="vm.substituteOptions(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
+            </div>
+          </div>
+          <md-divider ng-if="!($last)"></md-divider>
+        </md-list-item>
+
+      </md-list>
+    </md-card-content>
+  </md-card>
+
+  <!-- Message if not a single compendium has been uploaded yet -->
+  <md-card ng-if="!vm.similarPubs">
+    <md-card-content>
+      <span>No similar compendia.</span>
+    </md-card-content>
+  </md-card>
+
+</div>
