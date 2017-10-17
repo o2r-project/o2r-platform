@@ -44,7 +44,7 @@ window.__env.userLevels.restricted = /*Integer containing the required user leve
 
 ## Development environment with Docker Compose
 
-You can start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose` (version `>= 1.6.0`).
+You can start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose` (version `1.9.0+`) and Docker (version `1.13.0+`).
 
 First, **read the instructions on preparing your host machine in the [`reference-implementation`](https://github.com/o2r-project/reference-implementation) project**.
 
@@ -67,9 +67,7 @@ The parameters are as follows:
 ### Linux
 
 ```bash
-docker-compose --file test/docker-compose-db.yml up -d
-# wait at least 8 seconds for configuration container to run.
-OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose --file test/docker-compose.yml up
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
 ```
 
 ### Windows with Docker for Windows
@@ -81,8 +79,7 @@ $env:OAUTH_CLIENT_ID = <...>
 $env:OAUTH_CLIENT_SECRET = <...>
 $env:OAUTH_URL_CALLBACK = <...>
 $env:ZENODO_TOKEN = <...>
-docker-compose --file test/docker-compose-db.yml up -d
-docker-compose --file test/docker-compose-remote.yml up
+docker-compose up
 ```
 
 The services are available at `http://localhost`.
@@ -94,7 +91,11 @@ To re-enable this conversion for `docker-compose >= 1.9.0` set the environment v
 
 Also, the client's defaults (i.e. using `localhost`) does not work.
 We must mount a config file to point the API to the correct location, see `test/config-toolbox.js`.
-You must mount this config file to the webserver (container `nginx`) by uncommenting the line in docker-compose.yml
+You must mount this config file to the webserver (container `nginx`) by uncommenting the line in `docker-compose.yml`.
+
+```
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
+```
 
 The services are available at `http://<machine-ip>`.
 
@@ -112,7 +113,7 @@ docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
 By default, users may create compendia, but if you want to develop features for editors or admins, you can adjust a user's level in the admin view (.
 
-### Proxy for o2r microservices
+## Proxy for o2r microservices
 
 If you run the o2r microservices locally as a developer, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo.
 A nginx configuration file to achieve this is `dev/nginx-microservices.conf`.
@@ -124,9 +125,13 @@ docker run --rm --name o2r-platform -p 80:80 -v $(pwd)/test/nginx.conf:/etc/ngin
 
 Note: If you want to run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
 
+## WebSocket testing
+
+The compose configuration also makes a simple test page for WebSockets available at http://localhost/dev/socket.html (file (`dev/socket.html`)).
+
 ## Platform Version
 
-0.9.2
+0.9.3
 
 ## License
 
