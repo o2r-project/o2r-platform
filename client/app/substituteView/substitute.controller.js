@@ -5,8 +5,8 @@
         .module('starter')
         .controller('SubstituteController', SubstituteController);
 
-    SubstituteController.$inject = ['$scope', '$log', '$stateParams', '$q', 'httpRequests', 'substituteInfoService', 'metadataSimComp', 'icons'];
-    function SubstituteController($scope, $log, $stateParams, $q, httpRequests, substituteInfoService, metadataSimComp, icons){
+    SubstituteController.$inject = ['$scope', '$log', '$stateParams', '$q', 'httpRequests', 'substituteInfoService', 'metadataSimComp', 'icons', 'erc'];
+    function SubstituteController($scope, $log, $stateParams, $q, httpRequests, substituteInfoService, metadataSimComp, icons, erc){
         var logger = $log.getInstance('SubstituteCtrl');
         var vm = this;
 
@@ -14,16 +14,11 @@
 
         vm.icons = icons;
         vm.similarPubs = getMetadataSimComp();
-        console.log("vm.similarPubs");
-        console.log(vm.similarPubs);
         vm.substituteOptions = getSubstituteOptions;
+        vm.publication = erc;
 
         $scope.$on('loadedSimilarComps', function(event, data){ //similarPubs will be set to comp_meta from metadata factory
             vm.similarPubs = data;
-            console.log("data");
-            console.log(data);
-            console.log(vm.similarPubs);
-            logger.warn("Hello the broadcast is here.");
         });
 
         //////////////////
@@ -36,8 +31,12 @@
         }
 
         function getSubstituteOptions(pub) {
-            console.log("getSubstituteOptions");
-            console.log(pub);
+            logger.info("base and overlay ERC choosen for substitution");
+            var base = vm.publication;
+            var overlay = pub;
+            
+            console.log(base);
+            console.log(overlay);
         }
 
 

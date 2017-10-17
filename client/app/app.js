@@ -306,7 +306,8 @@
             {name: 'graph', category: 'action', fn: 'assessment'},
             {name: 'assignment', category: 'action', fn: 'assignment'},
             {name: 'compass', category: 'action', fn: 'explore'},
-            {name: 'folder', category: 'file', fn: 'folder'}
+            {name: 'folder', category: 'file', fn: 'folder'},
+            {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'}
         ];
 
         for(var i in icons){
@@ -401,7 +402,7 @@
         });
     }
 
-    // provides metadata for all compendia TODO: not all but similar compendia
+    // provides metadata for all compendia TODO #1 (substitution): not all but similar compendia
     substituteInfoService.$inject = ['$log', '$q', 'metadataSimComp'];
     function substituteInfoService($log, $q, metadataSimComp){
         $log.debug('substituteInfoService');
@@ -410,8 +411,6 @@
                 return $q.reject('404 Not Found');
             }
             else {
-              console.log("substituteInfoService : result");
-              console.log(result);
               return result;
             }
       });

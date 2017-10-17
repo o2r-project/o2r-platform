@@ -7,14 +7,14 @@
 
         <md-list-item class="md-2-line" ng-repeat="pub in vm.similarPubs">
           <div class="md-list-item-text" layout="row">
-            <div  flex="70">
-              <h4 flex><b>{{pub.metadata.o2r.title}}</b></h4> <!-- TODO: | cutLongName -->
+            <div flex="70">
+              <md-button ui-sref="erc({ercid: pub.id})" target="_blank"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName}}</b></md-button>
               <p flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</p>
               <p flex><b>by</b> {{pub.user}}</p>
-              <p flex><b>{{pub.metadata.raw.description}}</b></p> <!-- TODO: | cutLongName -->
+              <p flex><b>{{pub.metadata.raw.description}}</b></p>
             </div>
             <div flex>
-            <md-button title="show options" class="md-raised" ng-click="vm.substituteOptions(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
+            <md-button title="substitution options" class="md-raised" ng-click="vm.substituteOptions(pub)"><md-icon aria-label md-svg-src="{{vm.icons.substitution_options}}"></md-icon></md-button>
             </div>
           </div>
           <md-divider ng-if="!($last)"></md-divider>

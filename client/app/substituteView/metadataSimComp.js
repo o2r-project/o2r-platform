@@ -28,12 +28,9 @@
       var deferred = $q.defer();
       var comp_meta = [];
       httpRequests
-        .listCompendia()            // TODO #1 similarity Analysis and only get choosen compendia
+        .listCompendia()            // TODO #1 (substitution) similarity Analysis and only get choosen compendia
         .then(cb1)
         .catch(errorHandler);
-
-				console.log("deferred.promise");
-				console.log(deferred.promise);
 
       return deferred.promise;
 
@@ -49,8 +46,6 @@
           comp_meta.push(res.data);
           counter ++;
           if(counter == response.data.results.length){
-						console.log("comp_meta");
-						console.log(comp_meta);
             sortByDate(comp_meta);
             $rootScope.$broadcast('loadedSimilarComps', comp_meta);
             deferred.resolve(comp_meta);
