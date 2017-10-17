@@ -129,6 +129,10 @@
         }
 
         function updateSpatialFiles(spat){
+            //check if spatial attribute exists, if not, create it
+            if(angular.isUndefined(erc.metadata.o2r.spatial)){
+                erc.metadata.o2r.spatial = {files: {}};
+            }
             erc.metadata.o2r.spatial.files = spat;
         }
 

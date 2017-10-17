@@ -13,7 +13,7 @@
         var newErcId = '';
         var vm = this;
         vm.icons = icons;
-        vm.checkRunAnalysis = true;
+        // vm.checkRunAnalysis = true;
         vm.uploadedERCid = false;
         vm.cancel = () => {
                         $mdDialog.cancel(); 
@@ -59,16 +59,16 @@
                 $log.debug("bis hier gehts success");
                 uploadSuccess = true;
                 newErcId = response.data.id;
-                if(vm.checkRunAnalysis){
-                    jobs.executeJob(response.data.id)
-                        .then(execJobCallback, errorCallback);
-                } else {
-                    $log.debug('upload successCallback: %o', response);
-                    vm.doneButton = true;
-                    metadata.callMetadata_author(authorId);
-                    vm.checkUpload = true;
-                    file.progress = 100;
-                }
+                // if(vm.checkRunAnalysis){
+                //     jobs.executeJob(response.data.id)
+                //         .then(execJobCallback, errorCallback);
+                // } else {
+                $log.debug('upload successCallback: %o', response);
+                vm.doneButton = true;
+                metadata.callMetadata_author(authorId);
+                vm.checkUpload = true;
+                file.progress = 100;
+                // }
             }
             function errorCallback(response){
                 console.log("bis hier gehts error")
@@ -82,18 +82,18 @@
             function progress(evt){
                 file.progress = parseInt(95.0 * evt.loaded/evt.total);
             }
-            function execJobCallback(response){
-                $log.debug('upload execJobCallback: %o', response);
-                vm.uploadedERCid = response.data.compendium_id;
-                console.log(vm.uploadedERCid);
-                if(vm.checkRunAnalysis){
-                    vm.doneButton = true;
-                    metadata.callMetadata_author(authorId);
-                    vm.checkUpload = true;
-                    file.progress = 100;
-                }
+            // function execJobCallback(response){
+            //     $log.debug('upload execJobCallback: %o', response);
+            //     vm.uploadedERCid = response.data.compendium_id;
+            //     console.log(vm.uploadedERCid);
+            //     if(vm.checkRunAnalysis){
+            //         vm.doneButton = true;
+            //         metadata.callMetadata_author(authorId);
+            //         vm.checkUpload = true;
+            //         file.progress = 100;
+            //     }
                 
-            }
+            // }
         }
     }
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" ng-app="starter" ng-cloak ng-controller="HeaderController as vm">
-<head>	
+<head>
 
 <title ng-bind="vm.page.title()"></title>
 <meta charset="utf-8" />
@@ -93,6 +93,7 @@
 <script src="app/services/header.js"></script>
 <script src="app/sockets/socket.js"></script>
 <script src="app/creationProcess/creationObject.factory.js"></script>
+<script src="app/substituteView/metadataSimComp.js"></script>
 
 
 <!-- Controllers -->
@@ -173,9 +174,9 @@
 
     <!-- Main content and injected views -->
     <div id="main">
-        
-        <div id="ui-view" ui-view></div>  
-        
+
+        <div id="ui-view" ui-view></div>
+
     </div>
 
     <!-- footer -->

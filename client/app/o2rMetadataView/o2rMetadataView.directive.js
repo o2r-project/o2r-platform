@@ -51,7 +51,20 @@
                 scope.o2r = comp.metadata.o2r;
                 scope.compId = comp.id;
                 logger.info('received compendium with id:', scope.compId);
-
+                var maplayer;
+                if(angular.isDefined(scope.o2r.spatial) && angular.isDefined(scope.o2r.spatial.files)){
+                    maplayer = {
+                        "Geojson": {
+                            name: 'Dataset',
+                            type: 'geoJSONShape',
+                            data: scope.o2r.spatial.files,
+                            visible: true,
+                            doRefresh: true
+                        }
+                    };
+                } else {
+                    maplayer = null;
+                }
                 scope.map = {
                     center: {
                         lat: 42.20133,
@@ -66,15 +79,7 @@
                                 type: 'xyz'
                             }
                         },
-                        overlays: {
-                            "Geojson": {
-                                name: 'Dataset',
-                                type: 'geoJSONShape',
-                                data: scope.o2r.spatial.files,
-                                visible: true,
-                                doRefresh: true
-                            }
-                        }
+                        overlays: maplayer
                     }
                 };
             }
