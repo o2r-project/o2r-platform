@@ -1,4 +1,4 @@
-# (C) Copyright 2016 The o2r project. https://o2r.info
+# (C) Copyright 2017 o2r project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 # limitations under the License.
 #
 FROM nginx:stable-alpine
-MAINTAINER o2r-project, https://o2r.info
 
 RUN apk add --no-cache \
     nodejs \
@@ -50,11 +49,9 @@ LABEL maintainer="o2r-project <https://o2r.info>" \
   org.label-schema.vendor="o2r project" \
   org.label-schema.url="http://o2r.info" \
   org.label-schema.name="o2r platform" \
-  org.label-schema.description="ERC creation and inpspection user interface" \    
+  org.label-schema.description="compendium creation and inpspection user interface" \    
   org.label-schema.version=$VERSION \
   org.label-schema.vcs-url=$VCS_URL \
   org.label-schema.vcs-ref=$VCS_REF \
   org.label-schema.build-date=$BUILD_DATE \
   org.label-schema.docker.schema-version="rc1"
-
-# docker build --tag platform .
