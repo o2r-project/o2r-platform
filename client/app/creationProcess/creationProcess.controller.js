@@ -23,12 +23,13 @@
         vm.nextState = nextState;
         vm.previousState = previousState;
         vm.goTo = (to) => $state.go(to);
-
+        vm.switchedTab = false;
         
 
         $scope.$on('$destroy', function(){
             saved = false;
             cancelled = false;
+            vm.switchedTab = false;
             creationObject.destroy();
             removeUnloadEvent();
         });
@@ -49,6 +50,24 @@
                         showNoStateChangeToast();
                         break;
                 }
+            }
+        });
+
+        $scope.$on('$stateChangeSuccess', function(event, toState){
+            switch (toState.name) {
+                case 'creationProcess.requiredMetadata':
+                    break;
+                case 'creationProcess.optionalMetadata':
+                    vm.switchedTab = true;
+                    break;
+                case 'creationProcess.spacetimeMetadata':
+                    vm.switchedTab = true;
+                    break;
+                case 'creationProcess.uibindings':
+                    vm.switchedTab = true;
+                    break;
+                default:
+                    break;
             }
         });
 

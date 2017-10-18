@@ -1,9 +1,9 @@
-<form name="requiredForm">
+<form name="requiredForm" novalidate>
     <!-- TITLE CARD -->
     <md-card>
         <md-card-content>
             <h4>Title</h4>
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" md-is-error="vm.showError('title')">
                 <label>Title</label>
                 <input ng-model="vm.required.title" ng-value="vm.required.title" ng-change="vm.simpleUpdate('title', vm.required.title)" name="title" required>
                 <div ng-messages="requiredForm.title.$error">
@@ -50,7 +50,7 @@
 
             <!-- EDIT AUTHOR-->
             <div ng-if="(vm.editAuthor == 0) || (vm.editAuthor)">
-                <md-input-container>
+                <md-input-container md-is-error="vm.showError('authorname')">
                     <label>Author</label>
                     <input ng-model="vm.author.name" ng-value="vm.required.author[vm.editAuthor].name" name="authorname" required>
                     <div ng-messages="requiredForm.authorname.$error">
@@ -102,7 +102,7 @@
     <md-card>
         <md-card-content>
             <h4>Abstract</h4>
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" md-is-error="vm.showError('description')">
                 <label>Abstract</label>
                 <textarea rows="4" ng-model="vm.required.description" ng-value="vm.required.description" ng-change="vm.simpleUpdate('description', vm.required.description)" name="description" required></textarea>
                 <div ng-messages="requiredForm.description.$error">
@@ -120,7 +120,7 @@
                 <div ng-message="required">Required field</div>
             </div>
             <h4>Citation</h4>
-            <md-input-container class="md-block" flex>
+            <md-input-container class="md-block" flex md-is-error="vm.showError('softwarePaperCitation')">
                 <label>Citation</label>
                 <input ng-model="vm.required.softwarePaperCitation" ng-value="vm.required.softwarePaperCitation" ng-change="vm.simpleUpdate('softwarePaperCitation', vm.required.softwarePaperCitation)" name="softwarePaperCitation" required>
                 <div ng-messages="requiredForm.softwarePaperCitation.$error">
@@ -133,8 +133,8 @@
     <md-card>
         <md-card-content>
             <h4>Main File</h4>
-            <md-input-container class="md-block">
-                <label>Select main file</label>
+            <md-input-container class="md-block" md-is-error="vm.showError('viewfile')">
+                <label>Select view file</label>
                 <md-select ng-model="vm.required.view" name="viewfile" required>
                     <md-option ng-repeat="input in vm.required.viewfiles track by $index" value="{{$index}}">
                         {{input | cutPath}}
@@ -157,7 +157,7 @@
                     <md-button class="md-raised" ng-click="vm.useTemplateLicense('closed')">Most Restrictive</md-button>
                 </div>
                 <div layout="column" flex>
-                    <md-input-container flex>
+                    <md-input-container flex md-is-error="vm.showError('textlicense')">
                         <label>Text License</label>
                         <md-select ng-model="vm.required.textLicense" name="textlicense" required>
                             <md-option ng-repeat="license in vm.textLicense track by $index" value="{{$index}}">
@@ -168,7 +168,7 @@
                             <div ng-message="required">Required field</div>
                         </div>
                     </md-input-container>
-                    <md-input-container flex>
+                    <md-input-container flex md-is-error="vm.showError('codelicense')">
                         <label>Code License</label>
                         <md-select ng-model="vm.required.codeLicense" name="codelicense" required>
                             <md-option ng-repeat="license in vm.codeLicense track by $index" value="{{$index}}">
@@ -179,7 +179,7 @@
                             <div ng-message="required">Required field</div>
                         </div>
                     </md-input-container>
-                    <md-input-container flex>
+                    <md-input-container flex md-is-error="vm.showError('datalicense')">
                         <label>Data License</label>
                         <md-select ng-model="vm.required.dataLicense" name="datalicense" required>
                             <md-option ng-repeat="license in vm.dataLicense track by $index" value="{{$index}}">
@@ -190,7 +190,7 @@
                             <div ng-message="required">Required field</div>
                         </div>
                     </md-input-container>
-                    <md-input-container flex>
+                    <md-input-container flex md-is-error="vm.showError('uibindinglicense')">
                         <label>UI Binding License</label>
                         <md-select ng-model="vm.required.ui_bindingLicense"  name="uibindinglicense" required>
                             <md-option ng-repeat="license in vm.ui_bindingLicense track by $index" value="{{$index}}">
