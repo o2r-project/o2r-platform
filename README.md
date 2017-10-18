@@ -17,7 +17,7 @@ _Leveraging reproducible research_
 bower install
 ```
 
-## Run
+## Run only platform project in a container
 
 ```bash
 docker build --tag platform .
@@ -46,9 +46,10 @@ window.__env.userLevels.restricted = /*Integer containing the required user leve
 
 You can start all required o2r microservices (using latest images from [Docker Hub](https://hub.docker.com/r/o2rproject)) with just two commands using `docker-compose` (version `1.9.0+`) and Docker (version `1.13.0+`).
 
-First, **read the instructions on preparing your host machine in the [`reference-implementation`](https://github.com/o2r-project/reference-implementation) project**.
+First, **read the instructions on "Basics" and "Prerequisites" to prepare your host machine in the [`reference-implementation`](https://github.com/o2r-project/reference-implementation) project**.
 
 This project contains one `docker-compose` configuration (file `docker-compose.yml`) to run all microservices & databases, and mount the client application directly from the source directory `client`.
+If you see an error related to the MongoDB in the first "up", abort and restart.
 
 _The client must be build on the host!_
 
