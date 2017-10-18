@@ -117,12 +117,16 @@ By default, users may create compendia, but if you want to develop features for 
 
 ## Proxy for o2r microservices
 
-If you run the o2r microservices locally as a developer, it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo.
-A nginx configuration file to achieve this is `dev/nginx-microservices.conf`.
+If you run the o2r microservices locally as a developer (e.g. by manually starting each microservice via `npm start`), it is useful to run a local nginx to make all API endpoints available under one port (`80`), and use the same nginx to serve the application in this repo.
+A nginx configuration file to achieve this is **`dev/nginx-microservices.conf`**.
 
 ```bash
-#sed -i -e 's|http://o2r.uni-muenster.de/api/v1|http://localhost/api/v1|g' js/app.js
-docker run --rm --name o2r-platform -p 80:80 -v $(pwd)/test/nginx.conf:/etc/nginx/nginx.conf -v $(pwd)/client:/etc/nginx/html $(pwd)/test:/etc/nginx/html/test nginx
+docker run --rm --name o2r-platform --network="host" -p 80:80 -v $(pwd)/dev/nginx-microservices.conf:/etc/nginx/nginx.conf:ro -v $(pwd)/client:/usr/share/nginx/html:ro -v $(pwd)/dev:/etc/nginx/html/dev:ro nginx:stable-alpine
+
+# bash inside the container for debugging IPs:
+docker exec -it o2r-platform /bin/bash
+# get the host machine IP from inside the container (use this if the default 172.17.0.1 does not work):
+ip addr show docker0 | grep -Po 'inet \K[\d.]+'
 ```
 
 Note: If you want to run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
