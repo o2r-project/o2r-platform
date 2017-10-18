@@ -15,8 +15,8 @@
         .module('starter')
         .directive('o2rAnalysisStats', o2rAnalysisStats);
 
-    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket', '$mdDialog'];
-    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket, $mdDialog){
+    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket', '$mdDialog', 'env'];
+    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket, $mdDialog, env){
         return{
             restrict: 'E',
             scope: {
@@ -29,6 +29,7 @@
         };
 
         function link(scope){
+            var logger = $log.getInstance('o2rAnalysisStats');
             var iconClass = {
                 validate_bag: {
                     started: {
@@ -101,6 +102,8 @@
             scope.isRunning = isRunning;
             scope.showDialog = showDialog;
             scope.isEmpty = isEmpty;
+            scope.env = env;
+            scope.hideDuration = hideDuration;
             // delete dummy object after metadata object was updated
             scope.dummy = {};
             scope.dummy.o = {};
@@ -118,22 +121,23 @@
             })
 
             scope.$on('set liveStatus', function(event, data){
-                $log.debug(data);
+                logger.info(data);
                 scope.lStar = data;
             });
 
             function activate(){
                 try {
                     scope.lFin = angular.fromJson(scope.lFinished); //JSON.parse(scope.lFinished);
+                    string2time(scope.lFin);
                 } catch (error) {
-                    $log.debug('No finished jobs. Set last finished Job to {}');
+                    logger.info('No finished jobs. Set last finished Job to {}');
                     scope.lFin = {};
                 }
 
                 try {
                     scope.lStar = angular.fromJson(scope.lStarted); //JSON.parse(scope.lStarted);
                 } catch (error) {
-                    $log.debug('No currently running job. Set last started Job to {}');
+                    logger.info('No currently running job. Set last started Job to {}');
                     scope.lStar = {};
                 }
 
@@ -142,7 +146,7 @@
                     if(data.hasOwnProperty('steps')){
                         stepUpdater(data, scope.lStar.steps);
                     } else if (data.hasOwnProperty('status')){
-                        $log.debug('setting overall status to %s', data.status);
+                        logger.info('setting overall status to %s', angular.toJson(data.status));
                         scope.lStar.status = data.status;
                     }
                 });
@@ -152,7 +156,7 @@
                     if(data.hasOwnProperty('steps')){
                         stepUpdater(data, scope.lStar.steps);
                     } else if (data.hasOwnProperty('status')){
-                        $log.debug('setting overall status to %s', data.status);
+                        logger.info('setting overall status to %s', angular.toJson(data.status));
                         scope.lStar.status = data.status;
                     }
                 });
@@ -229,29 +233,42 @@
             }
 
             function stepUpdater(data, o){
+                logger.info('stepupdater', data);
                 if(data.steps.hasOwnProperty('cleanup')){
                     o.cleanup.status = data.steps.cleanup.status;
-                    $log.debug('updated cleanup to %o', data.steps.cleanup.status);
+                    // reset info text
+                    o.cleanup.text = "";
+                    logger.info('updated cleanup to ', data.steps.cleanup.status);
                     $rootScope.progressbar.complete();
                 } else if(data.steps.hasOwnProperty('image_execute')){
                     if(data.steps.image_execute.hasOwnProperty('status')){
                         o.image_execute.status = data.steps.image_execute.status;
-                        $log.debug('updated image_execute to %o', data.steps.image_execute.status);
+                        // reset info text
+                        o.image_execute.text = "";
+                        logger.info('updated image_execute to ', data.steps.image_execute.status);
                     }
                 } else if(data.steps.hasOwnProperty('image_build')){
                     if(data.steps.image_build.hasOwnProperty('status')){
                         o.image_build.status = data.steps.image_build.status;
-                        $log.debug('updated image_build to %o', data.steps.image_build.status);
+                        // reset info text
+                        o.image_build.text = "";
+                        logger.info('updated image_build to ', data.steps.image_build.status);
                     }
                 } else if(data.steps.hasOwnProperty('validate_bag')){
                     o.validate_bag.status = data.steps.validate_bag.status;
-                    $log.debug('updated validate_bag to %o', data.steps.validate_bag.status);
+                    // reset info text
+                    o.validate_bag.text = "";
+                    logger.info('updated validate_bag to ', data.steps.validate_bag.status);
                 } else if(data.steps.hasOwnProperty('validate_compendium')){
                     o.validate_compendium.status = data.steps.validate_compendium.status;
-                    $log.debug('updated validate_compendium to %o', data.steps.validate_compendium.status);
+                    // reset info text
+                    o.validate_compendium.text = "";
+                    logger.info('updated validate_compendium to ', data.steps.validate_compendium.status);
                 } else if(data.steps.hasOwnProperty('image_prepare')){
                     o.image_prepare.status = data.steps.image_prepare.status;
-                    $log.debug('updated image_prepare to %o', data.steps.image_prepare.status);
+                    // reset info text
+                    o.image_prepare.text= "";
+                    logger.info('updated image_prepare to ', data.steps.image_prepare.status);
                 }
                 return;
             }
@@ -278,6 +295,36 @@
                     if(obj.hasOwnProperty(key)) return false;
                 }
                 return true;
+            }
+
+            function string2time(obj){
+                for(var i in obj.steps){
+                    if(angular.isDefined(obj.steps[i].start) && angular.isDefined(obj.steps[i].end)){
+                        obj.steps[i].start = Date.parse(obj.steps[i].start);
+                        obj.steps[i].end = Date.parse(obj.steps[i].end);
+                    } else {
+                        logger.info('no start and/or end value defined in step ', angular.toJson(obj.steps[i]));
+                    }
+                }
+            }
+
+            function hideDuration(status){
+                var result;
+                switch(status){
+                    case 'queued':
+                        result = true;
+                        break;
+                    case 'running':
+                        result = true;
+                        break;
+                    case 'skipped':
+                        result = true;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+                return result;
             }
         }
     }

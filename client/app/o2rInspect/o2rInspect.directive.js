@@ -36,6 +36,7 @@
         function link(scope, iElement, attrs){
             scope.$watch('o2rInspectData', function(newVal, oldVal){
                 var inspect = angular.fromJson(newVal);
+                console.log('inspect', inspect);
                 if(!inspect.hasOwnProperty('code')) throw 'o2rInspectData.code undefined';
                 if(!inspect.hasOwnProperty('data')) throw 'o2rInspectData.data undefined';
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
@@ -61,10 +62,17 @@
                 //TODO
                 //Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareDatasets(dsets){
+                    // replace wrong path with right path
                     var regex = '/tmp/o2r/compendium/' + inspect.publication.id;
                     var results = [];
                     for(var i in dsets){
-                        results.push(publications.getContentById(inspect.publication, dsets[i].replace(regex, '/api/v1/compendium/' + inspect.publication.id + '/data')));
+                        var tmp = dsets[i].split('/');
+                        var str = '';
+                        for(var i in tmp){
+                            if(i == 0) continue;
+                            str = str + '/' + tmp[i]; 
+                        }
+                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data' + str));
                     }
                     return results;
                 }
