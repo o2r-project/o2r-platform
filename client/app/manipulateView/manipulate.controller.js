@@ -12,7 +12,7 @@
         var vm = this;
         vm.selectedTab = 0;
         vm.interactive = {};
-        vm.interactive.path = manipulate.metadata.o2r.shiny_app;
+        vm.interactive.path = manipulate.metadata.o2r.interaction.ui_binding.shinyURL;
         vm.interactive.type = 'text/shiny';
         vm.interactive.name = 'mjomeiAnalysis2';
         vm.activateCodeData = () => $scope.$parent.vm.activateMCodeData();
@@ -30,29 +30,28 @@
             newObj.code = [];
             newObj.data = [];
             newObj.code.push({
-                path: manipulate.metadata.o2r.file.filepath,
-                type: manipulate.metadata.o2r.file.mimetype,
-                name: manipulate.metadata.o2r.file.filename
+                path: manipulate.metadata.o2r.interaction.ui_binding.underlyingCode,
+                //type: manipulate.metadata.o2r.file.mimetype,
+                name: manipulate.metadata.o2r.interaction.ui_binding.underlyingCode
             });
             if(newVal == 1){
                 newObj.code.push({
-                    path: manipulate.metadata.o2r.file.filepath,
-                    type: manipulate.metadata.o2r.file.mimetype,
-                    name: manipulate.metadata.o2r.file.filename
+                    path: manipulate.metadata.o2r.interaction.ui_binding.underlyingCode,
+                    //type: manipulate.metadata.o2r.file.mimetype,
+                    name: manipulate.metadata.o2r.interaction.ui_binding.underlyingCode
                 });
             }
-            newObj.data.push(manipulate.metadata.o2r.inputfiles[newVal]);
-            newObj.data.push(manipulate.metadata.o2r.inputfiles[0]);
+            newObj.data.push(manipulate.metadata.o2r.interaction.ui_binding.underlyingData.filepath);
             $scope.$parent.vm.mSetCodeData(newObj);
         });
         //dummy stuff
         vm.figures = [];
         vm.figures.push(vm.interactive);
-        vm.figures.push(vm.interactive);
-        vm.figures.push(vm.interactive);
-        vm.figures.push(vm.interactive);
-        vm.figures.push(vm.interactive);
-        vm.figures.push(vm.interactive);
+        //vm.figures.push(vm.interactive);
+        //vm.figures.push(vm.interactive);
+        //vm.figures.push(vm.interactive);
+        //vm.figures.push(vm.interactive);
+        //vm.figures.push(vm.interactive);
 
 
         /////////////////
