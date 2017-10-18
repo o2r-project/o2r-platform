@@ -18,6 +18,7 @@
             getOptional: getOptional,
             getSpacetime: getSpacetime,
             getUibindings: getUibindings,
+            getInputFiles: getInputFiles,
             simpleUpdate: simpleUpdate,
             updateTemporal: updateTemporal,
             updateLicense: updateLicense,
@@ -27,6 +28,7 @@
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
             updateSpatialFiles: updateSpatialFiles,
+            updateUibinding: updateUibinding,
             removeArtifacts: removeArtifacts
         };
 
@@ -86,6 +88,17 @@
         function getUibindings(){
             return angular.copy(erc.metadata.o2r.interaction);
         }
+
+        function getInputFiles(){
+            var inputFiles = {
+                codefiles: erc.metadata.o2r.codefiles,
+                viewfiles: erc.metadata.o2r.viewfiles,
+                inputfiles: erc.metadata.o2r.inputfiles,
+                r_input: erc.metadata.o2r.r_input,
+                r_rdata: erc.metadata.o2r.r_rdata
+            };
+            return angular.copy(inputFiles);
+        }
         
         function updateAuthor(index, name, aff, orcid){
             //if(angular.isUndefined(erc.metadata.o2r.author[index])) erc.metadata.o2r.author[index] = {affiliation: ""};
@@ -134,6 +147,10 @@
                 erc.metadata.o2r.spatial = {files: {}};
             }
             erc.metadata.o2r.spatial.files = spat;
+        }
+
+        function updateUibinding(key, value){
+            erc.metadata.o2r.interaction.ui_binding[key] = value;
         }
 
         function removeArtifacts(attr){
