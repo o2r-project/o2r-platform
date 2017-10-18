@@ -55,9 +55,10 @@ _The client must be build on the host!_
 
 **Required settings**
 
-Some of the settings to run the platform cannot be published.
-These must be provided at runtime using environment variables as is described in the OS-specific instructions below.
-The parameters are as follows:
+Some of the settings to run the platform cannot be published for security reasons.
+Therefor these must be provided at runtime using _environment variables_ as is described in the OS-specific instructions below.
+
+The environment parameters are as follows:
 
 - `OAUTH_CLIENT_ID` identifier for the platform with auth provider
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
