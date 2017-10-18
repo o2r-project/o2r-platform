@@ -27,7 +27,8 @@ docker run -d -p 80:80 platform
 
 ## Configure
 
-Create a copy of the file `client/app/config/configSample.js` and name it `client/app/config/config.js`. You must configure the required application settings in this file, which is not part of the version control:
+Create a copy of the file `client/app/config/configSample.js` and name it `client/app/config/config.js`.
+You can configure the required application settings in this file `../config.js`:
 
 ```JavaScript
 window.__env.server = /*String containing server address*/;
@@ -92,8 +93,7 @@ When using docker-compose with Docker Toolbox/Machine on Windows, [volume paths 
 To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
 
 Also, the client's defaults (i.e. using `localhost`) does not work.
-We must mount a config file to point the API to the correct location, see `test/config-toolbox.js`.
-You must mount this config file to the webserver (container `nginx`) by uncommenting the line in `docker-compose.yml`.
+Therefore must mount a config file to point the API to the correct location (see also [Configure](#configure)), by uncommenting the line in `docker-compose.yml`, which mounts the file `test/config-toolbox.js` to the webserver at the right location (`service: nginx`).
 
 ```
 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
