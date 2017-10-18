@@ -133,7 +133,7 @@ Note: If you want to run this in a Makefile, `$(CURDIR)` will come in handy to c
 
 ## WebSocket testing
 
-The compose configuration also makes a simple test page for WebSockets available at http://localhost/dev/socket.html (file (`dev/socket.html`)).
+The compose configuration also makes a simple test page for WebSockets available at http://localhost/dev/socket.html (based on file `dev/socket.html`).
 
 ## Platform Version
 
