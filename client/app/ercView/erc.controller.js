@@ -17,7 +17,8 @@
         vm.server = env.server;
         vm.publication = erc;
         vm.ercId = vm.publication.id;
-        vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.file.filepath));
+        vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.viewfile));
+        console.log(vm.file)
         vm.originalfile = angular.copy(vm.file);
         vm.currentNavItem = defView.name;
         vm.toggleSidenav = buildToggler('sidenav');
