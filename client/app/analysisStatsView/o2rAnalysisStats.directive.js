@@ -103,6 +103,7 @@
             scope.showDialog = showDialog;
             scope.isEmpty = isEmpty;
             scope.env = env;
+            scope.hideDuration = hideDuration;
             // delete dummy object after metadata object was updated
             scope.dummy = {};
             scope.dummy.o = {};
@@ -127,6 +128,7 @@
             function activate(){
                 try {
                     scope.lFin = angular.fromJson(scope.lFinished); //JSON.parse(scope.lFinished);
+                    string2time(scope.lFin);
                 } catch (error) {
                     logger.info('No finished jobs. Set last finished Job to {}');
                     scope.lFin = {};
@@ -293,6 +295,36 @@
                     if(obj.hasOwnProperty(key)) return false;
                 }
                 return true;
+            }
+
+            function string2time(obj){
+                for(var i in obj.steps){
+                    if(angular.isDefined(obj.steps[i].start) && angular.isDefined(obj.steps[i].end)){
+                        obj.steps[i].start = Date.parse(obj.steps[i].start);
+                        obj.steps[i].end = Date.parse(obj.steps[i].end);
+                    } else {
+                        logger.info('no start and/or end value defined in step ', angular.toJson(obj.steps[i]));
+                    }
+                }
+            }
+
+            function hideDuration(status){
+                var result;
+                switch(status){
+                    case 'queued':
+                        result = true;
+                        break;
+                    case 'running':
+                        result = true;
+                        break;
+                    case 'skipped':
+                        result = true;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+                return result;
             }
         }
     }

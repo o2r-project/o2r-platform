@@ -14,10 +14,10 @@
                     <strong>{{value.status}}</strong>
                     <md-icon md-svg-src="{{checkIcon(value.status, key, 'finished')}}" ng-class="iconClass[key].finished"></md-icon>
                 </div>
-                <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>
+                <small ng-if="hideDuration(value.status)">{{value.end - value.start | duration}}</small>
             </td>
             <td>
-                {{value.text}}
+                <small>{{value.text}}</small>
             </td>
         </tr>
     </table>
@@ -38,7 +38,7 @@
                 <!-- <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>-->
             </td>
             <td>
-                {{value.text}}
+                <small>{{value.text}}</small>
             </td>
         </tr>
     </table>
