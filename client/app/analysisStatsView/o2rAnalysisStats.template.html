@@ -7,11 +7,15 @@
     <table ng-hide="isEmpty(lFin.steps)">
         <tr ng-repeat="(key, value) in lFin.steps">
             <td>{{key}}</td>
-            <td>
-                <strong>{{value.status}}</strong>
-                <md-icon md-svg-src="{{checkIcon(value.status, key, 'finished')}}" ng-class="iconClass[key].finished"></md-icon>
-                <br/>
+            <td layout="column">
+                <div layout="row">
+                    <strong>{{value.status}}</strong>
+                    <md-icon md-svg-src="{{checkIcon(value.status, key, 'finished')}}" ng-class="iconClass[key].finished"></md-icon>
+                </div>
                 <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>
+            </td>
+            <td>
+                {{value.text}}
             </td>
         </tr>
     </table>
@@ -26,11 +30,13 @@
     <table ng-hide="isEmpty(lStar)">
         <tr ng-repeat="(key, value) in lStar.steps">
             <td>{{key}}</td>
-            <td>
+            <td layout="row">
                 <strong>{{value.status}}</strong>
                 <md-icon md-svg-src="{{checkIcon(value.status, key, 'started')}}" ng-class="iconClass[key].started"></md-icon>
-                <br/>
                 <!-- <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>-->
+            </td>
+            <td>
+                {{value.text}}
             </td>
         </tr>
     </table>
