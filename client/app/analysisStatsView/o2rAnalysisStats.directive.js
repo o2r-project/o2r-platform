@@ -15,8 +15,8 @@
         .module('starter')
         .directive('o2rAnalysisStats', o2rAnalysisStats);
 
-    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket', '$mdDialog'];
-    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket, $mdDialog){
+    o2rAnalysisStats.$inject = ['$rootScope','$log', 'jobs', 'icons', 'socket', '$mdDialog', 'env'];
+    function o2rAnalysisStats($rootScope, $log, jobs, icons, socket, $mdDialog, env){
         return{
             restrict: 'E',
             scope: {
@@ -102,6 +102,7 @@
             scope.isRunning = isRunning;
             scope.showDialog = showDialog;
             scope.isEmpty = isEmpty;
+            scope.env = env;
             // delete dummy object after metadata object was updated
             scope.dummy = {};
             scope.dummy.o = {};
