@@ -36,7 +36,6 @@
         function link(scope, iElement, attrs){
             scope.$watch('o2rInspectData', function(newVal, oldVal){
                 var inspect = angular.fromJson(newVal);
-                console.log('inspect', inspect);
                 if(!inspect.hasOwnProperty('code')) throw 'o2rInspectData.code undefined';
                 if(!inspect.hasOwnProperty('data')) throw 'o2rInspectData.data undefined';
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
@@ -84,7 +83,7 @@
                     var regex = inspect.publication.id;
                     var results = [];
                     for(var i in code){
-                        code[i].path = code[i].path.replace(regex, '/api/v1/compendium/' + inspect.publication.id + '/data');
+                        code[i].path = '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[0].name;
                         results.push(code[i]);
                     }
                     return results;
