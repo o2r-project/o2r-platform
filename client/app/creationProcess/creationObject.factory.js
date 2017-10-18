@@ -24,7 +24,9 @@
             updateLicense: updateLicense,
             updateAuthor: updateAuthor,
             addAuthor: addAuthor,
+            addBinding: addBinding,
             removeAuthor: removeAuthor,
+            removeBinding: removeBinding,
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
             updateSpatialFiles: updateSpatialFiles,
@@ -86,7 +88,10 @@
         }
 
         function getUibindings(){
-            return angular.copy(erc.metadata.o2r.interaction);
+            if(erc.metadata.o2r.interaction.ui_binding.length==undefined){
+                erc.metadata.o2r.interaction.ui_binding = [];
+            }
+            return angular.copy(erc.metadata.o2r.interaction.ui_binding);
         }
 
         function getInputFiles(){
@@ -111,8 +116,16 @@
             erc.metadata.o2r.author.push(auth);
         }
 
+        function addBinding(binding){
+            erc.metadata.o2r.interaction.ui_binding.push(binding);
+        }        
+
         function removeAuthor(index){
             erc.metadata.o2r.author.splice(index, 1);
+        }
+
+        function removeBinding(index){
+            erc.metadata.o2r.interaction.ui_binding.splice(index, 1);
         }
 
         //allowed values for lic: 'text', 'code', 'data', 'uibindings'
@@ -150,7 +163,7 @@
         }
 
         function updateUibinding(key, value){
-            erc.metadata.o2r.interaction.ui_binding[key] = value;
+            //erc.metadata.o2r.interaction.ui_binding[key] = value;
         }
 
         function removeArtifacts(attr){
