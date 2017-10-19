@@ -1,7 +1,7 @@
 <md-card>
         <md-card-content>
             <h4>UI Binding(s)</h4>
-            <md-list layout="row">
+            <md-list layout="column">
                 <md-list-item 
                     class="md-3-line" 
                     ng-repeat="binding in vm.bindings track by $index" 
@@ -12,7 +12,7 @@
                         <div>
                             <h3>{{binding.shinyURL}}</h3>
                             <h4>{{binding.underlyingCode}}</h4>
-                            <p>{{binding.underlyingData}}</p>
+                            <p>{{binding.underlyingData.file}}</p>
                         </div>
                         <span flex></span>
                         <div ng-hide="vm.options[$index]" class="required-author-placeholder"></div>
@@ -33,33 +33,48 @@
                 </md-list-item>
             </md-list>
 
-            <!-- EDIT AUTHOR-->
+            <!-- EDIT Binding-->
             <div ng-if="(vm.editBinding == 0) || (vm.editBinding)">
                 <md-input-container md-is-error="vm.showError('authorname')">
                     <label>ShinyURL</label>
                     <input ng-model="vm.binding.shinyURL" ng-value="vm.bindings[vm.editBinding].shinyURL" name="shinyurl">
                 </md-input-container>
                 <md-input-container>
-                    <label>Underlying Data</label>
-                    <input ng-model="vm.binding.underlyingData" ng-value="vm.bindings[vm.editBinding].underlyingData">
+                    <label>Select data file</label>
+                    <md-select ng-model="vm.binding.underlyingData" name="datafile">
+                        <md-option ng-repeat="datainput in vm.input.r_rdata track by $index" value="{{$index}}">
+                            {{datainput.file | cutPath}}
+                        </md-option>
+                    </md-select>
                 </md-input-container>
                 <md-input-container>
-                    <label>Underlying Code</label>
-                    <input ng-model="vm.binding.underlyingCode" ng-value="vm.bindings[vm.editBinding].underlyingCode">
+                    <label>Select code file</label>
+                    <md-select ng-model="vm.binding.underlyingCode" name="codefile">
+                        <md-option ng-repeat="codeinput in vm.input.viewfiles track by $index" value="{{$index}}">
+                            {{codeinput | cutPath}}
+                        </md-option>
+                    </md-select>
                 </md-input-container>
+                <md-button class="md-raised" ng-click="vm.updateBinding(vm.editBinding)" aria-label="Update Binding">
+                    Update UI Binding
+                </md-button>                
                 <md-button ng-click="vm.cancelUpdateBinding()" aria-label="Cancel">
                     Cancel
                 </md-button>
             </div>
-            <!-- ADD AUTHOR -->
+            <!-- ADD Binding -->
             <div ng-if="vm.newBindingEdit">
                 <md-input-container>
                     <label>ShinyURL</label>
                     <input ng-model="vm.binding.shinyURL" name="shinyurl">
                 </md-input-container>
                 <md-input-container>
-                    <label>Underlying Data</label>
-                    <input ng-model="vm.binding.underlyingData">
+                    <label>Select data file</label>
+                    <md-select ng-model="vm.binding.underlyingData" name="datafile">
+                        <md-option ng-repeat="datainput in vm.input.r_rdata track by $index" value="{{$index}}">
+                            {{datainput.file | cutPath}}
+                        </md-option>
+                    </md-select>
                 </md-input-container>
                 <md-input-container>
                 <label>Select code file</label>
@@ -78,29 +93,3 @@
             </div>
         </md-card-content>
 </md-card>
-
-<!--
-                <h4>Shiny app</h4>
-            <md-input-container class="md-block">
-                <label>URL to Shiny app</label>
-                <input ng-model="vm.binding.shinyURL" ng-value="vm.binding.shinyURL" name="shinyURL" ng-change="vm.updateUibinding('shinyURL', vm.binding.shinyURL)">
-            </md-input-container>
-            <h4>Code File</h4>
-            <md-input-container class="md-block">
-                <label>Select code file</label>
-                <md-select ng-model="vm.binding.underlyingCode" name="codefile">
-                    <md-option ng-repeat="codeinput in vm.input.viewfiles track by $index" value="{{$index}}">
-                        {{codeinput | cutPath}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <h4>Data File</h4>  
-            <md-input-container class="md-block">
-                <label>Select data file</label>
-                <md-select ng-model="vm.underlyingData" name="datafile">
-                    <md-option ng-repeat="datainput in vm.input.r_rdata track by $index" value="{{$index}}">
-                        {{datainput.file | cutPath}}
-                    </md-option>
-                </md-select>
-            </md-input-container>  
--->

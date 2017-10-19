@@ -25,6 +25,7 @@
             updateAuthor: updateAuthor,
             addAuthor: addAuthor,
             addBinding: addBinding,
+            updateBinding: updateBinding,
             removeAuthor: removeAuthor,
             removeBinding: removeBinding,
             updateTemporalBegin: updateTemporalBegin,
@@ -119,6 +120,12 @@
         function addBinding(binding){
             erc.metadata.o2r.interaction.ui_binding.push(binding);
         }        
+
+        function updateBinding(index, shiny, data, code){
+            if(shiny) erc.metadata.o2r.interaction.ui_binding[index].shinyURL = shiny;
+            if(data) erc.metadata.o2r.interaction.ui_binding[index].underlyingData = data;
+            if(code) erc.metadata.o2r.interaction.ui_binding[index].underlyingCode = code;            
+        }
 
         function removeAuthor(index){
             erc.metadata.o2r.author.splice(index, 1);

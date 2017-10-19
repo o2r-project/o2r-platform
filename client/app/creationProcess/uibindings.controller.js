@@ -5,12 +5,13 @@
         .module('starter')
         .controller('UIBindingsController', UIBindingsController);
     
-    UIBindingsController.$inject = ['$scope', '$log', 'creationObject'];
+    UIBindingsController.$inject = ['$scope', '$log', 'creationObject', 'icons'];
 
-    function UIBindingsController($scope, $log, creationObject){
+    function UIBindingsController($scope, $log, creationObject, icons){
         var logger = $log.getInstance('UiBindings');
 
         var vm = this;
+        vm.icons = icons;
         vm.bindings = creationObject.getUibindings();
         //console.log(vm.binding.ui_binding.length);
         vm.input = creationObject.getInputFiles();
@@ -50,9 +51,9 @@
 
         function addNewBinding(){
             var binding = {};
-            binding.shinyURL = vm.binding.shinyURL;
-            binding.underlyingData = vm.binding.underlyingData || "";
-            binding.underlyingCode = vm.binding.underlyingCode || "";
+                binding.shinyURL = vm.binding.shinyURL;
+                binding.underlyingData = vm.input.r_rdata[vm.binding.underlyingData] || "";
+                binding.underlyingCode = vm.input.viewfiles[vm.binding.underlyingCode] || "";
             vm.bindings.push(binding);
             vm.addBinding(binding);
             //reset values
@@ -76,13 +77,13 @@
 
         function updateBinding(index){
             var binding = {};
-            binding.shinyURL = vm.binding.shinyURL || vm.bindings[index].shinyURL;
-            binding.underlyingData = vm.binding.underlyingData || vm.bindings[index].underlyingData;
-            binding.underlyingCode = vm.binding.underlyingCode || vm.bindings[index].underlyingCode;
+                binding.shinyURL = vm.binding.shinyURL || vm.bindings[index].shinyURL;
+                binding.underlyingData = vm.input.r_rdata[vm.binding.underlyingData] || vm.bindings[index].underlyingData;
+                binding.underlyingCode = vm.input.viewfiles[vm.binding.underlyingCode] || vm.bindings[index].underlyingCode;
             vm.bindings[index].shinyURL = binding.shinyURL;
             vm.bindings[index].underlyingData = binding.underlyingData;
             vm.bindings[index].underlyingCode = binding.underlyingCode;
-            creationObject.updateBinding(index, biinding.shinyURL, binding.underlyingData, binding.underlyingCode);
+            creationObject.updateBinding(index, binding.shinyURL, binding.underlyingData, binding.underlyingCode);
             vm.cancelUpdateBinding();
         }        
 
