@@ -229,6 +229,9 @@ display-files-html iframe{
 	margin-left:3%;
 }
 
+md-input-container.md-default-theme.md-input-invalid .md-char-counter, md-input-container.md-input-invalid .md-char-counter, md-input-container.md-default-theme.md-input-invalid .md-input-message-animation, md-input-container.md-input-invalid .md-input-message-animation, md-input-container.md-default-theme.md-input-invalid label, md-input-container.md-input-invalid label{
+	color: #d11d29;
+}
 
 
 /***********************

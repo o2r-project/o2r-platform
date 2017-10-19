@@ -15,7 +15,7 @@
         };
         vm.publication = prepareFiles($scope.$parent.vm.publication);
         vm.setOne = setOne;
-        vm.bagitToggle = bagitToggle;
+        // vm.bagitToggle = bagitToggle;
         vm.showBagit = false;
         vm.ercId = $scope.$parent.vm.publication.id;
         vm.overallSize = publications.getOverallSize(vm.publication);

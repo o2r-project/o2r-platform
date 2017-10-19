@@ -37,6 +37,8 @@
         vm.dataLicense=[];
         vm.ui_bindingLicense=[];
 
+        vm.showError = showError;
+
         logger.info(vm);
         $scope.$on('$destroy', function(){
             logger.info(angular.toJson(creationObject.getRequired()));
@@ -209,6 +211,32 @@
                 logger.info('found existing publication date')
             }
             vm.simpleUpdate('publicationDate', vm.required.publicationDate);
+        }
+
+        function showError(fieldname){
+            var field = $scope.requiredForm[fieldname];
+            //check if input is of md-select
+            if((fieldname == 'textlicense') ||
+                (fieldname == 'codelicense') ||
+                (fieldname == 'datalicense') ||
+                (fieldname == 'uibindinglicense') ||
+                (fieldname == 'viewfile')){
+                // if tab was switched and form is invalid OR input was touched and is invalid show error message in input
+                if(($scope.$parent.vm.switchedTab && field.$invalid) || (field.$touched && field.$invalid)){
+                    // set textcolor to red
+                    field.$$element[0].children[0].children[0].style.color = '#d11d29';
+
+                    // if input type is of md-select and valid set to normal text color
+                } else if (!field.$invalid){
+                    // set text color to black
+                    field.$$element[0].children[0].children[0].style.color = 'rgba(0,0,0,0.87)';
+                }
+            } else {
+                // if tab was switched and form is invalid OR input was touched and is invalid show error message in input
+                if(($scope.$parent.vm.switchedTab && field.$invalid) || (field.$touched && field.$invalid)) return true;
+                else return false;
+            }
+
         }
     }
 })();         

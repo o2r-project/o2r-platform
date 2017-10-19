@@ -11,29 +11,27 @@
         var logger = $log.getInstance('UiBindings');
 
         var vm = this;
-        vm.bindings = creationObject.getUibindings();
-
-        vm.purposes = ["change variable", "change visualization", "exchange dataset"];
-        vm.widgets = [];
-        vm.inferWidget = inferWidget;
-
+        vm.binding = creationObject.getUibindings();
+        vm.input = creationObject.getInputFiles();
+        console.log(vm.input);
+        vm.updateUibinding = creationObject.updateUibinding;
         $scope.$on('$destroy', function(){
             logger.info(angular.toJson(creationObject.getUibindings()));
         });
 
+        $scope.$watch('vm.underlyingData', function(newVal, oldVal){
+            try {
+                vm.updateUibinding('underlyingData', vm.input.r_rdata[newVal]);
+            } catch (e) {}
+        });
+
+        $scope.$watch('vm.underlyingCode', function(newVal, oldVal){
+            try {
+                vm.updateUibinding('underlyingCode', vm.input.viewfiles[newVal]);
+            } catch (e) {}
+        });        
+
         ////////
-        
-        function inferWidget(){
-            
-        }
     }
 
 })();
-
-
-           
-           
-            
-           
-           
-            
