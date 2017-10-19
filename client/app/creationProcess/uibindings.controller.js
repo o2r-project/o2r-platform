@@ -51,7 +51,9 @@
 
         function addNewBinding(){
             var binding = {};
-                binding.shinyURL = vm.binding.shinyURL;
+                binding.shinyURL = {};
+                binding.shinyURL.path = vm.binding.shinyURL;
+                binding.shinyURL.type = 'text/shiny';
                 binding.underlyingData = vm.input.r_rdata[vm.binding.underlyingData] || "";
                 binding.underlyingCode = vm.input.viewfiles[vm.binding.underlyingCode] || "";
             vm.bindings.push(binding);

@@ -39,7 +39,7 @@
                 if(!inspect.hasOwnProperty('code')) throw 'o2rInspectData.code undefined';
                 if(!inspect.hasOwnProperty('data')) throw 'o2rInspectData.data undefined';
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
-
+               
                 scope.icons = icons;
                 scope.datasets = prepareDatasets(inspect.data);
                 scope.selectedData = scope.datasets[0];
