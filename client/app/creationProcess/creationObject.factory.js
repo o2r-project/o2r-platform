@@ -31,7 +31,6 @@
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
             updateSpatialFiles: updateSpatialFiles,
-            updateUibinding: updateUibinding,
             removeArtifacts: removeArtifacts
         };
 
@@ -167,10 +166,6 @@
                 erc.metadata.o2r.spatial = {files: {}};
             }
             erc.metadata.o2r.spatial.files = spat;
-        }
-
-        function updateUibinding(key, value){
-            //erc.metadata.o2r.interaction.ui_binding[key] = value;
         }
 
         function removeArtifacts(attr){

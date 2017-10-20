@@ -13,7 +13,6 @@
         var vm = this;
         vm.icons = icons;
         vm.bindings = creationObject.getUibindings();
-        //console.log(vm.binding.ui_binding.length);
         vm.input = creationObject.getInputFiles();
 
         vm.updateBinding = updateBinding;
@@ -25,24 +24,7 @@
         vm.newBindingEdit = false;
         vm.hideAddBindingButton = false;
         vm.cancelNewBinding = cancelNewBinding;
-        vm.cancelUpdateBinding = cancelUpdateBinding;
-
-        $scope.$on('$destroy', function(){
-            logger.info(angular.toJson(creationObject.getUibindings()));
-        });
-
-        $scope.$watch('vm.underlyingData', function(newVal, oldVal){
-            try {
-                vm.updateUibinding('underlyingData', vm.input.r_rdata[newVal]);
-            } catch (e) {}
-        });
-
-        $scope.$watch('vm.binding.underlyingCode', function(newVal, oldVal){
-            try {
-                vm.updateUibinding('underlyingCode', vm.input.viewfiles[newVal]);
-                //console.log(vm.binding.underlyingCode)
-            } catch (e) {}
-        });        
+        vm.cancelUpdateBinding = cancelUpdateBinding;       
 
         function removeBinding(index){
             vm.bindings.splice(index, 1);

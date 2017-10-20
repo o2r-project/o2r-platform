@@ -41,12 +41,16 @@
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
                
                 scope.icons = icons;
-                scope.datasets = prepareDatasets(inspect.data);
-                scope.selectedData = scope.datasets[0];
-
-                scope.code = prepareCode(inspect.code);
-                scope.selectedCode = scope.code[0];
-
+                console.log(inspect)
+                if(inspect.data[0]!=null){
+                    scope.datasets = prepareDatasets(inspect.data);
+                    scope.selectedData = scope.datasets[0];
+                }
+                
+                if(inspect.code[0]!=null){
+                    scope.code = prepareCode(inspect.code);
+                    scope.selectedCode = scope.code[0];
+                }
                 scope.openMenu = openMenu;
 
                 scope.selectData = selectData;
