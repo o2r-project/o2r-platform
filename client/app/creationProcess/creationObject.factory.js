@@ -24,11 +24,13 @@
             updateLicense: updateLicense,
             updateAuthor: updateAuthor,
             addAuthor: addAuthor,
+            addBinding: addBinding,
+            updateBinding: updateBinding,
             removeAuthor: removeAuthor,
+            removeBinding: removeBinding,
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
             updateSpatialFiles: updateSpatialFiles,
-            updateUibinding: updateUibinding,
             removeArtifacts: removeArtifacts
         };
 
@@ -86,7 +88,10 @@
         }
 
         function getUibindings(){
-            return angular.copy(erc.metadata.o2r.interaction);
+            if(erc.metadata.o2r.interaction.ui_binding.length==undefined){
+                erc.metadata.o2r.interaction.ui_binding = [];
+            }
+            return angular.copy(erc.metadata.o2r.interaction.ui_binding);
         }
 
         function getInputFiles(){
@@ -111,8 +116,22 @@
             erc.metadata.o2r.author.push(auth);
         }
 
+        function addBinding(binding){
+            erc.metadata.o2r.interaction.ui_binding.push(binding);
+        }        
+
+        function updateBinding(index, shiny, data, code){
+            if(shiny) erc.metadata.o2r.interaction.ui_binding[index].shinyURL = shiny;
+            if(data) erc.metadata.o2r.interaction.ui_binding[index].underlyingData = data;
+            if(code) erc.metadata.o2r.interaction.ui_binding[index].underlyingCode = code;            
+        }
+
         function removeAuthor(index){
             erc.metadata.o2r.author.splice(index, 1);
+        }
+
+        function removeBinding(index){
+            erc.metadata.o2r.interaction.ui_binding.splice(index, 1);
         }
 
         //allowed values for lic: 'text', 'code', 'data', 'uibindings'
@@ -147,10 +166,6 @@
                 erc.metadata.o2r.spatial = {files: {}};
             }
             erc.metadata.o2r.spatial.files = spat;
-        }
-
-        function updateUibinding(key, value){
-            erc.metadata.o2r.interaction.ui_binding[key] = value;
         }
 
         function removeArtifacts(attr){
