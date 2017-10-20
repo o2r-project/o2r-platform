@@ -11,8 +11,8 @@
                     <label>Search</label>
                     <input ng-model="vm.searchText">
                 </md-input-container>
-                <table>
-                    <tr><th>User Name</th><th>User Id</th><th>User Group</th><th></th></tr>
+                <table width="100%">
+                    <thead align="left"><tr><th>Name</th><th>Id</th><th>Level</th><th></th></tr></thead>
                     <tr ng-repeat="user in vm.users | filter:vm.searchText">
                         <td>
                             <md-input-container>
@@ -26,12 +26,12 @@
                         </td>
                         <td>
                             <md-input-container>
-                                <label>User Group</label>
+                                <label>Level</label>
                                 <md-select ng-model="user.level">
-                                    <md-option ng-value="vm.levels.users">New Users</md-option>
-                                    <md-option ng-value="vm.levels.knowns">Known Users</md-option>
-                                    <md-option ng-value="vm.levels.editors">Editors</md-option>
-                                    <md-option ng-value="vm.levels.admins">Admins</md-option>
+                                    <md-option ng-value="vm.levels.users">New User</md-option>
+                                    <md-option ng-value="vm.levels.knowns">Known User</md-option>
+                                    <md-option ng-value="vm.levels.editors">Editor</md-option>
+                                    <md-option ng-value="vm.levels.admins">Admin</md-option>
                                 </md-select>
                             </md-input-container>
                         </td>
@@ -45,23 +45,11 @@
         <md-card>
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">Description of user groups</span>
+                    <span class="md-headline">User levels</span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                So far, there are 4 possible user groups. <br> 
-                See a detailed description of <strong>permissions</strong> below. 
-                <h2 class="md-headline">New Users</h2>
-                Create new jobs. View compendia, jobs, user details.
-                <md-divider></md-divider>
-                <h2 class="md-headline">Known Users</h2>
-                Upload new compendium. Create shipments. Create substitutions.
-                <md-divider></md-divider>
-                <h2 class="md-headline">Editors</h2>
-                Edit user levels. Edit metadata of other user's compendia.
-                <md-divider></md-divider>
-                <h2 class="md-headline">Admins</h2>
-                View status pages of microservices.
+                The o2r Web API requires specific <em>user levels</em> for some actions, such as creating or shipping compendia. A list of levels and their permissions is available <a href="http://o2r.info/o2r-web-api/user/#user-levels">here</a>.
             </md-card-content>
         </md-card>
     </div>
