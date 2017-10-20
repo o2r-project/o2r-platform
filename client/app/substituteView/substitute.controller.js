@@ -16,13 +16,26 @@
         vm.similarPubs = getMetadataSimComp();
         vm.substituteOptions = getSubstituteOptions;
         vm.publication = erc;
+        console.log(vm.publication);
         // vm.initSubstitution = initiateSubstitution(); //TODO: to implement
+
+        var substERCtitleWidth = $("#substitutionErcSelectionViewTitle").context.body.clientWidth;
+        vm.divWidth = parseInt((substERCtitleWidth/100 + 5), 10);
+
+        //////////////////
 
         $scope.selectedSubstitutionFiles = [];
 
         $scope.$on('loadedSimilarComps', function(event, data){ //similarPubs will be set to comp_meta from metadata factory
             vm.similarPubs = data;
         });
+
+        // paging
+        $scope.currentPage = 0;
+        $scope.pageSize = 4;
+        $scope.numberOfPages = function() {
+            return Math.ceil($scope.vm.similarPubs.length/$scope.pageSize);
+        };
 
         $scope.toggleSubstitutionFile = function(file, selected) {
           if (file && selected == undefined) {console.log("undefined ---");}
@@ -64,6 +77,7 @@
             logger.info("base and overlay ERC choosen for substitution");
             //vm.selectedSubstitutionFiles = [];  // TODO: maybe not necessary to be always empty -- how about examples for user?
             vm.base = vm.publication;
+            console.log(vm);
             vm.overlay = pub;
 
             // TODO: put filenames relevant for substitution in array

@@ -1,28 +1,40 @@
-<div>
+<div id="substitute_ERCview" class="substitute_ERCview">
 
 <!-- list of similar compendia -->
   <md-card ng-if="vm.similarPubs">
     <md-card-content>
       <md-list>
 
-        <md-list-item class="md-2-line" ng-repeat="pub in vm.similarPubs">
+        <md-list-item class="md-2-line" ng-repeat="pub in vm.similarPubs | pagingOfERClist:currentPage*pageSize | limitTo:pageSize">
           <div class="md-list-item-text" layout="row">
-            <div flex="70">
-              <md-button ui-sref="erc({ercid: pub.id})" target="_blank"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName}}</b></md-button>
+            <div flex="70" id="substitutionErcSelectionViewTitle">
+              <md-button ui-sref="erc({ercid: pub.id})" title="{{pub.metadata.o2r.title}}" target="_blank"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName : vm.divWidth}}</b></md-button>
               <p flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</p>
               <p flex><b>by</b> {{pub.user}}</p>
               <p flex><b>{{pub.metadata.raw.description}}</b></p>
             </div>
-            <div flex>
+            <div flex="30">
               <md-button title="substitution options" class="md-raised" ng-click="vm.substituteOptions($event, pub)"><md-icon aria-label md-svg-src="{{vm.icons.substitution_options}}"></md-icon></md-button>
             </div>
           </div>
+
           <md-divider ng-if="!($last)"></md-divider>
         </md-list-item>
 
       </md-list>
     </md-card-content>
   </md-card>
+
+  <div class="substitute_ERCview_paging">
+    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+      Previous
+    </button>
+    {{currentPage+1}}/{{numberOfPages()}}
+    <button ng-disabled="currentPage >= vm.similarPubs.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+      Next
+    </button>
+  </div>
+</div>
 
   <!-- Message if not a single compendium has been uploaded yet -->
   <md-card ng-if="!vm.similarPubs">
@@ -31,7 +43,7 @@
     </md-card-content>
   </md-card>
 
-</div>
+
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="showCandidateView">
@@ -68,7 +80,7 @@
               <md-list>
                 <md-list-item class="md-2-line" ng-repeat="file in vm.basefiles">
                   <input aria-label type="checkbox" ng-checked="exists(file, selectedSubstitutionFiles)" ng-click="toggleSubstitutionFile(file, selectedSubstitutionFiles)">
-                  {{ file }} <span ng-if="vm.exists(file, selectedSubstitutionFiles)">selected</span>
+                  {{ file }} <span ng-if="exists(file, selectedSubstitutionFiles)">selected</span>
                   <md-divider ng-if="!($last)"></md-divider>
                 </md-list-item>
               </md-list>
