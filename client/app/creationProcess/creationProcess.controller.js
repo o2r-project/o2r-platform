@@ -25,6 +25,7 @@
         vm.goTo = (to) => $state.go(to);
         vm.switchedTab = false;
         vm.showERC = false;
+        vm.saveOrUpdate = "Save";
 
         $scope.$on('$destroy', function(){
             saved = false;
@@ -79,9 +80,11 @@
             header.setTitle('o2r - Edit ERC');
             creationObject.set(creationService);
             httpRequests.singleCompendium(creationService.id).then(function(res){
-                console.log(res)
-                vm.showERC = res.data.metadata.o2r.saved;
-                vm.ercURL= "#!/erc/" + res.data.id;
+                if(res.data.metadata.o2r.saved){
+                    vm.showERC = res.data.metadata.o2r.saved;
+                    vm.ercURL= "#!/erc/" + res.data.id;
+                    vm.saveOrUpdate = "Update";
+                }
             }).catch(function(e){
                 logger.info(e);
             })
@@ -125,6 +128,7 @@
                     logger.info(res);   
                     saved = true;
                     showToast();
+                    vm.saveOrUpdate = "Update";
                 })
                 .catch(function(e){
                     logger.info(e);
