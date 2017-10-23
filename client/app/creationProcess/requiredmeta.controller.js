@@ -5,9 +5,9 @@
         .module('starter')
         .controller('RequiredMetaController', RequiredMetaController);
     
-    RequiredMetaController.$inject = ['$scope', '$log','httpRequests', 'creationObject', 'icons'];
+    RequiredMetaController.$inject = ['$scope', '$log','httpRequests', 'creationObject', 'icons', '$mdDialog'];
 
-    function RequiredMetaController($scope, $log, httpRequests, creationObject, icons){
+    function RequiredMetaController($scope, $log, httpRequests, creationObject, icons, $mdDialog){
         var logger = $log.getInstance('RequiredMeta');
 
         var openLicense = ["CC0-1.0", "MIT", "CC0-1.0", "MIT"];
@@ -37,6 +37,23 @@
         vm.dataLicense=[];
         vm.ui_bindingLicense=[];
 
+        vm.showAlert = function(env){
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .clickOutsideToClose(true)
+                    .ariaLabel('License Information')
+                    .title('License Information')
+                    .htmlContent(
+                        'We do not provide legal advice. For more information on licenses, see: <br>' +
+                        '<a href="https://choosealicense.com/">Choose a license</a><br>' +
+                        '<a href="https://tldrlegal.com/">tldr</a><br>' + 
+                        '<a href="http://opendefinition.org/licenses/">Conformant licenses</a>'
+                    )
+                    .targetEvent(env)
+                    .ok('Close')
+            );
+        };
+
         vm.showError = showError;
 
         logger.info(vm);
@@ -45,6 +62,7 @@
         });
 
         $scope.$watch('requiredForm.$valid', function(newVal, oldVal){
+            console.log(newVal)
             $scope.$parent.vm.setFormValid(newVal);
         });
         
