@@ -34,11 +34,11 @@
             </md-list>
 
             <!-- EDIT Binding-->
-            <div ng-if="(vm.editBinding == 0) || (vm.editBinding)">
+            <div ng-if="(vm.editBinding == 0) || (vm.editBinding)" layout="column">
                 <md-input-container md-is-error="vm.showError('authorname')">
                     <label>ShinyURL</label>
                     <input ng-model="vm.binding.shinyURL" ng-value="vm.bindings[vm.editBinding].shinyURL" name="shinyurl">
-                </md-input-container>
+                </md-input-container></br>
                 <md-input-container>
                     <label>Select data file</label>
                     <md-select ng-model="vm.binding.underlyingData" name="datafile">
@@ -63,7 +63,7 @@
                 </md-button>
             </div>
             <!-- ADD Binding -->
-            <div ng-if="vm.newBindingEdit">
+            <div ng-if="vm.newBindingEdit" layout="column">
                 <md-input-container>
                     <label>ShinyURL</label>
                     <input ng-model="vm.binding.shinyURL" name="shinyurl">
