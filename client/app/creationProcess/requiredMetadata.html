@@ -155,6 +155,7 @@
                     <h5>Templates</h5>
                     <md-button class="md-raised" ng-click="vm.useTemplateLicense('open')">Least Restrictive</md-button>
                     <md-button class="md-raised" ng-click="vm.useTemplateLicense('closed')">Most Restrictive</md-button>
+                    <md-button class="md-primary md-raised" ng-click="vm.showAlert($event)">License information</md-button>
                 </div>
                 <div layout="column" flex>
                     <md-input-container flex md-is-error="vm.showError('textlicense')">
