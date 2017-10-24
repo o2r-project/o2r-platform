@@ -5,6 +5,7 @@
     <md-button ng-href="{{env.api}}/job/{{lFin.id}}" target="_blank" aria-label="See Raw Jobs Status">Raw Jobs</md-button>
     <md-button ng-href="{{env.api}}/compendium/{{$parent.vm.ercId}}" target="_blank" aria-label="See Raw ERC">Raw ERC</md-button>
 </div>
+<div id='analysisStats'>
 <div>
     <h3>Last finished analysis</h3>
     <table ng-hide="isEmpty(lFin.steps)">
@@ -29,7 +30,7 @@
     <md-divider></md-divider>
     <h3>Last started analysis</h3>
     <small ng-hide="isEmpty(lStar)">Started on: {{lStar.steps.validate_bag.start | date: 'yyyy-MM-dd HH:mm'}}</small>
-    
+
     <table ng-hide="isEmpty(lStar)">
         <tr ng-repeat="(key, value) in lStar.steps">
             <td>{{key | replaceUnderscore}}</td>
@@ -46,4 +47,4 @@
     <strong ng-hide="isEmpty(lStar)">{{resultInfo(lStar.status)}}</strong>
     <span ng-show="isEmpty(lStar)">No currently running analysis.</span>
 </div>
-
+</div>

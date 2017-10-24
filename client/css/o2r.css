@@ -9,7 +9,7 @@ body{
 	padding: 2%;
 	padding-top: calc(64px + 1vh);
 	height: auto !important;
-	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/ 
+	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/
 }
 
 .orcidImage{
@@ -226,7 +226,7 @@ display-files-html iframe{
     align-items: center;
     width: auto; }
   .selectdemoSelectHeader md-content._md {
-    max-height: 240px; 
+    max-height: 240px;
 }
 
 .md-select-width {
@@ -305,7 +305,7 @@ md-input-container.md-default-theme.md-input-invalid .md-char-counter, md-input-
 #upmod-prog-text{
 	width: 70px;
 	text-align: center;
-	padding-top: 10px;	
+	padding-top: 10px;
 }
 
 .upmod-checkbox{
@@ -426,7 +426,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	min-height: 88px !important;
 	max-height: 88px !important;
 	margin-top: 27vh !important;
-}	
+}
 
 .erc-side-content{
 	padding-right: 0 !important;
@@ -579,4 +579,16 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 }
 /***********************
 	End IntroJs
+************************/
+/***********************
+	Start AnalysisStats
+************************/
+#analysisStats {
+	height: auto !important;
+	max-height: calc(85vh - 64px - 16px - 16px - 32px); /*full height of card - navbar - padding-top - padding-bottom - button-layout-row*/
+	display: block;
+	overflow: scroll;
+}
+/***********************
+	End AnalysisStats
 ************************/
