@@ -12,6 +12,14 @@ body{
 	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/ 
 }
 
+.orcidImage{
+	width:18px;
+}
+
+.toLowerCase{
+	text-transform: lowercase;
+}
+
 .o2r-pointer{
 	cursor: pointer;
 }
