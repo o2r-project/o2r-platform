@@ -129,15 +129,15 @@
             </md-input-container>
         </md-card-content>
     </md-card>
-    <!-- MAIN FILE CARD -->
+    <!-- DISPLAY FILE CARD -->
     <md-card>
         <md-card-content>
-            <h4>Main File</h4>
+            <h4>Display File</h4>
             <md-input-container class="md-block" md-is-error="vm.showError('viewfile')">
                 <label>Select view file</label>
-                <md-select ng-model="vm.required.view" name="viewfile" required>
-                    <md-option ng-repeat="input in vm.required.viewfiles track by $index" value="{{$index}}">
-                        {{input | cutPath}}
+                <md-select ng-model="vm.view" name="viewfile" required>
+                    <md-option ng-repeat="input in vm.views track by $index" value="{{$index}}">
+                        {{input.file | cutPath}}
                     </md-option>
                 </md-select>
                 <div ng-messages="requiredForm.viewfile.$error">
@@ -146,6 +146,23 @@
             </md-input-container>
         </md-card-content>
     </md-card>
+    <!-- MAIN FILE CARD -->
+    <!-- <md-card>
+        <md-card-content>
+            <h4>Main File</h4>
+            <md-input-container class="md-block" md-is-error="vm.showError('viewfile')">
+                <label>Select main file</label>
+                <md-select ng-model="vm.main" name="mainfile" required>
+                    <md-option ng-repeat="input in vm.mains track by $index" value="{{$index}}">
+                        {{input.file | cutPath}}
+                    </md-option>
+                </md-select>
+                <div ng-messages="requiredForm.mainfile.$error">
+                    <div ng-message="required">Required field</div>
+                </div>
+            </md-input-container>
+        </md-card-content>
+    </md-card> -->
     <!-- LICENSES CARD -->
     <md-card>
         <md-card-content>

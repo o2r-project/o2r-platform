@@ -17,11 +17,11 @@
         vm.icons = icons;
         vm.required = creationObject.getRequired();
         vm.simpleUpdate = creationObject.simpleUpdate;
-
+        
         vm.selectLicenses = 'open';
         vm.updateLicense = creationObject.updateLicense;
         vm.useTemplateLicense = useTemplateLicense;
-
+        
         vm.updateAuthor = updateAuthor;
         vm.removeAuthor = removeAuthor;
         vm.addAuthor = creationObject.addAuthor;
@@ -31,46 +31,50 @@
         vm.hideAddAuthorButton = false;
         vm.cancelNewAuthor = cancelNewAuthor;
         vm.cancelUpdateAuthor = cancelUpdateAuthor;
-
+        
+        vm.views = [];
+        // vm.mains = [];
+        
         vm.textLicense=[];
         vm.codeLicense=[];
         vm.dataLicense=[];
         vm.ui_bindingLicense=[];
-
+        
         vm.showAlert = function(env){
             $mdDialog.show(
                 $mdDialog.alert()
-                    .clickOutsideToClose(true)
-                    .ariaLabel('License Information')
-                    .title('License Information')
-                    .htmlContent(
-                        'We do not provide legal advice. For more information on licenses, see: <br>' +
-                        '<a href="https://choosealicense.com/">Choose a license</a><br>' +
-                        '<a href="https://tldrlegal.com/">tldr</a><br>' + 
-                        '<a href="http://opendefinition.org/licenses/">Conformant licenses</a>'
-                    )
-                    .targetEvent(env)
-                    .ok('Close')
+                .clickOutsideToClose(true)
+                .ariaLabel('License Information')
+                .title('License Information')
+                .htmlContent(
+                    'We do not provide legal advice. For more information on licenses, see: <br>' +
+                    '<a href="https://choosealicense.com/">Choose a license</a><br>' +
+                    '<a href="https://tldrlegal.com/">tldr</a><br>' + 
+                    '<a href="http://opendefinition.org/licenses/">Conformant licenses</a>'
+                )
+                .targetEvent(env)
+                .ok('Close')
             );
         };
-
+        
         vm.showError = showError;
-
+        
         logger.info(vm);
         $scope.$on('$destroy', function(){
-            logger.info(angular.toJson(creationObject.getRequired()));
+            // logger.info(angular.toJson(creationObject.getRequired()));
         });
-
+        
         $scope.$watch('requiredForm.$valid', function(newVal, oldVal){
-            console.log(newVal)
             $scope.$parent.vm.setFormValid(newVal);
         });
         
-        $scope.$watch('vm.required.view', function(newVal, oldVal){
-            try {
-                vm.simpleUpdate('viewfile', vm.required.viewfiles[newVal]);
-            } catch (e) {}
+        $scope.$watch('vm.view', function(newVal, oldVal){
+            vm.simpleUpdate('viewfile', vm.views[newVal].file);
         });
+
+        // $scope.$watch('vm.main', function(newVal, oldVal){
+        //     vm.simpleUpdate('mainfile', vm.mains[newVal].file);
+        // });
 
         activate();
 
@@ -79,6 +83,7 @@
         function activate(){
             preparePublicationDate();
             prepareViewfile();
+            // prepareMainfile();
 
             httpRequests
                 .getLicenses()
@@ -145,14 +150,45 @@
         }
 
         function prepareViewfile(){
+            logger.info('viewfiles is ', angular.toJson(vm.required.viewfiles));
+            // create helper for md-select. List of objects containing id and filepath
             for(var i in vm.required.viewfiles){
-                if(vm.required.viewfiles[i] == vm.required.viewfile){
-                    vm.required.view = i;
-                    break; 
+                vm.views.push({id: i, file: vm.required.viewfiles[i]});
+            }
+            logger.info('set up vm.views', angular.toJson(vm.views));
+            // if viewfile is empty set vm.view to first element of viewfiles
+            // else set vm.view to the matching element
+            if(!vm.required.viewfile){
+                logger.info('viewfile is empty');
+                vm.view = vm.views[0].id;
+                logger.info('view is set to ', angular.toJson(vm.view));
+            } else {
+                logger.info('viewfile is not empty')
+                for(var i in vm.views){
+                    if(vm.views[i].file == vm.required.viewfile){
+                        vm.view = vm.views[i].id;
+                        logger.info('view is set to', angular.toJson(vm.view));
+                        break;
+                    }
                 }
-                vm.required.view = 0;
             }
         }
+
+        // function prepareMainfile(){
+        //     for(var i in vm.required.mainfile_candidates){
+        //         vm.mains.push({id: i, file: vm.required.mainfile_candidates[i]});
+        //     }
+        //     if(!vm.required.main){
+        //         vm.main = vm.mains[0].id;
+        //     } else {
+        //         for(var i in vm.mains){
+        //             if(vm.mains[i].file == vm.required.mainfile){
+        //                 vm.main = vm.mains[i].id;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
         function useTemplateLicense(type){
             if(type == 'open'){
