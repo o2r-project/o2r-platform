@@ -12,6 +12,14 @@ body{
 	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/
 }
 
+.orcidImage{
+	width:18px;
+}
+
+.toLowerCase{
+	text-transform: lowercase;
+}
+
 .o2r-pointer{
 	cursor: pointer;
 }
@@ -252,6 +260,11 @@ md-input-container.md-default-theme.md-input-invalid .md-char-counter, md-input-
 
 .search-clickOnName:hover{
 	text-decoration: underline;
+}
+
+.editForCandidates{
+	position:relative;
+	z-index:100;
 }
 
 .search-clickOnName{

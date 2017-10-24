@@ -50,9 +50,13 @@
         </div>
         <div layout="row">
             <div ui-view flex="80"></div>
-
             <div flex-xs="100" flex-gt-xs="20" layout="column">
-                <md-card class="md-padding">
+                    <md-card class="md-padding">
+                        <div layout="row">
+                            <span flex></span>
+                            <a href="{{vm.ercURL}}" ng-if="vm.showERC">Go to ERC</a>
+                            <span flex></span>
+                        </div>
                         <div layout="row">
                             <span flex></span>
                             <md-button ng-disabled="vm.state.current.name == 'creationProcess.uibindings'" class="md-raised metabuttons" ng-click="vm.nextState(vm.state.current.name)">Next</md-button>
@@ -66,7 +70,7 @@
                         <md-divider class="creationProcess-divider"></md-divider>
                         <div layout="row">
                             <span flex></span>
-                            <md-button ng-disabled="!vm.isValid" ng-class="vm.isValid ? 'white-font' : ''" class="md-primary md-raised metabuttons" ng-click="vm.updateMetadata()">Save</md-button>
+                            <md-button ng-disabled="!vm.isValid" ng-class="vm.isValid ? 'white-font' : ''" class="md-primary md-raised metabuttons" ng-click="vm.updateMetadata()">{{vm.saveOrUpdate}}</md-button>
                             <span flex></span>
                         </div>
                         <div layout="row">

@@ -24,7 +24,8 @@
         vm.previousState = previousState;
         vm.goTo = (to) => $state.go(to);
         vm.switchedTab = false;
-        
+        vm.showERC = false;
+        vm.saveOrUpdate = "Save";
 
         $scope.$on('$destroy', function(){
             saved = false;
@@ -78,6 +79,15 @@
         function activate(){
             header.setTitle('o2r - Edit ERC');
             creationObject.set(creationService);
+            httpRequests.singleCompendium(creationService.id).then(function(res){
+                if(res.data.metadata.o2r.saved){
+                    vm.showERC = res.data.metadata.o2r.saved;
+                    vm.ercURL= "#!/erc/" + res.data.id;
+                    vm.saveOrUpdate = "Update";
+                }
+            }).catch(function(e){
+                logger.info(e);
+            })
             $state.go(defView);
             addUnloadEvent();
         }
@@ -102,8 +112,6 @@
             }
         }
 
-        
-
         function updateMetadata(){
             creationObject.removeArtifacts("keywords");
             creationObject.removeArtifacts("paperLanguage");
@@ -111,12 +119,16 @@
             creationObject.removeArtifacts("researchHypotheses");
             creationObject.removeArtifacts("author");
             var erc = creationObject.get();
+                erc.metadata.o2r.saved=true;
+                vm.ercURL= "#!/erc/" + erc.id;
+                vm.showERC=true;
             httpRequests
                 .updateMetadata(erc.id, erc.metadata.o2r)
                 .then(function(res){
                     logger.info(res);   
                     saved = true;
                     showToast();
+                    vm.saveOrUpdate = "Update";
                 })
                 .catch(function(e){
                     logger.info(e);

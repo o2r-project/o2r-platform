@@ -2,7 +2,8 @@
     <md-button class="md-raised" ng-click="execJob()" ng-disabled="isRunning(lStar.status) || !$parent.$$prevSibling.$parent.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
     <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()" aria-label="Check Results"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
     <span flex></span>
-    <md-button ng-href="{{env.api}}/job/{{lFin.id}}" target="_blank" aria-label="See Raw Status">Raw</md-button>
+    <md-button ng-href="{{env.api}}/job/{{lFin.id}}" target="_blank" aria-label="See Raw Jobs Status">Raw Jobs</md-button>
+    <md-button ng-href="{{env.api}}/compendium/{{$parent.vm.ercId}}" target="_blank" aria-label="See Raw ERC">Raw ERC</md-button>
 </div>
 <div>
     <h3>Last finished analysis</h3>

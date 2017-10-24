@@ -167,9 +167,10 @@
                     <md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.search}}"></md-icon>
                 </md-input-container>
             </form>
-            <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
+            <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <img src="img/orcid.png" class="orcidImage"></img><small class="toLowerCase">orcid.org/{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button id="o2r-login" class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
+            <md-button id="o2r-login" class="white-font" ng-click="vm.showHelp($event)">HELP</md-button>
         </div>
     </md-toolbar>
     <!-- End header -->
