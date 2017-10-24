@@ -49,10 +49,11 @@
 							<div flex>
 								<md-button ui-sref="erc({ercid: pub.id})"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName}}</b></md-button>
 								<h4 flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
-								<h4 flex><b>by </b><img src="img/orcid.png" class="orcidImage"></img> orcid.org/{{pub.user}}</h4>
+								<p style="background-color: red;" ng-show="pub.candidate">You still have to fill required metadata to create a regular ERC: <a href="/#!/creationProcess/{{pub.id}}" class="editForCandidates">EDIT</a></p>
+								<h4 flex><b>by </b><img src="img/orcid.png" class="orcidImage"> orcid.org/{{pub.user}}</h4>
 							</div>
 							<div>
-							<md-button ng-click="vm.selectComp(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
+								<md-button ng-click="vm.selectComp(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
 							</div>
 						</div>
 						<md-divider ng-if="!($last)"></md-divider>
