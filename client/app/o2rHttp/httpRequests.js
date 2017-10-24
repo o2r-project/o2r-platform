@@ -26,7 +26,8 @@
 			uploadViaSciebo: uploadViaSciebo,
 			getLicenses: getLicenses,
 			setUserLevel: setUserLevel,
-			getAllUsers: getAllUsers
+			getAllUsers: getAllUsers,
+			deleteCompendium: deleteCompendium
 		};
 
 		return service;
@@ -229,6 +230,11 @@
 						});
 				}
 			}
+		}
+
+		function deleteCompendium(compId){
+			var _url = env.api + '/compendium/' + compId;
+			return $http.delete(_url);
 		}
 	};
 })();

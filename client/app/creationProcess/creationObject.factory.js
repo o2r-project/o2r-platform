@@ -70,10 +70,10 @@
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 author: erc.metadata.o2r.author,
-                // mainfile: erc.metadata.o2r.mainfile,
-                // mainfile_candidates: erc.metadata.o2r.mainfile_candidates,
-                viewfiles: erc.metadata.o2r.viewfiles,
-                viewfile: erc.metadata.o2r.viewfile
+                // viewfiles: erc.metadata.o2r.viewfiles,
+                // viewfile: erc.metadata.o2r.viewfile,
+                mainfile: erc.metadata.o2r.mainfile,
+                mainfile_candidates: erc.metadata.o2r.mainfile_candidates
             };
             return angular.copy(required);
         }

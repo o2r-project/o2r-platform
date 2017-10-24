@@ -32,8 +32,8 @@
         vm.cancelNewAuthor = cancelNewAuthor;
         vm.cancelUpdateAuthor = cancelUpdateAuthor;
         
-        vm.views = [];
-        // vm.mains = [];
+        // vm.views = [];
+        vm.mains = [];
         
         vm.textLicense=[];
         vm.codeLicense=[];
@@ -68,13 +68,13 @@
             $scope.$parent.vm.setFormValid(newVal);
         });
         
-        $scope.$watch('vm.view', function(newVal, oldVal){
-            vm.simpleUpdate('viewfile', vm.views[newVal].file);
-        });
-
-        // $scope.$watch('vm.main', function(newVal, oldVal){
-        //     vm.simpleUpdate('mainfile', vm.mains[newVal].file);
+        // $scope.$watch('vm.view', function(newVal, oldVal){
+        //     vm.simpleUpdate('viewfile', vm.views[newVal].file);
         // });
+
+        $scope.$watch('vm.main', function(newVal, oldVal){
+            vm.simpleUpdate('mainfile', vm.mains[newVal].file);
+        });
 
         activate();
 
@@ -82,8 +82,8 @@
 
         function activate(){
             preparePublicationDate();
-            prepareViewfile();
-            // prepareMainfile();
+            // prepareViewfile();
+            prepareMainfile();
 
             httpRequests
                 .getLicenses()
@@ -174,21 +174,21 @@
             }
         }
 
-        // function prepareMainfile(){
-        //     for(var i in vm.required.mainfile_candidates){
-        //         vm.mains.push({id: i, file: vm.required.mainfile_candidates[i]});
-        //     }
-        //     if(!vm.required.main){
-        //         vm.main = vm.mains[0].id;
-        //     } else {
-        //         for(var i in vm.mains){
-        //             if(vm.mains[i].file == vm.required.mainfile){
-        //                 vm.main = vm.mains[i].id;
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
+        function prepareMainfile(){
+            for(var i in vm.required.mainfile_candidates){
+                vm.mains.push({id: i, file: vm.required.mainfile_candidates[i]});
+            }
+            if(!vm.required.main){
+                vm.main = vm.mains[0].id;
+            } else {
+                for(var i in vm.mains){
+                    if(vm.mains[i].file == vm.required.mainfile){
+                        vm.main = vm.mains[i].id;
+                        break;
+                    }
+                }
+            }
+        }
 
         function useTemplateLicense(type){
             if(type == 'open'){

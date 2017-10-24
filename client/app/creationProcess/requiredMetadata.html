@@ -130,7 +130,7 @@
         </md-card-content>
     </md-card>
     <!-- DISPLAY FILE CARD -->
-    <md-card>
+    <!-- <md-card>
         <md-card-content>
             <h4>Display File</h4>
             <md-input-container class="md-block" md-is-error="vm.showError('viewfile')">
@@ -145,12 +145,12 @@
                 </div>
             </md-input-container>
         </md-card-content>
-    </md-card>
+    </md-card> -->
     <!-- MAIN FILE CARD -->
-    <!-- <md-card>
+    <md-card>
         <md-card-content>
             <h4>Main File</h4>
-            <md-input-container class="md-block" md-is-error="vm.showError('viewfile')">
+            <md-input-container class="md-block" md-is-error="vm.showError('mainfile')">
                 <label>Select main file</label>
                 <md-select ng-model="vm.main" name="mainfile" required>
                     <md-option ng-repeat="input in vm.mains track by $index" value="{{$index}}">
@@ -162,7 +162,7 @@
                 </div>
             </md-input-container>
         </md-card-content>
-    </md-card> -->
+    </md-card>
     <!-- LICENSES CARD -->
     <md-card>
         <md-card-content>
