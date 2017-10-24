@@ -16,8 +16,7 @@
         vm.similarPubs = getMetadataSimComp();
         vm.substituteOptions = getSubstituteOptions;
         vm.publication = erc;
-        console.log(vm.publication);
-        // vm.initSubstitution = initiateSubstitution(); //TODO: to implement
+        $scope.filePairs = []; // = filePairsForSubstitution;
 
         var substERCtitleWidth = $("#substitutionErcSelectionViewTitle").context.body.clientWidth;
         vm.divWidth = parseInt((substERCtitleWidth/100 + 5), 10);
@@ -30,17 +29,13 @@
             vm.similarPubs = data;
         });
 
-        // paging
-        $scope.currentPage = 0;
-        $scope.pageSize = 4;
-        $scope.numberOfPages = function() {
-            return Math.ceil($scope.vm.similarPubs.length/$scope.pageSize);
-        };
-
         $scope.toggleSubstitutionFile = function(file, selected) {
           if (file && selected == undefined) {console.log("undefined ---");}
 
           if (file && selected != undefined) {
+            console.log("toggleSubstitutionFile");
+            console.log(file);
+            console.log(selected);
 
               var idx = selected.indexOf(file);
               if (idx > -1) {
@@ -64,7 +59,27 @@
             $mdDialog.cancel();
         };
 
+        // TODO: start substitution UI
+        $scope.startSubstitutionUI = function() {
+          console.log("initiateSubstitution");
+          logger.info("initiateSubstitution");
+          window.alert("substitute clicked!");
+          // var selectedFiles = $scope.selectedSubstitutionFiles;
+          // if (selectedFiles != undefined || selectedFiles.length == 0) {
+          //     logger.info("init substitution");
+          // } else {
+          //     logger.info("no substitution files choosen");
+          // }
+        };
+
         //////////////////
+
+        function substitutionCandidate(basefile, overlayfile) {
+            this.basefile = basefile;
+            this.overlayfile = overlayfile;
+        };
+
+
 
         function getMetadataSimComp(){
             if(metadataSimComp.status == 404){
@@ -73,18 +88,28 @@
             return substituteInfoService; // metadataSimComp.callMetadata_simComp;
         }
 
+        // function to provide files for substitution as candidates
         function getSubstituteOptions(event, pub) {
             logger.info("base and overlay ERC choosen for substitution");
             //vm.selectedSubstitutionFiles = [];  // TODO: maybe not necessary to be always empty -- how about examples for user?
             vm.base = vm.publication;
-            console.log(vm);
             vm.overlay = pub;
+            console.log(vm);
 
             // TODO: put filenames relevant for substitution in array
+            console.log("start: getFileCandidates(vm.base)");
             vm.basefiles = getFileCandidates(vm.base);
-            vm.overlayfiles = getFileCandidates(vm.overlay);
-            // var files01 = ["text.csv", "main.Rmd", "data.txt", ["hallo.txt", "jojo"]];
-            // var files02 = ["text.txt", "main.Rmd", "timeseries.csv", "Dockerfile"];
+            console.log("end: getFileCandidates(vm.base)");
+            // vm.overlayfiles = getFileCandidates(vm.overlay);
+            var files01 = ["text.csv", "main.Rmd", "data.txt", ["hallo.txt", "jojo"]];
+            var files02 = ["text.txt", "main.Rmd", "timeseries.csv", "Dockerfile"];
+
+            var candidate;
+            var thisArray = [];
+
+            candidate = new substitutionCandidate(files01[0], files02[2]);
+            $scope.filePairs.push(candidate);
+            console.log($scope.filePairs);
             //
             // vm.basefiles = getFileCandidates(files01);
             // vm.overlayfiles = getFileCandidates(files02);
@@ -97,37 +122,34 @@
             });
         };
 
+        function filePairsForSubstitution() {
+          console.log("filePairsForSubstitution");
+        }
+
         //TODO: to implement
         function getFileCandidates(pub) {
-            // var filePath = pub.files.path;
-            var filesArray = [];
             var candidatesArray = [];
-
-            for (let i; i< pub.files.children.length; i++) {
-              console.log(pub.files.children[i]);
-              if (Array.isArray(pub.files.children[i])) {
-                filesArray = pub.files.children[i];
-              }
-            }
-
-            for (let j; j<filesArray.length; j++) {
-                if (Array.isArray(filesArray[i]) || (filesArray[i].extension != "" || ".yml")) {
-                    candidatesArray.push(filesArray[i]);
+            var filesArray;
+            var thisArray = pub.files.children;
+            for (let i=0; i<thisArray.length; i++) {
+                if (pub.files.children[i].children && Array.isArray(pub.files.children[i].children)) {
+                    filesArray = pub.files.children[i];
+                    i = thisArray.length-1;
                 }
-            }
-            console.log("candidatesArray");
+            };
+            filesArray = filesArray.children;
+            for (let j=0; j<filesArray.length; j++) {
+                if (Array.isArray(filesArray[j].children) || (filesArray[j].extension == undefined) || (filesArray[j].extension == null)) {
+                } else {
+                  candidatesArray.push(filesArray[j]);
+                }
+            };
+            console.log("tadaa -- candidatesArray");
             console.log(candidatesArray);
+
+
         };
 
-        // TODO: to implement
-        // function initiateSubstitution() {
-        //     var selectedFiles = $scope.selectedSubstitutionFiles;
-        //     if (selectedFiles != undefined || selectedFiles.length == 0) {
-        //         logger.info("init substitution");
-        //     } else {
-        //         logger.info("no substitution files choosen");
-        //     }
-        // };
 
     }
 })()

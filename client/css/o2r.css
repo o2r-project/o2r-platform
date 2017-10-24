@@ -573,17 +573,14 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 ************************/
 #substitute_ERCview {
 	height: auto !important;
-	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/
+	max-height: calc(85vh - 64px - 16px); /*full height of card - navbar - padding-bottom*/
+	display: block;
+	overflow: scroll;
 }
 
-.substitute_ERCview {
-	/*height: 70vh;*/
-	height: calc(100vh - 64px - 64px - 33px);
-}
-
-.substitute_ERCview_paging {
-	height: 5vh;
-}
+ table, th, td {
+	  border: 1px solid black;
+ }
 /***********************
 	End IntroJs
 ************************/
