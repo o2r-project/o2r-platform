@@ -25,9 +25,6 @@
             vm.showAdmin = () => ((getUserGroup(author.data.level) == 'Admins') || (getUserGroup(author.data.level) == 'Editors'));
 
             logger.info('vm.allPubs: ',vm.allPubs);
-            for (var i=0; i< vm.allPubs.length;i++){
-                console.log(vm.allPubs[i].candidate)
-            }
 
             $scope.$on('$destroy', function(){
                 $mdDialog.cancel();
