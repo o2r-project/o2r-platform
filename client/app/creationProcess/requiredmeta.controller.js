@@ -150,24 +150,18 @@
         }
 
         function prepareDisplayfile(){
-            logger.info('displayfiles is ', angular.toJson(vm.required.displayfile_candidates));
             // create helper for md-select. List of objects containing id and filepath
             for(var i in vm.required.displayfile_candidates){
                 vm.displayfile_candidates.push({id: i, file: vm.required.displayfile_candidates[i]});
             }
-            logger.info('set up vm.displayfile_candidates', angular.toJson(vm.displayfile_candidates));
-            // if viewfile is empty set vm.view to first element of viewfiles
-            // else set vm.view to the matching element
+            // if viewfile is empty set vm.displayfile to first element of displayfile_candidates
+            // else set vm.displayfile to the matching element
             if(!vm.required.displayfile){
-                logger.info('displayfile is empty');
                 vm.displayfile = vm.displayfile_candidates[0].id;
-                logger.info('view is set to ', angular.toJson(vm.displayfile));
             } else {
-                logger.info('viewfile is not empty')
                 for(var i in vm.displayfile_candidates){
                     if(vm.displayfile_candidates[i].file == vm.required.displayfile){
                         vm.displayfile = vm.displayfile_candidates[i].id;
-                        logger.info('view is set to', angular.toJson(vm.displayfile));
                         break;
                     }
                 }
@@ -175,9 +169,12 @@
         }
 
         function prepareMainfile(){
+            // create helper for md-select. List of objects containing id and filepath
             for(var i in vm.required.mainfile_candidates){
                 vm.mainfile_candidates.push({id: i, file: vm.required.mainfile_candidates[i]});
             }
+            // if mainfile is empty set vm.mainfile to first element of mainfile_candidates
+            // else set vm.mainfile to the matching element
             if(!vm.required.mainfile){
                 vm.mainfile = vm.mainfile_candidates[0].id;
             } else {
