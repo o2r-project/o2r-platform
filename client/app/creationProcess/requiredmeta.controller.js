@@ -32,8 +32,8 @@
         vm.cancelNewAuthor = cancelNewAuthor;
         vm.cancelUpdateAuthor = cancelUpdateAuthor;
         
-        // vm.views = [];
-        vm.mains = [];
+        vm.displayfile_candidates = [];
+        vm.mainfile_candidates = [];
         
         vm.textLicense=[];
         vm.codeLicense=[];
@@ -68,12 +68,12 @@
             $scope.$parent.vm.setFormValid(newVal);
         });
         
-        // $scope.$watch('vm.view', function(newVal, oldVal){
-        //     vm.simpleUpdate('viewfile', vm.views[newVal].file);
-        // });
+        $scope.$watch('vm.displayfile', function(newVal, oldVal){
+            vm.simpleUpdate('displayfile', vm.displayfile_candidates[newVal].file);
+        });
 
-        $scope.$watch('vm.main', function(newVal, oldVal){
-            vm.simpleUpdate('mainfile', vm.mains[newVal].file);
+        $scope.$watch('vm.mainfile', function(newVal, oldVal){
+            vm.simpleUpdate('mainfile', vm.mainfile_candidates[newVal].file);
         });
 
         activate();
@@ -82,7 +82,7 @@
 
         function activate(){
             preparePublicationDate();
-            // prepareViewfile();
+            prepareDisplayfile();
             prepareMainfile();
 
             httpRequests
@@ -149,25 +149,25 @@
             vm.required[type] = getLicenseIndex(id, licenses);
         }
 
-        function prepareViewfile(){
-            logger.info('viewfiles is ', angular.toJson(vm.required.viewfiles));
+        function prepareDisplayfile(){
+            logger.info('displayfiles is ', angular.toJson(vm.required.displayfile_candidates));
             // create helper for md-select. List of objects containing id and filepath
-            for(var i in vm.required.viewfiles){
-                vm.views.push({id: i, file: vm.required.viewfiles[i]});
+            for(var i in vm.required.displayfile_candidates){
+                vm.displayfile_candidates.push({id: i, file: vm.required.displayfile_candidates[i]});
             }
-            logger.info('set up vm.views', angular.toJson(vm.views));
+            logger.info('set up vm.displayfile_candidates', angular.toJson(vm.displayfile_candidates));
             // if viewfile is empty set vm.view to first element of viewfiles
             // else set vm.view to the matching element
-            if(!vm.required.viewfile){
-                logger.info('viewfile is empty');
-                vm.view = vm.views[0].id;
-                logger.info('view is set to ', angular.toJson(vm.view));
+            if(!vm.required.displayfile){
+                logger.info('displayfile is empty');
+                vm.displayfile = vm.displayfile_candidates[0].id;
+                logger.info('view is set to ', angular.toJson(vm.displayfile));
             } else {
                 logger.info('viewfile is not empty')
-                for(var i in vm.views){
-                    if(vm.views[i].file == vm.required.viewfile){
-                        vm.view = vm.views[i].id;
-                        logger.info('view is set to', angular.toJson(vm.view));
+                for(var i in vm.displayfile_candidates){
+                    if(vm.displayfile_candidates[i].file == vm.required.displayfile){
+                        vm.displayfile = vm.displayfile_candidates[i].id;
+                        logger.info('view is set to', angular.toJson(vm.displayfile));
                         break;
                     }
                 }
@@ -176,14 +176,14 @@
 
         function prepareMainfile(){
             for(var i in vm.required.mainfile_candidates){
-                vm.mains.push({id: i, file: vm.required.mainfile_candidates[i]});
+                vm.mainfile_candidates.push({id: i, file: vm.required.mainfile_candidates[i]});
             }
-            if(!vm.required.main){
-                vm.main = vm.mains[0].id;
+            if(!vm.required.mainfile){
+                vm.mainfile = vm.mainfile_candidates[0].id;
             } else {
-                for(var i in vm.mains){
-                    if(vm.mains[i].file == vm.required.mainfile){
-                        vm.main = vm.mains[i].id;
+                for(var i in vm.mainfile_candidates){
+                    if(vm.mainfile_candidates[i].file == vm.required.mainfile){
+                        vm.mainfile = vm.mainfile_candidates[i].id;
                         break;
                     }
                 }

@@ -70,8 +70,8 @@
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 author: erc.metadata.o2r.author,
-                // viewfiles: erc.metadata.o2r.viewfiles,
-                // viewfile: erc.metadata.o2r.viewfile,
+                displayfile_candidates: erc.metadata.o2r.displayfile_candidates,
+                displayfile: erc.metadata.o2r.displayfile,
                 mainfile: erc.metadata.o2r.mainfile,
                 mainfile_candidates: erc.metadata.o2r.mainfile_candidates
             };
