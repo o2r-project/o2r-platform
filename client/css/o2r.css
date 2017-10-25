@@ -580,7 +580,19 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
 	End IntroJs
 ************************/
-
+/***********************
+	Start AnalysisStats
+************************/
+#analysisStats {
+	height: auto !important;
+	max-height: calc(85vh - 64px - 16px - 16px - 32px); /*full height of card - navbar - padding-top - padding-bottom - button-layout-row*/
+	display: block;
+	overflow: scroll;
+}
+/***********************
+	End AnalysisStats
+	************************/
+	
 /***********************
 	Start Substitution
 ************************/
@@ -596,4 +608,4 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
  }
 /***********************
 	End IntroJs
-************************/
+/***********************
