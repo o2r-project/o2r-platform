@@ -67,7 +67,7 @@
                     templateUrl: 'app/upload/uploadModal.html',
                     parent: $document[0].body,
                     targetEvent: ev,
-                    clickOutsideToClose: true,
+                    clickOutsideToClose: false,
                     fullscreen: false
                 });
             }
