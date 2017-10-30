@@ -5,10 +5,12 @@
         .module('starter')
         .controller('UploadModalController', UploadModalController);
     
-    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs', '$location'];
+    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs', '$location', 'httpRequests'];
 
-    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs, $location){
-        var authorId = $stateParams.authorid; // id from author
+    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs, $location, httpRequests){
+        var logger = $log.getInstance('UploadCtrl');
+        // var authorId = $stateParams.authorid; // id from author
+        var authorId;
         var uploadSuccess = false;
         var newErcId = '';
         var vm = this;
@@ -16,8 +18,8 @@
         // vm.checkRunAnalysis = true;
         vm.uploadedERCid = false;
         vm.cancel = () => {
-                        $mdDialog.cancel(); 
-                    };
+            $mdDialog.cancel(); 
+        };
         vm.done = function() {
                         $mdDialog.cancel();
                         if(uploadSuccess){
@@ -53,48 +55,43 @@
                 url: env.api + '/compendium',
                 data: {compendium: file, 'content_type': 'workspace'}
             })
-            .then(successCallback, errorCallback, progress);
-            
-            function successCallback(response){
-                $log.debug("bis hier gehts success");
+            .progress(function(evt){
+                file.progress = parseInt(95.0 * evt.loaded/evt.total);
+            })
+            .success(function(response, status, headers, config){
+                newErcId = response.id;
+                vm.cancel = function(){
+                    logger.info('cancelling from success');
+                    httpRequests
+                    .deleteCompendium(newErcId)
+                    .then(function(res){
+                        logger.info('cancelled upload and deleted comp');
+                        $mdDialog.cancel();
+                    });
+                };
+                logger.info('upload successCallback: ', angular.toJson(response));
                 uploadSuccess = true;
-                newErcId = response.data.id;
-                // if(vm.checkRunAnalysis){
-                //     jobs.executeJob(response.data.id)
-                //         .then(execJobCallback, errorCallback);
-                // } else {
-                $log.debug('upload successCallback: %o', response);
                 vm.doneButton = true;
-                metadata.callMetadata_author(authorId);
                 vm.checkUpload = true;
                 file.progress = 100;
-                // }
-            }
-            function errorCallback(response){
-                console.log("bis hier gehts error")
-                $log.debug('upload errorCallback %o', response);
+            })
+            .error(function(response, status, headers, config){
+                logger.info('upload errorCallback', response);
                 file.progress = 100;
                 vm.doneButton = true;
                 vm.checkUpload = false;
-                vm.uploadError = response;
+                vm.uploadError = response.error;
                 uploadSuccess = false;
-            }
-            function progress(evt){
-                file.progress = parseInt(95.0 * evt.loaded/evt.total);
-            }
-            // function execJobCallback(response){
-            //     $log.debug('upload execJobCallback: %o', response);
-            //     vm.uploadedERCid = response.data.compendium_id;
-            //     console.log(vm.uploadedERCid);
-            //     if(vm.checkRunAnalysis){
-            //         vm.doneButton = true;
-            //         metadata.callMetadata_author(authorId);
-            //         vm.checkUpload = true;
-            //         file.progress = 100;
-            //     }
-                
-            // }
+            })
+            .xhr(function(xhr){
+                logger.info('xhr', xhr);
+                vm.cancel = function(){
+                    logger.info('overwrite cancel function');
+                    xhr.abort();
+                    $mdDialog.cancel();
+                };
+
+            });
         }
     }
-
 })();
