@@ -602,9 +602,22 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	overflow: scroll;
 }
 
- table, th, td {
-	  border: 1px solid black;
- }
+.md-select-menu-container{
+	z-index: 101 !important;
+}
+
+table {
+	 border: 2px solid black;
+}
+
+th, td {
+	border-bottom: 1px solid black;
+}
+
+td.add-row-button {
+	border-bottom: white;
+}
+
 /***********************
 	End Substitution
 /***********************

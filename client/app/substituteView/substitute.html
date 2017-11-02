@@ -1,4 +1,4 @@
-<div id="substitute_ERCview" class="substitute_ERCview">
+<div id="substitute_ERCview" class="substitute_ERCsubstituteOptionsview">
 
 <!-- list of similar compendia -->
   <md-card ng-if="vm.similarPubs">
@@ -37,27 +37,50 @@
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="showCandidateView">
-    <md-dialog layout-padding>
+    <md-dialog aria-label="options dialog">
+      <md-dialog-content layout-padding>
 
       <div id="tableSubstitutionOptions">
-        <table style="width:100%">
-          <tr>
+        <table id="tableSubstitution" style="width:100%">
+          <tr style="background-color: white;">
             <th style="width:45%">base ERC:</th>
-            <th style="width:10%">X</th>
+            <th style="width:10%"></th>
             <th style="width:45%">overlay ERC:</th>
           </tr>
           <tr>
             <th>{{vm.base.metadata.o2r.title}}</th>
-            <th>X</th>
+            <th></th>
             <th>{{vm.overlay.metadata.o2r.title}}</th>
           </tr>
-          <tr ng-repeat="file in filePairs">
-            <td>{{ file.basefile }}</td>
-            <td>
-              <input aria-label type="checkbox" ng-checked="exists(file, selectedSubstitutionFiles)" ng-click="toggleSubstitutionFile(file, selectedSubstitutionFiles)">
-              <span ng-if="exists(file, selectedSubstitutionFiles)">selected</span>
+          <div class="substitution-rows">
+            <tr ng-repeat="row in substitutionRows">
+              <td>
+                <md-input-container>
+                  <md-select ng-model="fileSelectBase" ng-change="selectSubstitutionFiles(fileSelectBase, baseType, this)" placeholder="Select a basefile">
+                    <md-option ng-value="basefile" ng-repeat="basefile in baseCandidates track by $index">{{ basefile.name }}</md-option>
+                  </md-select>
+                </md-input-container>
+                <b>{{fileSelectBase.name}}</b>
+              </td>
+              <td>
+                <md-button title="del row" class="md-raised" ng-click="delDropdown(this)"><md-icon aria-label md-svg-src="{{vm.icons.remove}}"></md-icon></md-button>
+              </td>
+              <td>
+                <md-input-container>
+                  <md-select ng-model="fileSelectOverlay" ng-change="selectSubstitutionFiles(fileSelectOverlay, overlayType, this)" placeholder="Select an overlayfile">
+                    <md-option ng-value="overlayfile" ng-repeat="overlayfile in overlayCandidates">{{ overlayfile.name }}</md-option>
+                  </md-select>
+                </md-input-container>
+                <b>{{fileSelectOverlay.name}}</b>
+              </td>
+            </tr>
+          </div>
+          <tr style="background-color: white;">
+            <td class="add-row-button"></td>
+            <td class="add-row-button">
+              <md-button title="add row" class="md-raised" ng-click="addDropdown()"><md-icon aria-label md-svg-src="{{vm.icons.add}}"></md-icon></md-button>
             </td>
-            <td>{{ file.overlayfile }}</td>
+            <td class="add-row-button"></td>
           </tr>
         </table>
       </div>
@@ -71,6 +94,7 @@
           <md-button ng-click="startSubstitutionUI()">start substitution</md-button>
       </div>
 
+    </md-dialog-content>
     </md-dialog>
   </div>
 </div>
