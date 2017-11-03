@@ -34,6 +34,8 @@
         
         vm.displayfile_candidates = [];
         vm.mainfile_candidates = [];
+
+        vm.files = creationObject.getFilesArray(); //one dimensional array of filepaths
         
         vm.textLicense=[];
         vm.codeLicense=[];
@@ -150,10 +152,18 @@
         }
 
         function prepareDisplayfile(){
-            // create helper for md-select. List of objects containing id and filepath
-            for(var i in vm.required.displayfile_candidates){
-                vm.displayfile_candidates.push({id: i, file: vm.required.displayfile_candidates[i]});
+            //check if displayfile_candidates contains values. if not, set all files into display_candidates
+            if(vm.required.displayfile_candidates.length == 0){
+                for(var i in vm.files){
+                    vm.displayfile_candidates.push({id: i, file: vm.files[i]});
+                }
+            } else {
+                // create helper for md-select. List of objects containing id and filepath
+                for(var i in vm.required.displayfile_candidates){
+                    vm.displayfile_candidates.push({id: i, file: vm.required.displayfile_candidates[i]});
+                }
             }
+            logger.info('displayfile_candidates', angular.toJson(vm.displayfile_candidates));
             // if viewfile is empty set vm.displayfile to first element of displayfile_candidates
             // else set vm.displayfile to the matching element
             if(!vm.required.displayfile){
@@ -169,9 +179,16 @@
         }
 
         function prepareMainfile(){
-            // create helper for md-select. List of objects containing id and filepath
-            for(var i in vm.required.mainfile_candidates){
-                vm.mainfile_candidates.push({id: i, file: vm.required.mainfile_candidates[i]});
+            // check if mainfile_candidates contains values. if not, set all files into mainfile_candidates
+            if(vm.required.mainfile_candidates.length == 0){
+                for(var i in vm.files){
+                    vm.mainfile_candidates.push({id: i, file: vm.files[i]});
+                }
+            } else {
+                // create helper for md-select. List of objects containing id and filepath
+                for(var i in vm.required.mainfile_candidates){
+                    vm.mainfile_candidates.push({id: i, file: vm.required.mainfile_candidates[i]});
+                }
             }
             // if mainfile is empty set vm.mainfile to first element of mainfile_candidates
             // else set vm.mainfile to the matching element
