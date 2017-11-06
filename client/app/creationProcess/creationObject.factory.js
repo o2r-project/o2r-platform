@@ -13,6 +13,8 @@
         var service = {
             get: get,
             set: set,
+            getFiles: getFiles,
+            getFilesArray: getFilesArray,
             destroy: destroy,
             getRequired: getRequired,
             getOptional: getOptional,
@@ -45,6 +47,24 @@
         function set(obj){
             erc = obj;
             logger.info('Successfully set');
+        }
+
+        function getFiles(){
+            var files = erc.files;
+            return angular.copy(erc.files);
+        }
+
+        function getFilesArray(){
+            var files = [];
+            _iterateOverFiles(erc.files.children);
+            return angular.copy(files);
+
+            function _iterateOverFiles(obj){
+                for(var i in obj){
+                    if(obj[i].children) _iterateOverFiles(obj[i].children);
+                    else files.push(obj[i].path);
+                }
+            }
         }
 
         function destroy(){
@@ -169,10 +189,12 @@
 
         function removeArtifacts(attr){
             var obj = erc.metadata.o2r[attr];
-            for(var i=obj.length-1; i>=0; i--){
-                //if array at index contains empty string or is undefined, delete index
-                if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
-                    obj.splice(i, 1);
+            if(obj) {
+                for(var i=obj.length-1; i>=0; i--){
+                    //if array at index contains empty string or is undefined, delete index
+                    if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
+                        obj.splice(i, 1);
+                    }
                 }
             }
         }
