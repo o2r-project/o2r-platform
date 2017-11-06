@@ -13,6 +13,8 @@
         var service = {
             get: get,
             set: set,
+            getFiles: getFiles,
+            getFilesArray: getFilesArray,
             destroy: destroy,
             getRequired: getRequired,
             getOptional: getOptional,
@@ -45,6 +47,24 @@
         function set(obj){
             erc = obj;
             logger.info('Successfully set');
+        }
+
+        function getFiles(){
+            var files = erc.files;
+            return angular.copy(erc.files);
+        }
+
+        function getFilesArray(){
+            var files = [];
+            _iterateOverFiles(erc.files.children);
+            return angular.copy(files);
+
+            function _iterateOverFiles(obj){
+                for(var i in obj){
+                    if(obj[i].children) _iterateOverFiles(obj[i].children);
+                    else files.push(obj[i].path);
+                }
+            }
         }
 
         function destroy(){
