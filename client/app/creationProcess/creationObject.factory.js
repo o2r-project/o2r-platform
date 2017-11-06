@@ -169,10 +169,12 @@
 
         function removeArtifacts(attr){
             var obj = erc.metadata.o2r[attr];
-            for(var i=obj.length-1; i>=0; i--){
-                //if array at index contains empty string or is undefined, delete index
-                if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
-                    obj.splice(i, 1);
+            if(obj) {
+                for(var i=obj.length-1; i>=0; i--){
+                    //if array at index contains empty string or is undefined, delete index
+                    if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
+                        obj.splice(i, 1);
+                    }
                 }
             }
         }
