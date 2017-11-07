@@ -116,10 +116,7 @@
         function getInputFiles(){
             var inputFiles = {
                 codefiles: erc.metadata.o2r.codefiles,
-                viewfiles: erc.metadata.o2r.viewfiles,
-                inputfiles: erc.metadata.o2r.inputfiles,
-                r_input: erc.metadata.o2r.r_input,
-                r_rdata: erc.metadata.o2r.r_rdata
+                inputfiles: erc.metadata.o2r.inputfiles
             };
             return angular.copy(inputFiles);
         }

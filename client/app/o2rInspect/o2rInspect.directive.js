@@ -41,7 +41,6 @@
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
                
                 scope.icons = icons;
-                console.log(inspect)
                 if(inspect.data[0]!=null){
                     scope.datasets = prepareDatasets(inspect.data);
                     scope.selectedData = scope.datasets[0];
@@ -81,14 +80,12 @@
                 }
 
                 //TODO
-                // Rewrite code so that it handles all path possibilities right
                 // Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareCode(code){
                     var regex = inspect.publication.id;
                     var results = [];
                     for(var i in code){
-                        code[i].path = '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[0].name;
-                        results.push(code[i]);
+                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[i].split('/')[1]));
                     }
                     return results;
                 }
