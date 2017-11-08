@@ -9,7 +9,7 @@
         //server : window.__env.server || 'https://o2r.uni-muenster.de',
         c_api: window.__env.api || '/api/v1',
         sizeRestriction: window.__env.sizeRestriction || 10000000,
-        disableTracking: window.__env.disableTracking || false,
+        disableTracking: window.__env.disableTracking || true,
         enableDebug: window.__env.enableDebug || false,
         version: window.__env.version || 'deployment',
         userLevels: {

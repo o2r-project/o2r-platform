@@ -100,6 +100,8 @@
 <script src="app/searchView/search.factory.js"></script>
 <script src="app/searchView/elasticsearch.factory.js"></script>
 <script src="app/searchView/customLeaflet.factory.js"></script>
+<script src="app/substituteView/metadataSimComp.js"></script>
+
 
 <!-- Controllers -->
 <script src="app/ercView/erc.controller.js"></script>
@@ -141,6 +143,8 @@
 <script src="app/services/cutPathLong.filter.js"></script>
 <script src="app/services/cutLongName.filter.js"></script>
 <script src="app/services/filesize.filter.js"></script>
+<script src="app/services/replaceUnderscore.filter.js"></script>
+<script src="app/services/duration.filter.js"></script>
 
 <!-- highlight js -->
 <link rel="stylesheet" type="text/css" href="lib/highlight/styles/default.css">
@@ -164,9 +168,10 @@
             <img class="o2r-pointer" src="img/o2r-logo-only-white.svg" alt="o2r logo" height="60%" ui-sref="home">
             <span flex></span>
             <md-button class="white-font" ui-sref="search()" ui-sref-opts="{inherit: false}" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Discover ERC</md-button>
-            <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <small>{{vm.user.orcid}}</small></md-button>
+            <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <img src="img/orcid.png" class="orcidImage"></img><small class="toLowerCase">orcid.org/{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button id="o2r-login" class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>
+            <md-button id="o2r-login" class="white-font" ng-click="vm.showHelp($event)">HELP</md-button>
         </div>
     </md-toolbar>
     <!-- End header -->

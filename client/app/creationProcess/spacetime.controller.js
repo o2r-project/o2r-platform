@@ -24,9 +24,7 @@
           logger.info(angular.toJson(creationObject.getSpacetime()));
       });
 
-      if (vm.spacetime.spatial!=undefined){
-        activate();
-      }  
+      activate();
 
       // TODO
       //Just a bad workaround for loading all tiles of the map
@@ -43,14 +41,31 @@
       function activate(){
         prepareTemporal();
         
-        if(!angular.equals(vm.spacetime.spatial.files, {})){
-          L.geoJson(vm.spacetime.spatial.files, {
-            onEachFeature: function(feature, layer){
-              drawnItems.addLayer(layer);
-            }
-          });
-        }
         
+        var maplayer;
+        // check if spatial and spatial.files are defined
+        // if true, use their values to create maplayer
+        if(angular.isDefined(vm.spacetime.spatial) && angular.isDefined(vm.spacetime.spatial.files)){
+          maplayer = {
+            "Geojson": {
+              name: 'Union',
+              type: 'geoJSONShape',
+              data: vm.spacetime.spatial.files,
+              visible: true
+            }
+          };
+
+          // if spatial.files is empty object, create a new empty layer
+          if(!angular.equals(vm.spacetime.spatial.files, {})){
+            L.geoJson(vm.spacetime.spatial.files, {
+              onEachFeature: function(feature, layer){
+                drawnItems.addLayer(layer);
+              }
+            });
+          }
+        } else {
+          maplayer = null;
+        }
 
 
         angular.extend(vm, {
@@ -91,14 +106,7 @@
                     type: 'xyz'
                 }
               },
-              overlays: {
-                "Geojson": {
-                  name: 'Union',
-                  type: 'geoJSONShape',
-                  data: vm.spacetime.spatial.files,
-                  visible: true
-                }
-              }
+              overlays: maplayer
             }
           }
         });

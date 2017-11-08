@@ -13,38 +13,39 @@
             nodeChildren: 'children',
             dirSelectable: false
         };
-        vm.publication = prepareFiles($scope.$parent.vm.publication);
+        // vm.publication = prepareFiles($scope.$parent.vm.publication);
+        vm.publication = $scope.$parent.vm.publication;
         vm.setOne = setOne;
-        vm.bagitToggle = bagitToggle;
+        // vm.bagitToggle = bagitToggle;
         vm.showBagit = false;
         vm.ercId = $scope.$parent.vm.publication.id;
         vm.overallSize = publications.getOverallSize(vm.publication);
         
         //////
 
-        function prepareFiles(obj){
-            //uncomment line below to not add shiny to every erc
-            //if(obj.metadata.o2r.interaction.interactive == true){
-                // TODO
-                //delete this when backend added interaction.path
-                //obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/main/';
-                obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/'
-                var name = obj.metadata.o2r.file.filename.split('.');
-                var name = name[0] + '_interactive';
-                var dummy = {
-                    extension: null,
-                    name: name,
-                    path: obj.metadata.o2r.interaction.path,
-                    size: 368,
-                    type: 'text/shiny'
-                };
-                // TODO 
-                // substitute second parameter with obj.metadata.o2r.file.filepath
-                obj = publications.addInteractive(obj, '/api/v1/compendium/' + obj.id + '/data/data', dummy);
-                $log.debug('Done preparing files');
-            //}
-            return obj;
-        }
+        // function prepareFiles(obj){
+        //     //uncomment line below to not add shiny to every erc
+        //     //if(obj.metadata.o2r.interaction.interactive == true){
+        //         // TODO
+        //         //delete this when backend added interaction.path
+        //         //obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/main/';
+        //         obj.metadata.o2r.interaction.path = 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/'
+        //         var name = obj.metadata.o2r.file.filename.split('.');
+        //         var name = name[0] + '_interactive';
+        //         var dummy = {
+        //             extension: null,
+        //             name: name,
+        //             path: obj.metadata.o2r.interaction.path,
+        //             size: 368,
+        //             type: 'text/shiny'
+        //         };
+        //         // TODO 
+        //         // substitute second parameter with obj.metadata.o2r.file.filepath
+        //         obj = publications.addInteractive(obj, '/api/v1/compendium/' + obj.id + '/data/data', dummy);
+        //         $log.debug('Done preparing files');
+        //     //}
+        //     return obj;
+        // }
 
         function setOne(path){
             var p = publications.getContentById(vm.publication, path);

@@ -5,9 +5,9 @@
         .module('starter')
         .controller('RequiredMetaController', RequiredMetaController);
     
-    RequiredMetaController.$inject = ['$scope', '$log','httpRequests', 'creationObject', 'icons'];
+    RequiredMetaController.$inject = ['$scope', '$log','httpRequests', 'creationObject', 'icons', '$mdDialog'];
 
-    function RequiredMetaController($scope, $log, httpRequests, creationObject, icons){
+    function RequiredMetaController($scope, $log, httpRequests, creationObject, icons, $mdDialog){
         var logger = $log.getInstance('RequiredMeta');
 
         var openLicense = ["CC0-1.0", "MIT", "CC0-1.0", "MIT"];
@@ -17,11 +17,11 @@
         vm.icons = icons;
         vm.required = creationObject.getRequired();
         vm.simpleUpdate = creationObject.simpleUpdate;
-
+        
         vm.selectLicenses = 'open';
         vm.updateLicense = creationObject.updateLicense;
         vm.useTemplateLicense = useTemplateLicense;
-
+        
         vm.updateAuthor = updateAuthor;
         vm.removeAuthor = removeAuthor;
         vm.addAuthor = creationObject.addAuthor;
@@ -31,25 +31,51 @@
         vm.hideAddAuthorButton = false;
         vm.cancelNewAuthor = cancelNewAuthor;
         vm.cancelUpdateAuthor = cancelUpdateAuthor;
+        
+        vm.displayfile_candidates = [];
+        vm.mainfile_candidates = [];
 
+        vm.files = creationObject.getFilesArray(); //one dimensional array of filepaths
+        
         vm.textLicense=[];
         vm.codeLicense=[];
         vm.dataLicense=[];
         vm.ui_bindingLicense=[];
-
+        
+        vm.showAlert = function(env){
+            $mdDialog.show(
+                $mdDialog.alert()
+                .clickOutsideToClose(true)
+                .ariaLabel('License Information')
+                .title('License Information')
+                .htmlContent(
+                    'We do not provide legal advice. For more information on licenses, see: <br>' +
+                    '<a href="https://choosealicense.com/">Choose a license</a><br>' +
+                    '<a href="https://tldrlegal.com/">tldr</a><br>' + 
+                    '<a href="http://opendefinition.org/licenses/">Conformant licenses</a>'
+                )
+                .targetEvent(env)
+                .ok('Close')
+            );
+        };
+        
+        vm.showError = showError;
+        
         logger.info(vm);
         $scope.$on('$destroy', function(){
-            logger.info(angular.toJson(creationObject.getRequired()));
+            // logger.info(angular.toJson(creationObject.getRequired()));
         });
-
+        
         $scope.$watch('requiredForm.$valid', function(newVal, oldVal){
             $scope.$parent.vm.setFormValid(newVal);
         });
         
-        $scope.$watch('vm.required.view', function(newVal, oldVal){
-            try {
-                vm.simpleUpdate('viewfile', vm.required.viewfiles[newVal]);
-            } catch (e) {}
+        $scope.$watch('vm.displayfile', function(newVal, oldVal){
+            vm.simpleUpdate('displayfile', vm.displayfile_candidates[newVal].file);
+        });
+
+        $scope.$watch('vm.mainfile', function(newVal, oldVal){
+            vm.simpleUpdate('mainfile', vm.mainfile_candidates[newVal].file);
         });
 
         activate();
@@ -58,7 +84,8 @@
 
         function activate(){
             preparePublicationDate();
-            prepareViewfile();
+            prepareDisplayfile();
+            prepareMainfile();
 
             httpRequests
                 .getLicenses()
@@ -124,13 +151,56 @@
             vm.required[type] = getLicenseIndex(id, licenses);
         }
 
-        function prepareViewfile(){
-            for(var i in vm.required.viewfiles){
-                if(vm.required.viewfiles[i] == vm.required.viewfile){
-                    vm.required.view = i;
-                    break; 
+        function prepareDisplayfile(){
+            //check if displayfile_candidates contains values. if not, set all files into display_candidates
+            if(vm.required.displayfile_candidates.length == 0){
+                for(var i in vm.files){
+                    vm.displayfile_candidates.push({id: i, file: vm.files[i]});
                 }
-                vm.required.view = 0;
+            } else {
+                // create helper for md-select. List of objects containing id and filepath
+                for(var i in vm.required.displayfile_candidates){
+                    vm.displayfile_candidates.push({id: i, file: vm.required.displayfile_candidates[i]});
+                }
+            }
+            logger.info('displayfile_candidates', angular.toJson(vm.displayfile_candidates));
+            // if viewfile is empty set vm.displayfile to first element of displayfile_candidates
+            // else set vm.displayfile to the matching element
+            if(!vm.required.displayfile){
+                vm.displayfile = vm.displayfile_candidates[0].id;
+            } else {
+                for(var i in vm.displayfile_candidates){
+                    if(vm.displayfile_candidates[i].file == vm.required.displayfile){
+                        vm.displayfile = vm.displayfile_candidates[i].id;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function prepareMainfile(){
+            // check if mainfile_candidates contains values. if not, set all files into mainfile_candidates
+            if(vm.required.mainfile_candidates.length == 0){
+                for(var i in vm.files){
+                    vm.mainfile_candidates.push({id: i, file: vm.files[i]});
+                }
+            } else {
+                // create helper for md-select. List of objects containing id and filepath
+                for(var i in vm.required.mainfile_candidates){
+                    vm.mainfile_candidates.push({id: i, file: vm.required.mainfile_candidates[i]});
+                }
+            }
+            // if mainfile is empty set vm.mainfile to first element of mainfile_candidates
+            // else set vm.mainfile to the matching element
+            if(!vm.required.mainfile){
+                vm.mainfile = vm.mainfile_candidates[0].id;
+            } else {
+                for(var i in vm.mainfile_candidates){
+                    if(vm.mainfile_candidates[i].file == vm.required.mainfile){
+                        vm.mainfile = vm.mainfile_candidates[i].id;
+                        break;
+                    }
+                }
             }
         }
 
@@ -209,6 +279,32 @@
                 logger.info('found existing publication date')
             }
             vm.simpleUpdate('publicationDate', vm.required.publicationDate);
+        }
+
+        function showError(fieldname){
+            var field = $scope.requiredForm[fieldname];
+            //check if input is of md-select
+            if((fieldname == 'textlicense') ||
+                (fieldname == 'codelicense') ||
+                (fieldname == 'datalicense') ||
+                (fieldname == 'uibindinglicense') ||
+                (fieldname == 'viewfile')){
+                // if tab was switched and form is invalid OR input was touched and is invalid show error message in input
+                if(($scope.$parent.vm.switchedTab && field.$invalid) || (field.$touched && field.$invalid)){
+                    // set textcolor to red
+                    field.$$element[0].children[0].children[0].style.color = '#d11d29';
+
+                    // if input type is of md-select and valid set to normal text color
+                } else if (!field.$invalid){
+                    // set text color to black
+                    field.$$element[0].children[0].children[0].style.color = 'rgba(0,0,0,0.87)';
+                }
+            } else {
+                // if tab was switched and form is invalid OR input was touched and is invalid show error message in input
+                if(($scope.$parent.vm.switchedTab && field.$invalid) || (field.$touched && field.$invalid)) return true;
+                else return false;
+            }
+
         }
     }
 })();         

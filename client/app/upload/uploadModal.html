@@ -26,23 +26,23 @@
 				</div>
 
 				<div ng-hide="vm.doneButton" class="upmod-checkbox">
-					<div>	
+					<!-- <div>	
 						<md-checkbox class="md-primary" ng-model="vm.checkRunAnalysis">
 							Automatically start analysis after upload
 						</md-checkbox>
-					</div>
-					<div>	
+					</div> -->
+					<!--<div>	
 						<md-checkbox class="md-primary" ng-model="vm.shipToZenodo">
 							Ship to Zenodo
 						</md-checkbox>
-					</div>
+					</div>-->
 				</div>		
 				<div ng-show="vm.doneButton && vm.checkUpload">
 					<p>File uploaded successfully</p>
 				</div>
 				<div ng-show="vm.doneButton && !vm.checkUpload">
 					<p>File upload failed!</p>
-					<p>{{vm.uploadError.data.error}}</p>
+					<p>{{vm.uploadError}}</p>
 				</div>
 
 				<div id="upmod-progress" ng-show="vm.onLoad" flex="90">

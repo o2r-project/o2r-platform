@@ -13,17 +13,23 @@
         var service = {
             get: get,
             set: set,
+            getFiles: getFiles,
+            getFilesArray: getFilesArray,
             destroy: destroy,
             getRequired: getRequired,
             getOptional: getOptional,
             getSpacetime: getSpacetime,
             getUibindings: getUibindings,
+            getInputFiles: getInputFiles,
             simpleUpdate: simpleUpdate,
             updateTemporal: updateTemporal,
             updateLicense: updateLicense,
             updateAuthor: updateAuthor,
             addAuthor: addAuthor,
+            addBinding: addBinding,
+            updateBinding: updateBinding,
             removeAuthor: removeAuthor,
+            removeBinding: removeBinding,
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
             updateSpatialFiles: updateSpatialFiles,
@@ -41,6 +47,24 @@
         function set(obj){
             erc = obj;
             logger.info('Successfully set');
+        }
+
+        function getFiles(){
+            var files = erc.files;
+            return angular.copy(erc.files);
+        }
+
+        function getFilesArray(){
+            var files = [];
+            _iterateOverFiles(erc.files.children);
+            return angular.copy(files);
+
+            function _iterateOverFiles(obj){
+                for(var i in obj){
+                    if(obj[i].children) _iterateOverFiles(obj[i].children);
+                    else files.push(obj[i].path);
+                }
+            }
         }
 
         function destroy(){
@@ -66,8 +90,10 @@
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 author: erc.metadata.o2r.author,
-                viewfiles: erc.metadata.o2r.viewfiles,
-                viewfile: erc.metadata.o2r.viewfile
+                displayfile_candidates: erc.metadata.o2r.displayfile_candidates,
+                displayfile: erc.metadata.o2r.displayfile,
+                mainfile: erc.metadata.o2r.mainfile,
+                mainfile_candidates: erc.metadata.o2r.mainfile_candidates
             };
             return angular.copy(required);
         }
@@ -81,7 +107,18 @@
         }
 
         function getUibindings(){
-            return angular.copy(erc.metadata.o2r.interaction);
+            if(erc.metadata.o2r.interaction.ui_binding.length==undefined){
+                erc.metadata.o2r.interaction.ui_binding = [];
+            }
+            return angular.copy(erc.metadata.o2r.interaction.ui_binding);
+        }
+
+        function getInputFiles(){
+            var inputFiles = {
+                codefiles: erc.metadata.o2r.codefiles,
+                inputfiles: erc.metadata.o2r.inputfiles
+            };
+            return angular.copy(inputFiles);
         }
         
         function updateAuthor(index, name, aff, orcid){
@@ -95,8 +132,22 @@
             erc.metadata.o2r.author.push(auth);
         }
 
+        function addBinding(binding){
+            erc.metadata.o2r.interaction.ui_binding.push(binding);
+        }        
+
+        function updateBinding(index, shiny, data, code){
+            if(shiny) erc.metadata.o2r.interaction.ui_binding[index].shinyURL = shiny;
+            if(data) erc.metadata.o2r.interaction.ui_binding[index].underlyingData = data;
+            if(code) erc.metadata.o2r.interaction.ui_binding[index].underlyingCode = code;            
+        }
+
         function removeAuthor(index){
             erc.metadata.o2r.author.splice(index, 1);
+        }
+
+        function removeBinding(index){
+            erc.metadata.o2r.interaction.ui_binding.splice(index, 1);
         }
 
         //allowed values for lic: 'text', 'code', 'data', 'uibindings'
@@ -127,15 +178,21 @@
 
         function updateSpatialFiles(spat){
             logger.info('updateSpatialFiles', spat);
+            //check if spatial attribute exists, if not, create it
+            if(angular.isUndefined(erc.metadata.o2r.spatial)){
+                erc.metadata.o2r.spatial = {files: {}};
+            }
             erc.metadata.o2r.spatial.files = spat;
         }
 
         function removeArtifacts(attr){
             var obj = erc.metadata.o2r[attr];
-            for(var i=obj.length-1; i>=0; i--){
-                //if array at index contains empty string or is undefined, delete index
-                if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
-                    obj.splice(i, 1);
+            if(obj) {
+                for(var i=obj.length-1; i>=0; i--){
+                    //if array at index contains empty string or is undefined, delete index
+                    if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
+                        obj.splice(i, 1);
+                    }
                 }
             }
         }

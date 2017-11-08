@@ -1,1 +1,98 @@
-<img src="img/spatialsearch.png" alt="search" flex="100"/>
+<div id="substitute_ERCview" class="substitute_ERCsubstituteOptionsview">
+
+<!-- list of similar compendia -->
+  <md-card ng-if="vm.similarPubs">
+    <md-card-content>
+      <md-list>
+
+        <md-list-item class="md-2-line" ng-repeat="pub in vm.similarPubs">
+          <div class="md-list-item-text" layout="column">
+            <div flex="100" id="substitutionErcSelectionViewTitle">
+              <md-button ui-sref="erc({ercid: pub.id})" title="{{pub.metadata.o2r.title}}" target="_blank"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName : vm.divWidth}}</b></md-button>
+            </div>
+            <div class="md-list-item-text" layout="row">
+              <div flex="70" id="substitutionErcSelectionViewAddData">
+                <p flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</p>
+                <p flex><b>by</b> {{pub.user}}</p>
+                <p flex>{{pub.metadata.raw.description}}</p>
+              </div>
+              <div flex="30">
+                <md-button title="substitution options" class="md-raised" ng-click="substituteOptions($event, pub)"><md-icon aria-label md-svg-src="{{vm.icons.substitution_options}}"></md-icon></md-button>
+              </div>
+            </div>
+          </div>
+
+          <md-divider ng-if="!($last)"></md-divider>
+        </md-list-item>
+
+      </md-list>
+    </md-card-content>
+  </md-card>
+</div>
+
+  <!-- Message if not a single compendium has been uploaded yet -->
+  <md-card ng-if="!vm.similarPubs">
+    <md-card-content>
+      <span>No similar compendia.</span>
+    </md-card-content>
+  </md-card>
+
+
+
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="showCandidateView">
+    <md-dialog aria-label="options dialog">
+      <md-dialog-content layout-padding>
+
+      <div id="tableSubstitutionOptions">
+        <table id="tableSubstitution" style="width:100%">
+          <tr style="background-color: white;">
+            <th style="width:45%">base ERC:</th>
+            <th style="width:10%"></th>
+            <th style="width:45%">overlay ERC:</th>
+          </tr>
+          <tr>
+            <th>{{vm.base.metadata.o2r.title}}</th>
+            <th></th>
+            <th>{{vm.overlay.metadata.o2r.title}}</th>
+          </tr>
+          <div class="substitution-rows">
+            <tr ng-repeat="row in substitutionRows">
+              <td>
+                <md-input-container>
+                  <md-select ng-model="fileSelectBase" ng-change="selectSubstitutionFiles(fileSelectBase, baseType, this)" placeholder="Select a basefile">
+                    <md-option ng-value="basefile" ng-repeat="basefile in baseCandidates">{{ basefile.fileName }}</md-option>
+                  </md-select>
+                </md-input-container>
+              </td>
+              <td>
+                <md-button title="del row" class="md-raised" ng-click="delDropdown(this)"><md-icon aria-label md-svg-src="{{vm.icons.remove}}"></md-icon></md-button>
+              </td>
+              <td>
+                <md-input-container>
+                  <md-select ng-model="fileSelectOverlay" ng-change="selectSubstitutionFiles(fileSelectOverlay, overlayType, this)" placeholder="Select an overlayfile">
+                    <md-option ng-value="overlayfile" ng-repeat="overlayfile in overlayCandidates">{{ overlayfile.fileName }}</md-option>
+                  </md-select>
+                </md-input-container>
+              </td>
+            </tr>
+          </div>
+          <tr style="background-color: white;">
+            <td class="add-row-button"></td>
+            <td class="add-row-button">
+              <md-button title="add row" class="md-raised" ng-click="addDropdown()"><md-icon aria-label md-svg-src="{{vm.icons.add}}"></md-icon></md-button>
+            </td>
+            <td class="add-row-button"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div>
+          <md-button ng-click="cancel()">cancel</md-button>
+          <md-button ng-click="startSubstitutionUI()">start substitution</md-button>
+      </div>
+
+    </md-dialog-content>
+    </md-dialog>
+  </div>
+</div>

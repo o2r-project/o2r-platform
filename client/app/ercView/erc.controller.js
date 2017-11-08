@@ -17,7 +17,7 @@
         vm.server = env.server;
         vm.publication = erc;
         vm.ercId = vm.publication.id;
-        vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.file.filepath));
+        vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.displayfile));
         vm.originalfile = angular.copy(vm.file);
         vm.currentNavItem = defView.name;
         vm.toggleSidenav = buildToggler('sidenav');
@@ -124,9 +124,14 @@
         }
 
         function fixPath(path){
-            var str = '/data/';
-            path = '/api/v1/compendium/' + path;
-            var newPath = path.replace(str, str+'data/');
+            var str = '/data';
+            var splits = path.split('/');
+            var stichedSplits = '';
+            for(var i in splits){
+                if(i == 0) continue;
+                stichedSplits = '/' + splits[i];
+            }
+            var newPath = '/api/v1/compendium/' + splits[0] + str + stichedSplits;
             logger.info('fixed path is: %s', newPath);
             return newPath;
         }

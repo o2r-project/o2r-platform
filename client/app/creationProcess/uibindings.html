@@ -1,18 +1,95 @@
 <md-card>
-    <md-card-content layout="column">
-        <form>
-            <md-input-container>
-                <label>Choose purpose</label>
-                <md-select ng-model="vm.purpose" ng-change="vm.inferWidget()">
-                    <md-option ng-repeat="purpose in vm.purposes" value="{{purpose}}">{{purpose}}</md-option>
+        <md-card-content>
+            <h4>UI Binding(s)</h4>
+            <md-list layout="column">
+                <md-list-item 
+                    class="md-3-line" 
+                    ng-repeat="binding in vm.bindings track by $index" 
+                    layout-wrap
+                    ng-mouseenter="vm.options[$index]=true"
+                    ng-mouseleave="vm.options[$index]=false">
+                    <div class="md-list-item-text md-whiteframe-z1 required-whiteframe-padding" layout="row">
+                        <div>
+                            <h3>{{binding.shinyURL.path}}</h3>
+                            <h4>{{binding.underlyingCode}}</h4>
+                            <p>{{binding.underlyingData}}</p>
+                        </div>
+                        <span flex></span>
+                        <div ng-hide="vm.options[$index]" class="required-author-placeholder"></div>
+                        <md-button ng-show="vm.options[$index]" class="md-fab md-mini" ng-click="vm.editBinding=$index" aria-label="Edit Binding">
+                            <md-icon class="white-font" md-svg-src="{{vm.icons.edit}}"></md-icon>
+                        </md-button>
+                        <md-button ng-if="!(vm.bindings.length == 1)" ng-click="vm.removeBinding($index)" class="md-fab md-mini" aria-label="Delete UI Binding">
+                            <md-icon class="white-font" md-svg-src="{{vm.icons.close}}"></md-icon>
+                        </md-button>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-3-line" ng-hide="vm.hideAddBindingButton">
+                    <div class="md-list-item-text">
+                    <md-button ng-click="vm.newBinding()" class="md-fab md-mini md-primary" aria-label="New UI Binding">
+                        <md-icon class="white-font" md-svg-src="{{vm.icons.add}}"></md-icon>
+                    </md-button>
+                    </div>
+                </md-list-item>
+            </md-list>
+
+            <!-- EDIT Binding-->
+            <div ng-if="(vm.editBinding == 0) || (vm.editBinding)" layout="column">
+                <md-input-container md-is-error="vm.showError('authorname')">
+                    <label>ShinyURL</label>
+                    <input ng-model="vm.binding.shinyURL" ng-value="vm.bindings[vm.editBinding].shinyURL" name="shinyurl">
+                </md-input-container></br>
+                <md-input-container>
+                    <label>Select data file</label>
+                    <md-select ng-model="vm.binding.underlyingData" name="datafile">
+                        <md-option ng-repeat="datainput in vm.input.inputfiles track by $index" value="{{$index}}">
+                            {{datainput}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>Select code file</label>
+                    <md-select ng-model="vm.binding.underlyingCode" name="codefile">
+                        <md-option ng-repeat="codeinput in vm.input.codefiles track by $index" value="{{$index}}">
+                            {{codeinput}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-button class="md-raised" ng-click="vm.updateBinding(vm.editBinding)" aria-label="Update Binding">
+                    Update UI Binding
+                </md-button>                
+                <md-button ng-click="vm.cancelUpdateBinding()" aria-label="Cancel">
+                    Cancel
+                </md-button>
+            </div>
+            <!-- ADD Binding -->
+            <div ng-if="vm.newBindingEdit" layout="column">
+                <md-input-container>
+                    <label>ShinyURL</label>
+                    <input ng-model="vm.binding.shinyURL" name="shinyurl">
+                </md-input-container>
+                <md-input-container>
+                    <label>Select data file</label>
+                    <md-select ng-model="vm.binding.underlyingData" name="datafile">
+                        <md-option ng-repeat="datainput in vm.input.inputfiles track by $index" value="{{$index}}">
+                            {{datainput | cutPath}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                <label>Select code file</label>
+                <md-select ng-model="vm.binding.underlyingCode" name="codefile">
+                    <md-option ng-repeat="codeinput in vm.input.codefiles track by $index" value="{{$index}}">
+                        {{codeinput | cutPath}}
+                    </md-option>
                 </md-select>
-            </md-input-container> 
-            <md-input-container>
-                <label>Choose UI widget</label>
-                <md-select ng-model="widget">
-                    <md-option ng-repeat="widget in vm.widgets" value="{{widget}}">{{widget}}</md-option>
-                </md-select>
-            </md-input-container>                    
-        </form>
-    </md-card-content>
+                </md-input-container>
+                <md-button class="md-raised" ng-disabled="requiredForm.authorname.$invalid" ng-click="vm.addNewBinding()" aria-label="Add UI Binding">
+                    Add UI Binding
+                </md-button>
+                <md-button ng-click="vm.cancelNewBinding()" aria-label="Cancel">
+                    Cancel
+                </md-button>
+            </div>
+        </md-card-content>
 </md-card>

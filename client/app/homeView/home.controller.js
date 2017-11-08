@@ -29,7 +29,7 @@
             steps: [
             {
                 element: '#o2r-login',
-                intro: 'Login with your Orcid Account, for uploading ERCs, etc...'
+                intro: 'Login with your ORCID identifier <a href="https://orcid.org"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" alt="ORCID iD icon" height="12" /></a>, for uploading ERCs, etc...'
             },
             {
                 element: '#home-create-erc',
@@ -187,7 +187,7 @@
                 templateUrl: 'app/upload/uploadModal.html',
                 parent: $document[0].body,
                 targetEvent: ev,
-                clickOutsideToClose: true,
+                clickOutsideToClose: false,
                 fullscreen: false
             });
         }

@@ -39,14 +39,17 @@
                 if(!inspect.hasOwnProperty('code')) throw 'o2rInspectData.code undefined';
                 if(!inspect.hasOwnProperty('data')) throw 'o2rInspectData.data undefined';
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
-
+               
                 scope.icons = icons;
-                scope.datasets = prepareDatasets(inspect.data);
-                scope.selectedData = scope.datasets[0];
-
-                scope.code = prepareCode(inspect.code);
-                scope.selectedCode = scope.code[0];
-
+                if(inspect.data[0]!=null){
+                    scope.datasets = prepareDatasets(inspect.data);
+                    scope.selectedData = scope.datasets[0];
+                }
+                
+                if(inspect.code[0]!=null){
+                    scope.code = prepareCode(inspect.code);
+                    scope.selectedCode = scope.code[0];
+                }
                 scope.openMenu = openMenu;
 
                 scope.selectData = selectData;
@@ -61,23 +64,28 @@
                 //TODO
                 //Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareDatasets(dsets){
+                    // replace wrong path with right path
                     var regex = '/tmp/o2r/compendium/' + inspect.publication.id;
                     var results = [];
                     for(var i in dsets){
-                        results.push(publications.getContentById(inspect.publication, dsets[i].replace(regex, '/api/v1/compendium/' + inspect.publication.id + '/data')));
+                        var tmp = dsets[i].split('/');
+                        var str = '';
+                        for(var i in tmp){
+                            if(i == 0) continue;
+                            str = str + '/' + tmp[i]; 
+                        }
+                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data' + str));
                     }
                     return results;
                 }
 
                 //TODO
-                // Rewrite code so that it handles all path possibilities right
                 // Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareCode(code){
                     var regex = inspect.publication.id;
                     var results = [];
                     for(var i in code){
-                        code[i].path = code[i].path.replace(regex, '/api/v1/compendium/' + inspect.publication.id + '/data');
-                        results.push(code[i]);
+                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[i].split('/')[1]));
                     }
                     return results;
                 }

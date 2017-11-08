@@ -5,9 +5,9 @@
         .module('starter')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$scope', '$log', '$location', 'login', 'icons'];
+    LoginController.$inject = ['$scope', '$log', '$location', 'login', 'icons', '$mdDialog'];
 
-    function LoginController($scope, $log, $location, login, icons){
+    function LoginController($scope, $log, $location, login, icons, $mdDialog){
         var vm = this;
 
         vm.icons = icons;
@@ -15,6 +15,7 @@
         vm.isLoggedIn;
         //vm.submitSearch = search;
         vm.showSearchBar = showBar;
+        vm.showHelp = showHelp;
 
         activate();
 
@@ -55,5 +56,23 @@
             }
             return showIt;
         }
+
+        function showHelp(ev){
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .clickOutsideToClose(true)
+                    .ariaLabel('Help')
+                    .title('Help')
+                    .htmlContent(
+                        'For more information, see <br>' + 
+                        '<a href="http://o2r.info/results/" target="_blank">o2r results</a> <br>' + 
+                        '<a href="http://o2r.info/erc-spec/spec/" target="_blank">ERC specification</a> <br>' +
+                        '<a href="http://www.dlib.org/dlib/january17/nuest/01nuest.html" target="_blank">Opening the publication cycle with ERC</a>'
+                    )
+                    .targetEvent(ev)
+                    .ok('Close')
+            );
+        }
+
     }
 })();

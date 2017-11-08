@@ -9,7 +9,15 @@ body{
 	padding: 2%;
 	padding-top: calc(64px + 1vh);
 	height: auto !important;
-	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/ 
+	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/
+}
+
+.orcidImage{
+	width:18px;
+}
+
+.toLowerCase{
+	text-transform: lowercase;
 }
 
 .o2r-pointer{
@@ -218,7 +226,7 @@ display-files-html iframe{
     align-items: center;
     width: auto; }
   .selectdemoSelectHeader md-content._md {
-    max-height: 240px; 
+    max-height: 240px;
 }
 
 .md-select-width {
@@ -229,6 +237,9 @@ display-files-html iframe{
 	margin-left:3%;
 }
 
+md-input-container.md-default-theme.md-input-invalid .md-char-counter, md-input-container.md-input-invalid .md-char-counter, md-input-container.md-default-theme.md-input-invalid .md-input-message-animation, md-input-container.md-input-invalid .md-input-message-animation, md-input-container.md-default-theme.md-input-invalid label, md-input-container.md-input-invalid label{
+	color: #d11d29;
+}
 
 
 /***********************
@@ -253,6 +264,11 @@ display-files-html iframe{
 
 .search-clickOnName:hover{
 	text-decoration: underline;
+}
+
+.editForCandidates{
+	position:relative;
+	z-index:100;
 }
 
 .search-clickOnName{
@@ -364,7 +380,7 @@ display-files-html iframe{
 #upmod-prog-text{
 	width: 70px;
 	text-align: center;
-	padding-top: 10px;	
+	padding-top: 10px;
 }
 
 .upmod-checkbox{
@@ -486,7 +502,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	min-height: 88px !important;
 	max-height: 88px !important;
 	margin-top: 27vh !important;
-}	
+}
 
 .erc-side-content{
 	padding-right: 0 !important;
@@ -640,3 +656,44 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
 	End IntroJs
 ************************/
+/***********************
+	Start AnalysisStats
+************************/
+#analysisStats {
+	height: auto !important;
+	max-height: calc(85vh - 64px - 16px - 16px - 32px); /*full height of card - navbar - padding-top - padding-bottom - button-layout-row*/
+	display: block;
+	overflow: scroll;
+}
+/***********************
+	End AnalysisStats
+************************/
+/***********************
+	Start Substitution
+************************/
+#substitute_ERCview {
+	height: auto !important;
+	max-height: calc(85vh - 64px - 16px); /*full height of card - navbar - padding-bottom*/
+	display: block;
+	overflow: scroll;
+}
+
+.md-select-menu-container{
+	z-index: 101 !important;
+}
+
+table {
+	 border: 2px solid black;
+}
+
+th, td {
+	border-bottom: 1px solid black;
+}
+
+td.add-row-button {
+	border-bottom: white;
+}
+
+/***********************
+	End Substitution
+/***********************

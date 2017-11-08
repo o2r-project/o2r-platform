@@ -15,9 +15,10 @@
     <p>Job:&nbsp;<span id="jobid" style="border: 1px; font-weight: bold;"></span></p>
     <p>Validate bag:&nbsp;<span id="status_bag" style="border: 1px solid black;"></span></p>
     <p>Validate compendium:&nbsp;<span id="status_compendium" style="border: 1px solid black;"></span></p>
-    <p>Validate Dockerfile:&nbsp;<span id="status_dockerfile" style="border: 1px solid black;"></span></p>
+    <p>Image prepare:&nbsp;<span id="status_prepare" style="border: 1px solid black;"></span></p>
     <p>Image build:&nbsp;<span id="status_build" style="border: 1px solid black;"></span></p>
     <p>Image execute:&nbsp;<span id="status_execute" style="border: 1px solid black;"></span></p>
+    <p>Cleanup:&nbsp;<span id="status_cleanup" style="border: 1px solid black;"></span></p>
 
     Log: <pre id="log" style="border: 1px solid black;"></pre>
 
@@ -52,6 +53,9 @@
               break;
             case "failure":
               element.style.backgroundColor = "#ffdddd";
+              break;
+            case "skipped":
+              element.style.backgroundColor = "#aaaaff";
               break;
             default:
               break;
@@ -88,10 +92,9 @@
           element.innerHTML = event.steps.validate_compendium.status;
           setBackgroundStatus(event.steps.validate_compendium.status, element);
         }
-        if(event.steps.validate_dockerfile !== undefined && event.steps.validate_dockerfile.status !== undefined) {
-          let element = document.getElementById("status_dockerfile");
-          element.innerHTML = event.steps.validate_dockerfile.status;
-          setBackgroundStatus(event.steps.validate_dockerfile.status, element);
+        if(event.steps.image_prepare !== undefined && event.steps.image_prepare.status !== undefined) {
+          document.getElementById("status_prepare").innerHTML = event.steps.image_prepare.status;
+          setBackgroundStatus(event.steps.image_prepare.status, document.getElementById("status_prepare"));
         }
         if(event.steps.image_build !== undefined && event.steps.image_build.status !== undefined) {
           document.getElementById("status_build").innerHTML = event.steps.image_build.status;
@@ -101,6 +104,10 @@
           document.getElementById("status_execute").innerHTML = event.steps.image_execute.status;
           setBackgroundStatus(event.steps.image_execute.status, document.getElementById("status_execute"));
         }
+        if(event.steps.cleanup !== undefined && event.steps.cleanup.status !== undefined) {
+          document.getElementById("status_cleanup").innerHTML = event.steps.image_execute.status;
+          setBackgroundStatus(event.steps.cleanup.status, document.getElementById("status_cleanup"));
+        }
 
         if(event.steps.validate_bag !== undefined && event.steps.validate_bag.text !== undefined) {
           document.getElementById("log").innerHTML += "VALIDATE BAG:        " + escapeHtml(event.steps.validate_bag.text);
@@ -108,8 +115,8 @@
         if(event.steps.validate_compendium !== undefined && event.steps.validate_compendium.text !== undefined) {
           document.getElementById("log").innerHTML += "VALIDATE COMPENDIUM: " + escapeHtml(event.steps.validate_compendium.text);
         }
-        if(event.steps.validate_dockerfile !== undefined && event.steps.validate_dockerfile.text !== undefined) {
-          document.getElementById("log").innerHTML += "VALIDATE DOCKERFILE: " + escapeHtml(event.steps.validate_dockerfile.text);
+        if(event.steps.image_prepare !== undefined && event.steps.image_prepare.text !== undefined) {
+          document.getElementById("log").innerHTML += "IMAGE PREPARE:         " + escapeHtml(event.steps.image_prepare.text);
         }
         if(event.steps.image_build !== undefined && event.steps.image_build.text !== undefined) {
           document.getElementById("log").innerHTML += "IMAGE BUILD:         " + escapeHtml(event.steps.image_build.text);

@@ -67,7 +67,7 @@
                     templateUrl: 'app/upload/uploadModal.html',
                     parent: $document[0].body,
                     targetEvent: ev,
-                    clickOutsideToClose: true,
+                    clickOutsideToClose: false,
                     fullscreen: false
                 });
             }
@@ -82,8 +82,8 @@
                         .htmlContent(
                             '<table>' + 
                             '<tr><td>Name: </td><td>' + author.data.name + '</td></tr>' +
-                            '<tr><td>Orcid: </td><td>' + author.data.id + '</td></tr>' +
-                            '<tr><td>User Group: </td><td>' + getUserGroup(author.data.level) + '</td></tr>' +
+                            '<tr><td>ORCID: </td><td><img src="img/orcid.png" alt="ORCID icon" height="12" />&nbsp;<a href="https://orcid.org/' + author.data.id + '">orcid.org/' + author.data.id + '</a></td></tr>' +
+                            '<tr><td>Level (<a href="http://o2r.info/o2r-web-api/user/#user-levels" title="Information about user levels">?</a>): </td><td>' + getUserGroup(author.data.level) + '</td></tr>' +
                             '</table>' +
                             '<br><br>If you want to change your user level, please send an email to daniel.nuest@uni-muenster.de.'
                         )
@@ -93,10 +93,10 @@
             }
 
             function getUserGroup(level){
-                if(level >= env.userLevels.admins) return 'Admins';
-                if(level >= env.userLevels.editors) return 'Editors'
-                if(level >= env.userLevels.knowns) return 'Known Users';
-                if(level >= env.userLevels.users) return 'New Users';
+                if(level >= env.userLevels.admins) return 'Admin';
+                if(level >= env.userLevels.editors) return 'Editor'
+                if(level >= env.userLevels.knowns) return 'Known User';
+                if(level >= env.userLevels.users) return 'New User';
             }
 
         }
