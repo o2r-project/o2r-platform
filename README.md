@@ -64,7 +64,7 @@ The environment parameters are as follows:
 - `OAUTH_CLIENT_ID` identifier for the platform with auth provider
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
 - `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication, probably `http://localhost/api/v1/auth/login` (includes with machine IP when using Docker Toolbox)
-- `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo (optional)
+- `SHIPPER_REPO_TOKENS` a json object, that holds the authentication token for remote repositories such as [Zenodo](https://zenodo.org/), required for shipping to Zenodo (optional). Can have the following form `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. Replace `$ZENODO_TOKEN` etc. with your personal access token.
 - `SLACK_BOT_TOKEN` and `SLACK_VERIFICATION_TOKEN`, required for monitoring with Slack (optional)
 
 ### Linux
