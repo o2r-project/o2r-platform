@@ -172,7 +172,7 @@
 
         function cancel(ev){
             logger.info($mdDialog);
-            var confirm = $mdDialog
+            var cancelAndDelete = $mdDialog
                             .confirm()
                             .title('Do you want to cancel?')
                             .textContent('This action cancels the ERC upload. All uploads and changes will be deleted!')
@@ -182,19 +182,43 @@
                             .ok('Cancel and Delete')
                             .cancel('Continue uploading');
             
-            $mdDialog
-                .show(confirm).then(ok, cancelling);
+            var cancelNoDelete = $mdDialog
+                            .confirm()
+                            .title('Do you want to cancel?')
+                            .textContent('All unsaved changes will be deleted.')
+                            .ariaLabel('Confirm cancellation')
+                            .targetEvent(ev)
+                            .parent($document[0].body)
+                            .ok('Cancel')
+                            .cancel('Continue editing');
 
-            function ok(){
-                //TODO
-                //delete ERC metadata. When reponse, go to homeView
+            if(vm.saveOrUpdate == 'Save'){
+                $mdDialog
+                    .show(cancelAndDelete).then(cancelDelete, doNothing);
+            } else if(vm.saveOrUpdate == 'Update'){
+                $mdDialog
+                    .show(cancelNoDelete).then(cancelling, doNothing);
+            }
 
+            function cancelDelete(){
+                logger.info('compId for delete', creationService.id);
+                httpRequests
+                    .deleteCompendium(creationService.id)
+                    .then(function(res){
+                        logger.info('response from delete', res);
+                        cancelled = true;
+                        $state.go('home');
+                    });
+            }
 
+            function cancelling(){
                 cancelled = true;
                 $state.go('home');
             }
 
-            function cancelling(){
+            function doNothing(){
+                //continue with editing
+                //no action needed for this
             }
                     
 

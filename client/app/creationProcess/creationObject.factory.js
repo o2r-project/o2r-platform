@@ -13,6 +13,8 @@
         var service = {
             get: get,
             set: set,
+            getFiles: getFiles,
+            getFilesArray: getFilesArray,
             destroy: destroy,
             getRequired: getRequired,
             getOptional: getOptional,
@@ -47,6 +49,24 @@
             logger.info('Successfully set');
         }
 
+        function getFiles(){
+            var files = erc.files;
+            return angular.copy(erc.files);
+        }
+
+        function getFilesArray(){
+            var files = [];
+            _iterateOverFiles(erc.files.children);
+            return angular.copy(files);
+
+            function _iterateOverFiles(obj){
+                for(var i in obj){
+                    if(obj[i].children) _iterateOverFiles(obj[i].children);
+                    else files.push(obj[i].path);
+                }
+            }
+        }
+
         function destroy(){
             erc = {};
             logger.info('Successfully destroyed');
@@ -63,9 +83,6 @@
         }
 
         function getRequired(){
-            let viewfiles_fix = erc.metadata.o2r.viewfiles;
-            viewfiles_fix.push(erc.metadata.o2r.paperSource);
-
             var required = {
                 title: erc.metadata.o2r.title,
                 description: erc.metadata.o2r.description,
@@ -73,8 +90,10 @@
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 author: erc.metadata.o2r.author,
-                viewfiles: viewfiles_fix,
-                viewfile: erc.metadata.o2r.viewfile
+                displayfile_candidates: erc.metadata.o2r.displayfile_candidates,
+                displayfile: erc.metadata.o2r.displayfile,
+                mainfile: erc.metadata.o2r.mainfile,
+                mainfile_candidates: erc.metadata.o2r.mainfile_candidates
             };
             return angular.copy(required);
         }
@@ -97,10 +116,7 @@
         function getInputFiles(){
             var inputFiles = {
                 codefiles: erc.metadata.o2r.codefiles,
-                viewfiles: erc.metadata.o2r.viewfiles,
-                inputfiles: erc.metadata.o2r.inputfiles,
-                r_input: erc.metadata.o2r.r_input,
-                r_rdata: erc.metadata.o2r.r_rdata
+                inputfiles: erc.metadata.o2r.inputfiles
             };
             return angular.copy(inputFiles);
         }
@@ -170,10 +186,12 @@
 
         function removeArtifacts(attr){
             var obj = erc.metadata.o2r[attr];
-            for(var i=obj.length-1; i>=0; i--){
-                //if array at index contains empty string or is undefined, delete index
-                if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
-                    obj.splice(i, 1);
+            if(obj) {
+                for(var i=obj.length-1; i>=0; i--){
+                    //if array at index contains empty string or is undefined, delete index
+                    if(angular.isUndefined(obj[i]) || (obj[i].length == 0)){
+                        obj.splice(i, 1);
+                    }
                 }
             }
         }

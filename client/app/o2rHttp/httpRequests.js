@@ -4,9 +4,9 @@
 	angular
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
-		
+
 	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
-		
+
 	function httpRequests($http, $log, $q, env){
 		var service = {
 			listCompendia : listCompendia,
@@ -26,7 +26,9 @@
 			uploadViaSciebo: uploadViaSciebo,
 			getLicenses: getLicenses,
 			setUserLevel: setUserLevel,
-			getAllUsers: getAllUsers
+			getAllUsers: getAllUsers,
+			deleteCompendium: deleteCompendium,
+			substitute: substitute
 		};
 
 		return service;
@@ -75,7 +77,7 @@
 		function listRelatedJobs(id){
 			var _url = env.api + '/compendium/' + id + '/jobs';
 			return $http.get(_url);
-		}	
+		}
 
 		/*
 		* @Desc httpRequest for executing a new job
@@ -155,19 +157,19 @@
 		}
 
 		function uploadViaSciebo(url, path){
-			var _url = env.api + '/compendium/';		
-			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});	
+			var _url = env.api + '/compendium/';
+			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});
 		}
 
 		function toZenodo(compendiumID) {
 			var _url = env.api + '/shipment';
-			return $http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")		
+			return $http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")
 		}
 
 		function getShipment(compendiumID){
-			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;
 			return $http.get(_url);
-		}	
+		}
 
 		function getStatus(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/status';
@@ -176,7 +178,12 @@
 
 		function publishERC(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/publishment';
-			return $http.put(_url,{});			
+			return $http.put(_url,{});
+		}
+
+		function substitute(substitutionMetadata) {
+			var _url = env.api + '/substitution';
+			return $http.post(_url, substitutionMetadata)
 		}
 
 		function updateMetadata(id, data){
@@ -213,22 +220,27 @@
 				.catch(function(e){
 					deferred.reject(e);
 				});
-			
+
 			return deferred.promise;
-			
+
 			function cb(res){
 				for(var i in res.data.results){
 					var _url2 = _url + res.data.results[i];
 					$http.get(_url2)
 						.then(function(r){
 							result.push(r.data);
-							counter++;	
+							counter++;
 							if(counter == res.data.results.length){
 								deferred.resolve(result);
 							}
 						});
 				}
 			}
+		}
+
+		function deleteCompendium(compId){
+			var _url = env.api + '/compendium/' + compId;
+			return $http.delete(_url);
 		}
 	};
 })();

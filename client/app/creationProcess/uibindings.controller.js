@@ -36,8 +36,8 @@
                 binding.shinyURL = {};
                 binding.shinyURL.path = vm.binding.shinyURL;
                 binding.shinyURL.type = 'text/shiny';
-                binding.underlyingData = vm.input.r_rdata[vm.binding.underlyingData] || "";
-                binding.underlyingCode = vm.input.viewfiles[vm.binding.underlyingCode] || "";
+                binding.underlyingData = vm.input.inputfiles[vm.binding.underlyingData] || "";
+                binding.underlyingCode = vm.input.codefiles[vm.binding.underlyingCode] || "";
             vm.bindings.push(binding);
             vm.addBinding(binding);
             //reset values
@@ -62,8 +62,8 @@
         function updateBinding(index){
             var binding = {};
                 binding.shinyURL = vm.binding.shinyURL || vm.bindings[index].shinyURL;
-                binding.underlyingData = vm.input.r_rdata[vm.binding.underlyingData] || vm.bindings[index].underlyingData;
-                binding.underlyingCode = vm.input.viewfiles[vm.binding.underlyingCode] || vm.bindings[index].underlyingCode;
+                binding.underlyingData = vm.input.inputfiles[vm.binding.underlyingData] || vm.bindings[index].underlyingData;
+                binding.underlyingCode = vm.input.codefiles[vm.binding.underlyingCode] || vm.bindings[index].underlyingCode;
             vm.bindings[index].shinyURL = binding.shinyURL;
             vm.bindings[index].underlyingData = binding.underlyingData;
             vm.bindings[index].underlyingCode = binding.underlyingCode;

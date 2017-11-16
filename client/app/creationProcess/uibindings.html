@@ -12,7 +12,7 @@
                         <div>
                             <h3>{{binding.shinyURL.path}}</h3>
                             <h4>{{binding.underlyingCode}}</h4>
-                            <p>{{binding.underlyingData.file}}</p>
+                            <p>{{binding.underlyingData}}</p>
                         </div>
                         <span flex></span>
                         <div ng-hide="vm.options[$index]" class="required-author-placeholder"></div>
@@ -42,16 +42,16 @@
                 <md-input-container>
                     <label>Select data file</label>
                     <md-select ng-model="vm.binding.underlyingData" name="datafile">
-                        <md-option ng-repeat="datainput in vm.input.r_rdata track by $index" value="{{$index}}">
-                            {{datainput.file | cutPath}}
+                        <md-option ng-repeat="datainput in vm.input.inputfiles track by $index" value="{{$index}}">
+                            {{datainput}}
                         </md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container>
                     <label>Select code file</label>
                     <md-select ng-model="vm.binding.underlyingCode" name="codefile">
-                        <md-option ng-repeat="codeinput in vm.input.viewfiles track by $index" value="{{$index}}">
-                            {{codeinput | cutPath}}
+                        <md-option ng-repeat="codeinput in vm.input.codefiles track by $index" value="{{$index}}">
+                            {{codeinput}}
                         </md-option>
                     </md-select>
                 </md-input-container>
@@ -71,15 +71,15 @@
                 <md-input-container>
                     <label>Select data file</label>
                     <md-select ng-model="vm.binding.underlyingData" name="datafile">
-                        <md-option ng-repeat="datainput in vm.input.r_rdata track by $index" value="{{$index}}">
-                            {{datainput.file | cutPath}}
+                        <md-option ng-repeat="datainput in vm.input.inputfiles track by $index" value="{{$index}}">
+                            {{datainput | cutPath}}
                         </md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container>
                 <label>Select code file</label>
                 <md-select ng-model="vm.binding.underlyingCode" name="codefile">
-                    <md-option ng-repeat="codeinput in vm.input.viewfiles track by $index" value="{{$index}}">
+                    <md-option ng-repeat="codeinput in vm.input.codefiles track by $index" value="{{$index}}">
                         {{codeinput | cutPath}}
                     </md-option>
                 </md-select>
