@@ -143,7 +143,7 @@ services:
       SHIPPER_BASE_PATH: "/tmp/o2r"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.3.0
+    image: o2rproject/o2r-substituter:0.3.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -152,7 +152,19 @@ services:
     environment:
       - "SUBSTITUTER_MONGODB=mongodb://mongodb"
       - SUBSTITUTER_PORT=8090
-      - DEBUG=substituter,substituter:*
+      - DEBUG=*
+      #substituter,substituter:*
+
+  opencpu:
+    image: opencpu/rstudio
+    restart: unless-stopped
+    # depends_on:
+    #   - configmongodb
+    volumes:
+      - o2rstorage:/tmp/o2r
+    environment:
+      - OPENCPU_PORT=8004
+      - DEBUG=*
 
   platform:
     image: nginx:latest
