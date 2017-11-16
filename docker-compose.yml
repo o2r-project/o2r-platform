@@ -138,7 +138,7 @@ services:
       - o2rstorage:/tmp/o2r
     environment:
       SHIPPER_MONGODB: "mongodb://mongodb"
-      SHIPPER_REPO_TOKENS: '{"zenodo_sandbox": "${ZENODO_SANDBOX_TOKEN}", "zenodo": "${ZENODO_TOKEN}", "download": "" }'
+      SHIPPER_REPO_TOKENS: "${SHIPPER_REPO_TOKENS}"
       SHIPPER_BOTTLE_HOST: "0.0.0.0"
       SHIPPER_BASE_PATH: "/tmp/o2r"
       PYTHONUNBUFFERED: "0"
