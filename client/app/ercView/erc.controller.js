@@ -5,8 +5,8 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login'];
-    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'recipient'];
+    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, recipient){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
@@ -15,6 +15,7 @@
         var vm = this;
         vm.icons = icons;
         vm.server = env.server;
+        vm.recipient = recipient.data.recipients;
         vm.publication = erc;
         vm.ercId = vm.publication.id;
         vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.displayfile));
@@ -48,10 +49,11 @@
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
         vm.publish = true;
-        vm.sendToZenodo = sendToZenodo;
-        vm.publishInZenodo = publishInZenodo;
+        vm.sendToRecipient = sendToRecipient;
+        // vm.publishInZenodo = publishInZenodo;
 
         logger.info(vm.publication);
+        logger.info(vm.recipient);
 
         activate();
 
@@ -89,12 +91,12 @@
                 });
         }
 
-        function sendToZenodo(){
+        function sendToRecipient(recip){
             var progressbar = ngProgressFactory.createInstance();
 			progressbar.setHeight('10px');
 			progressbar.start();
-
-            httpRequests.toZenodo(vm.ercId)
+            logger.info('recipient', recip);
+            httpRequests.newShipment(vm.ercId, recip)
             .then(function (res) {
 					logger.info(res);
                     vm.shipped=true;
@@ -103,7 +105,7 @@
 			})
             .catch(function (err){
                 logger.info(err);
-            })     
+            });     
         }
 
         function publishInZenodo(){

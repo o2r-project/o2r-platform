@@ -8,6 +8,7 @@
 	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
 
 	function httpRequests($http, $log, $q, env){
+		var logger = $log.getInstance('httpRequests');
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -206,10 +207,14 @@
 		 */
 		function newShipment(compId, recipient, update_packaging, shipment_id){
 			var _url = env.api + '/shipment';
-			var body = {compendium_id: compId, recipient: recipient};
+			// var config = {headers: {'Content-Type': 'multipart/form-data'}};
+			// var config = {headers: {'Content-Type': undefined}, transformRequest: angular.identity};
+			var body = {'compendium_id': compId, 'recipient': recipient};
 			if(update_packaging) body.update_packaging = update_packaging;
 			if(shipment_id) body.shipment_id = shipment_id;
+			logger.info(_url, angular.toJson(body));
 			return $http.post(_url, body);
+			// return $http.post(_url, body, config);
 		}
 
 		function getStatus(shipmentID){

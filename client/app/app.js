@@ -205,7 +205,8 @@
                 controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
-                    erc: ercService
+                    erc: ercService,
+                    recipient: recipientService
                 }
             })
             .state('erc.reproduce', {
@@ -427,6 +428,12 @@
             }
             else return result;
         });
+    }
+
+    recipientService.$inject = ['$log', '$q', 'httpRequests'];
+    function recipientService($log, $q, httpRequests){
+        $log.debug('GET /recipient/');
+        return httpRequests.getRecipient();
     }
 
     creationService.$inject = ['$log', '$stateParams', '$q', 'publications'];
