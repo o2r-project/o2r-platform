@@ -32,6 +32,18 @@ body{
 	color: white !important;
 }
 
+.no-margin-top{
+	margin-top: 0;
+}
+
+.no-margin{
+	margin: 0;
+}
+
+.no-padding{
+	padding: 0;
+}
+
 .o2r-grey-font{
 	color: rgba(0,0,0,0.54);
 }

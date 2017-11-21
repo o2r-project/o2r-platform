@@ -10,6 +10,7 @@
             "starter.o2rInspect",
             "starter.o2rErcDownload",
             "starter.o2rMetadataView",
+            "starter.o2rUiBindingCreator",
             "treeControl",
             "hljs",
             "ui.router",

@@ -24,7 +24,11 @@
         vm.newBindingEdit = false;
         vm.hideAddBindingButton = false;
         vm.cancelNewBinding = cancelNewBinding;
-        vm.cancelUpdateBinding = cancelUpdateBinding;       
+        vm.cancelUpdateBinding = cancelUpdateBinding;  
+        
+        vm.startBindingCreation = startBindingCreation;
+
+        /////////////////////////
 
         function removeBinding(index){
             vm.bindings.splice(index, 1);
@@ -80,7 +84,12 @@
             }
         }
 
-        ////////
+        function startBindingCreation(){
+            vm.newBindingEdit = false;
+            vm.editBinding = null;
+            vm.createBinding = true;
+        }
+
     }
 
 })();
