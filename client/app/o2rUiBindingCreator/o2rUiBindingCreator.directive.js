@@ -5,8 +5,8 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$http", "env"];
-    function o2rUiBindingCreator($log, $window, $http, env){
+    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "env"];
+    function o2rUiBindingCreator($log, $window, $document, $http, env){
         return{
             restrict: 'E',
             scope: {
@@ -18,10 +18,9 @@
 
         function link(scope, element, attrs){
             var logger = $log.getInstance('o2rUiBindingCreator');
-            var allText;
             var lines;
+            var codeText;
             var selectedLinesIndex = [];
-            logger.info($window);
             // turn string into array and then add actual path
             // NOTE: Remove the prepareCodefiles wrappe as soon as the paths are consistent
             scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
@@ -29,7 +28,6 @@
             scope.figures = ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5"];
             scope.step3Done = step3Done;
             scope.step5Done = step5Done;
-            scope.markedAllText = markedAllText;
             scope.updateSelection = updateSelection;
             scope.updateValue = updateValue;
 
@@ -76,6 +74,17 @@
                     }
                 }
             });
+
+            scope.$watch('codefile', function(newVal, oldVal){
+                $http.get(newVal.path)
+                    .then(function(response){
+                        codeText = removeCarriage(response.data);
+                    })
+                    .catch(function(err){
+                        logger.error(err);
+                    });
+            });
+
             //////////////////
 
             function prepareCodefiles(files){
@@ -83,7 +92,7 @@
                     var parts = files[i].split('/');
                     var result = '';
                     for(var j in parts){
-                        if(j==0) result += env.api + '/compendium/' + parts[j] + '/data';
+                        if(j==0) result += env.api + '/compendium/' + parts[j] + '/data/data';
                         else result += '/' + parts[j];
                     }
                     files[i] = result;
@@ -92,28 +101,31 @@
             }
 
             function updateSelection(){
-                var selection = $window.getSelection().toString();
-                var selectionLines = selection.split("\n");
-                var inverseSelection = allText.split(selection);
-                var pre = inverseSelection[0].split("\n");
-                var selectionEndLine = pre.length + selectionLines.length -1;
-                // if last element in selection is empty, remove it
-                // empty last element means, that the last \n was split too
-                if(selectionLines[selectionLines.length -1] == ""){
-                    selectionEndLine -= 1;
-                    logger.info('empty string at end');
+                // only check selection if we are in step 3
+                if(scope.steps.step3.show && !scope.steps.step4.show){
+
+                    var selection = $window.getSelection().toString();
+                    if(selection.length != 0){ //clicking creates empty selection. This should not be considered
+
+                        var selectionLines = selection.split("\n");
+                        var inverseSelection = codeText.split(selection);
+                        var pre = inverseSelection[0].split("\n");
+                        var selectionEndLine = pre.length + selectionLines.length -1;
+                        
+                        if(selectionLines[selectionLines.length -1] == ""){
+                            selectionEndLine -= 1;
+                            logger.info('empty string at end');
+                        }
+                        var result = {
+                            start: pre.length,
+                            end: selectionEndLine
+                        };
+                        selectedLinesIndex.push(result);
+                        logger.info(selectedLinesIndex);
+                    }
                 }
-                var result = {
-                    start: pre.length,
-                    end: selectionEndLine
-                };
-                selectedLinesIndex.push(result);
             }
 
-            function markedAllText(){
-                allText = $window.getSelection().toString();
-                lines = allText.split("\n");
-            }
 
             function step3Done(){
                 logger.info(selectedLinesIndex);
@@ -135,6 +147,16 @@
 
             function step5Done(){
 
+            }
+
+            function removeCarriage(text){
+                var noR = text.split("\r");
+                var newtext = "";
+                for(var i in noR){
+                    newtext += noR[i];
+                }
+                logger.info('removed carriage');
+                return newtext;
             }
 
         }
