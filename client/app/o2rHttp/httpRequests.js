@@ -4,9 +4,9 @@
 	angular
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
-		
+
 	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
-		
+
 	function httpRequests($http, $log, $q, env){
 		var service = {
 			listCompendia : listCompendia,
@@ -32,7 +32,8 @@
 			getLicenses: getLicenses,
 			setUserLevel: setUserLevel,
 			getAllUsers: getAllUsers,
-			deleteCompendium: deleteCompendium
+			deleteCompendium: deleteCompendium,
+			substitute: substitute
 		};
 
 		return service;
@@ -81,7 +82,7 @@
 		function listRelatedJobs(id){
 			var _url = env.api + '/compendium/' + id + '/jobs';
 			return $http.get(_url);
-		}	
+		}
 
 		/*
 		* @Desc httpRequest for executing a new job
@@ -161,8 +162,8 @@
 		}
 
 		function uploadViaSciebo(url, path){
-			var _url = env.api + '/compendium/';		
-			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});	
+			var _url = env.api + '/compendium/';
+			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});
 		}
 
 		// function toZenodo(compendiumID) {
@@ -185,7 +186,7 @@
 		function getCompShipments(compendiumID){
 			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
 			return $http.get(_url);
-		}	
+		}
 
 		/**
 		 * Retrieve one specific shipment with id shipmentID
@@ -218,7 +219,12 @@
 
 		function publishERC(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/publishment';
-			return $http.put(_url,{});			
+			return $http.put(_url,{});
+		}
+
+		function substitute(substitutionMetadata) {
+			var _url = env.api + '/substitution';
+			return $http.post(_url, substitutionMetadata)
 		}
 
 		function deleteFileFromDepot(shipment_id, file_id){
@@ -265,16 +271,16 @@
 				.catch(function(e){
 					deferred.reject(e);
 				});
-			
+
 			return deferred.promise;
-			
+
 			function cb(res){
 				for(var i in res.data.results){
 					var _url2 = _url + res.data.results[i];
 					$http.get(_url2)
 						.then(function(r){
 							result.push(r.data);
-							counter++;	
+							counter++;
 							if(counter == res.data.results.length){
 								deferred.resolve(result);
 							}
