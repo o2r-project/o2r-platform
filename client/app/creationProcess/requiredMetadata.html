@@ -19,7 +19,7 @@
             <md-list layout="row">
                 <md-list-item 
                     class="md-3-line" 
-                    ng-repeat="author in vm.required.author track by $index" 
+                    ng-repeat="author in vm.required.creators track by $index" 
                     layout-wrap
                     ng-mouseenter="vm.options[$index]=true"
                     ng-mouseleave="vm.options[$index]=false">
@@ -34,7 +34,7 @@
                         <md-button ng-show="vm.options[$index]" class="md-fab md-mini" ng-click="vm.editAuthor=$index" aria-label="Edit Author">
                             <md-icon class="white-font" md-svg-src="{{vm.icons.edit}}"></md-icon>
                         </md-button>
-                        <md-button ng-if="!(vm.required.author.length == 1)" ng-click="vm.removeAuthor($index)" class="md-fab md-mini" aria-label="Delete Author">
+                        <md-button ng-if="!(vm.required.creators.length == 1)" ng-click="vm.removeAuthor($index)" class="md-fab md-mini" aria-label="Delete Author">
                             <md-icon class="white-font" md-svg-src="{{vm.icons.close}}"></md-icon>
                         </md-button>
                     </div>
@@ -52,18 +52,18 @@
             <div ng-if="(vm.editAuthor == 0) || (vm.editAuthor)">
                 <md-input-container md-is-error="vm.showError('authorname')">
                     <label>Author</label>
-                    <input ng-model="vm.author.name" ng-value="vm.required.author[vm.editAuthor].name" name="authorname" required>
+                    <input ng-model="vm.author.name" ng-value="vm.required.creators[vm.editAuthor].name" name="authorname" required>
                     <div ng-messages="requiredForm.authorname.$error">
                         <div ng-message="required">Required field</div>
                     </div>
                 </md-input-container>
                 <md-input-container>
                     <label>Affiliation</label>
-                    <input ng-model="vm.author.affiliation" ng-value="vm.required.author[vm.editAuthor].affiliation">
+                    <input ng-model="vm.author.affiliation" ng-value="vm.required.creators[vm.editAuthor].affiliation">
                 </md-input-container>
                 <md-input-container>
                     <label>ORCID</label>
-                    <input ng-model="vm.author.orcid" ng-value="vm.required.author[vm.editAuthor].orcid">
+                    <input ng-model="vm.author.orcid" ng-value="vm.required.creators[vm.editAuthor].orcid">
                 </md-input-container>
                 <md-button class="md-raised" ng-click="vm.updateAuthor(vm.editAuthor)" aria-label="Update Author">
                     Update author
