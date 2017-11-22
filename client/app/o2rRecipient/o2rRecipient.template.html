@@ -1,0 +1,21 @@
+<md-menu>
+    <md-button aria-label="ship to" class="md-raised" ng-click="openMenu($mdMenu, $event)">
+        <md-icon md-menu-origin class="o2r-icon" md-svg-src="{{icons.rowing}}" aria-label="rowing"></md-icon>Ship to...
+    </md-button>
+    <md-menu-content width="4">
+        <md-menu-item>
+            <span md-menu-align-target>
+                <md-icon md-svg-src="{{icons.rowing}}" arial-label="rowing"></md-icon>Ship to...
+            </span>
+        </md-menu-item>
+        <md-menu-item ng-repeat="recip in recipients" layout="row">
+            <md-button ng-click="shipTo(recip.id, ercId, spinner, buttonTypes, shipmentIds)" aria-label="ship to" md-prevent-menu-close="md-prevent-menu-close">
+                {{recip.label}}
+            </md-button>
+            <md-progress-circular ng-if="spinner[recip.id]" md-diameter="30px"></md-progress-circular>
+            <md-button class="md-fab md-mini" ng-if="buttonTypes[recip.id].show" ng-click="publish(shipmentIds[recip.id])" arial-label="result">
+                <md-icon md-svg-src="{{getIcon(recip.id)}}" aria-label="icon"></md-icon>
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

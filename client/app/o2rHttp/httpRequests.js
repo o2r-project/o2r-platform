@@ -222,7 +222,7 @@
 
 		function publishERC(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/publishment';
-			return $http.put(_url,{});
+			return $http.put(_url);
 		}
 
 		function substitute(substitutionMetadata) {
