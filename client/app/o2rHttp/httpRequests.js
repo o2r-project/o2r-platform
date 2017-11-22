@@ -207,14 +207,12 @@
 		 */
 		function newShipment(compId, recipient, update_packaging, shipment_id){
 			var _url = env.api + '/shipment';
-			// var config = {headers: {'Content-Type': 'multipart/form-data'}};
-			// var config = {headers: {'Content-Type': undefined}, transformRequest: angular.identity};
-			var body = {'compendium_id': compId, 'recipient': recipient};
-			if(update_packaging) body.update_packaging = update_packaging;
-			if(shipment_id) body.shipment_id = shipment_id;
+			var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded'}};
+			var body = 'compendium_id=' + compId + '&recipient=' + recipient;
+			if(update_packaging) body += '&update_packaging=' + update_packaging;
+			if(shipment_id) body += '&shipment_id=' + shipment_id;
 			logger.info(_url, angular.toJson(body));
-			return $http.post(_url, body);
-			// return $http.post(_url, body, config);
+			return $http.post(_url, body, config);
 		}
 
 		function getStatus(shipmentID){
