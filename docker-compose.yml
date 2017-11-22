@@ -130,7 +130,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:f90fb75
+    image: o2rproject/o2r-shipper:54a880f
     restart: unless-stopped
     depends_on:
       - configmongodb
