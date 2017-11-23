@@ -27,8 +27,8 @@
 		.module('starter.o2rSubstituteCandidate', [])
 		.directive('o2rSubstituteCandidate', o2rSubstituteCandidate);
 
-	o2rSubstituteCandidate.$inject= ['$log', 'env', 'icons', '$mdDialog', 'httpRequests'];
-	function o2rSubstituteCandidate($log, env, icons, $mdDialog, httpRequests){
+	o2rSubstituteCandidate.$inject= ['$log', 'env', 'icons', '$mdDialog', 'httpRequests', '$location', '$window'];
+	function o2rSubstituteCandidate($log, env, icons, $mdDialog, httpRequests, $location, $window){
 		return{
 			restrict: 'E',
 			templateUrl: 'app/o2rSubstituteCandidate/o2rSubstituteCandidate.template.html',
@@ -51,12 +51,15 @@
 			scope.substitutionRows = [{}];
 			scope.baseType = "base";
 			scope.overlayType = "overlay";
+			scope.substituted = {};
+			scope.finishedSubstitution = false;
 
 			attrs.$observe('o2rOverlayTitle', function(val_) {
 				if(val_ != '') {
 
 					scope.cancel = cancel;
 					scope.startSubstitutionUI = startSubstitutionUI;
+					scope.showSubstitutedERC = showSubstitutedERC;
 					scope.selectSubstitutionFiles = selectSubstitutionFiles;
 					scope.delDropdown = delDropdown;
 					scope.addDropdown = addDropdown;
@@ -66,18 +69,14 @@
 							$mdDialog.cancel();
 					};
 
-					// TODO: start substitution UI
 		       function startSubstitutionUI() {
-		          logger.info("initiateSubstitution");
-		          logger.debug("initiateSubstitution");
 
 		          if (!Array.isArray(scope.substitutionRows) || scope.substitutionRows == undefined || scope.substitutionRows.length == 0 || !checkForFiles(scope.substitutionRows)) {
 		              logger.info("no substitution files choosen");
 		              window.alert("please choose files");
 		          } else {
-		              $mdDialog.hide();
-		              logger.info("init substitution");
-		              // start substitution
+		 		          logger.info("initiateSubstitution");
+		 		          logger.debug("initiateSubstitution");
 
 		              let substitutionMetadata = {};
 		              let arrayOfSubstitutionObjects = [];
@@ -92,22 +91,29 @@
 		                object_.overlay = scope.substitutionRows[i].overlayfile.filePath;
 		                substitutionMetadata.substitutionFiles.push(object_);
 		              }
-
-									cancel();	// close dialog and delete substitutionRows
-
 									logger.debug("substitution with following metadata: %s", JSON.stringify(substitutionMetadata));
-
+									// start substitution
 		              httpRequests.substitute(substitutionMetadata)
 		                .then(function(res){
-		                    logger.info(res);
-		                    window.alert("substitution finished");
+												scope.substituted.id = res.data.id;	// substituted ERC ID
+												scope.substituted.data = res.config.data;	// data that was used to create substitution
+												logger.info("Finished substitution to new ERC with id [%s]", scope.substituted.id);
+												logger.debug("Finished substitution to new ERC with id [%s]", scope.substituted.id);
+												scope.substituted.url = "#!/erc/" + scope.substituted.id;
+												scope.finishedSubstitution = true;
 		                })
 		                .catch(function(err){
-											logger.info(err);
-											window.alert("Error while substitution:\n" + err.data.err);
+											logger.info("Error while substitution: [%s]", err.data.error);
+											logger.debug("Error while substitution: [%s]", err.data.error);
+											window.alert("Error while substitution:\n" + err.data.error);
 		                });
 		          }
 		      };
+
+					function showSubstitutedERC() {
+							$window.open(scope.substituted.url);
+					};
+
 		      // on change of dropdown list
 		       function selectSubstitutionFiles(file, type, row) {
 		          let i = row.$index;
