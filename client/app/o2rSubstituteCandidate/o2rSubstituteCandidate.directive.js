@@ -2,26 +2,22 @@
 	'use strict';
 
 	/*
-		Directive for displaying different file types.
+		Directive for candidate view.
 		This directive checks the mime type attribute of a publication.content.<element> to handle it differently considering its mime type.
-		Directive can only be used as Html-Element and expects an attribute o2r-file.
-		o2r-file must be an object with at least following attribute:
+		Directive can only be used as Html-Element and expects attributes o2r-base, o2r-overlay, o2r-base-title, o2r-overlay-title, o2r-base-id, o2r-overlay-id.
+		o2r-base-title, o2r-overlay-title, o2r-base-id, o2r-overlay-id must be a String.
+		o2r-base and o2r-overlay must be an array with at least one object with following attribute:
 
-		{
-		path: String
-		}
+		[
+			{
+				fileName: String
+				filePath: String
+				uId: Number
+			}
+		]
 
 		Example:
-		<o2r-display-files o2r-file="{'path': 'foo/bar'}"></o2r-display-files>
-
-		optional attributes:
-
-		{
-			size: Integer,
-			type: String
-		}
-
-		where size is the filesize in bytes and type is the mime type.
+		<o2r-substitute-candidate o2r-base="[{fileName: 'foo', filePath: 'bar', uId: '1'}]" o2r-overlay="[{fileName: 'foo', filePath: 'bar', uId: '1'}]" o2r-base-title="{{'foobar'}}" o2r-overlay-title="{{'barfoo'}}" o2r-base-id="{{'foo'}}" o2r-overlay-id="{{'bar'}}"></o2r-substitute-candidate>
 	*/
 	angular
 		.module('starter.o2rSubstituteCandidate', [])
