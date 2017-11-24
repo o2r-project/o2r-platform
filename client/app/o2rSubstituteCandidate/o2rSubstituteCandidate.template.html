@@ -1,14 +1,18 @@
+<!-- <div class="md-dialog-container" id="showCandidateView"> -->
+  <!-- <md-dialog class="substitute_candidate" aria-label="options dialog"> -->
+    <md-dialog-content layout-padding>
+
 <div id="tableSubstitutionOptions">
   <table id="tableSubstitution" style="width:100%">
     <tr style="background-color: white;">
-      <th style="width:45%">base ERC:</th>
+      <th style="width:45%"><h2>base ERC:</h2></th>
       <th style="width:10%"></th>
-      <th style="width:45%">overlay ERC:</th>
+      <th style="width:45%"><h2>overlay ERC:</h2></th>
     </tr>
     <tr>
-      <th>{{o2rBaseTitle}}</th>
+      <th><h3>{{o2rBaseTitle}}</h3></th>
       <th></th>
-      <th>{{o2rOverlayTitle}}</th>
+      <th><h3>{{o2rOverlayTitle}}</h3></th>
     </tr>
     <div class="substitution-rows">
       <tr ng-repeat="row in substitutionRows">
@@ -20,6 +24,7 @@
           </md-input-container>
         </td>
         <td>
+          <md-button title="magnify row" ng-click="magnifyFiles($event, this)"><md-icon aria-label md-svg-src="{{icons.search}}"></md-icon></md-button>
           <md-button title="del row" class="md-raised" ng-click="delDropdown(this)"><md-icon aria-label md-svg-src="{{icons.remove}}"></md-icon></md-button>
         </td>
         <td>
@@ -47,3 +52,7 @@
   <span flex></span>
   <a href="" ng-click="showSubstitutedERC()" ng-if="finishedSubstitution">Go to ERC</a>
 </div>
+
+</md-dialog-content>
+<!-- </md-dialog> -->
+<!-- </div> -->

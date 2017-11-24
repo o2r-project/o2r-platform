@@ -618,6 +618,16 @@ td.add-row-button {
 	border-bottom: white;
 }
 
+.substitute_candidate{
+	max-width: 100%;
+	min-width: 80%;
+}
+
+.substitute_magnifier{
+	max-width: 100%;
+	width: 100%;
+}
+
 /***********************
 	End Substitution
 /***********************

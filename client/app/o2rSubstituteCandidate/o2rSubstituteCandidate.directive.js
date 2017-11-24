@@ -59,6 +59,7 @@
 					scope.selectSubstitutionFiles = selectSubstitutionFiles;
 					scope.delDropdown = delDropdown;
 					scope.addDropdown = addDropdown;
+					scope.magnifyFiles = magnifyFiles;
 
 					function cancel() {
 					    scope.substitutionRows = [{}];
@@ -109,6 +110,17 @@
 					function showSubstitutedERC() {
 							$window.open(scope.substituted.url);
 					};
+
+					function magnifyFiles(ev, data){
+							$mdDialog.show({
+									template: '<md-dialog class="substitute_magnifier"><o2r-substitute-magnify o2r-base-file="'+data.fileSelectBase.filePath+'" o2r-overlay-file="'+data.fileSelectOverlay.filePath+'" o2r-overlay-id="'+scope.o2rOverlayId+'"></o2r-substitute-magnify></md-dialog>',
+									parent: angular.element(document.body),
+									targetEvent: ev,
+									fullscreen: true,
+									clickOutsideToClose: false,
+									multiple: true
+							});
+					}
 
 		      // on change of dropdown list
 		       function selectSubstitutionFiles(file, type, row) {

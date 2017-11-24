@@ -53,7 +53,7 @@
                     parent: angular.element(document.body),
                     scope: $scope,
                     preserveScope: true,
-                    multiple: false,
+                    multiple: true,
                     targetEvent: event,
                     clickOutsideToClose: false
                 });
