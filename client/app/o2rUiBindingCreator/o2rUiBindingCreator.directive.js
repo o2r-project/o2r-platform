@@ -1,3 +1,21 @@
+/**
+ * Directive for the creation of ui bindings.
+ * This directive contains the whole workflow for the creation of one new uibinding.
+ * The directive can be called via
+ * <o2r-ui-binding-creator></o2r-ui-binding-creator>
+ * and expects a scope "o2r-codefiles".
+ * 
+ * o2r-codefiles MUST be an array of Strings, where each string is a path to a single file within an ERC.
+ * 
+ * Example:
+ * 
+ * <o2r-ui-binding-creator o2r-codefiles="["path/to/first/file", "path/to/second/file"]"></o2r-ui-binding-creator>
+ * 
+ * Given that the calling controller has a scope variable vm.files = ["path/to/first/file", "path/to/second/file"]
+ * the directive can be called within the scope of that controller as follows
+ * 
+ * <o2r-ui-binding-creator o2r-codefiles="{{vm.files}}"></o2r-ui-binding-creator>
+ */
 (function(){
     'use strict';
 
@@ -17,6 +35,8 @@
         };
 
         function link(scope, element, attrs){
+            if(!scope.codefiles) throw 'o2r-codefiles is undefined';
+
             var logger = $log.getInstance('o2rUiBindingCreator');
             var lines;
             var codeText;
