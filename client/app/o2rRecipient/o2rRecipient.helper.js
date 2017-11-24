@@ -50,7 +50,7 @@
                     return httpRequests.getShipment(response.data.id);
                 })
                 .then(function(response){
-                    logger.info(response.data);
+                    logger.info('single shipment', response);
                     if(response.data.hasOwnProperty('dl_filepath')){ // handle it as download
                         buttonTypes[recip].type = "download";
                     } else { //handle it as publish
