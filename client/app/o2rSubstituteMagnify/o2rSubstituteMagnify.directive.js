@@ -33,14 +33,12 @@
             attrs.$observe('o2rBaseFile', function(val_) {
     				    if(val_ != '') {
 
-                    logger.info('substituteMagnify view');
                     scope.icons = icons;
                     scope.magnBase = {};
-                    scope.magnBase.path = 'http://localhost/api/v1/compendium/' + $stateParams.ercid + '/data/' + scope.o2rBaseFile;
-                    scope.magnBase.type = 'text/html';
+                    scope.magnBase.path = '/api/v1/compendium/' + $stateParams.ercid + '/data/' + scope.o2rBaseFile;
                     scope.magnOverlay = {};
-                    scope.magnOverlay.path = 'http://localhost/api/v1/compendium/' + scope.o2rOverlayId + '/data/' + scope.o2rOverlayFile;
-                    scope.magnOverlay.type = 'text/html';
+                    scope.magnOverlay.path = '/api/v1/compendium/' + scope.o2rOverlayId + '/data/' + scope.o2rOverlayFile;
+                    logger.info('substituteMagnify view with files basefile [%s] and overlayfile [%s]', scope.magnBase.path, scope.magnOverlay.path);
 
                     scope.cancel = cancel;
                     scope.hide = hide;
@@ -51,7 +49,7 @@
                     /////
 
                     function fileEdit(filepath) {
-                        console.log(filepath);
+                        logger.info(filepath);
                     };
 
                     function saveEdit() {
