@@ -63,8 +63,8 @@
 					scope.metadata = {};
 					scope.metadata.selected = 'keep';
 					scope.metadata.data = [
-							{label: 'keep metadata', value: 'keep'},
-							{label: 'extract metadata', value: 'extract', isDisabled: true}
+							{label: 'keep metadata of base ERC', value: 'keep'},
+							{label: 'extract metadata for new ERC', value: 'extract', isDisabled: true}
 					];
 
 					function cancel() {
