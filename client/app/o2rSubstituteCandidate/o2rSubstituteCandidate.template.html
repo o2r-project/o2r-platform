@@ -45,6 +45,13 @@
 </div>
 
 <div>
+  <md-radio-group ng-model="metadata.selected" class="md-primary">
+    <md-radio-button ng-repeat="data in metadata.data" ng-value="data.value" ng-disabled="data.isDisabled">
+      {{data.label}}
+    </md-radio-button>
+  </md-radio-group>
+</div>
+<div>
   <md-button ng-click="cancel()">cancel</md-button>
   <md-button ng-click="startSubstitutionUI()">start substitution</md-button>
   <span flex></span>

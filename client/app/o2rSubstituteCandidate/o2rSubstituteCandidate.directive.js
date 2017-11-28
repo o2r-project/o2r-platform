@@ -60,6 +60,12 @@
 					scope.delDropdown = delDropdown;
 					scope.addDropdown = addDropdown;
 					scope.magnifyFiles = magnifyFiles;
+					scope.metadata = {};
+					scope.metadata.selected = 'keep';
+					scope.metadata.data = [
+							{label: 'keep metadata', value: 'keep'},
+							{label: 'extract metadata', value: 'extract', isDisabled: true}
+					];
 
 					function cancel() {
 					    scope.substitutionRows = [{}];
