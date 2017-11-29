@@ -18,17 +18,18 @@
 
 		{
 			size: Integer,
-			type: String
+			type: String,
+			source: String
 		}
 		
-		where size is the filesize in bytes and type is the mime type.
+		where size is the filesize in bytes, type is the mime type and source is the source text of a file.
 	*/
 	angular
 		.module('starter.o2rDisplayFiles')
 		.directive('o2rDisplayFiles', o2rDisplayFiles);
 
-	o2rDisplayFiles.$inject= ['$log', 'env'];
-	function o2rDisplayFiles($log, env){
+	o2rDisplayFiles.$inject= ['$log', '$http', 'env'];
+	function o2rDisplayFiles($log, $http, env){
 		return{
 			restrict: 'E',
 			templateUrl: 'app/o2rDisplayFiles/o2rDisplayFiles.template.html',
@@ -44,6 +45,7 @@
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
 					scope.file = angular.fromJson(value);
+					if(!scope.file.path) throw 'path is undefined';
 					scope.iframeOptions = {
 						checkOrigin: false,
 						log: true
@@ -62,6 +64,32 @@
 					}
 
 					scope.useHljs = useHljs();
+					scope.file.fileEnding = setFileType();
+
+
+					function setFileType(){
+						// set File type based on file ending
+						if(scope.file.path){
+							var ending = scope.file.path.split('.');
+							ending = ending[ending.length-1];
+							//exceptions, where file ending does not match a highlighting class of prism
+							if(ending === 'Rmd') ending = 'r';
+						} else {
+							ending = 'r';
+						}
+						return ending;
+					}
+
+					// if no source is given, load source from file.path
+					if(scope.useHljs && (!scope.file.source)){
+						$http.get(scope.file.path)
+						.then(function(response){
+							scope.file.source = response.data;
+						})
+						.catch(function(err){
+							$log.error(err);
+						});
+					}
 					
 					function useHljs(){						
 						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html') || (scope.file.type == 'text/shiny')){

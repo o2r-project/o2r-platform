@@ -4,6 +4,7 @@
     angular
         .module('starter', [
             "conf",
+            "starter.o2rCodeHighlight",
             "starter.o2rDisplayFiles",
             "starter.o2rCompare",
             "starter.o2rHttp",

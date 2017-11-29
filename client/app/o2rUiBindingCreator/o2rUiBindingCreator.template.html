@@ -10,8 +10,9 @@
         </md-select>
     </md-input-container>
 </div>
+<!-- <o2r-display-files o2r-file="{{testfile}}" flex="80"></o2r-display-files> -->
 <div layout="row">
-    <o2r-display-files class="highlight-selected" o2r-file="{{codefile}}" ng-mouseup="updateSelection()" flex="80"></o2r-display-files>
+    <o2r-display-files class="highlight-selected" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="80"></o2r-display-files>
     <!-- STEPS -->
     <md-card layout-fill flex="20">
         <md-card-title>
