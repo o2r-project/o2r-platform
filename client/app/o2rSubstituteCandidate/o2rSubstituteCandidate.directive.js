@@ -61,10 +61,10 @@
 					scope.addDropdown = addDropdown;
 					scope.magnifyFiles = magnifyFiles;
 					scope.metadata = {};
-					scope.metadata.selected = 'keep';
+					scope.metadata.selected = 'keepBase';
 					scope.metadata.data = [
-							{label: 'keep metadata of base ERC', value: 'keep'},
-							{label: 'extract metadata for new ERC', value: 'extract', isDisabled: true}
+							{label: 'keep metadata of base ERC', value: 'keepBase'},
+							{label: 'extract and merge metadata for new ERC', value: 'extractAndMerge', isDisabled: true}
 					];
 
 					function cancel() {
@@ -84,6 +84,7 @@
 		              let substitutionMetadata = {};
 		              let arrayOfSubstitutionObjects = [];
 
+		              substitutionMetadata.metadataHandling = scope.metadata.selected;
 		              substitutionMetadata.base = scope.o2rBaseId;
 		              substitutionMetadata.overlay = scope.o2rOverlayId;
 		              substitutionMetadata.substitutionFiles = [];
