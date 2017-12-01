@@ -110,6 +110,16 @@ docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 ```
 
+### Use non-default version of o2r-meta and containerit
+
+Two core steps for compendium creation are provided by the standalone tools [o2r-meta]() and [containerit]().
+These tools are used in a containerized version and the specific tool can be selected via an environment variable for both `muncher` and `loader` in the compose configuration (see comments in the file).
+
+For _metadata extraction and brokering_, see the respective [`loader` configuration property `LOADER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-loader/#configuration) and [`muncher` configuration property `MUNCHER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-muncher/#configuration).
+For testing metadata tools under development setting the property to `o2rproject/o2r-meta:dev` could be useful.
+
+For _container manifest creation_, see the [`muncher` configuration property `MUNCHER_CONTAINERIT_IMAGE`](https://github.com/o2r-project/o2r-muncher/#configuration).
+
 ## User levels
 
 The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
