@@ -1,6 +1,6 @@
-# The o2r-platform
+# The o2r platform
 
-_Leveraging reproducible research_
+_Leveraging reproducible research_ by providing a powerful user interface for the [o2r Web API](http://o2r.info/o2r-web-api/).
 
 ## Libraries
 
@@ -36,7 +36,7 @@ window.__env.api = /*String containing base api*/;
 window.__env.sizeRestriction = /*integer*/;
 window.__env.disableTracking = /*true/false, default is true*/;
 window.__env.enableDebug = /*true/false, default is false*/;
-window.__env.piwik = /*String containing piwik server adress*/;
+window.__env.piwik = /*String containing Piwik server address*/;
 window.__env.userLevels = {};
 window.__env.userLevels.admin = /*Integer containing the required user level for admin status*/;
 window.__env.userLevels.regular = /*Integer containing the required user level for regular status*/;
