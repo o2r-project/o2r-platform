@@ -64,6 +64,7 @@
 					scope.metadata.selected = 'keepBase';
 					scope.metadata.data = [
 							{label: 'keep metadata of base ERC', value: 'keepBase'},
+							{label: 'extract metadata of new ERC', value: 'extract', isDisabled: true},
 							{label: 'extract and merge metadata for new ERC', value: 'extractAndMerge', isDisabled: true}
 					];
 
