@@ -39,12 +39,14 @@
         Replace this code with the right path to code files as soon as metadata contains this information
         */
         vm.inspect.code = [];
+        /*
         vm.inspect.code.push({
             path: vm.publication.metadata.o2r.file.filepath,
             type: vm.publication.metadata.o2r.file.mimetype,
             name: vm.publication.metadata.o2r.file.filename
         });
-
+        */
+        
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
         vm.publish = true;
