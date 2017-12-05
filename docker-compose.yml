@@ -69,7 +69,7 @@ services:
     mem_limit: 1g
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.0
+    image: o2rproject/o2r-muncher:0.13.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -79,11 +79,12 @@ services:
     environment:
       - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
+      - MUNCHER_VOLUME=o2rplatform_o2rstorage
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       #- "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev" 
 
   loader:
-    image: o2rproject/o2r-loader:0.8.0
+    image: o2rproject/o2r-loader:0.8.1
     restart: unless-stopped
     depends_on:
       - configmongodb
@@ -94,8 +95,9 @@ services:
       - "LOADER_MONGODB=mongodb://mongodb"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+      - LOADER_VOLUME=o2rplatform_o2rstorage
       #- "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev" 
-
+      
   informer:
     image: o2rproject/o2r-informer:0.3.0
     restart: unless-stopped
@@ -125,7 +127,7 @@ services:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: finder #o2rproject/o2r-finder:0.5.0
+    image: o2rproject/o2r-finder:0.5.1
     restart: unless-stopped
     depends_on:
       - mongodb
