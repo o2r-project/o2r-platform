@@ -9,7 +9,8 @@
         var logger = $log.getInstance('o2rUiBindingCreatorHelper');
         var service = {
             // isDuplicate: isDuplicate,
-            removeOverlap: removeOverlap
+            removeOverlap: removeOverlap,
+            mergeSelectedCode: mergeSelectedCode
         };
         return service;
 
@@ -37,7 +38,6 @@
          */
         function removeOverlap(selection, selectionLines){
             var overlaps = [];
-            logger.info(overlaps.length);
             if(selectionLines.length == 0) overlaps.push(selection);
             else {
                 for(var i in selectionLines){
@@ -68,8 +68,28 @@
                 }
                 overlaps.push(selection);
             } 
-            logger.info(overlaps);
             return overlaps;
+        }
+
+        function mergeSelectedCode(selectionLines, text){
+            var result = '';
+            var lines = [];
+            // push each single line of selection into lines[]
+            for(var i in selectionLines){
+                if(selectionLines[i].start == selectionLines[i].end) lines.push(selectionLines[i].start-1);
+                else{
+                    for(var j=selectionLines[i].start; j<=selectionLines[i].end; j++){
+                        lines.push(j-1);
+                    }
+                }
+            }
+            // split text into its lines
+            var textLines = text.split('\n');
+            //iterate over all selected lines and add corresponding textline to result
+            for(var i in lines){
+                result += textLines[lines[i]] + '\n';
+            }
+            return result;
         }
     }
 })();

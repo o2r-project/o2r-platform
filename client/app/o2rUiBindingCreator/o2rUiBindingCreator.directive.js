@@ -50,6 +50,7 @@
             scope.step5Done = step5Done;
             scope.selectionEvent = selectionEvent;
             scope.step4Done = step4Done;
+            scope.showOriginalCode = true;
             
             scope.steps = {};
             scope.steps.step1 = {};
@@ -65,13 +66,11 @@
             scope.steps.step4.show = false;
             scope.steps.step5.show = false;
             scope.steps.step6.show = false;
-            
-            scope.steps.step1.disable = false;
-            scope.steps.step2.disable = false;
-            scope.steps.step3.disable = false;
-            scope.steps.step4.disable = false;
-            scope.steps.step5.disable = false;
 
+            scope.steps.step3.selectedText = {};
+            // scope.steps.step3.selectedText.source = '';
+            scope.steps.step3.showSelectedText = false;
+            
             scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
             scope.steps.step1.selected = null;
             
@@ -86,8 +85,6 @@
                     switch (newVal) {
                         case 0:
                             scope.steps.step2.show = true;
-                            scope.steps.step1.disable = true;
-                            logger.info('disabled step1');
                             break;
                         default:
                         break;
@@ -99,7 +96,6 @@
                 if(typeof newVal === 'number'){
                     switch (newVal) {
                         case 0:
-                        scope.steps.step2.disable = true;
                         scope.steps.step3.show = true;
                         scope.steps.step5.type = newVal;
                     }
@@ -166,17 +162,17 @@
 
             function step3Done(){
                 logger.info(selectedLinesIndex);
+                scope.steps.step3.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
+                scope.showOriginalCode = false;
+                scope.steps.step3.showSelectedText = true;
                 scope.steps.step4.show = true;
-                scope.steps.step3.disable = true;
             }
 
             function step4Done(){
                 updateValue();
-                scope.steps.step4.disable = true;
             }
 
             function step5Done(){
-                scope.steps.step5.disable = true;
                 scope.steps.step6.show = true;
             }
 
@@ -199,8 +195,8 @@
                         var lines = getSelectionLines(selection);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
                         scope.codefile.lineHighlight = setUpLineHighlight();
-                        logger.info(scope.codefile.lineHighlight);
-                        logger.info(selectedLinesIndex);
+                        // logger.info(scope.codefile.lineHighlight);
+                        // logger.info(selectedLinesIndex);
                     }
                 }
             }

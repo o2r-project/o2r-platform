@@ -548,6 +548,19 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+
+.creationProcess-binding-step{
+	padding: 8px;
+	margin: 18px 0;
+	vertical-align: middle;
+}
+
+.creationProcess-binding-step-inst{
+	margin: 18px 0;
+	vertical-align: middle;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
 /*
 .creationProcess-confirm-cancel{
 	z-index: 100;
