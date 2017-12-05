@@ -23,8 +23,8 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "env"];
-    function o2rUiBindingCreator($log, $window, $document, $http, env){
+    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "env", "o2rUiBindingCreatorHelper"];
+    function o2rUiBindingCreator($log, $window, $document, $http, env, o2rUiBindingCreatorHelper){
         return{
             restrict: 'E',
             scope: {
@@ -49,7 +49,7 @@
             scope.step3Done = step3Done;
             scope.step5Done = step5Done;
             scope.selectionEvent = selectionEvent;
-            scope.updateValue = updateValue;
+            scope.step4Done = step4Done;
             
             scope.steps = {};
             scope.steps.step1 = {};
@@ -57,13 +57,21 @@
             scope.steps.step3 = {};
             scope.steps.step4 = {};
             scope.steps.step5 = {};
+            scope.steps.step6 = {};
             
             scope.steps.step1.show = true;
             scope.steps.step2.show = false;
             scope.steps.step3.show = false;
             scope.steps.step4.show = false;
             scope.steps.step5.show = false;
+            scope.steps.step6.show = false;
             
+            scope.steps.step1.disable = false;
+            scope.steps.step2.disable = false;
+            scope.steps.step3.disable = false;
+            scope.steps.step4.disable = false;
+            scope.steps.step5.disable = false;
+
             scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
             scope.steps.step1.selected = null;
             
@@ -77,8 +85,10 @@
                 if(typeof newVal === 'number'){
                     switch (newVal) {
                         case 0:
-                        scope.steps.step2.show = true;
-                        break;
+                            scope.steps.step2.show = true;
+                            scope.steps.step1.disable = true;
+                            logger.info('disabled step1');
+                            break;
                         default:
                         break;
                     }
@@ -89,6 +99,7 @@
                 if(typeof newVal === 'number'){
                     switch (newVal) {
                         case 0:
+                        scope.steps.step2.disable = true;
                         scope.steps.step3.show = true;
                         scope.steps.step5.type = newVal;
                     }
@@ -122,28 +133,24 @@
             }
 
             function getSelectionLines(selection){
-                        var selectionLines = selection.split("\n");
-                        var inverseSelection = codeText.split(selection);
-                        var pre = inverseSelection[0].split("\n");
-                        var selectionEndLine = pre.length + selectionLines.length -1;
-                        
-                        if(selectionLines[selectionLines.length -1] == ""){
-                            selectionEndLine -= 1;
-                            logger.info('empty string at end');
-                        }
-                        var result = {
-                            start: pre.length,
-                            end: selectionEndLine
-                        };
-                        return result;
+                var selectionLines = selection.split("\n");
+                var inverseSelection = codeText.split(selection);
+                var pre = inverseSelection[0].split("\n");
+                var selectionEndLine = pre.length + selectionLines.length -1;
+                
+                if(selectionLines[selectionLines.length -1] == ""){
+                    selectionEndLine -= 1;
+                    logger.info('empty string at end');
+                }
+                var result = {
+                    start: pre.length,
+                    end: selectionEndLine
+                };
+                return result;
             }
 
 
-            function step3Done(){
-                logger.info(selectedLinesIndex);
-                scope.steps.step4.show = true;
-            }
-
+            
             function updateValue(){
                 var selection = $window.getSelection().toString();
                 logger.info(selection);
@@ -157,8 +164,20 @@
                 }
             }
 
-            function step5Done(){
+            function step3Done(){
+                logger.info(selectedLinesIndex);
+                scope.steps.step4.show = true;
+                scope.steps.step3.disable = true;
+            }
 
+            function step4Done(){
+                updateValue();
+                scope.steps.step4.disable = true;
+            }
+
+            function step5Done(){
+                scope.steps.step5.disable = true;
+                scope.steps.step6.show = true;
             }
 
             function removeCarriage(text){
@@ -178,19 +197,26 @@
                     // ignore click events
                     if(selection.length != 0){
                         var lines = getSelectionLines(selection);
-                        selectedLinesIndex.push(lines);
+                        selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
+                        scope.codefile.lineHighlight = setUpLineHighlight();
+                        logger.info(scope.codefile.lineHighlight);
                         logger.info(selectedLinesIndex);
-                        // check if it is the first marked line
-                        if(scope.codefile.lineHighlight.length === 0){
-                            // check if only one line was marked
-                            if(lines.end === lines.start) scope.codefile.lineHighlight = lines.start + "";
-                            else scope.codefile.lineHighlight = lines.start + "-" + lines.end;
-                        } else {
-                            if(lines.end === lines.start) scope.codefile.lineHighlight += "," + lines.start + "";
-                            else scope.codefile.lineHighlight += ',' + lines.start + "-" + lines.end;
-                        }
                     }
                 }
+            }
+            
+            function setUpLineHighlight(){
+                var result = "";
+                for(var i in selectedLinesIndex){
+                    if(i == 0){
+                        if(selectedLinesIndex[i].end === selectedLinesIndex[i].start) result += selectedLinesIndex[i].start;
+                        else result += selectedLinesIndex[i].start + "-" + selectedLinesIndex[i].end;
+                    } else {
+                        if(selectedLinesIndex[i].end === selectedLinesIndex[i].start) result += "," + selectedLinesIndex[i].start;
+                        else result += "," + selectedLinesIndex[i].start + "-" + selectedLinesIndex[i].end;
+                    }
+                }
+                return result;
             }
         }  
     }

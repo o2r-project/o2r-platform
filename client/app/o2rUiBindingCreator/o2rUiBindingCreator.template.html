@@ -12,9 +12,9 @@
 </div>
 <!-- <o2r-display-files o2r-file="{{testfile}}" flex="80"></o2r-display-files> -->
 <div layout="row">
-    <o2r-display-files class="highlight-selected" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="80"></o2r-display-files>
+    <o2r-display-files class="highlight-selected" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <!-- STEPS -->
-    <md-card layout-fill flex="20">
+    <md-card layout-fill flex="30">
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">
@@ -32,7 +32,7 @@
                     <md-input-container>
                         <label>Select purpose</label>
                         <md-select ng-model="steps.step1.selected">
-                            <md-option ng-repeat="opt in steps.step1.options" ng-value="opt.value">
+                            <md-option ng-repeat="opt in steps.step1.options" ng-value="opt.value" ng-disabled="steps.step1.disable">
                                 {{opt.text}}
                             </md-option>
                         </md-select>
@@ -45,7 +45,7 @@
                     <md-input-container>
                         <label>Select Widget</label>
                         <md-select ng-model="steps.step2.selected">
-                            <md-option ng-repeat="opt in steps.step2.options" ng-value="opt.value">
+                            <md-option ng-repeat="opt in steps.step2.options" ng-value="opt.value"  ng-disabled="steps.step2.disable">
                                 {{opt.text}}
                             </md-option>
                         </md-select>
@@ -58,7 +58,7 @@
                     <span>Mark code snippets for Figure</span>
                     <div layout="row">
                         <span flex></span>
-                        <md-button class="md-raised" ng-click="step3Done()" aria-label="done">Done</md-button>
+                        <md-button class="md-raised" ng-click="step3Done()" aria-label="done" ng-disabled="steps.step3.disable">Done</md-button>
                     </div>
                 </div>
                 <md-divider ng-if="steps.step4.show"></md-divider>
@@ -68,7 +68,7 @@
                     <span>Mark value to manipulate</span>
                     <div layout="row">
                         <span flex></span>
-                        <md-button class="md-raised" ng-click="updateValue()" aria-label="update">Done</md-button>
+                        <md-button class="md-raised" ng-click="step4Done()" aria-label="update" ng-disabled="steps.step4.disable">Done</md-button>
                     </div>
                     <span ng-show="steps.step4.result.show">
                         Selected Value: <strong>{{steps.step4.result.value}}</strong>
@@ -80,21 +80,27 @@
                     <h3>Step 5</h3>
                     <md-input-container>
                         <label>Enter minimal value for slider</label>
-                        <input name="min_value" ng-model="steps.step5.min_value">
+                        <input type="number" name="min_value" ng-model="steps.step5.min_value" ng-readonly="steps.step5.disable">
                     </md-input-container>
                     <md-input-container>
                         <label>Enter maximum value for slider</label>
-                        <input name="max_value" ng-model="steps.step5.max_value">
+                        <input type="number" name="max_value" ng-model="steps.step5.max_value" ng-readonly="steps.step5.disable">
                     </md-input-container>
                     <md-input-container>
                         <label>Enter step size</label>
-                        <input name="step_size" ng-model="steps.step5.step_size">
+                        <input type="number" name="step_size" ng-model="steps.step5.step_size" ng-readonly="steps.step5.disable">
                     </md-input-container>
                     <div layout="row">
                         <span flex></span>
-                        <md-button class="md-raised" ng-click="step5Done()" aria-label="done">Done</md-button>
+                        <md-button class="md-raised" ng-click="step5Done()" aria-label="done" ng-disabled="steps.step5.disable">Done</md-button>
                     </div>
                 </div>
+                <md-divider ng-if="steps.step6.show"></md-divider>
+                <!-- STEP 6 -->
+                <div ng-show="steps.step6.show" layout-padding>
+                    <md-button class="md-raised md-primary white-font" ng-click="" aria-label="check">Check</md-button>
+                </div>
+                
             </div>
         </md-card-content>
     </md-card>
