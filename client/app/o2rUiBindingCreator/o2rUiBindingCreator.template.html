@@ -61,7 +61,7 @@
                     </div>
                     <div layout="row">
                         <span flex></span>
-                        <md-button class="md-raised" ng-click="step3Done()" aria-label="done">Done</md-button>
+                        <md-button class="md-raised" ng-click="step3Done()" aria-label="done" ng-disabled="steps.step3.disable">Done</md-button>
                     </div>
                 </div>
                 <!-- <md-divider ng-if="steps.step4.show"></md-divider> -->
@@ -82,7 +82,7 @@
                         </span>
                         <div layout="row">
                             <span flex></span>
-                            <md-button class="md-raised" ng-click="step4Done()" aria-label="update">Done</md-button>
+                            <md-button class="md-raised" ng-click="step4Done()" aria-label="update" ng-disabled="steps.step4.disable">Done</md-button>
                         </div>
                     </div>
                 </div>
@@ -92,24 +92,33 @@
                     <div>
                         <strong class="creationProcess-binding-step">Step 5</strong>
                     </div>
-                    <div flex>
+                    <form name="form" flex>
                         <md-input-container flex class="md-block">
                             <label>Enter minimum value for variable</label>
-                            <input type="number" name="min_value" ng-model="steps.step5.min_value">
+                            <input type="number" name="min_value" ng-model="steps.step5.min_value" required>
+                            <div ng-messages="form.min_value.$error">
+                                <div ng-message="required">Required field</div>
+                            </div>
                         </md-input-container>
                         <md-input-container flex class="md-block">
                             <label>Enter maximum value for variable}</label>
-                            <input type="number" name="max_value" ng-model="steps.step5.max_value">
+                            <input type="number" name="max_value" ng-model="steps.step5.max_value" required>
+                            <div ng-messages="form.max_value.$error">
+                                <div ng-message="required">Required field</div>
+                            </div>
                         </md-input-container>
                         <md-input-container flex class="md-block">
                             <label>Enter step size for variable</label>
-                            <input type="number" name="step_size" ng-model="steps.step5.step_size">
+                            <input type="number" name="step_size" ng-model="steps.step5.step_size" required>
+                            <div ng-messages="form.step_size.$error">
+                                <div ng-message="required">Required field</div>
+                            </div>
                         </md-input-container>
                         <div layout="row">
                             <span flex></span>
-                            <md-button class="md-raised" ng-click="step5Done()" aria-label="done">Done</md-button>
+                            <md-button class="md-raised" ng-click="step5Done()" aria-label="done" ng-disabled="!form.$valid">Done</md-button>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <md-divider ng-if="steps.step6.show"></md-divider>
                 <!-- STEP 6 -->

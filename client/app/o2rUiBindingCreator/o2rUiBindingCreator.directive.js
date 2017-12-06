@@ -69,9 +69,6 @@
             scope.steps.step5.show = false;
             scope.steps.step6.show = false;
 
-            // scope.steps.step3.selectedText = {};
-            // scope.steps.step3.selectedText.lineHighlight = "2-7";
-            // scope.steps.step3.selectedText.path = "";
             scope.steps.step3.showSelectedText = false;
             
             scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
@@ -80,8 +77,15 @@
             scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Switch", value:1}];
             scope.steps.step2.selected = null;
             
-            // scope.steps.step4.result = {};
             scope.steps.step4.showSelection = false;
+
+            scope.steps.step3.disable = true;
+            scope.steps.step4.disable = true;
+            scope.steps.step5.disable = true;
+
+            // scope.steps.step5.min_value = 0;
+            // scope.steps.step5.max_value = 0;
+            scope.steps.step5.step_size = 1;
             
             scope.$watch('steps.step1.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
@@ -153,6 +157,8 @@
                 // updateValue();
                 // scope.steps.step4.result.show = true;
                 scope.steps.step5.show = true;
+                scope.steps.step5.min_value = scope.selectedVariable.val;
+                scope.steps.step5.max_value = scope.selectedVariable.val;
             }
 
             function step5Done(){
@@ -170,6 +176,7 @@
                         var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
                         scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
+                        scope.steps.step3.disable = false;
                     }
                 // check selection for step 4
                 } else if(scope.steps.step4.show && !scope.steps.step5.show){
@@ -181,6 +188,9 @@
                         if(scope.selectedVariable){
                             scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
                             scope.selectedText.lineHighlight = scope.selectedVariable.line.start;
+                            scope.steps.step4.disable = false;
+                        } else {
+                            scope.steps.step4.disable = true;
                         }
                         // show information in the frontend regardless of valid/invalid selection
                         scope.steps.step4.showSelection = true;
