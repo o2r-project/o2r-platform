@@ -53,7 +53,7 @@
             scope.showOriginalCode = true;
             scope.selectedText = {};
             scope.selectedVariable = {};
-            scope.openDialog = openDialog;
+            // scope.openDialog = openDialog;
             scope.submit = submit;
             
             scope.steps = {};
@@ -85,8 +85,6 @@
             scope.steps.step4.disable = true;
             scope.steps.step5.disable = true;
 
-            scope.steps.step5.step_size = 1;
-            
             scope.$watch('steps.step1.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
                     switch (newVal) {
@@ -144,8 +142,6 @@
             
             function step4Done(){
                 scope.steps.step5.show = true;
-                scope.steps.step5.min_value = scope.selectedVariable.val;
-                scope.steps.step5.max_value = scope.selectedVariable.val;
             }
 
             function step5Done(){
@@ -185,21 +181,21 @@
                 }
             }
 
-            function openDialog(ev){
-                $mdDialog.show({
-                    controller: function($mdDialog, icons){
-                        this.parent = scope;
-                        this.icons = icons;
-                        this.cancel = () => $mdDialog.cancel();
-                    },
-                    controllerAs: 'vm',
-                    templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingSummary.template.html',
-                    parent: $document[0].body,
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    fullscreen: false
-                });
-            }
+            // function openDialog(ev){
+            //     $mdDialog.show({
+            //         controller: function($mdDialog, icons){
+            //             this.parent = scope;
+            //             this.icons = icons;
+            //             this.cancel = () => $mdDialog.cancel();
+            //         },
+            //         controllerAs: 'vm',
+            //         templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingSummary.template.html',
+            //         parent: $document[0].body,
+            //         targetEvent: ev,
+            //         clickOutsideToClose: true,
+            //         fullscreen: false
+            //     });
+            // }
 
             function submit(){
                 var result = {};
