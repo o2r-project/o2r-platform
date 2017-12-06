@@ -23,8 +23,8 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "env", "o2rUiBindingCreatorHelper"];
-    function o2rUiBindingCreator($log, $window, $document, $http, env, o2rUiBindingCreatorHelper){
+    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper", "icons"];
+    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons){
         return{
             restrict: 'E',
             scope: {
@@ -53,6 +53,9 @@
             scope.showOriginalCode = true;
             scope.selectedText = {};
             scope.selectedVariable = {};
+            scope.openDialog = openDialog;
+            scope.icons = icons;
+            
             
             scope.steps = {};
             scope.steps.step1 = {};
@@ -83,8 +86,6 @@
             scope.steps.step4.disable = true;
             scope.steps.step5.disable = true;
 
-            // scope.steps.step5.min_value = 0;
-            // scope.steps.step5.max_value = 0;
             scope.steps.step5.step_size = 1;
             
             scope.$watch('steps.step1.selected', function(newVal, oldVal){
@@ -134,17 +135,6 @@
                 return files;
             }
 
-            // function updateValue(){
-            //     var selection = $window.getSelection().toString();
-            //     logger.info(selection);
-            //     var value = parseFloat(selection);
-            //     if(isNaN(value)){
-            //         throw "Value not a number";
-            //     } else {
-            //         scope.steps.step4.result.value = value;
-            //     }
-            // }
-            
             function step3Done(){
                 logger.info(selectedLinesIndex);
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
@@ -154,8 +144,6 @@
             }
             
             function step4Done(){
-                // updateValue();
-                // scope.steps.step4.result.show = true;
                 scope.steps.step5.show = true;
                 scope.steps.step5.min_value = scope.selectedVariable.val;
                 scope.steps.step5.max_value = scope.selectedVariable.val;
@@ -196,6 +184,22 @@
                         scope.steps.step4.showSelection = true;
                     }
                 }
+            }
+
+            function openDialog(ev){
+                $mdDialog.show({
+                    controller: function($mdDialog, icons){
+                        this.parent = scope;
+                        this.icons = icons;
+                        this.cancel = () => $mdDialog.cancel();
+                    },
+                    controllerAs: 'vm',
+                    templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingSummary.template.html',
+                    parent: $document[0].body,
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: false
+                });
             }
         }  
     }

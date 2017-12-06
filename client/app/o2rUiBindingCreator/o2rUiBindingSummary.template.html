@@ -1,0 +1,25 @@
+<md-dialog aria-label="Upload Dialog" class="creationProcess-summary">
+        
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h3 class="white-font">Summary</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.close}}" aria-label="Close" class="o2r-icon"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            
+            <md-dialog-content layout-padding layout="row">
+                <table class="creationProcess-summary-table">
+                    <tr><td class="creationProcess-summary-table">Purpose</td><td class="creationProcess-summary-table"><strong>{{vm.parent.steps.step1.options[vm.parent.steps.step1.selected].text}}</strong></td></tr>
+                    <tr><td class="creationProcess-summary-table">Widget</td><td class="creationProcess-summary-table"><strong>{{vm.parent.steps.step2.options[vm.parent.steps.step2.selected].text}}</strong></td></tr>
+                    <tr><td class="creationProcess-summary-table">Selected Variable</td><td class="creationProcess-summary-table"><strong>{{vm.parent.selectedVariable.varName}}</strong></td></tr>
+                    <tr><td class="creationProcess-summary-table">Original Value</td><td class="creationProcess-summary-table"><strong>{{vm.parent.selectedVariable.val}}</strong></td></tr>
+                    <tr><td class="creationProcess-summary-table">Minimum Value</td><td class="creationProcess-summary-table"><strong>{{vm.parent.steps.step5.min_value}}</strong></td></tr>
+                    <tr><td class="creationProcess-summary-table">Maximum Value</td><td class="creationProcess-summary-table"><strong>{{vm.parent.steps.step5.max_value}}</strong></td></tr>
+                    <tr><td class="creationProcess-summary-table">Step Size</td><td class="creationProcess-summary-table"><strong>{{vm.parent.steps.step5.step_size}}</strong></td></tr>
+                </table>
+                <o2r-display-files o2r-file="{{vm.parent.selectedText}}"></o2r-display-files>
+            </md-dialog-content>
+    </md-dialog>

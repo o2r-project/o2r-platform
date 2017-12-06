@@ -565,6 +565,16 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 .creationProcess-step-separate{
 	margin: 18px 0;
 }
+
+.creationProcess-summary{
+	overflow-y: auto;
+}
+
+.creationProcess-summary-table{
+	border: none;
+	padding-top: 8px;
+}
+
 /*
 .creationProcess-confirm-cancel{
 	z-index: 100;
