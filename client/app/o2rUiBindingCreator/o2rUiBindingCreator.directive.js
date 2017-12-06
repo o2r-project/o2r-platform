@@ -23,8 +23,8 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper", "icons"];
-    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons){
+    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper"];
+    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper){
         return{
             restrict: 'E',
             scope: {
@@ -54,8 +54,7 @@
             scope.selectedText = {};
             scope.selectedVariable = {};
             scope.openDialog = openDialog;
-            scope.icons = icons;
-            
+            scope.submit = submit;
             
             scope.steps = {};
             scope.steps.step1 = {};
@@ -200,6 +199,14 @@
                     clickOutsideToClose: true,
                     fullscreen: false
                 });
+            }
+
+            function submit(){
+                var result = {};
+                // TODO
+                // Add creation of final object containing all required information of a figure here
+                // Wait until the structure of this object was specified.
+                // Call http request to submit metadata of figure
             }
         }  
     }
