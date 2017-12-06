@@ -561,6 +561,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	padding-top: 8px;
 	padding-bottom: 8px;
 }
+
+.creationProcess-step-separate{
+	margin: 18px 0;
+}
 /*
 .creationProcess-confirm-cancel{
 	z-index: 100;

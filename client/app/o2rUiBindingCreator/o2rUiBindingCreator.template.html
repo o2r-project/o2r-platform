@@ -12,8 +12,8 @@
 </div>
 <!-- <o2r-display-files o2r-file="{{testfile}}" flex="80"></o2r-display-files> -->
 <div layout="row">
-    <o2r-display-files ng-if="showOriginalCode" class="highlight-selected" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
-    <o2r-display-files ng-if="steps.step3.showSelectedText" class="highlight-selected" o2r-file="{{steps.step3.selectedText}}" flex="70"></o2r-display-files>
+    <o2r-display-files ng-if="showOriginalCode" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
+    <o2r-display-files ng-if="steps.step3.showSelectedText" o2r-file="{{selectedText}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <!-- STEPS -->
     <md-card layout-fill flex="30">
         <md-card-title>
@@ -66,43 +66,49 @@
                 </div>
                 <!-- <md-divider ng-if="steps.step4.show"></md-divider> -->
                 <!-- STEP 4 -->
-                <div ng-show="steps.step4.show">
+                <div ng-show="steps.step4.show" class="creationProcess-step-separate" layout="row">
                     <div layout="row">
                         <strong class="creationProcess-binding-step">Step 4</strong>
-                        <span class="creationProcess-binding-step-inst">Mark value to manipulate</span>
                     </div>
-                    <div layout="row">
-                        <span flex></span>
-                        <md-button class="md-raised" ng-click="step4Done()" aria-label="update">Done</md-button>
-                    </div>
-                    <div layout="row">
-                        <span class="creationProcess-binding-step"></span>
-                        <span ng-show="steps.step4.result.show">
-                            Selected Value: <strong>{{steps.step4.result.value}}</strong>
+                    <div flex layout="column">
+                        <span class="creationProcess-binding-step-inst">Mark variable and value to manipulate</span>
+                        <span ng-show="steps.step4.showSelection">
+                            <span ng-hide="!selectedVariable">
+                                Selected <strong>{{selectedVariable.varName}}</strong> with value <strong>{{selectedVariable.val}}</strong>
+                            </span>
+                            <span ng-show="!selectedVariable">
+                                <strong>Invalid Selection</strong>
+                            </span>
                         </span>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-raised" ng-click="step4Done()" aria-label="update">Done</md-button>
+                        </div>
                     </div>
                 </div>
                 <!-- <md-divider ng-if="steps.step5.show"></md-divider> -->
                 <!-- STEP 5 -->
-                <div ng-show="steps.step5.show">
-                    <div layout="row">
+                <div ng-show="steps.step5.show" layout="row" class="creationProcess-step-separate">
+                    <div>
                         <strong class="creationProcess-binding-step">Step 5</strong>
+                    </div>
+                    <div flex>
                         <md-input-container flex class="md-block">
-                            <label>Enter minimal value for slider</label>
+                            <label>Enter minimum value for variable</label>
                             <input type="number" name="min_value" ng-model="steps.step5.min_value">
                         </md-input-container>
-                    </div>
-                    <md-input-container class="md-block">
-                        <label>Enter maximum value for slider</label>
-                        <input type="number" name="max_value" ng-model="steps.step5.max_value">
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label>Enter step size</label>
-                        <input type="number" name="step_size" ng-model="steps.step5.step_size">
-                    </md-input-container>
-                    <div layout="row">
-                        <span flex></span>
-                        <md-button class="md-raised" ng-click="step5Done()" aria-label="done">Done</md-button>
+                        <md-input-container flex class="md-block">
+                            <label>Enter maximum value for variable}</label>
+                            <input type="number" name="max_value" ng-model="steps.step5.max_value">
+                        </md-input-container>
+                        <md-input-container flex class="md-block">
+                            <label>Enter step size for variable</label>
+                            <input type="number" name="step_size" ng-model="steps.step5.step_size">
+                        </md-input-container>
+                        <div layout="row">
+                            <span flex></span>
+                            <md-button class="md-raised" ng-click="step5Done()" aria-label="done">Done</md-button>
+                        </div>
                     </div>
                 </div>
                 <md-divider ng-if="steps.step6.show"></md-divider>

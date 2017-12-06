@@ -1,6 +1,6 @@
 /**
  * Directive for the creation of ui bindings.
- * This directive contains the whole workflow for the creation of one new uibinding.
+ * This directive contains the whole workflow for the creation of one new ui binding.
  * The directive can be called via
  * <o2r-ui-binding-creator></o2r-ui-binding-creator>
  * and expects a scope "o2r-codefiles".
@@ -42,7 +42,7 @@
             var codeText;
             var selectedLinesIndex = [];
             // turn string into array and then add actual path
-            // NOTE: Remove the prepareCodefiles wrappe as soon as the paths are consistent
+            // NOTE: Remove the prepareCodefiles wrapper as soon as the paths are consistent
             scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
             scope.codefile = {path: scope.codefiles[0], lineHighlight: ""}; //only use first codefile so far
             scope.figures = ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5"];
@@ -51,6 +51,8 @@
             scope.selectionEvent = selectionEvent;
             scope.step4Done = step4Done;
             scope.showOriginalCode = true;
+            scope.selectedText = {};
+            scope.selectedVariable = {};
             
             scope.steps = {};
             scope.steps.step1 = {};
@@ -67,8 +69,9 @@
             scope.steps.step5.show = false;
             scope.steps.step6.show = false;
 
-            scope.steps.step3.selectedText = {};
-            // scope.steps.step3.selectedText.source = '';
+            // scope.steps.step3.selectedText = {};
+            // scope.steps.step3.selectedText.lineHighlight = "2-7";
+            // scope.steps.step3.selectedText.path = "";
             scope.steps.step3.showSelectedText = false;
             
             scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
@@ -77,8 +80,8 @@
             scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Switch", value:1}];
             scope.steps.step2.selected = null;
             
-            scope.steps.step4.result = {};
-            scope.steps.step4.result.show = false;
+            // scope.steps.step4.result = {};
+            scope.steps.step4.showSelection = false;
             
             scope.$watch('steps.step1.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
@@ -105,8 +108,7 @@
             scope.$watch('codefile', function(newVal, oldVal){
                 $http.get(newVal.path)
                 .then(function(response){
-                    codeText = removeCarriage(response.data);
-                    scope.testfile = {source: codeText};
+                    codeText = o2rUiBindingCreatorHelper.removeCarriage(response.data);
                 })
                 .catch(function(err){
                     logger.error(err);
@@ -128,91 +130,62 @@
                 return files;
             }
 
-            function getSelectionLines(selection){
-                var selectionLines = selection.split("\n");
-                var inverseSelection = codeText.split(selection);
-                var pre = inverseSelection[0].split("\n");
-                var selectionEndLine = pre.length + selectionLines.length -1;
-                
-                if(selectionLines[selectionLines.length -1] == ""){
-                    selectionEndLine -= 1;
-                    logger.info('empty string at end');
-                }
-                var result = {
-                    start: pre.length,
-                    end: selectionEndLine
-                };
-                return result;
-            }
-
-
+            // function updateValue(){
+            //     var selection = $window.getSelection().toString();
+            //     logger.info(selection);
+            //     var value = parseFloat(selection);
+            //     if(isNaN(value)){
+            //         throw "Value not a number";
+            //     } else {
+            //         scope.steps.step4.result.value = value;
+            //     }
+            // }
             
-            function updateValue(){
-                var selection = $window.getSelection().toString();
-                logger.info(selection);
-                var value = parseFloat(selection);
-                if(isNaN(value)){
-                    throw "Value not a number";
-                } else {
-                    scope.steps.step4.result.value = value;
-                    scope.steps.step4.result.show = true;
-                    scope.steps.step5.show = true;
-                }
-            }
-
             function step3Done(){
                 logger.info(selectedLinesIndex);
-                scope.steps.step3.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
+                scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
                 scope.steps.step3.showSelectedText = true;
                 scope.steps.step4.show = true;
             }
-
+            
             function step4Done(){
-                updateValue();
+                // updateValue();
+                // scope.steps.step4.result.show = true;
+                scope.steps.step5.show = true;
             }
 
             function step5Done(){
                 scope.steps.step6.show = true;
             }
 
-            function removeCarriage(text){
-                var noR = text.split("\r");
-                var newtext = "";
-                for(var i in noR){
-                    newtext += noR[i];
-                }
-                logger.info('removed carriage');
-                return newtext;
-            }
-
             function selectionEvent(){
-                // only check selection if we are in step 3
+                // only check selection if we are in step 3 or 4
+                
+                // check selection for step 3
                 if(scope.steps.step3.show && !scope.steps.step4.show){
                     var selection = $window.getSelection().toString();
                     // ignore click events
                     if(selection.length != 0){
-                        var lines = getSelectionLines(selection);
+                        var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
-                        scope.codefile.lineHighlight = setUpLineHighlight();
-                        // logger.info(scope.codefile.lineHighlight);
-                        // logger.info(selectedLinesIndex);
+                        scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
+                    }
+                // check selection for step 4
+                } else if(scope.steps.step4.show && !scope.steps.step5.show){
+                    var selection = $window.getSelection().toString();
+                    // scope.steps.step4.result.selection = selection;
+                    if(selection.length != 0){
+                        scope.selectedVariable = o2rUiBindingCreatorHelper.validateVariable(selection);
+                        // if selection is valid assign values to scope variable
+                        if(scope.selectedVariable){
+                            scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
+                            scope.selectedText.lineHighlight = scope.selectedVariable.line.start;
+                        }
+                        // show information in the frontend regardless of valid/invalid selection
+                        scope.steps.step4.showSelection = true;
                     }
                 }
-            }
-            
-            function setUpLineHighlight(){
-                var result = "";
-                for(var i in selectedLinesIndex){
-                    if(i == 0){
-                        if(selectedLinesIndex[i].end === selectedLinesIndex[i].start) result += selectedLinesIndex[i].start;
-                        else result += selectedLinesIndex[i].start + "-" + selectedLinesIndex[i].end;
-                    } else {
-                        if(selectedLinesIndex[i].end === selectedLinesIndex[i].start) result += "," + selectedLinesIndex[i].start;
-                        else result += "," + selectedLinesIndex[i].start + "-" + selectedLinesIndex[i].end;
-                    }
-                }
-                return result;
             }
         }  
     }
