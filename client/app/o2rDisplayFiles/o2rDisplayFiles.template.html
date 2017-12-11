@@ -20,6 +20,13 @@
 <hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs>
 <iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
+<div ng-if="(file.type=='text/csv') && (file.size <= sizeRestriction)">
+    <table style="width:100%">
+        <tr ng-repeat="row in csvContent">
+          <th ng-repeat="value in row">{{value}}</th>
+        </tr>
+      </table>
+</div>
 <!--
 <div ng-include="file.path" ng-if="(!isInteractive(file.path)) && (file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></div>
 -->

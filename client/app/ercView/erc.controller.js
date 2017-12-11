@@ -126,16 +126,7 @@
         }
 
         function fixPath(path){
-            var str = '/data';
-            var splits = path.split('/');
-            var stichedSplits = '';
-            for(var i in splits){
-                if(i == 0) continue;
-                stichedSplits = '/' + splits[i];
-            }
-            var newPath = '/api/v1/compendium/' + splits[0] + str + stichedSplits;
-            logger.info('fixed path is: %s', newPath);
-            return newPath;
+            return '/api/v1/compendium/' + vm.ercId + "/data/" + path;
         }
 
         function buildToggler(navId){

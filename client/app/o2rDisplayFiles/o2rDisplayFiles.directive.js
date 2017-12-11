@@ -27,8 +27,8 @@
 		.module('starter.o2rDisplayFiles')
 		.directive('o2rDisplayFiles', o2rDisplayFiles);
 
-	o2rDisplayFiles.$inject= ['$log', 'env'];
-	function o2rDisplayFiles($log, env){
+	o2rDisplayFiles.$inject= ['$log', 'env', 'httpRequests'];
+	function o2rDisplayFiles($log, env, httpRequests){
 		return{
 			restrict: 'E',
 			templateUrl: 'app/o2rDisplayFiles/o2rDisplayFiles.template.html',
@@ -62,9 +62,23 @@
 					}
 
 					scope.useHljs = useHljs();
+
+					scope.parseCsv = parseCsv();
+					
+					function parseCsv(){
+						if (scope.file.type == 'text/csv'){
+							httpRequests.getCSV(scope.file.path)
+							.then(function(res){
+								scope.csvContent = res.data.split(/\r\n|\n/);
+								for (var i in scope.csvContent){
+									scope.csvContent[i] = scope.csvContent[i].split(',')
+								}
+							});
+						}
+					}					
 					
 					function useHljs(){						
-						if( (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html') || (scope.file.type == 'text/shiny')){
+						if( (scope.file.type == 'text/csv') ||  (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html') || (scope.file.type == 'text/shiny')){
 							return false;
 						}
 						return true;

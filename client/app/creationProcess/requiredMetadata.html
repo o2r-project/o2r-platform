@@ -119,14 +119,6 @@
             <div ng-messages="requiredForm.publicationDate.$error">
                 <div ng-message="required">Required field</div>
             </div>
-            <h4>Citation</h4>
-            <md-input-container class="md-block" flex md-is-error="vm.showError('softwarePaperCitation')">
-                <label>Citation</label>
-                <input ng-model="vm.required.softwarePaperCitation" ng-value="vm.required.softwarePaperCitation" ng-change="vm.simpleUpdate('softwarePaperCitation', vm.required.softwarePaperCitation)" name="softwarePaperCitation" required>
-                <div ng-messages="requiredForm.softwarePaperCitation.$error">
-                    <div ng-message="required">Required field</div>
-                </div>
-            </md-input-container>
         </md-card-content>
     </md-card>
     <!-- DISPLAY FILE CARD -->
