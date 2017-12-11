@@ -1,0 +1,66 @@
+<div id="magnifyFiles" flex="100">
+  <!-- toolbar -->
+  <md-toolbar>
+      <div class="md-toolbar-tools">
+          <h2 class="white-font">compare files</h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="cancel()">
+              <md-icon class="o2r-white-icon" md-svg-src="{{icons.close}}" arial-label="Close dialog"></md-icon>
+          </md-button>
+      </div>
+  </md-toolbar>
+
+  <div layout="row" class="substitute_magnifier_div">
+    <md-card flex="50" class="substitute_magnifier">
+        <md-card-header>
+          <div layout="column" flex="80">
+              <md-card-header-text>
+                  <span>Base File</span>
+                  <span flex></span>
+              </md-card-header-text>
+          </div>
+          <div layout="column" flex="20">
+              <md-button class="md-icon-button md-raised" ng-click="fileEdit(magnBase)">
+                  <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+              </md-button>
+          </div>
+        </md-card-header>
+        <md-card-content class="substitute_magnifier_Card">
+          <o2r-display-files o2r-file="{{magnBase}}"></o2r-display-files>
+        </md-card-content>
+    </md-card>
+    <md-card flex="50" class="substitute_magnifier">
+        <md-card-header>
+          <div layout="column" flex="80">
+              <md-card-header-text>
+                  <span>Overlay File</span>
+                  <span flex></span>
+              </md-card-header-text>
+          </div>
+          <div layout="column" flex="20">
+              <md-button class="md-icon-button md-raised" ng-click="fileEdit(magnOverlay)">
+                  <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+              </md-button>
+          </div>
+        </md-card-header>
+        <md-card-content class="substitute_magnifier_Card">
+          <o2r-display-files o2r-file="{{magnOverlay}}"></o2r-display-files>
+        </md-card-content>
+    </md-card>
+  </div>
+
+  <!-- footer -->
+  <md-toolbar class="footer">
+      <div class="md-toolbar-tools white-font">
+          <span flex></span>
+          <md-button class="md-icon-button md-raised" ng-click="cancel()">
+            <md-icon class="o2r-white-icon" md-svg-src="{{icons.backArrow}}" arial-label="Close dialog"></md-icon>
+          </md-button>
+          <md-button class="md-raised" ng-click="saveEdit()">
+            save edit
+          </md-button>
+          <span flex></span>
+      </div>
+  </md-toolbar>
+
+</div>

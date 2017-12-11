@@ -181,7 +181,8 @@ services:
     environment:
       - "SUBSTITUTER_MONGODB=mongodb://mongodb"
       - SUBSTITUTER_PORT=8090
-      - DEBUG=substituter,substituter:*
+      - DEBUG=*
+      #substituter,substituter:*
 
   platform:
     image: nginx:latest
