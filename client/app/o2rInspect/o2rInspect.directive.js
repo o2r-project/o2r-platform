@@ -65,16 +65,10 @@
                 //Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareDatasets(dsets){
                     // replace wrong path with right path
-                    var regex = '/tmp/o2r/compendium/' + inspect.publication.id;
                     var results = [];
                     for(var i in dsets){
                         var tmp = dsets[i].split('/');
-                        var str = '';
-                        for(var i in tmp){
-                            if(i == 0) continue;
-                            str = str + '/' + tmp[i]; 
-                        }
-                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data' + str));
+                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + tmp));
                     }
                     return results;
                 }
@@ -82,10 +76,9 @@
                 //TODO
                 // Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareCode(code){
-                    var regex = inspect.publication.id;
                     var results = [];
                     for(var i in code){
-                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[i].split('/')[1]));
+                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[i]));
                     }
                     return results;
                 }

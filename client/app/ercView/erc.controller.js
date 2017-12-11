@@ -39,12 +39,14 @@
         Replace this code with the right path to code files as soon as metadata contains this information
         */
         vm.inspect.code = [];
+        /*
         vm.inspect.code.push({
             path: vm.publication.metadata.o2r.file.filepath,
             type: vm.publication.metadata.o2r.file.mimetype,
             name: vm.publication.metadata.o2r.file.filename
         });
-
+        */
+        
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
         vm.publish = true;
@@ -140,16 +142,7 @@
         }
 
         function fixPath(path){
-            var str = '/data';
-            var splits = path.split('/');
-            var stichedSplits = '';
-            for(var i in splits){
-                if(i == 0) continue;
-                stichedSplits = '/' + splits[i];
-            }
-            var newPath = '/api/v1/compendium/' + splits[0] + str + stichedSplits;
-            logger.info('fixed path is: %s', newPath);
-            return newPath;
+            return '/api/v1/compendium/' + vm.ercId + "/data/" + path;
         }
 
         function buildToggler(navId){

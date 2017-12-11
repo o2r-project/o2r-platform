@@ -1,6 +1,6 @@
-# The o2r-platform
+# The o2r platform
 
-_Leveraging reproducible research_
+_Leveraging reproducible research_ by providing a powerful user interface for the [o2r Web API](http://o2r.info/o2r-web-api/).
 
 ## Libraries
 
@@ -36,7 +36,7 @@ window.__env.api = /*String containing base api*/;
 window.__env.sizeRestriction = /*integer*/;
 window.__env.disableTracking = /*true/false, default is true*/;
 window.__env.enableDebug = /*true/false, default is false*/;
-window.__env.piwik = /*String containing piwik server adress*/;
+window.__env.piwik = /*String containing Piwik server address*/;
 window.__env.userLevels = {};
 window.__env.userLevels.admin = /*Integer containing the required user level for admin status*/;
 window.__env.userLevels.regular = /*Integer containing the required user level for regular status*/;
@@ -110,6 +110,16 @@ docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 ```
 
+### Use non-default version of o2r-meta and containerit
+
+Two core steps for compendium creation are provided by the standalone tools [o2r-meta]() and [containerit]().
+These tools are used in a containerized version and the specific tool can be selected via an environment variable for both `muncher` and `loader` in the compose configuration (see comments in the file).
+
+For _metadata extraction and brokering_, see the respective [`loader` configuration property `LOADER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-loader/#configuration) and [`muncher` configuration property `MUNCHER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-muncher/#configuration).
+For testing metadata tools under development setting the property to `o2rproject/o2r-meta:dev` could be useful.
+
+For _container manifest creation_, see the [`muncher` configuration property `MUNCHER_CONTAINERIT_IMAGE`](https://github.com/o2r-project/o2r-muncher/#configuration).
+
 ## User levels
 
 The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
@@ -137,7 +147,7 @@ The compose configuration also makes a simple test page for WebSockets available
 
 ## Platform Version
 
-0.9.5
+0.9.6
 
 ## License
 
