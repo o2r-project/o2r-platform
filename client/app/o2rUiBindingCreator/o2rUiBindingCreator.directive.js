@@ -53,7 +53,7 @@
             scope.showOriginalCode = true;
             scope.selectedText = {};
             scope.selectedVariable = {};
-            // scope.openDialog = openDialog;
+            scope.openDialog = openDialog;
             scope.submit = submit;
             
             scope.steps = {};
@@ -170,9 +170,10 @@
                         // if selection is valid assign values to scope variable
                         if(scope.selectedVariable){
                             scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
-                            scope.selectedText.lineHighlight = scope.selectedVariable.line.start;
+                            scope.selectedText.lineHighlight = "" + scope.selectedVariable.line.start;
                             scope.steps.step4.disable = false;
                         } else {
+                            scope.selectedText.lineHighlight = "";
                             scope.steps.step4.disable = true;
                         }
                         // show information in the frontend regardless of valid/invalid selection
@@ -181,21 +182,25 @@
                 }
             }
 
-            // function openDialog(ev){
-            //     $mdDialog.show({
-            //         controller: function($mdDialog, icons){
-            //             this.parent = scope;
-            //             this.icons = icons;
-            //             this.cancel = () => $mdDialog.cancel();
-            //         },
-            //         controllerAs: 'vm',
-            //         templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingSummary.template.html',
-            //         parent: $document[0].body,
-            //         targetEvent: ev,
-            //         clickOutsideToClose: true,
-            //         fullscreen: false
-            //     });
-            // }
+            function openDialog(ev){
+                $mdDialog.show({
+                    controller: function($mdDialog, icons){
+                        this.parent = scope;
+                        this.icons = icons;
+                        this.cancel = () => $mdDialog.cancel();
+                        this.file = {
+                            path: 'https://markuskonkol.shinyapps.io/figure1_interactive/',
+                            type: 'text/shiny'
+                        };
+                    },
+                    controllerAs: 'vm',
+                    templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingSummary.template.html',
+                    parent: $document[0].body,
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: false
+                });
+            }
 
             function submit(){
                 var result = {};
