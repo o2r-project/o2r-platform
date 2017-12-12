@@ -76,17 +76,21 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.1
+    image: o2rproject/o2r-muncher:0.13.5
     restart: unless-stopped
     depends_on:
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
+      # FIXME: remove mount to volumes, only works under Linux, see https://github.com/o2r-project/o2r-muncher/issues/80
+      - /var/lib/docker/volumes/:/var/lib/docker/volumes
     environment:
       - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
       - MUNCHER_VOLUME=o2rplatform_o2rstorage
+      - MUNCHER_CONTAINER_USER=root
+      - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       #- "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev" 
 
@@ -179,7 +183,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.3.1
+    image: o2rproject/o2r-substituter:0.4.0
     restart: unless-stopped
     depends_on:
       - configmongodb
