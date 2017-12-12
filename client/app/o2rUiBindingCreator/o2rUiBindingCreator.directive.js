@@ -153,7 +153,8 @@
                 
                 // check selection for step 3
                 if(scope.steps.step3.show && !scope.steps.step4.show){
-                    var selection = $window.getSelection().toString();
+                    // var selection = $window.getSelection().toString();
+                    var selection = $window.getSelection().getRangeAt(0).toString();
                     // ignore click events
                     if(selection.length != 0){
                         var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
