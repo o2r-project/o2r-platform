@@ -107,7 +107,7 @@
         }
 
         function getUibindings(){
-            if(erc.metadata.o2r.interaction.ui_binding.length==undefined){
+            if(erc.metadata.o2r.interaction.ui_binding==undefined){
                 erc.metadata.o2r.interaction.ui_binding = [];
             }
             return angular.copy(erc.metadata.o2r.interaction.ui_binding);
@@ -133,7 +133,7 @@
         }
 
         function addBinding(binding){
-            erc.metadata.o2r.interaction.ui_binding.push(binding);
+            erc.metadata.o2r.interaction.push(binding);
         }        
 
         function updateBinding(index, shiny, data, code){
