@@ -26,7 +26,9 @@
          * @param {String} text, string from which selection was made 
          */
         function getSelectionLines(selection, text){
+            logger.info('selection', angular.toJson(selection));
             var selectionLines = selection.split("\n");
+            logger.info('selectionLines', angular.toJson(selectionLines));
             var inverseSelection = text.split(selection);
             var pre = inverseSelection[0].split("\n");
             var selectionEndLine = pre.length + selectionLines.length -1;
@@ -116,13 +118,16 @@
          * @param {String} text, text from which carriage needs to be removed 
          */
         function removeCarriage(text){
-            var noR = text.split("\r");
-            var newtext = "";
-            for(var i in noR){
-                newtext += noR[i];
-            }
-            logger.info('removed carriage');
-            return newtext;
+            var reg = /(\r\n|\n|\r)/g;
+            var newt = text.replace(reg, "\n");
+            return newt;
+            // var noR = text.split("\r");
+            // var newtext = "";
+            // for(var i in noR){
+            //     newtext += noR[i];
+            // }
+            // logger.info('removed carriage');
+            // return newtext;
         }
 
         /**
