@@ -149,7 +149,7 @@
 
         function validateVariable(selection){
             var parts = selection.split(' ').join().replace(/,/g, '');
-            var reg = /^\w+(=|<-)\d+$/;
+            var reg = /^\w+(=|<-|<<-)\d+$/;
             var match = parts.match(reg);
             var isNumeric = false;
             if(match == null) return null;
