@@ -310,6 +310,7 @@
             {name: 'assignment', category: 'action', fn: 'assignment'},
             {name: 'compass', category: 'action', fn: 'explore'},
             {name: 'folder', category: 'file', fn: 'folder'},
+            {name: 'preview', category: 'action', fn: 'visibility'},
             {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'}
         ];
 

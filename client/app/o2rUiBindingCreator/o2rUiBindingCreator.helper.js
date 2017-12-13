@@ -26,9 +26,7 @@
          * @param {String} text, string from which selection was made 
          */
         function getSelectionLines(selection, text){
-            logger.info('selection', angular.toJson(selection));
             var selectionLines = selection.split("\n");
-            logger.info('selectionLines', angular.toJson(selectionLines));
             var inverseSelection = text.split(selection);
             var pre = inverseSelection[0].split("\n");
             var selectionEndLine = pre.length + selectionLines.length -1;

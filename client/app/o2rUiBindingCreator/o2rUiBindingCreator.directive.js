@@ -23,8 +23,8 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper"];
-    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper){
+    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper", "icons"];
+    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons){
         return{
             restrict: 'E',
             scope: {
@@ -41,6 +41,7 @@
             var lines;
             var codeText;
             var selectedLinesIndex = [];
+            scope.icons = icons;
             // turn string into array and then add actual path
             // NOTE: Remove the prepareCodefiles wrapper as soon as the paths are consistent
             scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
@@ -55,6 +56,8 @@
             scope.selectedVariable = {};
             scope.openDialog = openDialog;
             scope.submit = submit;
+            scope.editStep3 = editStep3;
+            scope.editStep4 = editStep4;
             
             scope.steps = {};
             scope.steps.step1 = {};
@@ -64,33 +67,22 @@
             scope.steps.step5 = {};
             scope.steps.step6 = {};
             
-            scope.steps.step1.show = true;
-            scope.steps.step2.show = false;
-            scope.steps.step3.show = false;
-            scope.steps.step4.show = false;
-            scope.steps.step5.show = false;
-            scope.steps.step6.show = false;
-
-            scope.steps.step3.showSelectedText = false;
+            activate();
             
-            scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
-            scope.steps.step1.selected = null;
-            
-            scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Switch", value:1}];
-            scope.steps.step2.selected = null;
-            
-            scope.steps.step4.showSelection = false;
-
-            scope.steps.step3.disable = true;
-            scope.steps.step4.disable = true;
-            scope.steps.step5.disable = true;
-
             scope.$watch('steps.step1.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
+                    if(scope.steps.step2.show){
+                        resetStep5();
+                        resetStep3();
+                        resetStep4();
+                        resetStep2();
+                        resetStep1();
+                    }
+                        
                     switch (newVal) {
                         case 0:
-                            scope.steps.step2.show = true;
-                            break;
+                        scope.steps.step2.show = true;
+                        break;
                         default:
                         break;
                     }
@@ -99,6 +91,12 @@
             
             scope.$watch('steps.step2.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
+                    if(scope.steps.step3.show){
+                        resetStep5();
+                        resetStep3();
+                        resetStep4();
+                        resetStep2();
+                    }
                     switch (newVal) {
                         case 0:
                         scope.steps.step3.show = true;
@@ -106,7 +104,25 @@
                     }
                 }
             });
-            
+
+            // scope.$watch('steps.step5.min_value', function(newVal, oldVal){
+            //     if(typeof newVal === 'number'){
+            //         scope.steps.step5.showButton = true;
+            //     }
+            // });
+
+            // scope.$watch('steps.step5.max_value', function(newVal, oldVal){
+            //     if(typeof newVal === 'number'){
+            //         scope.steps.step5.showButton = true;
+            //     }
+            // });
+
+            // scope.$watch('steps.step5.step_size', function(newVal, oldVal){
+            //     if(typeof newVal === 'number'){
+            //         scope.steps.step5.showButton = true;
+            //     }
+            // });
+
             scope.$watch('codefile', function(newVal, oldVal){
                 $http.get(newVal.path)
                 .then(function(response){
@@ -118,6 +134,14 @@
             });
 
             //////////////////
+
+            function activate(){
+                resetStep1();
+                resetStep2();
+                resetStep3();
+                resetStep4();
+                resetStep5();
+            }
             
             function prepareCodefiles(files){
                 for(var i in files){
@@ -137,15 +161,18 @@
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
                 scope.steps.step3.showSelectedText = true;
+                scope.steps.step3.disable = true;
                 scope.steps.step4.show = true;
             }
             
             function step4Done(){
+                scope.steps.step4.disable = true;
                 scope.steps.step5.show = true;
+                scope.steps.step5.showButton = true;
             }
 
             function step5Done(){
-                scope.steps.step6.show = true;
+                scope.steps.step5.showButton = false;
             }
 
             function selectionEvent(){
@@ -162,7 +189,7 @@
                         scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
                         scope.steps.step3.disable = false;
                     }
-                // check selection for step 4
+                    // check selection for step 4
                 } else if(scope.steps.step4.show && !scope.steps.step5.show){
                     var selection = $window.getSelection().toString();
                     // scope.steps.step4.result.selection = selection;
@@ -182,7 +209,7 @@
                     }
                 }
             }
-
+            
             function openDialog(ev){
                 $mdDialog.show({
                     controller: function($mdDialog, icons){
@@ -203,6 +230,61 @@
                 });
             }
 
+            function resetStep1(){
+                scope.steps.step1.show = true;
+                scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
+                scope.steps.step1.selected = null;
+                scope.steps.step2.show = false;
+                scope.showOriginalCode = true;
+            }
+        
+            function resetStep2(){
+                scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Switch", value:1}];
+                scope.steps.step2.selected = null;
+                scope.steps.step3.show = false;
+                scope.showOriginalCode = true;
+            }
+        
+            function resetStep3(){
+                scope.steps.step3.showSelectedText = false;
+                scope.steps.step3.disable = true;
+        
+                scope.selectedText.source = "";
+                scope.showOriginalCode = true;
+                scope.steps.step3.showSelectedText = false;
+                scope.steps.step4.show = false;
+                selectedLinesIndex = [];
+                scope.codefile.lineHighlight = "";
+            }
+        
+            function resetStep4(){
+                scope.steps.step4.showSelection = false;
+                scope.steps.step4.disable = true;
+                scope.steps.step5.show = false;
+                scope.selectedVariable = {};
+                scope.selectedText.lineHighlight = "";
+            }
+        
+            function resetStep5(){
+                scope.steps.step5.showButton = true;
+                scope.steps.step5.type = null;
+                scope.steps.step5.disable = true;
+                scope.steps.step5.min_value = null;
+                scope.steps.step5.max_value = null;
+                scope.steps.step5.step_size = null;
+            }
+
+            function editStep3(){
+                resetStep5();
+                resetStep4();
+                resetStep3();
+            }
+
+            function editStep4(){
+                resetStep5();
+                resetStep4();
+            }
+            
             function submit(){
                 var result = {};
                 // TODO

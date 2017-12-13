@@ -61,7 +61,12 @@
                     </div>
                     <div layout="row">
                         <span flex></span>
-                        <md-button class="md-raised" ng-click="step3Done()" aria-label="done" ng-disabled="steps.step3.disable">Done</md-button>
+                        <md-button ng-if="!steps.step4.show" class="md-raised md-fab md-mini" ng-click="step3Done()" aria-label="done" ng-disabled="steps.step3.disable">
+                            <md-icon md-svg-src="{{icons.done}}"></md-icon>
+                        </md-button>
+                        <md-button ng-if="steps.step3.disable && steps.step4.show" ng-click="editStep3()" class="md-raised md-fab md-mini" aria-label="Edit">
+                            <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+                        </md-button>
                     </div>
                 </div>
                 <!-- <md-divider ng-if="steps.step4.show"></md-divider> -->
@@ -82,7 +87,12 @@
                         </span>
                         <div layout="row">
                             <span flex></span>
-                            <md-button class="md-raised" ng-click="step4Done()" aria-label="update" ng-disabled="steps.step4.disable">Done</md-button>
+                            <md-button ng-if="!steps.step5.show" class="md-raised md-fab md-mini" ng-click="step4Done()" aria-label="update" ng-disabled="steps.step4.disable">
+                                <md-icon md-svg-src="{{icons.done}}"></md-icon>
+                            </md-button>
+                            <md-button ng-if="steps.step4.disable && steps.step5.show" ng-click="editStep4()" class="md-raised md-fab md-mini" aria-label="Edit">
+                                <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+                            </md-button>
                         </div>
                     </div>
                 </div>
@@ -114,16 +124,20 @@
                                 <div ng-message="required">Required field</div>
                             </div>
                         </md-input-container>
-                        <div layout="row">
+                        <!-- <div layout="row">
                             <span flex></span>
-                            <md-button class="md-raised" ng-click="step5Done()" aria-label="done" ng-disabled="!form.$valid">Done</md-button>
-                        </div>
+                            <md-button class="md-raised md-fab md-mini" ng-if="steps.step5.showButton" ng-click="step5Done()" aria-label="done" ng-disabled="!form.$valid">
+                                <md-icon md-svg-src="{{icons.done}}"></md-icon>
+                            </md-button>
+                        </div> -->
                     </form>
                 </div>
-                <md-divider ng-if="steps.step6.show"></md-divider>
+                <md-divider ng-if="form.$valid"></md-divider>
                 <!-- STEP 6 -->
-                <div ng-show="steps.step6.show" layout-padding layout="row">
-                    <md-button class="md-raised" ng-click="openDialog($event)" aria-label="check">Preview</md-button>
+                <div ng-show="form.$valid" layout-padding layout="row">
+                    <md-button class="md-raised md-fab md-mini" ng-click="openDialog($event)" aria-label="check">
+                        <md-icon md-svg-src="{{icons.preview}}"></md-icon>
+                    </md-button>
                     <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
                     <!-- <span flex></span> -->
                 </div>
