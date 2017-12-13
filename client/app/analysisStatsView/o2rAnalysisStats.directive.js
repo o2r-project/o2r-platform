@@ -41,7 +41,27 @@
                         'o2r-red-icon': false
                     }
                 },
+                generate_configuration: {
+                    started: {
+                        'o2r-green-icon' : false,
+                        'o2r-red-icon': false
+                    },
+                    finished: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false
+                    }
+                },
                 validate_compendium: {
+                    started: {
+                        'o2r-green-icon' : false,
+                        'o2r-red-icon': false
+                    },
+                    finished: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false
+                    }
+                },
+                generate_manifest: {
                     started: {
                         'o2r-green-icon' : false,
                         'o2r-red-icon': false
@@ -72,6 +92,16 @@
                     }
                 },
                 image_execute: {
+                    started: {
+                        'o2r-green-icon' : false,
+                        'o2r-red-icon': false
+                    },
+                    finished: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false
+                    }
+                },
+                check: {
                     started: {
                         'o2r-green-icon' : false,
                         'o2r-red-icon': false
@@ -169,7 +199,13 @@
                     validate_bag: {
                         status: ''
                     },
+                    generate_configuration: {
+                        status: ''
+                    },
                     validate_compendium: {
+                        status: ''
+                    },
+                    generate_manifest: {
                         status: ''
                     },
                     image_prepare: {
@@ -179,6 +215,9 @@
                         status: ''
                     },
                     image_execute: {
+                        status: ''
+                    },
+                    check: {
                         status: ''
                     },
                     cleanup: {
@@ -240,6 +279,13 @@
                     o.cleanup.text = "";
                     logger.info('updated cleanup to ', data.steps.cleanup.status);
                     $rootScope.progressbar.complete();
+                } else if(data.steps.hasOwnProperty('check')){
+                    if(data.steps.check.hasOwnProperty('status')){
+                        o.check.status = data.steps.check.status;
+                        // reset info text
+                        o.check.text = "";
+                        logger.info('updated check to ', data.steps.check.status);
+                    }
                 } else if(data.steps.hasOwnProperty('image_execute')){
                     if(data.steps.image_execute.hasOwnProperty('status')){
                         o.image_execute.status = data.steps.image_execute.status;
@@ -254,6 +300,16 @@
                         o.image_build.text = "";
                         logger.info('updated image_build to ', data.steps.image_build.status);
                     }
+                } else if(data.steps.hasOwnProperty('generate_manifest')){
+                    o.generate_manifest.status = data.steps.generate_manifest.status;
+                    // reset info text
+                    o.generate_manifest.text = "";
+                    logger.info('updated generate_manifest to ', data.steps.generate_manifest.status);
+                } else if(data.steps.hasOwnProperty('generate_configuration')){
+                    o.generate_configuration.status = data.steps.generate_configuration.status;
+                    // reset info text
+                    o.generate_configuration.text = "";
+                    logger.info('updated generate_configuration to ', data.steps.generate_configuration.status);
                 } else if(data.steps.hasOwnProperty('validate_bag')){
                     o.validate_bag.status = data.steps.validate_bag.status;
                     // reset info text

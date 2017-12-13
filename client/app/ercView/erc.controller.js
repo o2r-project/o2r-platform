@@ -41,9 +41,9 @@
         vm.inspect.code = [];
         /*
         vm.inspect.code.push({
-            path: vm.publication.metadata.o2r.file.filepath,
-            type: vm.publication.metadata.o2r.file.mimetype,
-            name: vm.publication.metadata.o2r.file.filename
+            path: vm.publication.metadata.raw.file.filepath,
+            type: vm.publication.metadata.raw.file.mimetype,
+            name: vm.publication.metadata.raw.file.filename
         });
         */
         

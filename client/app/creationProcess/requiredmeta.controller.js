@@ -219,7 +219,7 @@
         }
 
         function removeAuthor(index){
-            vm.required.author.splice(index, 1);
+            vm.required.creators.splice(index, 1);
             creationObject.removeAuthor(index);
         }
 
@@ -228,7 +228,7 @@
             author.name = vm.author.name;
             author.affiliation = vm.author.affiliation || "";
             author.orcid = vm.author.orcid || "";
-            vm.required.author.push(author);
+            vm.required.creators.push(author);
             vm.addAuthor(author);
             //reset values
             vm.cancelNewAuthor();
@@ -251,12 +251,12 @@
 
         function updateAuthor(index){
             var author = {};
-            author.name = vm.author.name || vm.required.author[index].name;
-            author.affiliation = vm.author.affiliation || vm.required.author[index].affiliation;
-            author.orcid = vm.author.orcid || vm.required.author[index].orcid;
-            vm.required.author[index].name = author.name;
-            vm.required.author[index].affiliation = author.affiliation;
-            vm.required.author[index].orcid = author.orcid;
+            author.name = vm.author.name || vm.required.creators[index].name;
+            author.affiliation = vm.author.affiliation || vm.required.creators[index].affiliation;
+            author.orcid = vm.author.orcid || vm.required.creators[index].orcid;
+            vm.required.creators[index].name = author.name;
+            vm.required.creators[index].affiliation = author.affiliation;
+            vm.required.creators[index].orcid = author.orcid;
             creationObject.updateAuthor(index, author.name, author.affiliation, author.orcid);
             vm.cancelUpdateAuthor();
         }
