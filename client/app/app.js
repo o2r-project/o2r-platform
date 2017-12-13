@@ -6,6 +6,8 @@
             "conf",
             "starter.o2rCodeHighlight",
             "starter.o2rDisplayFiles",
+            "starter.o2rSubstituteCandidate",
+            "starter.o2rSubstituteMagnify",
             "starter.o2rCompare",
             "starter.o2rHttp",
             "starter.o2rInspect",
@@ -39,7 +41,7 @@
     function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env, logEnhancerProvider){
         $compileProvider.preAssignBindingsEnabled(true);
 
-        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/', 'https://markuskonkol.shinyapps.io/figure1_interactive', 
+        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/', 'https://markuskonkol.shinyapps.io/figure1_interactive',
         'https://markuskonkol.shinyapps.io/figure1_interactive/', 'https://markuskonkol.shinyapps.io/interactiveFigure1/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
@@ -311,7 +313,8 @@
             {name: 'compass', category: 'action', fn: 'explore'},
             {name: 'folder', category: 'file', fn: 'folder'},
             {name: 'preview', category: 'action', fn: 'visibility'},
-            {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'}
+            {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'},
+            {name: 'backArrow', category: 'navigation', fn: 'arrow_back'}
         ];
 
         for(var i in icons){

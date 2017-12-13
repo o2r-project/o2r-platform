@@ -14,7 +14,8 @@
         vm.icons = icons;
         vm.bindings = creationObject.getUibindings();
         vm.input = creationObject.getInputFiles();
-
+        vm.erc = creationObject.get();
+        
         vm.updateBinding = updateBinding;
         vm.removeBinding = removeBinding;
         vm.addBinding = creationObject.addBinding;

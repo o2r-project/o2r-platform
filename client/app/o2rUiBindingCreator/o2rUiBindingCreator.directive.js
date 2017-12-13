@@ -3,18 +3,20 @@
  * This directive contains the whole workflow for the creation of one new ui binding.
  * The directive can be called via
  * <o2r-ui-binding-creator></o2r-ui-binding-creator>
- * and expects a scope "o2r-codefiles".
+ * and expects a scope "o2r-codefiles" and "o2r-erc-id".
  * 
  * o2r-codefiles MUST be an array of Strings, where each string is a path to a single file within an ERC.
+ * o2r-erc-id MUST be a String containing the id of an erc
  * 
  * Example:
  * 
- * <o2r-ui-binding-creator o2r-codefiles="["path/to/first/file", "path/to/second/file"]"></o2r-ui-binding-creator>
+ * <o2r-ui-binding-creator o2r-codefiles="["path/to/first/file", "path/to/second/file"]" o2r-erc-id="as43B"></o2r-ui-binding-creator>
  * 
  * Given that the calling controller has a scope variable vm.files = ["path/to/first/file", "path/to/second/file"]
+ * and a scope variable vm.ercid = "as43B"
  * the directive can be called within the scope of that controller as follows
  * 
- * <o2r-ui-binding-creator o2r-codefiles="{{vm.files}}"></o2r-ui-binding-creator>
+ * <o2r-ui-binding-creator o2r-codefiles="{{vm.files}}" o2r-erc-id="{{vm.ercid}}"></o2r-ui-binding-creator>
  */
 (function(){
     'use strict';
@@ -28,7 +30,8 @@
         return{
             restrict: 'E',
             scope: {
-                codefiles: '@o2rCodefiles' 
+                codefiles: '@o2rCodefiles',
+                ercId: '@o2rErcId' 
             },
             templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingCreator.template.html',
             link: link
@@ -36,6 +39,7 @@
 
         function link(scope, element, attrs){
             if(!scope.codefiles) throw 'o2r-codefiles is undefined';
+            if(!scope.ercId) throw 'o2r-erc-id is undefined';
 
             var logger = $log.getInstance('o2rUiBindingCreator');
             var lines;
@@ -105,24 +109,6 @@
                 }
             });
 
-            // scope.$watch('steps.step5.min_value', function(newVal, oldVal){
-            //     if(typeof newVal === 'number'){
-            //         scope.steps.step5.showButton = true;
-            //     }
-            // });
-
-            // scope.$watch('steps.step5.max_value', function(newVal, oldVal){
-            //     if(typeof newVal === 'number'){
-            //         scope.steps.step5.showButton = true;
-            //     }
-            // });
-
-            // scope.$watch('steps.step5.step_size', function(newVal, oldVal){
-            //     if(typeof newVal === 'number'){
-            //         scope.steps.step5.showButton = true;
-            //     }
-            // });
-
             scope.$watch('codefile', function(newVal, oldVal){
                 $http.get(newVal.path)
                 .then(function(response){
@@ -144,14 +130,17 @@
             }
             
             function prepareCodefiles(files){
+                // for(var i in files){
+                //     var parts = files[i].split('/');
+                //     var result = '';
+                //     for(var j in parts){
+                //         if(j==0) result += env.api + '/compendium/' + parts[j] + '/data';
+                //         else result += '/' + parts[j];
+                //     }
+                //     files[i] = result;
+                // }
                 for(var i in files){
-                    var parts = files[i].split('/');
-                    var result = '';
-                    for(var j in parts){
-                        if(j==0) result += env.api + '/compendium/' + parts[j] + '/data';
-                        else result += '/' + parts[j];
-                    }
-                    files[i] = result;
+                    files[i] = env.api + '/compendium/' + scope.ercId + '/data/' + files[i];
                 }
                 return files;
             }

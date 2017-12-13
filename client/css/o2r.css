@@ -657,6 +657,45 @@ td.add-row-button {
 	border-bottom: white;
 }
 
+.substitute_candidate{
+	max-width: 100%;
+	min-width: 80%;
+}
+
+#magnifyFiles{
+	max-width: 100%;
+	width: 100%;
+	height: 100%;
+}
+
+.substitute_magnifier{
+	width: 100%;
+	height: 100% /* 80vh;*/
+}
+
+.substitute_magnifier > md-card-header{
+	min-height: 2vh;
+}
+
+.substitute_magnifier > md-card-content{
+	overflow-y: auto;
+}
+
+o2r-substitute-magnify{
+	height: 100%;
+}
+
+.substitute_magnifier_div{
+	height: calc(100% - 64px - 64px);	/* dialog height - toolbar - footer */
+}
+
+.substitute_magnifier_Card{
+	height: 100%;
+}
+
+.substitute_magnifier_Card > o2r-display-files > iframe.display-files-html{
+	height: 100% !important;
+}
 /***********************
 	End Substitution
 /***********************

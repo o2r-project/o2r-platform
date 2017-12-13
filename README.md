@@ -1,6 +1,6 @@
-# The o2r-platform
+# The o2r platform
 
-_Leveraging reproducible research_
+_Leveraging reproducible research_ by providing a powerful user interface for the [o2r Web API](http://o2r.info/o2r-web-api/).
 
 ## Libraries
 
@@ -36,7 +36,7 @@ window.__env.api = /*String containing base api*/;
 window.__env.sizeRestriction = /*integer*/;
 window.__env.disableTracking = /*true/false, default is true*/;
 window.__env.enableDebug = /*true/false, default is false*/;
-window.__env.piwik = /*String containing piwik server adress*/;
+window.__env.piwik = /*String containing Piwik server address*/;
 window.__env.userLevels = {};
 window.__env.userLevels.admin = /*Integer containing the required user level for admin status*/;
 window.__env.userLevels.regular = /*Integer containing the required user level for regular status*/;
@@ -64,7 +64,7 @@ The environment parameters are as follows:
 - `OAUTH_CLIENT_ID` identifier for the platform with auth provider
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
 - `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication, probably `http://localhost/api/v1/auth/login` (includes with machine IP when using Docker Toolbox)
-- `ZENODO_TOKEN` authentication token for [Zenodo](https://zenodo.org/), required for shipping to Zenodo (optional)
+- `SHIPPER_REPO_TOKENS` a JSON object, that holds the authentication tokens for shipping to remote repositories such as [Zenodo](https://zenodo.org/) (optional). Must have the form `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. Replace `$ZENODO_TOKEN` etc. with your personal access token.
 - `SLACK_BOT_TOKEN` and `SLACK_VERIFICATION_TOKEN`, required for monitoring with Slack (optional)
 
 ### Linux
@@ -96,7 +96,7 @@ Also, the client's defaults (i.e. using `localhost`) does not work.
 Therefore must mount a config file to point the API to the correct location (see also [Configure](#configure)), by uncommenting the line in `docker-compose.yml`, which mounts the file `test/config-toolbox.js` to the webserver at the right location (`service: nginx`).
 
 ```
-OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> SHIPPER_REPO_TOKENS=<...> docker-compose up
 ```
 
 The services are available at `http://<machine-ip>`.
@@ -109,6 +109,16 @@ You can remove all containers and images by o2r with the following two commands 
 docker ps -a | grep o2r | awk '{print $1}' | xargs docker rm -f
 docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 ```
+
+### Use non-default version of o2r-meta and containerit
+
+Two core steps for compendium creation are provided by the standalone tools [o2r-meta]() and [containerit]().
+These tools are used in a containerized version and the specific tool can be selected via an environment variable for both `muncher` and `loader` in the compose configuration (see comments in the file).
+
+For _metadata extraction and brokering_, see the respective [`loader` configuration property `LOADER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-loader/#configuration) and [`muncher` configuration property `MUNCHER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-muncher/#configuration).
+For testing metadata tools under development setting the property to `o2rproject/o2r-meta:dev` could be useful.
+
+For _container manifest creation_, see the [`muncher` configuration property `MUNCHER_CONTAINERIT_IMAGE`](https://github.com/o2r-project/o2r-muncher/#configuration).
 
 ## User levels
 
@@ -137,7 +147,7 @@ The compose configuration also makes a simple test page for WebSockets available
 
 ## Platform Version
 
-0.9.5
+0.9.6
 
 ## License
 
