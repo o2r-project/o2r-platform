@@ -23,13 +23,13 @@
             $log.debug('Tab changed to object: %s', newVal);
 
             var newObj = {};
-            newObj.code = [manipulate.metadata.o2r.interaction.ui_binding[newVal].underlyingCode];
-            newObj.data = [manipulate.metadata.o2r.interaction.ui_binding[newVal].underlyingData];
+            newObj.code = [manipulate.metadata.o2r.interaction[newVal].underlyingCode];
+            newObj.data = [manipulate.metadata.o2r.interaction[newVal].underlyingData];
 
             $scope.$parent.vm.mSetCodeData(newObj);
         });
 
-        vm.figures = manipulate.metadata.o2r.interaction.ui_binding;
+        vm.figures = manipulate.metadata.o2r.interaction;
 
         /////////////////
 
