@@ -40,23 +40,30 @@
             vm.base = vm.publication;
             vm.overlay = pub;
 
-            if (vm.base.metadata.o2r.inputfiles.length < 1 || vm.overlay.metadata.o2r.inputfiles.length < 1) {
-                logger.info("no inputfiles for substitution");
-                logger.debug("no inputfiles for substitution");
-                window.alert("no substitution possible");
+            if (vm.base.metadata.o2r.inputfiles.length < 1) {
+               logger.info("no base inputfiles for substitution");
+               logger.debug("no base inputfiles for substitution");
+               window.alert("No substitution possible.\nThere are no inputfiles existing in the metadata of the\nbase ERC.");
             } else {
-                vm.basefiles = getFileCandidates(vm.base);
-                vm.overlayfiles = getFileCandidates(vm.overlay);
+                if (vm.overlay.metadata.o2r.inputfiles.length < 1) {
+                   logger.info("no inputfiles for substitution");
+                   logger.debug("no inputfiles for substitution");
+                   let txt = "overlay";
+                   window.alert("No substitution possible.\nThere are no inputfiles existing in the metadata of the\noverlayERC.");
+               } else {
+                   vm.basefiles = getFileCandidates(vm.base);
+                   vm.overlayfiles = getFileCandidates(vm.overlay);
 
-                $mdDialog.show({
-                    contentElement: '#showCandidateView',
-                    parent: angular.element(document.body),
-                    scope: $scope,
-                    preserveScope: true,
-                    multiple: true,
-                    targetEvent: event,
-                    clickOutsideToClose: false
-                });
+                   $mdDialog.show({
+                       contentElement: '#showCandidateView',
+                       parent: angular.element(document.body),
+                       scope: $scope,
+                       preserveScope: true,
+                       multiple: true,
+                       targetEvent: event,
+                       clickOutsideToClose: false
+                   });
+               }
             }
         };
 
