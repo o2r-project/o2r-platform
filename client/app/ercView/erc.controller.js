@@ -118,9 +118,8 @@
                     base.compFJobSucc = result.data;
 
                     let html = {};
-                    // TODO:#htmlComparison
-                    html.base = "/api/v1/job/ewyHf/data/display.html" // base.compFJobSucc.steps.check.display.diff
-                    html.subst = "/api/v1/job/ewyHf/data/display.html" //  subst.compFJobSucc.steps.check.display.diff
+                    html.base = base.compFJobSucc.steps.check.display.diff // "/api/v1/job/<job_id/path/to/html>"
+                    html.subst = subst.compFJobSucc.steps.check.display.diff  // "/api/v1/job/<job_id/path/to/html>"
 
                     $mdDialog.show({
                         template: '<md-dialog aria-label="check results" class="substitute_magnifier"><o2r-compare-base-subst o2r-base-html="'+html.base+'" o2r-subst-html="'+html.subst+'" flex="100"></o2r-compare-base-subst></md-dialog>',
