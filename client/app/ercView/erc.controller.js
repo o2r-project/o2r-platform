@@ -5,8 +5,8 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login'];
-    function ErcController($scope, $stateParams, $log, $state, $window, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs'];
+    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
@@ -46,7 +46,7 @@
             name: vm.publication.metadata.o2r.file.filename
         });
         */
-        
+
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
         vm.publish = true;
@@ -55,6 +55,8 @@
 
         // only necessary for substitited ERC
         vm.showERC = showERC;
+        vm.isEmpty = isEmpty;
+        vm.fJob = compFJobSuccess.data;  // return last finished job --> now: xW5L7
         vm.substitution = {};
         if (vm.publication.metadata.substituted) {
             vm.substitution.substituted = vm.publication.metadata.substituted;
@@ -63,6 +65,7 @@
         } else {
             vm.substitution.substituted = false;
         }
+        vm.compareSubstBaseHtml = compareSubstBaseHtml;
 
         logger.info(vm.publication);
 
@@ -79,6 +82,55 @@
         function showERC(url) {
             let url_ = "#!/erc/" + url;
             $window.open(url_);
+        }
+
+        function isEmpty(obj){
+            if (obj != undefined) {
+                for(var key in obj){
+                    if(obj.hasOwnProperty(key)) return false;
+                }
+                return true;
+            } else {
+                return true;
+            }
+        }
+
+        function compareSubstBaseHtml(ev) {
+            // get successed job of base ERC
+            var ercId = vm.substitution.baseID;
+            var query = {
+                compendium_id: ercId,
+                status: 'success'
+            };
+            return jobs.callJobs(query).then(function(result){
+                if(result.status == 404 || result.data == "No analysis executed yet."){
+                    logger.info("No jobs finished in base ERC with status: success\nPlease run analysis.");
+                    window.alert("No jobs finished in base ERC with status: success\nPlease run analysis.");
+                }
+                else {
+                    logger.info("jobs found");
+
+                    let subst = {};
+                    subst.id = vm.ercId;
+                    subst.compFJobSucc = vm.fJob;
+                    let base = {};
+                    base.id = vm.substitution.baseID;
+                    base.compFJobSucc = result.data;
+
+                    let html = {};
+                    // TODO:#htmlComparison
+                    html.base = "/api/v1/job/ewyHf/data/display.html" // base.compFJobSucc.steps.check.display.diff
+                    html.subst = "/api/v1/job/ewyHf/data/display.html" //  subst.compFJobSucc.steps.check.display.diff
+
+                    $mdDialog.show({
+                        template: '<md-dialog aria-label="check results" class="substitute_magnifier"><o2r-compare-base-subst o2r-base-html="'+html.base+'" o2r-subst-html="'+html.subst+'" flex="100"></o2r-compare-base-subst></md-dialog>',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        fullscreen: true,
+                        clickOutsideToClose: true
+                    });
+                }
+            });
         }
 
         function getShipment(){
