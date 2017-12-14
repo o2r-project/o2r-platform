@@ -58,8 +58,8 @@
         vm.isEmpty = isEmpty;
         vm.fJob = compFJobSuccess.data;  // return last finished job --> now: xW5L7
         vm.substitution = {};
-        if (vm.publication.metadata.substituted) {
-            vm.substitution.substituted = vm.publication.metadata.substituted;
+        if (vm.publication.substituted) {
+            vm.substitution.substituted = vm.publication.substituted;
             vm.substitution.baseID = vm.publication.metadata.substitution.base;
             vm.substitution.overlayID = vm.publication.metadata.substitution.overlay;
         } else {
@@ -99,35 +99,40 @@
             // get successed job of base ERC
             var ercId = vm.substitution.baseID;
             var query = {
-                compendium_id: ercId,
-                status: 'success'
+                compendium_id: ercId
+                // status: 'success'
             };
             return jobs.callJobs(query).then(function(result){
                 if(result.status == 404 || result.data == "No analysis executed yet."){
-                    logger.info("No jobs finished in base ERC with status: success\nPlease run analysis.");
-                    window.alert("No jobs finished in base ERC with status: success\nPlease run analysis.");
-                }
-                else {
-                    logger.info("jobs found");
+                    logger.info("No jobs finished in base ERC.\nPlease run analysis.");
+                    window.alert("No jobs finished in base ERC.\nPlease run analysis.");
+                } else {
+                    // check if step-check was success or failure
+                    if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
+                        logger.info("jobs found");
 
-                    let subst = {};
-                    subst.id = vm.ercId;
-                    subst.compFJobSucc = vm.fJob;
-                    let base = {};
-                    base.id = vm.substitution.baseID;
-                    base.compFJobSucc = result.data;
+                        let subst = {};
+                        subst.id = vm.ercId;
+                        subst.compFJobSucc = vm.fJob;
+                        let base = {};
+                        base.id = vm.substitution.baseID;
+                        base.compFJobSucc = result.data;
 
-                    let html = {};
-                    html.base = base.compFJobSucc.steps.check.display.diff // "/api/v1/job/<job_id/path/to/html>"
-                    html.subst = subst.compFJobSucc.steps.check.display.diff  // "/api/v1/job/<job_id/path/to/html>"
+                        let html = {};
+                        html.base = base.compFJobSucc.steps.check.display.diff // "/api/v1/job/<job_id/path/to/html>"
+                        html.subst = subst.compFJobSucc.steps.check.display.diff  // "/api/v1/job/<job_id/path/to/html>"
 
-                    $mdDialog.show({
-                        template: '<md-dialog aria-label="check results" class="substitute_magnifier"><o2r-compare-base-subst o2r-base-html="'+html.base+'" o2r-subst-html="'+html.subst+'" flex="100"></o2r-compare-base-subst></md-dialog>',
-                        parent: angular.element(document.body),
-                        targetEvent: ev,
-                        fullscreen: true,
-                        clickOutsideToClose: true
-                    });
+                        $mdDialog.show({
+                            template: '<md-dialog aria-label="check results" class="substitute_magnifier"><o2r-compare-base-subst o2r-base-html="'+html.base+'" o2r-subst-html="'+html.subst+'" flex="100"></o2r-compare-base-subst></md-dialog>',
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            fullscreen: true,
+                            clickOutsideToClose: true
+                        });
+                    } else {
+                        logger.info("No analysis finished, that provides a html file for comparison reasons.");
+                        window.alert("No analysis finished, that provides a html file for comparison reasons.");
+                    }
                 }
             });
         }

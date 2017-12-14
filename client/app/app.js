@@ -385,15 +385,23 @@
     function compFJobSuccessService($stateParams,$q, jobs){
         var ercId = $stateParams.ercid;
         var query = {
-            compendium_id: ercId,
-            status: 'success'
+            compendium_id: ercId
+            // status: 'success'
         };
         return jobs.callJobs(query).then(function(result){
             if(result.status == 404){
-                logger.info("No jobs finished in substituted ERC with status: success\nPlease run analysis.");
+                logger.info("No jobs finished in substituted ERC.\nPlease run analysis.");
                 return $q.reject('404 Not Found');
             }
-            else return result;
+            else {
+                if (result.data == "No analysis executed yet.") {
+                    return result;
+                } else {
+                    if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
+                        return result;
+                    } else return {data: "No analysis finished, that provides a html file for comparison reasons."};
+                }
+            }
         });
     }
 
