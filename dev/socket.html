@@ -18,6 +18,7 @@
     <p>Image prepare:&nbsp;<span id="status_prepare" style="border: 1px solid black;"></span></p>
     <p>Image build:&nbsp;<span id="status_build" style="border: 1px solid black;"></span></p>
     <p>Image execute:&nbsp;<span id="status_execute" style="border: 1px solid black;"></span></p>
+    <p>Image execute:&nbsp;<span id="status_check" style="border: 1px solid black;"></span></p>
     <p>Cleanup:&nbsp;<span id="status_cleanup" style="border: 1px solid black;"></span></p>
 
     Log: <pre id="log" style="border: 1px solid black;"></pre>
@@ -104,8 +105,12 @@
           document.getElementById("status_execute").innerHTML = event.steps.image_execute.status;
           setBackgroundStatus(event.steps.image_execute.status, document.getElementById("status_execute"));
         }
+        if(event.steps.check !== undefined && event.steps.check.status !== undefined) {
+          document.getElementById("status_execute").innerHTML = event.steps.check.status;
+          setBackgroundStatus(event.steps.check.status, document.getElementById("status_check"));
+        }
         if(event.steps.cleanup !== undefined && event.steps.cleanup.status !== undefined) {
-          document.getElementById("status_cleanup").innerHTML = event.steps.image_execute.status;
+          document.getElementById("status_cleanup").innerHTML = event.steps.cleanup.status;
           setBackgroundStatus(event.steps.cleanup.status, document.getElementById("status_cleanup"));
         }
 

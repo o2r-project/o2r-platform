@@ -89,7 +89,7 @@
                 publicationDate: erc.metadata.o2r.publicationDate,
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
-                author: erc.metadata.o2r.author,
+                creators: erc.metadata.o2r.creators,
                 displayfile_candidates: erc.metadata.o2r.displayfile_candidates,
                 displayfile: erc.metadata.o2r.displayfile,
                 mainfile: erc.metadata.o2r.mainfile,
@@ -122,14 +122,14 @@
         }
         
         function updateAuthor(index, name, aff, orcid){
-            //if(angular.isUndefined(erc.metadata.o2r.author[index])) erc.metadata.o2r.author[index] = {affiliation: ""};
-            if(name) erc.metadata.o2r.author[index].name = name;
-            if(aff) erc.metadata.o2r.author[index].affiliation = aff;
-            if(orcid) erc.metadata.o2r.author[index].orcid = orcid;
+            //if(angular.isUndefined(erc.metadata.o2r.creators[index])) erc.metadata.o2r.creators[index] = {affiliation: ""};
+            if(name) erc.metadata.o2r.creators[index].name = name;
+            if(aff) erc.metadata.o2r.creators[index].affiliation = aff;
+            if(orcid) erc.metadata.o2r.creators[index].orcid = orcid;
         }
 
         function addAuthor(auth){
-            erc.metadata.o2r.author.push(auth);
+            erc.metadata.o2r.creators.push(auth);
         }
 
         function addBinding(binding){
@@ -143,7 +143,7 @@
         }
 
         function removeAuthor(index){
-            erc.metadata.o2r.author.splice(index, 1);
+            erc.metadata.o2r.creators.splice(index, 1);
         }
 
         function removeBinding(index){
