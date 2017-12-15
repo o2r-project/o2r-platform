@@ -8,7 +8,7 @@
     esClient.$inject = ['esFactory'];
     function esClient(esFactory){
         return esFactory({
-            host: 'http://giv-project15.uni-muenster.de:9200',
+            host: 'http://localhost/api/v1/search',
             apiVersion: '5.5',
             log: 'trace'
         });

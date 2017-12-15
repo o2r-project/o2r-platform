@@ -195,7 +195,7 @@
                 }
             })
             .state('search', {
-                url: "/search?q&coords&from&to&start&size",
+                url: "/search?q&coords&from&to&start&size&libraries",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchController',
                 controllerAs: 'vm',
@@ -415,14 +415,15 @@
         var logger = $log.getInstance('searchResultsService');
         var index = 'o2r';
         logger.info('param: ', $stateParams);
-        var term, coords, from, to, start, size = null;
+        var term, coords, from, to, start,libraries, size = null;
         if($stateParams.q) term = $stateParams.q;
         if($stateParams.coords) coords = angular.fromJson($stateParams.coords);
         if($stateParams.from) from = angular.fromJson($stateParams.from);
         if($stateParams.to) to = angular.fromJson($stateParams.to);
         if($stateParams.start) start = angular.fromJson($stateParams.start);
         if($stateParams.size) size = angular.fromJson($stateParams.size);
-        var query = search.prepareQuery(index, term, coords, from, to, start, size);
+        if($stateParams.libraries) libraries = angular.fromJson($stateParams.libraries);
+        var query = search.prepareQuery(index, term, coords, from, to, start, size, libraries);
         return search.search(query);
     }
 

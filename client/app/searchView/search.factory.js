@@ -5,8 +5,8 @@
         .module('starter')
         .factory('search', search);
     
-    search.$inject = ['$log', '$stateParams', 'esClient', 'esFactory'];
-    function search($log, $stateParams, esClient, esFactory){
+    search.$inject = ['$log', '$stateParams', 'esClient', 'esFactory', 'httpRequests'];
+    function search($log, $stateParams, esClient, esFactory, httpRequests){
         var logger = $log.getInstance('searchFactory');
         var service = {
             prepareQuery: prepareQuery,
@@ -25,7 +25,7 @@
          * @param {Integer} start 
          * @param {Integer} size 
          */
-        function prepareQuery(index, term, coordinates_selected, from, to, start, size) {
+        function prepareQuery(index, term, coordinates_selected, from, to, start, size, libraries) {
             if(!index) throw 'Error: No search index defined';
             // helper to indicate which parameters are (un)defined
             if(!term) logger.info('No search term defined');
@@ -48,10 +48,19 @@
             };
             
             if(term){
-                angular.extend(query.body.query.bool.must, {
-                    "match": {
-                        "_all": term
-                }});
+                if(libraries){
+                    angular.extend(query.body.query.bool.must, {
+                        "match": {
+                            "metadata.o2r.depends.identifier": term
+                        }
+                    });
+                } else {
+                    angular.extend(query.body.query.bool.must, {
+                        "match": {
+                            "_all": term
+                        }
+                    });
+                }
             } else {
                 angular.extend(query.body.query.bool.must, {
                     "match_all": {}
@@ -78,7 +87,7 @@
             if(coordinates_selected){
                 query.body.query.bool.filter.push({
                     "geo_shape": {
-                        "metadata.o2r.spatial.spatial.union.geojson.geometry": {
+                        "metadata.o2r.spatial.union.geojson.geometry": {
                             "shape": {
                                 "type": "polygon",
                                 "coordinates": coordinates_selected
@@ -101,8 +110,9 @@
         }
 
         function search(query){
-            logger.info('Searching with', angular.toJson(query));
-            return esClient.search(query);
+            logger.info('Searching with', angular.toJson(query.body));
+            return httpRequests.complexSearch(query.body);
+            // return esClient.search(query);
         }
     }
 })();

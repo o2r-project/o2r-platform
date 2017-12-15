@@ -18,6 +18,7 @@
 			getLoggedUser: getLoggedUser,
 			getSingleUser: getSingleUser,
 			searchComp: searchComp,
+			complexSearch: complexSearch,
 			toZenodo: toZenodo,
 			getShipment: getShipment,
 			getStatus: getStatus,
@@ -159,6 +160,11 @@
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
+		}
+
+		function complexSearch(query){
+			var _url = env.api + '/search';
+			return $http.post(_url, query);
 		}
 
 		function uploadViaSciebo(url, path){

@@ -11,7 +11,7 @@
     function SearchController($scope,$stateParams, $state, $q, $filter, $log, $interval, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search, customLeaflet){
         var logger = $log.getInstance('SearchCtrl');
         var abstractLimit = 200;
-        var fullSearch = searchAll.hits.hits;
+        var fullSearch = searchAll.data.hits.hits;
         var coordinates_selected = {
             type: "Feature",
             geometry: {
@@ -35,12 +35,13 @@
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.callingsearch=callingsearch;
-        vm.hits = searchResults.hits.total;
+        vm.hits = searchResults.data.hits.total;
+        vm.onlyLibraries = $stateParams.libraries == 'true' || false;
         vm.highlightMap = customLeaflet.highlightMap;
         vm.resetAllUnhoveredList = resetAllUnhoveredList;
         vm.busyLoading = false;
         vm.infiniteItems = {
-            numLoaded_: searchResults.hits.hits.length,
+            numLoaded_: searchResults.data.hits.hits.length,
             total_: vm.hits,
             size_: size,
             startindex_: startindex,
@@ -60,7 +61,7 @@
                     this.numLoaded_ = this.total_;
                     var coords = angular.fromJson(coordinates_selected.geometry.coordinates);
                     this.startindex_ += this.size_;
-                    var q = search.prepareQuery('o2r', vm.searchTerm, coords, from.toISOString(), to.toISOString(), this.startindex_, this.size_);
+                    var q = search.prepareQuery('o2r', vm.searchTerm, coords, from.toISOString(), to.toISOString(), this.startindex_, this.size_, vm.onlyLibraries);
                     search.search(q)
                         .then(angular.bind(this, function(response){
                             searchResults.hits.hits = searchResults.hits.hits.concat(response.hits.hits);
@@ -116,7 +117,7 @@
             });
 
             vm.controls.custom.push(customLeaflet.createResetHighlightControl(resetAllUnhoveredList));
-            map(searchResults);
+            map(searchResults.data);
             calcDateRange(fullSearch);
             var fromVal, toVal;
             //check if from value is defined and set slider position to this value, otherwise set it to start value
@@ -133,7 +134,7 @@
                 var tmp_to = $stateParams.to.substring(1, $stateParams.to.length-1);
                 toVal = angular.fromJson(new Date(tmp_to));
             }
-
+            
             vm.slider = {
                 minValue: fromVal,
                 maxValue: toVal,
@@ -230,10 +231,10 @@
             var b=[];
             for(var i in vm.allPubs){
                 try{
-                    vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson.properties = {
+                    vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson.properties = {
                         id: i
                     };
-                    b.push(vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson);
+                    b.push(vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson);
                 } catch (g){
                     logger.error("missing spatial in ", i);
                 }
@@ -301,14 +302,15 @@
                 to: angular.toJson(to.toISOString()), 
                 coords: coords,
                 start: startindex,
-                size: size
+                size: size,
+                libraries: vm.onlyLibraries
             });
         }
 
         function highlightList(point){
             // check if point is inside of polygon. If true, highlight list elements of respective erc
             for(var i in vm.allPubs){
-                var match = turf.inside(point, vm.allPubs[i]._source.metadata.o2r.spatial.spatial.union.geojson);
+                var match = turf.inside(point, vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson);
                 // if true, highlight list entry
                 if(match){
                     vm.allPubs[i].highlight = true;
