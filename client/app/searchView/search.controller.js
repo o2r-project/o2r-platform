@@ -251,7 +251,7 @@
             }
 
             // only set zoomlevel, if search returns results
-            if(vm.hits){
+            if(vm.hits && group){
                 leafletData.getMap().then(function(map){
                     map.fitBounds(group.getBounds(), {padding: [50,50]});
                 });
