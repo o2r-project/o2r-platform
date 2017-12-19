@@ -195,6 +195,15 @@ services:
       - DEBUG=*
       #substituter,substituter:*
 
+  inspecter:
+    image: o2rproject/o2r-inspecter:0.0.1
+    restart: unless-stopped
+    volumes:
+      - o2rstorage:/tmp/o2r
+    environment:
+      - INSPECTER_PORT=8091
+      - DEBUGME=inspecter
+
   platform:
     image: nginx:latest
     depends_on:
