@@ -44,7 +44,7 @@ Inputs for the new parameter need to be integrated into the view and bind to `se
 
 ### Update `prepareQuery()`
 
- `search.factory.js` contains two functions: `prepareQuery()` and `search()`, where the latter takes all parameter values and puts them into an elasticSearch readable structure, and the former calls the http-request to the search endpoint. In order to add a parameter, `prepareQuery()` needs to be extended with the new parameter. More information can be found in the [elasticSearch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html).
+ `search.factory.js` contains two functions: `prepareQuery()` and `search()`, where the former takes all parameter values and puts them into an elasticSearch readable structure, and the latter calls the http-request to the search endpoint. In order to add a parameter, `prepareQuery()` needs to be extended with the new parameter. More information can be found in the [elasticSearch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html).
 
 ### Sending new Parameters to `prepareQuery()`
 
