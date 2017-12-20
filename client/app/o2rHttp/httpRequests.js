@@ -34,7 +34,8 @@
 			setUserLevel: setUserLevel,
 			getAllUsers: getAllUsers,
 			deleteCompendium: deleteCompendium,
-			substitute: substitute
+			substitute: substitute,
+			getCSV: getCSV
 		};
 
 		return service;
@@ -45,6 +46,10 @@
 		* @Desc httpRequest for retrieving a list of compendia
 		* @Param query, object with attributes author, start and limit to define queries
 		*/
+
+		function getCSV(file){
+			return $http.get(file);
+		}
 
 		function listCompendia(query){
 			var _url= env.api + '/compendium';

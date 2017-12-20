@@ -1,5 +1,10 @@
 <!-- Top nav -->
 <div flex="100" layout="row">
+    <div ng-if="vm.substitution.substituted">
+      <md-button title="what is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE5100">THIS IS A SUBSTITUTION</md-button>
+      <a href="" ng-click="vm.showERC(vm.substitution.baseID)">base compendium</a>
+      <a href="" ng-click="vm.showERC(vm.substitution.overlayID)">overlay compendium</a>
+    </div>
     <span flex></span>
     <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="{{vm.recipient}}" o2r-erc-id="{{vm.ercId}}"></o2r-recipient>
     <!-- <md-button ng-if="vm.loggedIn" ng-disabled="vm.shipped" ng-click="vm.sendToRecipient('zenodo_sandbox')" aria-label="Ship to {{vm.recipient[1].label}}">Ship to Zenodo<md-icon aria-label md-svg-src="{{vm.icons.rowing}}"></md-icon></md-button> -->
@@ -78,7 +83,7 @@
         </md-card-header>
         <md-card-content>
             <o2r-display-files o2r-file="{{vm.file}}"></o2r-display-files>
-        </md-card-content>   
+        </md-card-content>
     </md-card>
 
     <!-- CodeDataView for manipulateView -->

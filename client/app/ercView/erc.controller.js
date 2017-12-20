@@ -5,13 +5,13 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'recipient'];
-    function ErcController($scope, $stateParams, $log, $state, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, recipient){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'recipient'];
+    function ErcController($scope, $stateParams, $log, $state, $window, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, recipient){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
         defView.name = 'reproduce';
-        
+
         var vm = this;
         vm.icons = icons;
         vm.server = env.server;
@@ -40,17 +40,30 @@
         Replace this code with the right path to code files as soon as metadata contains this information
         */
         vm.inspect.code = [];
+        /*
         vm.inspect.code.push({
-            path: vm.publication.metadata.o2r.file.filepath,
-            type: vm.publication.metadata.o2r.file.mimetype,
-            name: vm.publication.metadata.o2r.file.filename
+            path: vm.publication.metadata.raw.file.filepath,
+            type: vm.publication.metadata.raw.file.mimetype,
+            name: vm.publication.metadata.raw.file.filename
         });
-
+        */
+        
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
         vm.publish = true;
         vm.sendToRecipient = sendToRecipient;
         // vm.publishInZenodo = publishInZenodo;
+
+        // only necessary for substitited ERC
+        vm.showERC = showERC;
+        vm.substitution = {};
+        if (vm.publication.metadata.substituted) {
+            vm.substitution.substituted = vm.publication.metadata.substituted;
+            vm.substitution.baseID = vm.publication.metadata.substitution.base;
+            vm.substitution.overlayID = vm.publication.metadata.substitution.overlay;
+        } else {
+            vm.substitution.substituted = false;
+        }
 
         logger.info(vm.publication);
         logger.info(vm.recipient);
@@ -65,11 +78,16 @@
             getShipment();
         }
 
+        function showERC(url) {
+            let url_ = "#!/erc/" + url;
+            $window.open(url_);
+        }
+
         function getShipment(){
             httpRequests.getShipment(vm.ercId)
                 .then(function (res){
                     logger.info(res);
-                    if(res.data.length > 0){ 
+                    if(res.data.length > 0){
                         vm.shipped=true;
                         httpRequests.getStatus(res.data[0])
                         .then(function (res2){
@@ -79,7 +97,7 @@
                             }
                             if (res2.data.status == "published"){
                                 vm.publish = true;
-                            }    
+                            }
                         })
                         .catch(function (err2){
                             logger.info(err2);
@@ -113,8 +131,8 @@
                 .then(function (res){
                     httpRequests.publishERC(res.data[0])
                     .then(function (res2){
-                        logger.info("published")  
-                        logger.info(res2) 
+                        logger.info("published")
+                        logger.info(res2)
                     })
                     .catch(function (err2){
                         logger.info(err2);
@@ -126,16 +144,7 @@
         }
 
         function fixPath(path){
-            var str = '/data';
-            var splits = path.split('/');
-            var stichedSplits = '';
-            for(var i in splits){
-                if(i == 0) continue;
-                stichedSplits = '/' + splits[i];
-            }
-            var newPath = '/api/v1/compendium/' + splits[0] + str + stichedSplits;
-            logger.info('fixed path is: %s', newPath);
-            return newPath;
+            return '/api/v1/compendium/' + vm.ercId + "/data/" + path;
         }
 
         function buildToggler(navId){
@@ -155,8 +164,8 @@
         }
 
         /**
-         * 
-         * @param {Object} obj, expects an object with two attributes: code, data. Each attribute is an array 
+         *
+         * @param {Object} obj, expects an object with two attributes: code, data. Each attribute is an array
          */
         function mSetCodeData(obj){
             vm.mCodeData = obj;
