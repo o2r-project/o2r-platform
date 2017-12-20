@@ -228,15 +228,19 @@
         function map(obj){
             logger.info('Search results: ', obj);
             vm.allPubs = obj.hits.hits;
-            var b=[];
+            var b={
+                "type": "FeatureCollection",
+                "features": []
+            };
             for(var i in vm.allPubs){
                 try{
                     vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson.properties = {
                         id: i
                     };
-                    b.push(vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson);
+                    b.features.push(vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson);
                 } catch (g){
                     logger.error("missing spatial in ", i);
+                    logger.error(g);
                 }
                 vm.cutAbstract[i] = abstractLimit;
             }
@@ -246,8 +250,8 @@
             var group;
             if(angular.isDefined(coordinates_selected.geometry.coordinates)){
                 group = new L.geoJson(coordinates_selected);
-            } else if(b.length > 0){
-                var group = new L.geoJson(b);
+            } else if(b.features.length > 0){
+                group = new L.geoJson(b);
             }
 
             // only set zoomlevel, if search returns results
@@ -257,7 +261,6 @@
                 });
             }
             
-
             angular.extend(vm.layers.overlays, {
                 geojson: {
                     name: 'searchResults',
@@ -310,7 +313,7 @@
         function highlightList(point){
             // check if point is inside of polygon. If true, highlight list elements of respective erc
             for(var i in vm.allPubs){
-                var match = turf.inside(point, vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson);
+                var match = turf.inside(point, vm.allPubs[i]._source.metadata.o2r.spatial.union.geojson.geometry);
                 // if true, highlight list entry
                 if(match){
                     vm.allPubs[i].highlight = true;

@@ -18,10 +18,10 @@
       
       vm.updateTemporalBegin = creationObject.updateTemporalBegin;
       vm.updateTemporalEnd = creationObject.updateTemporalEnd;
-      vm.updateSpatialFiles = creationObject.updateSpatialFiles;
+      vm.updateSpatialUnion = creationObject.updateSpatialUnion;
 
       $scope.$on('$destroy', function(){
-          logger.info(angular.toJson(creationObject.getSpacetime()));
+          // logger.info(angular.toJson(creationObject.getSpacetime()));
       });
 
       activate();
@@ -43,26 +43,32 @@
         
         
         var maplayer;
-        // check if spatial and spatial.files are defined
+        // check if spatial and spatial.union are defined
         // if true, use their values to create maplayer
-        if(angular.isDefined(vm.spacetime.spatial) && angular.isDefined(vm.spacetime.spatial.files)){
+        if(angular.isDefined(vm.spacetime.spatial) && angular.isDefined(vm.spacetime.spatial.union)){
           maplayer = {
             "Geojson": {
               name: 'Union',
               type: 'geoJSONShape',
-              data: vm.spacetime.spatial.files,
-              visible: true
+              data: vm.spacetime.spatial.union.geojson,
+              visible: true,
+              doRefresh: true,
+              layerOptions: {
+                onEachFeature: function(feature, layer){
+                  drawnItems.addLayer(layer);
+                }
+              }
             }
           };
 
-          // if spatial.files is empty object, create a new empty layer
-          if(!angular.equals(vm.spacetime.spatial.files, {})){
-            L.geoJson(vm.spacetime.spatial.files, {
-              onEachFeature: function(feature, layer){
-                drawnItems.addLayer(layer);
-              }
-            });
-          }
+          // if spatial.union is empty object, create a new empty layer
+          // if(!angular.equals(vm.spacetime.spatial.union, {})){
+            // L.geoJson(vm.spacetime.spatial.union.features[0], {
+            //   onEachFeature: function(feature, layer){
+            //     drawnItems.addLayer(layer);
+            //   }
+            // });
+          // }
         } else {
           maplayer = null;
         }
@@ -78,24 +84,26 @@
             drawOptions: {
               position: "bottomright",
               draw: {
-                polygon: {
-                  metric: false,
-                  showArea: true,
-                  drawError: {
-                    color: '#b00b00',
-                    timeout: 1000
-                  },
-                  shapeOptions: {
-                    color: 'blue'
-                  }
-                },
+                // polygon: {
+                //   metric: false,
+                //   showArea: true,
+                //   drawError: {
+                //     color: '#b00b00',
+                //     timeout: 1000
+                //   },
+                //   shapeOptions: {
+                //     color: 'blue'
+                //   }
+                // },
+                polygon: false,
+                rectangle: false,
                 polyline:false,
                 circle:false,
-                marker: true
+                marker: false
               },
               edit: {
                 featureGroup: drawnItems,
-                remove: true
+                remove: false
               }
             },
             layers: {
@@ -114,21 +122,25 @@
         leafletData.getMap().then(function(map){
           var drawnItems = vm.map.drawOptions.edit.featureGroup;
           drawnItems.addTo(map);
-          map.on('draw:created', function(e){
-            var layer = e.layer;
-            drawnItems.addLayer(layer);
-            vm.updateSpatialFiles(drawnItems.toGeoJSON());
-          });
+          // map.on('draw:created', function(e){
+          //   var layer = e.layer;
+          //   drawnItems.addLayer(layer);
+          //   logger.info('created', drawnItems.toGeoJSON());
+          //   vm.updateSpatialUnion(drawnItems.toGeoJSON());
+          // });
 
-          map.on('draw:deleted', function(e){
-            var layer = e.layer;
-            drawnItems.removeLayer(layer);
-            vm.updateSpatialFiles(drawnItems.toGeoJSON());
-          });
-
+          // map.on('draw:deleted', function(e){
+          //   var layer = e.layer;
+          //   drawnItems.removeLayer(layer);
+          //   logger.info('deleted', drawnItems.toGeoJSON());
+          //   vm.updateSpatialUnion(drawnItems.toGeoJSON());
+          // });
+          
           map.on('draw:edited', function(e){
-            vm.updateSpatialFiles(drawnItems.toGeoJSON());
-          })
+            // toGeoJSON creates a FeatureCollection but we only need one feature
+            // therefore only send the feature
+            vm.updateSpatialUnion(drawnItems.toGeoJSON().features[0]);
+          });
         });
       }
         

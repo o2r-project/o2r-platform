@@ -45,7 +45,7 @@
 						class="search-result-list-item" 
 						ng-class="{'search-highlight-result' : text.highlight == true}"
 						md-virtual-repeat="text in vm.infiniteItems" 
-						ng-mouseover="vm.highlightMap(text._source.metadata.o2r.spatial.spatial.union.geojson.properties.id, vm.resetAllUnhoveredList)" 
+						ng-mouseover="vm.highlightMap(text._source.metadata.o2r.spatial.union.geojson.properties.id, vm.resetAllUnhoveredList)" 
 						md-on-demand>
 						<a ui-sref="erc({ercid: text._source.compendium_id})">{{text._source.metadata.o2r.title}}</a>
 						<div layout="row">
