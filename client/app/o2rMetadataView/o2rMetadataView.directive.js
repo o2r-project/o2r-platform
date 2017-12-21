@@ -52,12 +52,12 @@
                 scope.compId = comp.id;
                 logger.info('received compendium with id:', scope.compId);
                 var maplayer;
-                if(angular.isDefined(scope.o2r.spatial) && angular.isDefined(scope.o2r.spatial.files)){
+                if(angular.isDefined(scope.o2r.spatial) && angular.isDefined(scope.o2r.spatial.union)){
                     maplayer = {
                         "Geojson": {
                             name: 'Dataset',
                             type: 'geoJSONShape',
-                            data: scope.o2r.spatial.files,
+                            data: scope.o2r.spatial.union.geojson,
                             visible: true,
                             doRefresh: true
                         }
