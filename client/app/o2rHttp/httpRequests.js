@@ -129,7 +129,7 @@
 		* @Param id, id of job
 		*/
 		function listSingleJob(id){
-			var _url = env.api + '/job/' + id;
+			var _url = env.api + '/job/' + id + '?steps=check';	// it is necessary for substitution to get detailed output of step: check
 			return $http.get(_url);
 		}
 

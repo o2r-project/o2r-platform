@@ -8,6 +8,7 @@
             "starter.o2rDisplayFiles",
             "starter.o2rSubstituteCandidate",
             "starter.o2rSubstituteMagnify",
+            "starter.o2rCompareBaseSubst",
             "starter.o2rCompare",
             "starter.o2rHttp",
             "starter.o2rInspect",
@@ -209,7 +210,8 @@
                 controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
-                    erc: ercService
+                    erc: ercService,
+                    compFJobSuccess: compFJobSuccessService
                 }
             })
             .state('erc.reproduce', {
@@ -378,6 +380,31 @@
                 return $q.reject('404 Not Found');
             }
             else return result;
+        });
+    }
+
+    //query param status might need to be changed to filter all finished jobs
+    compFJobSuccessService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compFJobSuccessService($stateParams,$q, jobs){
+        var ercId = $stateParams.ercid;
+        var query = {
+            compendium_id: ercId
+            // status: 'success'
+        };
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                logger.info("No jobs finished in substituted ERC.\nPlease run analysis.");
+                return $q.reject('404 Not Found');
+            }
+            else {
+                if (result.data == "No analysis executed yet.") {
+                    return result;
+                } else {
+                    if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
+                        return result;
+                    } else return {data: "No analysis finished, that provides a html file for comparison reasons."};
+                }
+            }
         });
     }
 
