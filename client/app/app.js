@@ -4,14 +4,17 @@
     angular
         .module('starter', [
             "conf",
+            "starter.o2rCodeHighlight",
             "starter.o2rDisplayFiles",
             "starter.o2rSubstituteCandidate",
             "starter.o2rSubstituteMagnify",
+            "starter.o2rCompareBaseSubst",
             "starter.o2rCompare",
             "starter.o2rHttp",
             "starter.o2rInspect",
             "starter.o2rErcDownload",
             "starter.o2rMetadataView",
+            "starter.o2rUiBindingCreator",
             "treeControl",
             "hljs",
             "ui.router",
@@ -210,7 +213,8 @@
                 controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
-                    erc: ercService
+                    erc: ercService,
+                    compFJobSuccess: compFJobSuccessService
                 }
             })
             .state('erc.reproduce', {
@@ -320,6 +324,7 @@
             {name: 'compass', category: 'action', fn: 'explore'},
             {name: 'highlight_off', category: 'toggle', fn: 'highlight_off'},
             {name: 'folder', category: 'file', fn: 'folder'},
+            {name: 'preview', category: 'action', fn: 'visibility'},
             {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'},
             {name: 'backArrow', category: 'navigation', fn: 'arrow_back'}
         ];
@@ -385,6 +390,31 @@
                 return $q.reject('404 Not Found');
             }
             else return result;
+        });
+    }
+
+    //query param status might need to be changed to filter all finished jobs
+    compFJobSuccessService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compFJobSuccessService($stateParams,$q, jobs){
+        var ercId = $stateParams.ercid;
+        var query = {
+            compendium_id: ercId
+            // status: 'success'
+        };
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                logger.info("No jobs finished in substituted ERC.\nPlease run analysis.");
+                return $q.reject('404 Not Found');
+            }
+            else {
+                if (result.data == "No analysis executed yet.") {
+                    return result;
+                } else {
+                    if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
+                        return result;
+                    } else return {data: "No analysis finished, that provides a html file for comparison reasons."};
+                }
+            }
         });
     }
 
