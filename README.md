@@ -151,7 +151,7 @@ The compose configuration also makes a simple test page for WebSockets available
 
 ## Platform Version
 
-0.9.6
+1.0.0
 
 ## License
 
