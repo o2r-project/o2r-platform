@@ -4,6 +4,7 @@
     angular
         .module('starter', [
             "conf",
+            "starter.o2rCodeHighlight",
             "starter.o2rDisplayFiles",
             "starter.o2rSubstituteCandidate",
             "starter.o2rSubstituteMagnify",
@@ -12,6 +13,7 @@
             "starter.o2rInspect",
             "starter.o2rErcDownload",
             "starter.o2rMetadataView",
+            "starter.o2rUiBindingCreator",
             "treeControl",
             "hljs",
             "ui.router",
@@ -310,6 +312,7 @@
             {name: 'assignment', category: 'action', fn: 'assignment'},
             {name: 'compass', category: 'action', fn: 'explore'},
             {name: 'folder', category: 'file', fn: 'folder'},
+            {name: 'preview', category: 'action', fn: 'visibility'},
             {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'},
             {name: 'backArrow', category: 'navigation', fn: 'arrow_back'}
         ];

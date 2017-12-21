@@ -17,7 +17,9 @@
 <img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="display-files-img" ng-src="{{file.path}}" />
 <audio controls ng-if="(mime =='audio') && (file.size <= sizeRestriction)"><source ng-src="{{file.path}}" type="{{file.type}}"></source>Your browser does not support audio element.</audio>
 <video class="display-files-video" ng-if="(mime =='video') && (file.size <= sizeRestriction)" controls><source ng-src="{{file.path}}"></source>Your browser does not support the video tag.</video>
-<hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs>
+<!-- <hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs> -->
+<pre ng-if="useHljs && (file.size <= sizeRestriction)" o2r-code-highlight o2r-source="{{file.source}}" o2r-line-highlight="{{file.lineHighlight}}" class="language-{{file.fileEnding}}"></pre>
+
 <iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <div ng-if="(file.type=='text/csv') && (file.size <= sizeRestriction)">
