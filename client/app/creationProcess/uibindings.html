@@ -1,6 +1,8 @@
 <md-card>
         <md-card-content>
             <h4>UI Binding(s)</h4>
+            {{html}}
+            <!-- LIST EXISTING BINDINGS -->
             <md-list layout="column">
                 <md-list-item 
                     class="md-3-line" 
@@ -33,7 +35,7 @@
                 </md-list-item>
             </md-list>
 
-            <!-- EDIT Binding-->
+            <!-- EDIT EXISTING Binding-->
             <div ng-if="(vm.editBinding == 0) || (vm.editBinding)" layout="column">
                 <md-input-container md-is-error="vm.showError('authorname')">
                     <label>ShinyURL</label>
@@ -62,7 +64,8 @@
                     Cancel
                 </md-button>
             </div>
-            <!-- ADD Binding -->
+
+            <!-- ADD EXISTING SHINY APP -->
             <div ng-if="vm.newBindingEdit" layout="column">
                 <md-input-container>
                     <label>ShinyURL</label>
@@ -84,12 +87,18 @@
                     </md-option>
                 </md-select>
                 </md-input-container>
+                <h3>You don't have a shiny app, yet? <md-button class="md-raised md-primary white-font" ng-click="vm.startBindingCreation()" aria-label="Create One">Create One</md-button></h3>
                 <md-button class="md-raised" ng-disabled="requiredForm.authorname.$invalid" ng-click="vm.addNewBinding()" aria-label="Add UI Binding">
                     Add UI Binding
                 </md-button>
                 <md-button ng-click="vm.cancelNewBinding()" aria-label="Cancel">
                     Cancel
                 </md-button>
+            </div>
+
+            <!-- CREATE NEW SHINY APP AND ADD BINDING -->
+            <div ng-if="vm.createBinding">
+                <o2r-ui-binding-creator o2r-codefiles="{{vm.input.codefiles}}" o2r-erc-id="{{vm.erc.id}}"></o2r-ui-binding-creator>
             </div>
         </md-card-content>
 </md-card>

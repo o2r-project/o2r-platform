@@ -4,9 +4,9 @@
     angular
         .module('starter')
         .factory('jobs', jobs);
-        
+
     jobs.$inject = ['$rootScope', '$log', '$q', 'httpRequests', 'ngProgressFactory'];
-    
+
     function jobs($rootScope, $log, $q, httpRequests, ngProgressFactory){
         var executionStatus = {};
         var jobDone = true;
@@ -34,7 +34,7 @@
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);
-            
+
             return deferred.promise;
 
             function callback1(joblist){
@@ -81,7 +81,7 @@
             $rootScope.progressbar = ngProgressFactory.createInstance();
 			$rootScope.progressbar.setHeight('10px');
 			$rootScope.progressbar.start();
-			//$timeout($rootScope.progressbar.complete(),100);            
+			//$timeout($rootScope.progressbar.complete(),100);
             var deferred = $q.defer();
             httpRequests.newJob({'compendium_id': id})
                 .then(callback1)
@@ -89,7 +89,7 @@
                 .catch(errorHandler);
 
             return deferred.promise;
-            
+
             function callback1(response){
                 $log.debug('executeJob callback1: %o', response);
                 return httpRequests.listSingleJob(response.data.job_id);

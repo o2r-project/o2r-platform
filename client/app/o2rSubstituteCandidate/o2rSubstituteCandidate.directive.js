@@ -179,17 +179,19 @@
 		      function delDropdown(row) {
 		          var i = row.$index;
 		          if (scope.substitutionRows.length <= 1) {
-		              // TODO: button in red to warn
+            			// TODO: button in red to warn
+									logger.info("Not possible to delete a row - you can not make a substitution without files.");
 		          } else {
-		            scope.substitutionRows.splice(i, 1);
+			            scope.substitutionRows.splice(i, 1);
 		          }
 		      };
 
 		      function addDropdown() {
 		        if ((scope.substitutionRows.length == scope.o2rBase.length) || (scope.substitutionRows.length == scope.o2rOverlay.length)) {
-		          // TODO: button in red to warn
+			          // TODO: button in red to warn
+								logger.info("Not possible to add a row - there are not enough substitution files.");
 		        } else {
-		          scope.substitutionRows.push({});
+		          	scope.substitutionRows.push({});
 		        }
 		      };
 

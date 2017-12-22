@@ -52,6 +52,8 @@ services:
         soft: -1
         hard: -1
     mem_limit: 1g
+#    ports:
+#      - "9200:9200"
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
     environment:
@@ -79,6 +81,7 @@ services:
     image: o2rproject/o2r-muncher:0.13.5
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
@@ -98,6 +101,7 @@ services:
     image: o2rproject/o2r-loader:0.8.1
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
@@ -113,6 +117,7 @@ services:
     image: o2rproject/o2r-informer:0.3.0
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     environment:
       - "INFORMER_MONGODB=mongodb://mongodb"
@@ -124,6 +129,7 @@ services:
     image: o2rproject/o2r-bouncer:0.8.0
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     environment:
       - "BOUNCER_MONGODB=mongodb://mongodb"
@@ -159,6 +165,7 @@ services:
     image: o2rproject/o2r-transporter:0.4.1
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
@@ -172,6 +179,7 @@ services:
     image: o2rproject/o2r-shipper:c4b2d27
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
@@ -186,6 +194,7 @@ services:
     image: o2rproject/o2r-substituter:0.4.0
     restart: unless-stopped
     depends_on:
+      - mongodb
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
@@ -194,6 +203,15 @@ services:
       - SUBSTITUTER_PORT=8090
       - DEBUG=*
       #substituter,substituter:*
+
+  inspecter:
+    image: o2rproject/o2r-inspecter:0.0.1
+    restart: unless-stopped
+    volumes:
+      - o2rstorage:/tmp/o2r
+    environment:
+      - INSPECTER_PORT=8091
+      - DEBUGME=inspecter
 
   platform:
     image: nginx:latest

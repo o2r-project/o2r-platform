@@ -4,6 +4,9 @@
       <md-button title="what is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE5100">THIS IS A SUBSTITUTION</md-button>
       <a href="" ng-click="vm.showERC(vm.substitution.baseID)">base compendium</a>
       <a href="" ng-click="vm.showERC(vm.substitution.overlayID)">overlay compendium</a>
+      <md-button class="md-raised" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">
+        <md-icon md-svg-icon="{{vm.icons.search}}"></md-icon>
+      </md-button>
     </div>
     <span flex></span>
     <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="{{vm.recipient}}" o2r-erc-id="{{vm.ercId}}"></o2r-recipient>
