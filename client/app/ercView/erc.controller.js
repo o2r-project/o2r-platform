@@ -5,19 +5,24 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'recipient'];
-    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, recipient){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'recipient', 'shipmentInfo'];
+    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, recipient, shipmentInfo){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
         defView.name = 'reproduce';
-
+        
         var vm = this;
         vm.icons = icons;
         vm.server = env.server;
         vm.recipient = recipient.data.recipients;
+        vm.shipmentInfo = shipmentInfo;
         vm.publication = erc;
         vm.ercId = vm.publication.id;
+        vm.recipientObject = {};
+        vm.recipientObject.ercId = vm.ercId;
+        vm.recipientObject.shipmentInfo = vm.shipmentInfo;
+        vm.recipientObject.recipient = vm.recipient;
         vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.displayfile));
         vm.originalfile = angular.copy(vm.file);
         vm.currentNavItem = defView.name;
@@ -51,6 +56,7 @@
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
         vm.publish = true;
+        logger.info(vm.shipmentInfo);
         vm.sendToRecipient = sendToRecipient;
         // vm.publishInZenodo = publishInZenodo;
 
@@ -78,7 +84,7 @@
         function activate(){
             header.setTitle('o2r - Examine ERC');
             $state.go(defView.state);
-            getShipment();
+            // getShipment();
         }
 
         function showERC(url) {
@@ -139,31 +145,38 @@
             });
         }
 
-        function getShipment(){
-            httpRequests.getShipment(vm.ercId)
-                .then(function (res){
-                    logger.info(res);
-                    if(res.data.length > 0){
-                        vm.shipped=true;
-                        httpRequests.getStatus(res.data[0])
-                        .then(function (res2){
-                            logger.info(res2);
-                            if (res2.data.status == "shipped"){
-                                vm.publish = false;
-                            }
-                            if (res2.data.status == "published"){
-                                vm.publish = true;
-                            }
-                        })
-                        .catch(function (err2){
-                            logger.info(err2);
-                        })
-                    }
-                })
-                .catch(function (err){
-                    logger.info(err);
-                });
-        }
+        // function getShipment(){
+        //     // httpRequests.getShipment(vm.ercId)
+        //     //     .then(function (res){
+        //     //         logger.info(res);
+        //     //         if(res.data.length > 0){
+        //     //             vm.shipped=true;
+        //     //             httpRequests.getStatus(res.data[0])
+        //     //             .then(function (res2){
+        //     //                 logger.info(res2);
+        //     //                 if (res2.data.status == "shipped"){
+        //     //                     vm.publish = false;
+        //     //                 }
+        //     //                 if (res2.data.status == "published"){
+        //     //                     vm.publish = true;
+        //     //                 }
+        //     //             })
+        //     //             .catch(function (err2){
+        //     //                 logger.info(err2);
+        //     //             })
+        //     //         }
+        //     //     })
+        //     //     .catch(function (err){
+        //     //         logger.info(err);
+        //     //     });
+        //     httpRequests.getCompShipment(vm.ercId)
+        //         .then(function(res){
+        //             logger.info(res);
+        //         })
+        //         .catch(function(err){
+        //             logger.error(err);
+        //         });
+        // }
 
         function sendToRecipient(recip){
             var progressbar = ngProgressFactory.createInstance();

@@ -216,7 +216,8 @@
                 resolve: {
                     erc: ercService,
                     recipient: recipientService,
-                    compFJobSuccess: compFJobSuccessService
+                    compFJobSuccess: compFJobSuccessService,
+                    shipmentInfo : shipmentInfoService
                 }
             })
             .state('erc.reproduce', {
@@ -433,6 +434,28 @@
             }
             else return result;
         });
+    }
+
+    shipmentInfoService.$inject = ['$stateParams', '$q', 'httpRequests'];
+    function shipmentInfoService($stateParams, $q, httpRequests){
+        var deferred = $q.defer();
+        var ercId = $stateParams.ercid;
+        var result = [];
+        httpRequests.getCompShipments(ercId)
+            .then(function(response){
+                var counter = 0;
+                for(var i in response.data){
+                    httpRequests.getShipment(response.data[i])
+                        .then(function(res){
+                            result.push(res.data);
+                            counter++;
+                            if(counter == response.data.length){
+                                deferred.resolve(result);
+                            }
+                        });
+                }
+            });
+        return deferred.promise;
     }
 
     searchAllService.$inject = ['search'];

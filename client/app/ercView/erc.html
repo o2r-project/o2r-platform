@@ -9,7 +9,7 @@
       </md-button>
     </div>
     <span flex></span>
-    <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="{{vm.recipient}}" o2r-erc-id="{{vm.ercId}}"></o2r-recipient>
+    <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="vm.recipientObject"></o2r-recipient>
     <!-- <md-button ng-if="vm.loggedIn" ng-disabled="vm.shipped" ng-click="vm.sendToRecipient('zenodo_sandbox')" aria-label="Ship to {{vm.recipient[1].label}}">Ship to Zenodo<md-icon aria-label md-svg-src="{{vm.icons.rowing}}"></md-icon></md-button> -->
 	<!-- <md-button ng-if="vm.loggedIn" ng-disabled="vm.publish" ng-click="vm.publishInZenodo()" aria-label="Publish in Zenodo">Publish in Zenodo</md-button> -->
 </div>

@@ -218,7 +218,10 @@
 		 */
 		function newShipment(compId, recipient, update_packaging, shipment_id){
 			var _url = env.api + '/shipment';
-			var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded'}};
+			var config = {
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			};
+			if(recipient == 'download') config.responseType = 'arraybuffer';
 			var body = 'compendium_id=' + compId + '&recipient=' + recipient;
 			if(update_packaging) body += '&update_packaging=' + update_packaging;
 			if(shipment_id) body += '&shipment_id=' + shipment_id;

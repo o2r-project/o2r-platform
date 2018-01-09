@@ -8,10 +8,12 @@
     function o2rRecipientHelper($log, httpRequests){
         var logger = $log.getInstance('o2rRecipientHelper');
         var service = {
+            prepareRec: prepareRec,
             setSpinner: setSpinner,
             setButtonTypes: setButtonTypes,
             shipTo: shipTo,
-            publish: publish
+            publish: publish,
+            updateShipmentStatus: updateShipmentStatus
         };
         return service;
 
@@ -41,29 +43,49 @@
             }
         }
 
-        function shipTo(recip, ercId, spinner, buttonTypes, shipmentIds){
+        function shipTo(recip, ercId){
             logger.info('shipping to ', angular.toJson(recip));
-            spinner[recip] = true;
-            httpRequests.newShipment(ercId, recip)
+            recip.spinner = true;
+            if(recip.recipient == 'download'){
+                httpRequests.newShipment(ercId, recip.recipient)
+                    .then(function(response){
+                        // credits for the following to 
+                        // Scott (https://stackoverflow.com/users/1295344/scott) for https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
+                        // And
+                        // Jaliya for http://jaliyaudagedara.blogspot.de/2016/05/angularjs-download-files-by-sending.html
+
+                        var linkElement = document.createElement('a');
+                        var blob = new Blob([response.data], {type: "application/zip"});
+                        var objectUrl = URL.createObjectURL(blob);
+                        linkElement.setAttribute('href', objectUrl);
+                        linkElement.setAttribute('download', ercId);
+                        var clickEvent = new MouseEvent('click', {
+                            view: window,
+                            bubbles: true,
+                            cancelable: false
+                        });
+                        linkElement.dispatchEvent(clickEvent);
+                        recip.spinner = false;
+                    })
+                    .catch(function(err){
+                        logger.error(err);
+                        recip.spinner = false;
+                    });
+            } else {
+                httpRequests.newShipment(ercId, recip.recipient)
                 .then(function(response){
                     logger.info(response);
-                    return httpRequests.getShipment(response.data.id);
-                })
-                .then(function(response){
-                    logger.info('single shipment', response);
-                    if(response.data.hasOwnProperty('dl_filepath')){ // handle it as download
-                        buttonTypes[recip].type = "download";
-                    } else { //handle it as publish
-                        buttonTypes[recip].type = "publish";
-                    }
-                    shipmentIds[recip] = response.data.id;
-                    spinner[recip] = false;
-                    buttonTypes[recip].show = true;
+                    // buttonTypes[recip].type = "publish";
+                    // shipmentIds[recip] = response.data.id;
+                    recip.id = response.data.id;
+                    recip.spinner = false;
+                    recip.showButton = true;
                 })
                 .catch(function(err){
-                    spinner[recip] = false;
+                    recip.spinner = false;
                     logger.info(err);
                 });
+            }
         }
 
         function publish(shipment_id){
@@ -75,6 +97,45 @@
                 .catch(function(err){
                     logger.info(err);
                 });
+        }
+
+        function updateShipmentStatus(shipInf, recip){
+            var results = {};
+            for(var i in recip){
+                results[recip[i].id] = {};
+                results[recip[i].id].status = null;
+                results[recip[i].id].id = null;
+            }
+            for(var i in shipInf){
+                results[shipInf[i].recipient].status = shipInf[i].status;
+                results[shipInf[i].recipient].id = shipInf[i].id;
+            }
+            return results;
+        }
+
+        function prepareRec(recip){
+            var result = [];
+            for(var i in recip.recipient){
+                var obj = {
+                    recipient: recip.recipient[i].id, 
+                    label: recip.recipient[i].label,
+                    spinner: false,
+                    showButton: false
+                }
+                if(recip.recipient[i].id == 'download') obj.buttonType = 'download';
+                else obj.buttonType = 'publish';
+                result.push(obj);
+            }
+            // add latest shipment id if exists
+            for(var i in result){
+                for(var j in recip.shipmentInfo){
+                    if(result[i].recipient == recip.shipmentInfo[j].recipient){
+                        result[i].status = recip.shipmentInfo[j].status;
+                        result[i].id = recip.shipmentInfo[j].id;
+                    }
+                }
+            }
+            return result;
         }
     }
 })();
