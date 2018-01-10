@@ -7,6 +7,7 @@
 
     ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'recipient', 'shipmentInfo'];
     function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, recipient, shipmentInfo){
+        console.log('ErcController');
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';

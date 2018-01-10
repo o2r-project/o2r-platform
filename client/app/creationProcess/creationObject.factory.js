@@ -178,7 +178,9 @@
 
         function updateSpatialUnion(spat){
             logger.info('updateSpatiaFiles', spat);
-            if(angular.isUndefined(erc.metadata.o2r.spatial)){
+            logger.info(angular.fromJson(erc.metadata.o2r.spatial));
+            if((angular.isUndefined(erc.metadata.o2r.spatial)) || (erc.metadata.o2r.spatial === null) || (angular.isUndefined(erc.metadata.o2r.spatial.union)) || (erc.metadata.o2r.spatial.union === null)){
+                logger.info('spatial was undefined or null');
                 erc.metadata.o2r.spatial = {union: {}};
             }
             erc.metadata.o2r.spatial.union.geojson = spat;

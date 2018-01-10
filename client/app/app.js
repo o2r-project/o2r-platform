@@ -415,7 +415,7 @@
                 } else {
                     if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
                         return result;
-                    } else return {data: "No analysis finished, that provides a html file for comparison reasons."};
+                    } else return {data: "No analysis finished that provides a html file for comparison reasons."};
                 }
             }
         });
@@ -444,8 +444,10 @@
         httpRequests.getCompShipments(ercId)
             .then(function(response){
                 var counter = 0;
-                for(var i in response.data){
-                    httpRequests.getShipment(response.data[i])
+                if(response.data.length === 0) deferred.resolve({data: []});
+                else {
+                    for(var i in response.data){
+                        httpRequests.getShipment(response.data[i])
                         .then(function(res){
                             result.push(res.data);
                             counter++;
@@ -453,6 +455,7 @@
                                 deferred.resolve(result);
                             }
                         });
+                    }
                 }
             });
         return deferred.promise;
