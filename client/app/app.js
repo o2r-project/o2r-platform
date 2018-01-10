@@ -299,6 +299,7 @@
     function icons(){
         var path = 'img/ic_';
         var path2 = '_48px.svg';
+        var path3 = '_24px.svg';
         var object = {};
         var icons = [
             {name: 'upload', category: 'file', fn: 'file_upload'},
@@ -333,8 +334,8 @@
         ];
 
         for(var i in icons){
-
             object[icons[i].name] = path + icons[i].fn + path2;
+            object[icons[i].name + '_small'] = path + icons[i].fn + path3;
         }
 
         return object;

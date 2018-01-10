@@ -119,6 +119,7 @@
                 var obj = {
                     recipient: recip.recipient[i].id, 
                     label: recip.recipient[i].label,
+                    status: recip.recipient[i].status,
                     spinner: false,
                     showButton: false
                 }
@@ -132,6 +133,7 @@
                     if(result[i].recipient == recip.shipmentInfo[j].recipient){
                         result[i].status = recip.shipmentInfo[j].status;
                         result[i].id = recip.shipmentInfo[j].id;
+                        if(result[i].status == 'shipped' && (result[i].recipient != 'download')) result[i].showButton = true;
                     }
                 }
             }

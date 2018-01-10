@@ -67,9 +67,9 @@
             function getIcon(type){
                 var result;
                 if (type == "download"){
-                    result = scope.icons.download;
+                    result = scope.icons.download_small;
                 } else if(type == "publish"){
-                    result = scope.icons.rowing;
+                    result = scope.icons.rowing_small;
                 }
                 return result;
             }

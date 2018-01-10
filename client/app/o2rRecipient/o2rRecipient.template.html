@@ -8,12 +8,12 @@
                 <md-icon md-svg-src="{{icons.rowing}}" arial-label="rowing"></md-icon>Ship to...
             </span>
         </md-menu-item>
-        <md-menu-item ng-repeat="recip in rec" layout="row">
+        <md-menu-item class="o2r-recipient-menu-item" ng-repeat="recip in rec" layout="row">
             <md-button ng-click="shipTo(recip, recipient.ercId)" aria-label="ship to" md-prevent-menu-close="md-prevent-menu-close">
                 {{recip.label}}
             </md-button>
             <md-progress-circular ng-if="recip.spinner" md-diameter="30px"></md-progress-circular>
-            <md-button class="md-fab md-mini" ng-if="recip.showButton" ng-click="publish(recip.id)" arial-label="result">
+            <md-button class="md-fab md-mini md-raised" ng-if="recip.showButton" ng-click="publish(recip.id)" arial-label="result">
                 <md-icon md-svg-src="{{getIcon(recip.buttonType)}}" aria-label="icon"></md-icon>
             </md-button>
         </md-menu-item>
