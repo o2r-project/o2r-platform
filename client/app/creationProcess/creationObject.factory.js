@@ -87,7 +87,7 @@
             var required = {
                 title: erc.metadata.o2r.title,
                 description: erc.metadata.o2r.description,
-                publicationDate: erc.metadata.o2r.publicationDate,
+                publication_date: erc.metadata.o2r.publication_date,
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 creators: erc.metadata.o2r.creators,
@@ -183,7 +183,9 @@
 
         function updateSpatialUnion(spat){
             logger.info('updateSpatiaFiles', spat);
-            if(angular.isUndefined(erc.metadata.o2r.spatial)){
+            logger.info(angular.fromJson(erc.metadata.o2r.spatial));
+            if((angular.isUndefined(erc.metadata.o2r.spatial)) || (erc.metadata.o2r.spatial === null) || (angular.isUndefined(erc.metadata.o2r.spatial.union)) || (erc.metadata.o2r.spatial.union === null)){
+                logger.info('spatial was undefined or null');
                 erc.metadata.o2r.spatial = {union: {}};
             }
             erc.metadata.o2r.spatial.union.geojson = spat;

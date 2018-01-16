@@ -45,7 +45,7 @@
         var maplayer;
         // check if spatial and spatial.union are defined
         // if true, use their values to create maplayer
-        if(angular.isDefined(vm.spacetime.spatial) && angular.isDefined(vm.spacetime.spatial.union)){
+        if(angular.isDefined(vm.spacetime.spatial) && angular.isDefined(vm.spacetime.spatial.union) && (vm.spacetime.spatial.union !== null)){
           maplayer = {
             "Geojson": {
               name: 'Union',
@@ -60,6 +60,7 @@
               }
             }
           };
+          logger.info('found existing spatial information');
 
           // if spatial.union is empty object, create a new empty layer
           // if(!angular.equals(vm.spacetime.spatial.union, {})){
@@ -70,7 +71,61 @@
             // });
           // }
         } else {
-          maplayer = null;
+          logger.info('no existing spatial information found');
+          vm.spacetime.spatial = {};
+          vm.spacetime.spatial.union = {
+            "geojson": {
+              "type": "Feature",
+              "bbox": [
+                -181.0,
+                181.0,
+                -181.0,
+                181.0
+              ],
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      181.0,
+                      181.0
+                    ],
+                    [
+                      -181.0,
+                      181.0
+                    ],
+                    [
+                      -181.0,
+                      -181.0
+                    ],
+                    [
+                      181.0,
+                      -181.0
+                    ],
+                    [
+                      181.0,
+                      181.0
+                    ]
+                  ]
+                ]
+              }
+            }
+          };
+          vm.updateSpatialUnion(vm.spacetime.spatial.union);
+          maplayer = {
+            "Geojson": {
+              name: 'Union',
+              type: 'geoJSONShape',
+              data: vm.spacetime.spatial.union.geojson,
+              visible: true,
+              doRefresh: true,
+              layerOptions: {
+                onEachFeature: function(feature, layer){
+                  drawnItems.addLayer(layer);
+                }
+              }
+            }
+          };
         }
 
 

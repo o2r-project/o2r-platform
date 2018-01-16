@@ -56,7 +56,7 @@
   },
   "resolutions": {
     "angular": ">1.6.6",
-    "leaflet": "1.0.3",	
+    "leaflet": "1.0.3",
     "ui-leaflet": "^2.0.0"
   }
 }
