@@ -10,13 +10,16 @@
     function jobs($rootScope, $log, $q, httpRequests, ngProgressFactory){
         var executionStatus = {};
         var jobDone = true;
+        var lastFinishedJobId = null;
 
         var service = {
             callJobs: callJobs,
             checkStatus: checkStatus,
             executeJob: executeJob,
             getExecStatus: getExecStatus,
-            getJobDone: getJobDone
+            getJobDone: getJobDone,
+            getLastFinishedJobId: getLastFinishedJobId,
+            setLastFinishedJobId: setLastFinishedJobId
         };
 
         return service;
@@ -125,6 +128,15 @@
         function setJobDone(bool){
             jobDone = bool;
             $rootScope.$broadcast('changedJobDone');
+        }
+
+        function getLastFinishedJobId(){
+            return lastFinishedJobId;
+        }
+
+        function setLastFinishedJobId(id){
+            lastFinishedJobId = id;
+            $rootScope.$broadcast('changedLastFinishedJobId');
         }
     }
 })();

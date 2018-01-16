@@ -2,16 +2,20 @@
     <md-button class="md-raised" ng-click="execJob()" ng-disabled="!$parent.$$prevSibling.$parent.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
     <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()" aria-label="Check Results"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
     <span flex></span>
-    <md-button ng-href="{{env.api}}/job/{{lFin.id}}" target="_blank" aria-label="See Raw Jobs Status">Raw Jobs</md-button>
-    <md-button ng-href="{{env.api}}/compendium/{{$parent.vm.ercId}}" target="_blank" aria-label="See Raw ERC">Raw ERC</md-button>
+    <md-button ng-href="{{env.api}}/job/{{lFin.id}}?steps=all" target="_blank" aria-label="See raw data for latest job">Job (raw)</md-button>
+    <md-button ng-href="{{env.api}}/compendium/{{$parent.vm.ercId}}" target="_blank" aria-label="See raw data for ERC">ERC (raw)</md-button>
 </div>
 <div id='analysisStats'>
 <div style="width: 200vh">
     <h3>Last finished analysis</h3>
     <table ng-hide="isEmpty(lFin.steps)">
         <tr ng-repeat="(key, value) in lFin.steps">
-            <td>{{key | replaceUnderscore}}</td>
-            <td layout="column">
+            <td>
+                <div layout="row">
+                    {{key | replaceUnderscore}}
+                </div>
+            </td>
+            <td>
                 <div layout="row">
                     <strong>{{value.status}}</strong>
                     <md-icon md-svg-src="{{checkIcon(value.status, key, 'finished')}}" ng-class="iconClass[key].finished"></md-icon>
@@ -19,7 +23,9 @@
                 <small ng-if="hideDuration(value.status)">{{value.end - value.start | duration}}</small>
             </td>
             <td>
-                <small>{{value.text}}</small>
+                <div layout="column">
+                    <code ng-repeat="logLine in value.text track by $index">{{ logLine }}</code>
+                </div>
             </td>
         </tr>
     </table>

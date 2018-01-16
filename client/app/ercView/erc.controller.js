@@ -5,8 +5,8 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs'];
-    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs){
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'compendium'];
+    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, compendium){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
@@ -16,6 +16,7 @@
         vm.icons = icons;
         vm.server = env.server;
         vm.publication = erc;
+        compendium.setCompendium(vm.publication);
         vm.ercId = vm.publication.id;
         vm.file = publications.getContentById(vm.publication, fixPath(vm.publication.metadata.o2r.displayfile));
         vm.originalfile = angular.copy(vm.file);

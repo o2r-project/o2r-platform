@@ -704,6 +704,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	display: block;
 	overflow: scroll;
 }
+#analysisStats table{
+	border: none;
+	padding-top: 8px;
+}
 /***********************
 	End AnalysisStats
 ************************/
