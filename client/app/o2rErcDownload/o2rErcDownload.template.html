@@ -1,11 +1,10 @@
 <md-menu>
-    <md-button aria-label="open download menu" ng-click="openMenu($mdOpenMenu, $event)">
-        <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
-        <span md-menu-origin>Download ERC</span>
+    <md-button class="white-font" aria-label="open download menu" ng-click="openMenu($mdOpenMenu, $event)">
+        <md-icon md-svg-src="{{icons.download}}" class="o2r-white-icon"></md-icon>
+        <span md-menu-origin>Download files</span>
     </md-button>
     <md-menu-content width="2">
         <md-menu-item>
-            <small ng-if="!excImg(excludeImg)">Uncompressed: {{size.dockerInclude | filesize : 1}}</small>
             <small ng-if="excImg(excludeImg)">Uncompressed: {{size.dockerExclude | filesize : 1}}</small>
         </md-menu-item>
         <md-menu-item>
@@ -25,12 +24,6 @@
                 <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
                 .tar.gz
             </md-button>
-        </md-menu-item>
-        <md-divider></md-divider>
-        <md-menu-item class="o2r-download-exclude-image">
-            <md-checkbox ng-model="excludeImg" aria-label="Exclude image files">
-                Exclude docker image
-            </md-checkbox>
         </md-menu-item>
     </md-menu-content>
 </md-menu>
