@@ -78,7 +78,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.5
+    image: o2rproject/o2r-muncher:0.13.6
     restart: unless-stopped
     depends_on:
       - mongodb
