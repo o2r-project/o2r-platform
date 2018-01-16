@@ -45,7 +45,7 @@
 			attrs.$observe('o2rFile', function(value){
 				if(value != ''){
 					scope.file = angular.fromJson(value);
-					if(!scope.file.path && !scope.file.source) throw 'path and source are undefined';
+					if(!scope.file.path && !scope.file.source) throw 'o2rDisplayFiles: path and source are undefined';
 					scope.iframeOptions = {
 						checkOrigin: false,
 						log: true

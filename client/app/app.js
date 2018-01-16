@@ -14,6 +14,7 @@
             "starter.o2rInspect",
             "starter.o2rErcDownload",
             "starter.o2rMetadataView",
+            "starter.o2rRecipient",
             "starter.o2rUiBindingCreator",
             "treeControl",
             "hljs",
@@ -214,7 +215,9 @@
                 controllerAs: 'vm',
                 resolve: {
                     erc: ercService,
-                    compFJobSuccess: compFJobSuccessService
+                    recipient: recipientService,
+                    compFJobSuccess: compFJobSuccessService,
+                    shipmentInfo : shipmentInfoService
                 }
             })
             .state('erc.reproduce', {
@@ -296,6 +299,7 @@
     function icons(){
         var path = 'img/ic_';
         var path2 = '_48px.svg';
+        var path3 = '_24px.svg';
         var object = {};
         var icons = [
             {name: 'upload', category: 'file', fn: 'file_upload'},
@@ -330,8 +334,8 @@
         ];
 
         for(var i in icons){
-
             object[icons[i].name] = path + icons[i].fn + path2;
+            object[icons[i].name + '_small'] = path + icons[i].fn + path3;
         }
 
         return object;
@@ -412,7 +416,7 @@
                 } else {
                     if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
                         return result;
-                    } else return {data: "No analysis finished, that provides a html file for comparison reasons."};
+                    } else return {data: "No analysis finished that provides a html file for comparison reasons."};
                 }
             }
         });
@@ -431,6 +435,31 @@
             }
             else return result;
         });
+    }
+
+    shipmentInfoService.$inject = ['$stateParams', '$q', 'httpRequests'];
+    function shipmentInfoService($stateParams, $q, httpRequests){
+        var deferred = $q.defer();
+        var ercId = $stateParams.ercid;
+        var result = [];
+        httpRequests.getCompShipments(ercId)
+            .then(function(response){
+                var counter = 0;
+                if(response.data.length === 0) deferred.resolve({data: []});
+                else {
+                    for(var i in response.data){
+                        httpRequests.getShipment(response.data[i])
+                        .then(function(res){
+                            result.push(res.data);
+                            counter++;
+                            if(counter == response.data.length){
+                                deferred.resolve(result);
+                            }
+                        });
+                    }
+                }
+            });
+        return deferred.promise;
     }
 
     searchAllService.$inject = ['search'];
@@ -481,6 +510,12 @@
             }
             else return result;
         });
+    }
+
+    recipientService.$inject = ['$log', '$q', 'httpRequests'];
+    function recipientService($log, $q, httpRequests){
+        $log.debug('GET /recipient/');
+        return httpRequests.getRecipient();
     }
 
     creationService.$inject = ['$log', '$stateParams', '$q', 'publications'];
