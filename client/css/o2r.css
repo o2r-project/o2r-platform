@@ -721,7 +721,11 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	overflow: scroll;
 }
 
-.md-select-menu-container{
+#substitution-buttons {
+	margin-left: 2em;
+}
+
+.md-select-menu-container {
 	z-index: 101 !important;
 }
 

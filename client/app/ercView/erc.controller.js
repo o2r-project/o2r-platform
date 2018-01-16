@@ -105,7 +105,7 @@
         }
 
         function compareSubstBaseHtml(ev) {
-            // get successed job of base ERC
+            // get finished job of base ERC
             var ercId = vm.substitution.baseID;
             var query = {
                 compendium_id: ercId
