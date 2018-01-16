@@ -18,6 +18,7 @@
 			getLoggedUser: getLoggedUser,
 			getSingleUser: getSingleUser,
 			searchComp: searchComp,
+			complexSearch: complexSearch,
 			toZenodo: toZenodo,
 			getShipment: getShipment,
 			getStatus: getStatus,
@@ -129,7 +130,7 @@
 		* @Param id, id of job
 		*/
 		function listSingleJob(id){
-			var _url = env.api + '/job/' + id;
+			var _url = env.api + '/job/' + id + '?steps=check';	// it is necessary for substitution to get detailed output of step: check
 			return $http.get(_url);
 		}
 
@@ -159,6 +160,11 @@
 			if(query) _url += query;
 			else _url += '*';
 			return $http.get(_url);
+		}
+
+		function complexSearch(query){
+			var _url = env.api + '/search';
+			return $http.post(_url, query);
 		}
 
 		function uploadViaSciebo(url, path){

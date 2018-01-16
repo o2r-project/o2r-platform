@@ -8,6 +8,7 @@
             "starter.o2rDisplayFiles",
             "starter.o2rSubstituteCandidate",
             "starter.o2rSubstituteMagnify",
+            "starter.o2rCompareBaseSubst",
             "starter.o2rCompare",
             "starter.o2rHttp",
             "starter.o2rInspect",
@@ -27,11 +28,13 @@
             'angularUtils.directives.dirPagination',
             'ngProgress',
             'ngIframeResizer',
+            'rzModule',
             'ui-leaflet',
             'angular-logger',
             'angular-intro',
             'ngCookies',
-            'ngSanitize'])
+            'ngSanitize',
+            'elasticsearch'])
         .constant('icons', icons())
         .config(config)
         .run(run);
@@ -195,11 +198,12 @@
                 }
             })
             .state('search', {
-                url: "/search?q",
+                url: "/search?q&coords&from&to&start&size&libraries",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchController',
                 controllerAs: 'vm',
                 resolve: {
+                    searchAll: searchAllService,
                     searchResults: searchResultsService
                 }
             })
@@ -209,7 +213,8 @@
                 controller: 'ErcController',
                 controllerAs: 'vm',
                 resolve: {
-                    erc: ercService
+                    erc: ercService,
+                    compFJobSuccess: compFJobSuccessService
                 }
             })
             .state('erc.reproduce', {
@@ -266,6 +271,12 @@
                 controller: 'PrivacyController',
                 controllerAs: 'vm'
             })
+            .state('explore', {
+                url: "/explore",
+                templateUrl: "app/searchView/exploreERC.html",
+                controller: 'ExploreController',
+                controllerAs: 'vm'
+            })
             .state('404', {
                 url: "/404",
                 templateUrl: "app/templates/404.html"
@@ -311,6 +322,7 @@
             {name: 'graph', category: 'action', fn: 'assessment'},
             {name: 'assignment', category: 'action', fn: 'assignment'},
             {name: 'compass', category: 'action', fn: 'explore'},
+            {name: 'highlight_off', category: 'toggle', fn: 'highlight_off'},
             {name: 'folder', category: 'file', fn: 'folder'},
             {name: 'preview', category: 'action', fn: 'visibility'},
             {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'},
@@ -381,6 +393,31 @@
         });
     }
 
+    //query param status might need to be changed to filter all finished jobs
+    compFJobSuccessService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compFJobSuccessService($stateParams,$q, jobs){
+        var ercId = $stateParams.ercid;
+        var query = {
+            compendium_id: ercId
+            // status: 'success'
+        };
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                logger.info("No jobs finished in substituted ERC.\nPlease run analysis.");
+                return $q.reject('404 Not Found');
+            }
+            else {
+                if (result.data == "No analysis executed yet.") {
+                    return result;
+                } else {
+                    if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
+                        return result;
+                    } else return {data: "No analysis finished, that provides a html file for comparison reasons."};
+                }
+            }
+        });
+    }
+
     compSJobService.$inject = ['$stateParams', '$q', 'jobs'];
     function compSJobService($stateParams, $q, jobs){
         var ercId = $stateParams.ercid;
@@ -396,17 +433,28 @@
         });
     }
 
-    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata'];
-    function searchResultsService($stateParams, $log, $q, metadata){
-        $log.debug('searchResultsService, param: ', $stateParams);
-        var term = $stateParams.q;
-        $log.debug('searchResultsService, term: ' + term);
-        return metadata.callMetadata_search(term).then(function(result){
-            if(result.status == 404){
-                return $q.reject('404 Not Found');
-            }
-            else return result;
-        });
+    searchAllService.$inject = ['search'];
+    function searchAllService(search){
+        var index = 'o2r';
+        var query = search.prepareQuery(index);
+        return search.search(query);
+    }
+
+    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'search'];
+    function searchResultsService($stateParams, $log, $q, metadata, search){
+        var logger = $log.getInstance('searchResultsService');
+        var index = 'o2r';
+        logger.info('param: ', $stateParams);
+        var term, coords, from, to, start,libraries, size = null;
+        if($stateParams.q) term = $stateParams.q;
+        if($stateParams.coords) coords = angular.fromJson($stateParams.coords);
+        if($stateParams.from) from = angular.fromJson($stateParams.from);
+        if($stateParams.to) to = angular.fromJson($stateParams.to);
+        if($stateParams.start) start = angular.fromJson($stateParams.start);
+        if($stateParams.size) size = angular.fromJson($stateParams.size);
+        if($stateParams.libraries) libraries = angular.fromJson($stateParams.libraries);
+        var query = search.prepareQuery(index, term, coords, from, to, start, size, libraries);
+        return search.search(query);
     }
 
     // provides metadata for all compendia TODO #1 (substitution): not all but similar compendia

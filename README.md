@@ -120,6 +120,10 @@ For testing metadata tools under development setting the property to `o2rproject
 
 For _container manifest creation_, see the [`muncher` configuration property `MUNCHER_CONTAINERIT_IMAGE`](https://github.com/o2r-project/o2r-muncher/#configuration).
 
+### Note
+
+(Re-)starting containers manually might cause problems with the platform due to newly assigned IP-adresses. To avoid this problem, __restart the platform container__ after (re-)starting other containers manually. 
+
 ## User levels
 
 The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
@@ -147,7 +151,7 @@ The compose configuration also makes a simple test page for WebSockets available
 
 ## Platform Version
 
-0.9.6
+1.0.0
 
 ## License
 

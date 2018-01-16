@@ -33,7 +33,7 @@
             removeBinding: removeBinding,
             updateTemporalBegin: updateTemporalBegin,
             updateTemporalEnd: updateTemporalEnd,
-            updateSpatialFiles: updateSpatialFiles,
+            updateSpatialUnion: updateSpatialUnion,
             removeArtifacts: removeArtifacts
         };
 
@@ -181,12 +181,12 @@
             erc.metadata.o2r.temporal.end = dat;
         }
 
-        function updateSpatialFiles(spat){
-            //check if spatial attribute exists, if not, create it
+        function updateSpatialUnion(spat){
+            logger.info('updateSpatiaFiles', spat);
             if(angular.isUndefined(erc.metadata.o2r.spatial)){
-                erc.metadata.o2r.spatial = {files: {}};
+                erc.metadata.o2r.spatial = {union: {}};
             }
-            erc.metadata.o2r.spatial.files = spat;
+            erc.metadata.o2r.spatial.union.geojson = spat;
         }
 
         function removeArtifacts(attr){

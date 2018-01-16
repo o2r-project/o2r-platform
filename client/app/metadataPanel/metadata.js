@@ -4,9 +4,9 @@
 	angular
 		.module('starter')
 		.factory('metadata', metadata);
-		
+
 	metadata.$inject = ['$http', '$rootScope','$q', '$log', 'httpRequests', 'ngProgressFactory'];
-	
+
 	function metadata($http, $rootScope, $q, $log, httpRequests, ngProgressFactory){
 		var service = {
 			callMetadata_author: callMetadata_author,
@@ -32,9 +32,9 @@
 				.listCompendia({'author': authorid})
 				.then(cb1)
 				.catch(errorHandler);
-			
+
 			return deferred.promise;
-			
+
 			function cb1(response){
 				for(var index in response.data.results){
 					$log.debug('callMetadata_author, cb1 %o', response);
@@ -52,7 +52,7 @@
 						deferred.resolve(comp_meta);
 					}
 				}
-				
+
 			}
 			function errorHandler(e){
 				$log.debug('callMetadata_author errorHandler: %o',e);
@@ -62,7 +62,7 @@
 
 		// httpRequest for Metadata of all compendia matching a search query
 		function callMetadata_search(searchTerm){
-			var query = searchTerm || '*';
+			var query = searchTerm;
 			var deferred = $q.defer();
 			var progressbar = ngProgressFactory.createInstance();
 				progressbar.setHeight('10px');
