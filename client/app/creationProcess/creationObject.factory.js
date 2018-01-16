@@ -21,6 +21,7 @@
             getSpacetime: getSpacetime,
             getUibindings: getUibindings,
             getInputFiles: getInputFiles,
+            getMainFile: getMainFile,
             simpleUpdate: simpleUpdate,
             updateTemporal: updateTemporal,
             updateLicense: updateLicense,
@@ -119,6 +120,10 @@
                 inputfiles: erc.metadata.o2r.inputfiles
             };
             return angular.copy(inputFiles);
+        }
+
+        function getMainFile(){
+            return erc.metadata.o2r.mainfile;
         }
         
         function updateAuthor(index, name, aff, orcid){
