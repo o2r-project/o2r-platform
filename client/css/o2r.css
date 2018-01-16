@@ -781,4 +781,15 @@ o2r-substitute-magnify{
 }
 /***********************
 	End Substitution
+***********************/
 /***********************
+	Start o2rRecipient
+***********************/
+
+.o2r-recipient-menu-item{
+	padding-right: 16px;
+}
+
+/***********************
+	End o2rRecipient
+***********************/

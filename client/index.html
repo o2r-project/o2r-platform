@@ -91,6 +91,7 @@
 <script src="app/o2rInspect/o2rInspect.module.js"></script>
 <script src="app/o2rErcDownload/o2rErcDownload.module.js"></script>
 <script src="app/o2rMetadataView/o2rMetadataView.module.js"></script>
+<script src="app/o2rRecipient/o2rRecipient.module.js"></script>
 <script src="app/o2rUiBindingCreator/o2rUiBindingCreator.module.js"></script>
 <script src="app/o2rCodeHighlight/o2rCodeHighlight.module.js"></script>
 <script src="app/o2rSubstituteCandidate/o2rSubstituteCandidate.module.js"></script>
@@ -111,6 +112,7 @@
 <script src="app/searchView/elasticsearch.factory.js"></script>
 <script src="app/searchView/customLeaflet.factory.js"></script>
 <script src="app/substituteView/metadataSimComp.js"></script>
+<script src="app/o2rRecipient/o2rRecipient.helper.js"></script>
 <script src="app/o2rUiBindingCreator/o2rUiBindingCreator.helper.js"></script>
 
 
@@ -148,6 +150,7 @@
 <script src="app/o2rCompare/o2rCompare.directive.js"></script>
 <script src="app/o2rInspect/o2rInspect.directive.js"></script>
 <script src="app/o2rErcDownload/o2rErcDownload.directive.js"></script>
+<script src="app/o2rRecipient/o2rRecipient.directive.js"></script>
 <script src="app/o2rUiBindingCreator/o2rUiBindingCreator.directive.js"></script>
 <script src="app/o2rSubstituteCandidate/o2rSubstituteCandidate.directive.js"></script>
 <script src="app/o2rSubstituteMagnify/o2rSubstituteMagnify.directive.js"></script>
@@ -183,7 +186,7 @@
       <div class="md-toolbar-tools">
             <img class="o2r-pointer" src="img/o2r-logo-only-white.svg" alt="o2r logo" height="60%" ui-sref="home">
             <span flex></span>
-            <!--<md-button class="white-font" ui-sref="search()" ui-sref-opts="{inherit: false}" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Discover ERC</md-button>-->
+            <md-button class="white-font" ui-sref="search()" ui-sref-opts="{inherit: false}" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Discover ERC</md-button>
             <md-button class="white-font" ng-show="vm.loggedIn" ui-sref="author({authorid: vm.user.orcid})">{{vm.user.name}} | <img src="img/orcid.png" class="orcidImage"></img><small class="toLowerCase">orcid.org/{{vm.user.orcid}}</small></md-button>
             <md-button class="white-font" href="api/v1/auth/logout" ng-show="vm.loggedIn" analytics-category="user" analytics-on>Logout</md-button>
             <md-button id="o2r-login" class="white-font" href="api/v1/auth/login" ng-hide="vm.loggedIn" analytics-category="user" analytics-on>Login</md-button>

@@ -271,14 +271,14 @@
         }
 
         function preparePublicationDate(){
-            if(angular.isUndefined(vm.required.publicationDate) || vm.required.publicationDate == null){
-                vm.required.publicationDate = new Date();
-                logger.info('setting new publicationDate');
+            if(angular.isUndefined(vm.required.publication_date) || vm.required.publication_date == null){
+                vm.required.publication_date = new Date();
+                logger.info('setting new publication_date');
             } else {
-                vm.required.publicationDate = new Date(vm.required.publicationDate);
+                vm.required.publication_date = new Date(vm.required.publication_date);
                 logger.info('found existing publication date')
             }
-            vm.simpleUpdate('publicationDate', vm.required.publicationDate);
+            vm.simpleUpdate('publication_date', vm.required.publication_date);
         }
 
         function showError(fieldname){

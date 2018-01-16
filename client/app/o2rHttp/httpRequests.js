@@ -8,6 +8,7 @@
 	httpRequests.$inject = ['$http', '$log', '$q', 'env'];
 
 	function httpRequests($http, $log, $q, env){
+		var logger = $log.getInstance('httpRequests');
 		var service = {
 			listCompendia : listCompendia,
 			singleCompendium: singleCompendium,
@@ -18,11 +19,16 @@
 			getLoggedUser: getLoggedUser,
 			getSingleUser: getSingleUser,
 			searchComp: searchComp,
+			// toZenodo: toZenodo,
+			getAllShipments: getAllShipments,
+			getCompShipments: getCompShipments,
 			complexSearch: complexSearch,
-			toZenodo: toZenodo,
 			getShipment: getShipment,
+			newShipment: newShipment,
 			getStatus: getStatus,
 			publishERC: publishERC,
+			deleteFileFromDepot: deleteFileFromDepot,
+			getRecipient: getRecipient,
 			updateMetadata: updateMetadata,
 			uploadViaSciebo: uploadViaSciebo,
 			getLicenses: getLicenses,
@@ -172,14 +178,55 @@
 			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});
 		}
 
-		function toZenodo(compendiumID) {
+		// function toZenodo(compendiumID) {
+		// 	var _url = env.api + '/shipment';
+		// 	return $http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")		
+		// }
+
+		/**
+		 * Retrieve all shipments
+		 */
+		function getAllShipments(){
 			var _url = env.api + '/shipment';
-			return $http.post(_url, "compendium_id=" + compendiumID + "&recipient=" + "zenodo")
+			return $http.get(_url);
 		}
 
-		function getShipment(compendiumID){
-			var _url = env.api + '/shipment?compendium_id=' + compendiumID;
+		/**
+		 * Retrieve all shipments belonging to a specific compendium
+		 * @param {String} compendiumID 
+		 */
+		function getCompShipments(compendiumID){
+			var _url = env.api + '/shipment?compendium_id=' + compendiumID;			
 			return $http.get(_url);
+		}
+
+		/**
+		 * Retrieve one specific shipment with id shipmentID
+		 * @param {String} shipmentID 
+		 */
+		function getShipment(shipmentID){
+			var _url = env.api + '/shipment/' + shipmentID;
+			return $http.get(_url);
+		}
+
+		/**
+		 * Creates a new shipment
+		 * @param {String} compId 
+		 * @param {String} recipient 
+		 * @param {Boolean} update_packaging 
+		 * @param {String} shipment_id 
+		 */
+		function newShipment(compId, recipient, update_packaging, shipment_id){
+			var _url = env.api + '/shipment';
+			var config = {
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			};
+			if(recipient == 'download') config.responseType = 'arraybuffer';
+			var body = 'compendium_id=' + compId + '&recipient=' + recipient;
+			if(update_packaging) body += '&update_packaging=' + update_packaging;
+			if(shipment_id) body += '&shipment_id=' + shipment_id;
+			logger.info(_url, angular.toJson(body));
+			return $http.post(_url, body, config);
 		}
 
 		function getStatus(shipmentID){
@@ -189,12 +236,22 @@
 
 		function publishERC(shipmentID){
 			var _url = env.api + '/shipment/' + shipmentID + '/publishment';
-			return $http.put(_url,{});
+			return $http.put(_url);
 		}
 
 		function substitute(substitutionMetadata) {
 			var _url = env.api + '/substitution';
 			return $http.post(_url, substitutionMetadata)
+		}
+
+		function deleteFileFromDepot(shipment_id, file_id){
+			var _url = env.api + '/shipment/' + shipment_id + '/files/' + file_id;
+			return $http.delete(_url);
+		}
+
+		function getRecipient(){
+			var _url = env.api + '/recipient';
+			return $http.get(_url);
 		}
 
 		function updateMetadata(id, data){
