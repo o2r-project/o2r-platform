@@ -86,7 +86,7 @@
             var required = {
                 title: erc.metadata.o2r.title,
                 description: erc.metadata.o2r.description,
-                publicationDate: erc.metadata.o2r.publicationDate,
+                publication_date: erc.metadata.o2r.publication_date,
                 softwarePaperCitation: erc.metadata.o2r.softwarePaperCitation,
                 license: erc.metadata.o2r.license,
                 creators: erc.metadata.o2r.creators,
