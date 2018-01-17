@@ -206,7 +206,7 @@
                         this.icons = icons;
                         this.cancel = () => $mdDialog.cancel();
                         this.file = {
-                            path: 'https://markuskonkol.shinyapps.io/figure1_interactive/',
+                            path: 'https://markuskonkol.shinyapps.io/interactiveFigure1/',
                             type: 'text/shiny'
                         };
                     },
