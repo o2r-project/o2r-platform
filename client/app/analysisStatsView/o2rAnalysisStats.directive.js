@@ -426,7 +426,7 @@
                         o.image_execute.status = data.steps.image_execute.status;
                         logger.info('updated image_execute to ', data.steps.image_execute.status);
                     }
-                    if(data.step.image_execute.hasOwnProperty('text')){
+                    if(data.steps.image_execute.hasOwnProperty('text')){
                         var key = Object.keys(data.steps.image_execute.text);
                         o.image_execute.text[parseInt(key[0])] = data.steps.image_execute.text[key];
                     }
