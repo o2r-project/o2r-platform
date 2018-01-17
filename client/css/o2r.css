@@ -95,7 +95,11 @@ md-card-header-text{
 }
 
 .o2r-green-icon{
-	fill: green !important;
+	fill: rgb(0,135,98) !important;
+}
+
+.o2r-blue-icon{
+	fill: rgb(0,66,134) !important;
 }
 
 .o2r-download-exclude-image{

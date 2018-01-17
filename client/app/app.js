@@ -312,6 +312,8 @@
             {name: 'copy', category: 'av', fn: 'library_books'},
             {name: 'done', category: 'action', fn: 'done'},
             {name: 'fail', category: 'content', fn: 'clear'},
+            {name: 'run', category: 'av', fn: 'play_circle_outline'},
+            {name: 'skip', category: 'av', fn: 'not_interested'},
             {name: 'forward', category: 'content', fn: 'forward'},
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
             {name: 'rowing', category: 'action', fn: 'rowing'},

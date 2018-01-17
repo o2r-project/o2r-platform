@@ -34,21 +34,45 @@
                 validate_bag: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 generate_configuration: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 validate_compendium: {
@@ -58,17 +82,40 @@
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 generate_manifest: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 image_prepare: {
@@ -78,47 +125,106 @@
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 image_build: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 image_execute: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 check: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 },
                 cleanup: {
                     started: {
                         'o2r-green-icon' : false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
                     },
                     finished: {
                         'o2r-green-icon': false,
-                        'o2r-red-icon': false
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
                     }
                 }
             };
@@ -235,11 +341,25 @@
                         icon = scope.icons.done;
                         iconClass[step][pos]['o2r-green-icon'] = true;
                         iconClass[step][pos]['o2r-red-icon'] = false;
+                        iconClass[step][pos]['o2r-blue-icon'] = false;
                         break;
                     case 'failure':
                         icon = scope.icons.fail;
                         iconClass[step][pos]['o2r-green-icon'] = false;
                         iconClass[step][pos]['o2r-red-icon'] = true;
+                        iconClass[step][pos]['o2r-blue-icon'] = false;
+                        break;
+                    case 'running':
+                        icon = scope.icons.run;
+                        iconClass[step][pos]['o2r-green-icon'] = false;
+                        iconClass[step][pos]['o2r-red-icon'] = false;
+                        iconClass[step][pos]['o2r-blue-icon'] = true;
+                        break;
+                    case 'skipped':
+                        icon = scope.icons.skip;
+                        iconClass[step][pos]['o2r-green-icon'] = false;
+                        iconClass[step][pos]['o2r-red-icon'] = false;
+                        iconClass[step][pos]['o2r-blue-icon'] = true;
                         break;
                     default:
                         icon = null;
