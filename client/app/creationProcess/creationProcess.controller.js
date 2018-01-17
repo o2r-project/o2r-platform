@@ -80,8 +80,9 @@
             header.setTitle('o2r - Edit ERC');
             creationObject.set(creationService);
             httpRequests.singleCompendium(creationService.id).then(function(res){
-                if(res.data.metadata.o2r.saved){
-                    vm.showERC = res.data.metadata.o2r.saved;
+                logger.info('this is my erc', angular.fromJson(res.data));
+                if(angular.isUndefined(res.data.candidate)){
+                    vm.showERC = res.data.candidate;
                     vm.ercURL= "#!/erc/" + res.data.id;
                     vm.saveOrUpdate = "Update";
                 }
