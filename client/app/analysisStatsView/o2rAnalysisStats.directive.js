@@ -303,31 +303,40 @@
                 scope.lStar = {};
                 scope.lStar.steps = {
                     validate_bag: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     generate_configuration: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     validate_compendium: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     generate_manifest: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     image_prepare: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     image_build: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     image_execute: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     check: {
-                        status: ''
+                        status: '',
+                        text : []
                     },
                     cleanup: {
-                        status: ''
+                        status: '',
+                        text : []
                     }
                 };
                 scope.lStar.status = '';
@@ -392,59 +401,89 @@
             }
 
             function stepUpdater(data, o){
-                logger.info('stepupdater', data);
+                logger.info('stepupdater', angular.toJson(data));
                 if(data.steps.hasOwnProperty('cleanup')){
-                    o.cleanup.status = data.steps.cleanup.status;
-                    // reset info text
-                    o.cleanup.text = "";
-                    logger.info('updated cleanup to ', data.steps.cleanup.status);
+                    if(data.steps.cleanup.hasOwnProperty('status')){
+                        o.cleanup.status = data.steps.cleanup.status;
+                        logger.info('updated cleanup to ', data.steps.cleanup.status);
+                    }
+                    if(data.steps.cleanup.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.cleanup.text);
+                        o.cleanup.text[parseInt(key[0])] = data.steps.cleanup.text[key];
+                    }
                     $rootScope.progressbar.complete();
                 } else if(data.steps.hasOwnProperty('check')){
                     if(data.steps.check.hasOwnProperty('status')){
                         o.check.status = data.steps.check.status;
-                        // reset info text
-                        o.check.text = "";
                         logger.info('updated check to ', data.steps.check.status);
+                    }
+                    if(data.steps.check.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.check.text);
+                        o.check.text[parseInt(key[0])] = data.steps.check.text[key];
                     }
                 } else if(data.steps.hasOwnProperty('image_execute')){
                     if(data.steps.image_execute.hasOwnProperty('status')){
                         o.image_execute.status = data.steps.image_execute.status;
-                        // reset info text
-                        o.image_execute.text = "";
                         logger.info('updated image_execute to ', data.steps.image_execute.status);
+                    }
+                    if(data.steps.image_execute.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.image_execute.text);
+                        o.image_execute.text[parseInt(key[0])] = data.steps.image_execute.text[key];
                     }
                 } else if(data.steps.hasOwnProperty('image_build')){
                     if(data.steps.image_build.hasOwnProperty('status')){
                         o.image_build.status = data.steps.image_build.status;
-                        // reset info text
-                        o.image_build.text = "";
                         logger.info('updated image_build to ', data.steps.image_build.status);
                     }
+                    if(data.steps.image_build.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.image_build.text);
+                        o.image_build.text[parseInt(key[0])] = data.steps.image_build.text[key];
+                    }
                 } else if(data.steps.hasOwnProperty('generate_manifest')){
-                    o.generate_manifest.status = data.steps.generate_manifest.status;
-                    // reset info text
-                    o.generate_manifest.text = "";
-                    logger.info('updated generate_manifest to ', data.steps.generate_manifest.status);
+                    if(data.steps.generate_manifest.hasOwnProperty('status')){
+                        o.generate_manifest.status = data.steps.generate_manifest.status;
+                        logger.info('updated generate_manifest to ', data.steps.generate_manifest.status);
+                    }
+                    if(data.steps.generate_manifest.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.generate_manifest.text);
+                        o.generate_manifest.text[parseInt(key[0])] = data.steps.generate_manifest.text[key];
+                    }
                 } else if(data.steps.hasOwnProperty('generate_configuration')){
-                    o.generate_configuration.status = data.steps.generate_configuration.status;
-                    // reset info text
-                    o.generate_configuration.text = "";
-                    logger.info('updated generate_configuration to ', data.steps.generate_configuration.status);
+                    if(data.steps.generate_configuration.hasOwnProperty('status')){
+                        o.generate_configuration.status = data.steps.generate_configuration.status;
+                        logger.info('updated generate_configuration to ', data.steps.generate_configuration.status);
+                    }
+                    if(data.steps.generate_configuration.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.generate_configuration.text);
+                        o.generate_configuration.text[parseInt(key[0])] = data.steps.generate_configuration.text[key];
+                    }
                 } else if(data.steps.hasOwnProperty('validate_bag')){
-                    o.validate_bag.status = data.steps.validate_bag.status;
-                    // reset info text
-                    o.validate_bag.text = "";
-                    logger.info('updated validate_bag to ', data.steps.validate_bag.status);
+                    if(data.steps.validate_bag.hasOwnProperty('status')){
+                        o.validate_bag.status = data.steps.validate_bag.status;
+                        logger.info('updated validate_bag to ', data.steps.validate_bag.status);
+                    }
+                    if(data.steps.validate_bag.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.validate_bag.text);
+                        o.validate_bag.text[parseInt(key[0])] = data.steps.validate_bag.text[key];
+                    }
                 } else if(data.steps.hasOwnProperty('validate_compendium')){
-                    o.validate_compendium.status = data.steps.validate_compendium.status;
-                    // reset info text
-                    o.validate_compendium.text = "";
-                    logger.info('updated validate_compendium to ', data.steps.validate_compendium.status);
+                    if(data.steps.validate_compendium.hasOwnProperty('status')){
+                        o.validate_compendium.status = data.steps.validate_compendium.status;
+                        logger.info('updated validate_compendium to ', data.steps.validate_compendium.status);
+                    }
+                    if(data.steps.validate_compendium.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.validate_compendium.text);
+                        o.validate_compendium.text[parseInt(key[0])] = data.steps.validate_compendium.text[key];
+                    }
                 } else if(data.steps.hasOwnProperty('image_prepare')){
-                    o.image_prepare.status = data.steps.image_prepare.status;
-                    // reset info text
-                    o.image_prepare.text= "";
-                    logger.info('updated image_prepare to ', data.steps.image_prepare.status);
+                    if(data.steps.image_prepare.hasOwnProperty('status')){
+                        o.image_prepare.status = data.steps.image_prepare.status;
+                        logger.info('updated image_prepare to ', data.steps.image_prepare.status);
+                    }
+                    if(data.steps.image_prepare.hasOwnProperty('text')){
+                        var key = Object.keys(data.steps.image_prepare.text);
+                        o.image_prepare.text[parseInt(key[0])] = data.steps.image_prepare.text[key];
+                    }
                 }
                 return;
             }
