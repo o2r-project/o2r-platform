@@ -394,11 +394,13 @@
             function stepUpdater(data, o){
                 logger.info('stepupdater', data);
                 if(data.steps.hasOwnProperty('cleanup')){
-                    o.cleanup.status = data.steps.cleanup.status;
-                    // reset info text
-                    o.cleanup.text = "";
-                    logger.info('updated cleanup to ', data.steps.cleanup.status);
-                    $rootScope.progressbar.complete();
+                    if(data.steps.cleanup.hasOwnProperty('status')){
+                        o.cleanup.status = data.steps.cleanup.status;
+                        // reset info text
+                        o.cleanup.text = "";
+                        logger.info('updated cleanup to %s', o.cleanup.status);
+                        $rootScope.progressbar.complete();
+                    }
                 } else if(data.steps.hasOwnProperty('check')){
                     if(data.steps.check.hasOwnProperty('status')){
                         o.check.status = data.steps.check.status;
