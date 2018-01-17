@@ -13,8 +13,8 @@
                         <div ng-repeat="author in o2r.creators">
                             <p layout="column">
                                 {{author.name}} 
-                                <span>{{affiliation}}</span>
-                                <span ng-if="notNull(author.orcid) && !isUndefined(author.orcid)">ORCID: {{author.orcid}}</span>
+                                <span>{{affiliation}}</span>                                
+                                <a ng-if="notNull(author.orcid) && !isUndefined(author.orcid)" ng-href="https://orcid.org/{{author.orcid}}"><img src="img/orcid.png" class="orcidImage"></img>orcid.org/{{author.orcid}}</a>
                             </p>
                         </div>
                         <!-- End Author Information -->

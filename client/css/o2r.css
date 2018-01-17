@@ -13,7 +13,8 @@ body{
 }
 
 .orcidImage{
-	width:18px;
+	width:12px;
+	margin-right: 2px;
 }
 
 .toLowerCase{
