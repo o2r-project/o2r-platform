@@ -88,6 +88,7 @@
                         scope.steps.step2.show = true;
                         break;
                         default:
+                        scope.steps.step2.show = true;
                         break;
                     }
                 }
@@ -206,7 +207,7 @@
                         this.icons = icons;
                         this.cancel = () => $mdDialog.cancel();
                         this.file = {
-                            path: 'https://markuskonkol.shinyapps.io/figure1_interactive/',
+                            path: 'https://markuskonkol.shinyapps.io/interactiveFigure1/',
                             type: 'text/shiny'
                         };
                     },
@@ -221,14 +222,17 @@
 
             function resetStep1(){
                 scope.steps.step1.show = true;
-                scope.steps.step1.options = [{text: "Change a variable", value:0}, {text: "other", value: 1}];
+                scope.steps.step1.options = [{text: "Change a variable continously", value:0}, {text: "Provide predefined values", value: 1},
+                                            {text: "Select a data subset", value: 2}, {text: "Provide different visualisations", value: 3},
+                                            {text: "Show data underlying the figure", value: 4}, {text: "Show code underlying the figure", value: 5}];
                 scope.steps.step1.selected = null;
                 scope.steps.step2.show = false;
                 scope.showOriginalCode = true;
             }
         
             function resetStep2(){
-                scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Switch", value:1}];
+                scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Radio buttons", value:1}, {text: "Numeric input", value:1},
+                                            {text: "Button", value:1}];
                 scope.steps.step2.selected = null;
                 scope.steps.step3.show = false;
                 scope.showOriginalCode = true;

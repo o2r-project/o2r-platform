@@ -22,8 +22,8 @@
         .module('starter.o2rInspect')
         .directive('o2rInspect', o2rInspect);
     
-    o2rInspect.$inject = ['$log', 'publications', 'icons'];
-    function o2rInspect($log, publications, icons){
+    o2rInspect.$inject = ['$log', 'publications', 'icons', 'env'];
+    function o2rInspect($log, publications, icons, env){
         return {
             restrict: 'E',
             templateUrl: 'app/o2rInspect/o2rInspect.template.html',
@@ -48,7 +48,8 @@
                 
                 if(inspect.code[0]!=null){
                     scope.code = prepareCode(inspect.code);
-                    scope.selectedCode = scope.code[0];
+                    scope.selectedCode = publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + 
+                                                                            '/data/' + inspect.publication.metadata.o2r.mainfile);
                 }
                 scope.openMenu = openMenu;
 
@@ -61,24 +62,20 @@
                  * 
                  * @param {Array} dsets , array containing all input files
                  */
-                //TODO
-                //Replace /api/v1/compendium/ with env variable so it will still work on all api versions
+
                 function prepareDatasets(dsets){
-                    // replace wrong path with right path
                     var results = [];
                     for(var i in dsets){
                         var tmp = dsets[i].split('/');
-                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + tmp));
+                        results.push(publications.getContentById(inspect.publication, env.c_api + '/compendium/' + inspect.publication.id + '/data/' + tmp));
                     }
                     return results;
                 }
 
-                //TODO
-                // Replace /api/v1/compendium/ with env variable so it will still work on all api versions
                 function prepareCode(code){
                     var results = [];
                     for(var i in code){
-                        results.push(publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + '/data/' + code[i]));
+                        results.push(publications.getContentById(inspect.publication, env.c_api + '/compendium/' + inspect.publication.id + '/data/' + code[i]));
                     }
                     return results;
                 }
