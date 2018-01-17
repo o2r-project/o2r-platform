@@ -1,6 +1,6 @@
 <div id="substitute_ERCview" class="substitute_ERCsubstituteOptionsview">
 
-<!-- list of similar compendia -->
+  <!-- list of similar compendia -->
   <md-card ng-if="vm.similarPubs">
     <md-card-content>
       <md-list>
@@ -30,21 +30,17 @@
   </md-card>
 </div>
 
-  <!-- Message if not a single compendium has been uploaded yet -->
-  <md-card ng-if="!vm.similarPubs">
-    <md-card-content>
-      <span>No similar compendia.</span>
-    </md-card-content>
-  </md-card>
+<!-- Message if not a single compendium has been uploaded yet -->
+<md-card ng-if="!vm.similarPubs">
+  <md-card-content>
+    <span>No similar compendia.</span>
+  </md-card-content>
+</md-card>
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="showCandidateView">
     <md-dialog class="substitute_candidate" aria-label="options dialog">
-      <!-- <md-dialog-content layout-padding> -->
-
         <o2r-substitute-candidate o2r-base="vm.basefiles" o2r-overlay="vm.overlayfiles" o2r-base-title="{{vm.base.metadata.o2r.title}}" o2r-overlay-title="{{vm.overlay.metadata.o2r.title}}" o2r-base-id="{{vm.base.id}}" o2r-overlay-id="{{vm.overlay.id}}"></o2r-substitute-candidate>
-
-      <!-- </md-dialog-content> -->
     </md-dialog>
   </div>
 </div>

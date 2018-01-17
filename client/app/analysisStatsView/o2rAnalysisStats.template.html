@@ -39,14 +39,22 @@
 
     <table ng-hide="isEmpty(lStar)">
         <tr ng-repeat="(key, value) in lStar.steps">
-            <td>{{key | replaceUnderscore}}</td>
-            <td layout="row">
-                <strong>{{value.status}}</strong>
-                <md-icon md-svg-src="{{checkIcon(value.status, key, 'started')}}" ng-class="iconClass[key].started"></md-icon>
-                <!-- <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>-->
+            <td>
+                <div layout="row">
+                    {{key | replaceUnderscore}}
+                </div>
             </td>
             <td>
-                <small>{{value.text}}</small>
+                <div layout="row">
+                    <strong>{{value.status}}</strong>
+                    <md-icon md-svg-src="{{checkIcon(value.status, key, 'started')}}" ng-class="iconClass[key].started"></md-icon>
+                <!-- <small>{{value.end | date: 'yyyy-MM-dd HH:mm'}}</small>-->
+                </div>
+            </td>
+            <td>
+                <div layout="column">
+                    <code ng-repeat="logLine in value.text track by $index">{{ logLine }}</code>
+                </div>
             </td>
         </tr>
     </table>
