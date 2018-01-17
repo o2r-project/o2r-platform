@@ -108,8 +108,8 @@
 												scope.finishedSubstitution = true;
 		                })
 		                .catch(function(err){
-											logger.info("Error while substitution: [%s]", err.data.error);
-											logger.debug("Error while substitution: [%s]", err.data.error);
+											logger.info("Error while substitution: %s", err);
+											logger.debug("Error while substitution: %s", err);
 											window.alert("Error while substitution:\n" + err.data.error);
 		                });
 		          }

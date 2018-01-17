@@ -107,6 +107,12 @@ md-card-header-text{
 	margin-left: 16px;
 }
 
+.o2r-created-button{
+	color: white !important;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	background-color: rgb(0,135,98);
+}
+
 /************************
    End General
 *************************/
@@ -618,7 +624,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 ************************/
 
 .creationProcess-success-toast > .md-toast-content{
-	background-color: green !important;
+	background-color: rgb(0,135,98) !important;
 }
 
 .creationProcess-failure-toast > .md-toast-content{
