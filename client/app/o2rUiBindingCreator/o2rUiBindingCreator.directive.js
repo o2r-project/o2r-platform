@@ -31,7 +31,7 @@
             restrict: 'E',
             scope: {
                 codefiles: '@o2rCodefiles',
-                ercId: '@o2rErcId' 
+                ercId: '@o2rErcId'
             },
             templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingCreator.template.html',
             link: link

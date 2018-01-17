@@ -45,7 +45,11 @@
         var maplayer;
         // check if spatial and spatial.union are defined
         // if true, use their values to create maplayer
-        if(angular.isDefined(vm.spacetime.spatial) && angular.isDefined(vm.spacetime.spatial.union) && (vm.spacetime.spatial.union !== null)){
+        if(angular.isDefined(vm.spacetime.spatial) 
+          && angular.isDefined(vm.spacetime.spatial.union) && (vm.spacetime.spatial.union !== null) 
+          && angular.isDefined(vm.spacetime.spatial.union.geojson) && (vm.spacetime.spatial.union.geojson !== null) 
+          && angular.isDefined(vm.spacetime.spatial.union.geojson.geometry) && (vm.spacetime.spatial.union.geojson.geometry !== null)
+        ){
           maplayer = {
             "Geojson": {
               name: 'Union',

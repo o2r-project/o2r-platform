@@ -15,6 +15,8 @@
         vm.bindings = creationObject.getUibindings();
         vm.input = creationObject.getInputFiles();
         vm.erc = creationObject.get();
+        vm.mainfile = creationObject.getMainFile();
+        vm.mainfiles = [vm.mainfile];
         
         vm.updateBinding = updateBinding;
         vm.removeBinding = removeBinding;
