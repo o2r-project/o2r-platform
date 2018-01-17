@@ -5,9 +5,8 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'recipient', 'shipmentInfo'];
-    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, recipient, shipmentInfo){
-        console.log('ErcController');
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'compendium', 'recipient', 'shipmentInfo'];
+    function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, compendium, recipient, shipmentInfo){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
@@ -19,6 +18,7 @@
         vm.recipient = recipient.data.recipients;
         vm.shipmentInfo = shipmentInfo;
         vm.publication = erc;
+        compendium.setCompendium(vm.publication);
         vm.ercId = vm.publication.id;
         vm.recipientObject = {};
         vm.recipientObject.ercId = vm.ercId;
@@ -105,7 +105,7 @@
         }
 
         function compareSubstBaseHtml(ev) {
-            // get successed job of base ERC
+            // get finished job of base ERC
             var ercId = vm.substitution.baseID;
             var query = {
                 compendium_id: ercId

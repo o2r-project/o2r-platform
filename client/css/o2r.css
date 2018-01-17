@@ -95,7 +95,11 @@ md-card-header-text{
 }
 
 .o2r-green-icon{
-	fill: green !important;
+	fill: rgb(0,135,98) !important;
+}
+
+.o2r-blue-icon{
+	fill: rgb(0,66,134) !important;
 }
 
 .o2r-download-exclude-image{
@@ -704,6 +708,10 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	display: block;
 	overflow: scroll;
 }
+#analysisStats table{
+	border: none;
+	padding-top: 8px;
+}
 /***********************
 	End AnalysisStats
 ************************/
@@ -717,7 +725,11 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	overflow: scroll;
 }
 
-.md-select-menu-container{
+#substitution-buttons {
+	margin-left: 2em;
+}
+
+.md-select-menu-container {
 	z-index: 101 !important;
 }
 

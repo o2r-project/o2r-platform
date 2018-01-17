@@ -1,17 +1,15 @@
 <!-- Top nav -->
 <div flex="100" layout="row">
-    <div ng-if="vm.substitution.substituted">
-      <md-button title="what is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE5100">THIS IS A SUBSTITUTION</md-button>
-      <a href="" ng-click="vm.showERC(vm.substitution.baseID)">base compendium</a>
-      <a href="" ng-click="vm.showERC(vm.substitution.overlayID)">overlay compendium</a>
-      <md-button class="md-raised" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">
+    <div ng-if="vm.substitution.substituted" id="substitution-buttons">
+      <md-button class="md-raised" analytics-on="click" title="What is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE9900">Substitution ERC</md-button>
+      <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the base ERC" target="_blank" ng-click="vm.showERC(vm.substitution.baseID)">base</a>
+      <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the overlay ERC" target="_blank" ng-click="vm.showERC(vm.substitution.overlayID)">overlay</a>
+      <md-button class="md-raised" analytics-on="click" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">
         <md-icon md-svg-icon="{{vm.icons.search}}"></md-icon>
       </md-button>
     </div>
     <span flex></span>
     <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="vm.recipientObject"></o2r-recipient>
-    <!-- <md-button ng-if="vm.loggedIn" ng-disabled="vm.shipped" ng-click="vm.sendToRecipient('zenodo_sandbox')" aria-label="Ship to {{vm.recipient[1].label}}">Ship to Zenodo<md-icon aria-label md-svg-src="{{vm.icons.rowing}}"></md-icon></md-button> -->
-	<!-- <md-button ng-if="vm.loggedIn" ng-disabled="vm.publish" ng-click="vm.publishInZenodo()" aria-label="Publish in Zenodo">Publish in Zenodo</md-button> -->
 </div>
 
 <!-- Main view -->
@@ -23,16 +21,11 @@
         md-is-open="false"
         md-whiteframe="5">
         <md-toolbar>
-            <h1 class="md-toolbar-tools white-font">Files</h1>
+            <div layout="row">
+                <h1 class="md-toolbar-tools white-font">Files</h1><o2r-erc-download erc-id="{{vm.ercId}}" filesize="vm.overallSize"></o2r-erc-download>
+            </div>
         </md-toolbar>
         <md-content layout-padding layout="column" class="erc-side-content" ng-controller="ErcSidenavController as vm">
-            <div layout="row" class="erc-side-button-row">
-                <o2r-erc-download erc-id="{{vm.ercId}}" filesize="vm.overallSize"></o2r-erc-download>
-                <span flex></span>
-                <!-- <md-checkbox ng-model="vm.showBagit" aria-label="Show Bagit" class="erc-side-checkbox">
-                    Show Bagit files
-                </md-checkbox> -->
-            </div>
             <div layout="row" class="erc-side-content">
                 <treecontrol class="tree-classic" tree-model="vm.publication.files" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
                     <span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
