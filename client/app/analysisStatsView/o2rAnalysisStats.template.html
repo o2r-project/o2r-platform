@@ -1,6 +1,6 @@
 <div layout="row">
     <md-button class="md-raised" ng-click="execJob()" ng-disabled="!$parent.$$prevSibling.$parent.$parent.vm.loggedIn" analytics-on="click" analytics-category="ERC" analytics-event="execute">Run analysis</md-button>
-    <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()" title="Compare display files" aria-label="Check results by comparing display files"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
+    <md-button class="md-raised" ng-disabled="(isEmpty(lFin.steps))" ng-click="showDialog()" title="Compare original display file and reproduced display file" aria-label="Check results by comparing display files"><md-icon md-svg-src="{{icons.search}}"></md-icon></md-button>
     <span flex></span>
     <md-button ng-href="{{env.api}}/job/{{lFin.id}}?steps=all" target="_blank" aria-label="See raw data for latest job">Job (raw)</md-button>
     <md-button ng-href="{{env.api}}/compendium/{{$parent.vm.ercId}}" target="_blank" aria-label="See raw data for ERC">ERC (raw)</md-button>
