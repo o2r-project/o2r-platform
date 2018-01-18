@@ -238,6 +238,7 @@
             scope.isRunning = isRunning;
             scope.showDialog = showDialog;
             scope.isEmpty = isEmpty;
+            scope.disableComparisonButton = true;
             scope.env = env;
             scope.hideDuration = hideDuration;
             // delete dummy object after metadata object was updated
@@ -389,6 +390,7 @@
                 switch(obj){
                     case 'success':
                         result = states.success;
+                        scope.disableComparisonButton = false;
                         break;
                     case 'failure':
                         result = states.failure;
