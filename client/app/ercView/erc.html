@@ -4,9 +4,9 @@
       <md-button class="md-raised" analytics-on="click" title="What is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE9900">Substitution ERC</md-button>
       <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the base ERC" target="_blank" ng-click="vm.showERC(vm.substitution.baseID)">base</a>
       <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the overlay ERC" target="_blank" ng-click="vm.showERC(vm.substitution.overlayID)">overlay</a>
-      <md-button ng-hide="true" class="md-raised" analytics-on="click" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">
+      <!--<md-button class="md-raised" analytics-on="click" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">
         <md-icon md-svg-icon="{{vm.icons.search}}"></md-icon>
-      </md-button>
+      </md-button>-->
     </div>
     <span flex></span>
     <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="vm.recipientObject"></o2r-recipient>
@@ -100,7 +100,7 @@
     <!-- Right side -->
     <md-card flex="45" class="erc-rightside">
         <md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="Options">
-            <md-nav-item md-nav-sref="erc.reproduce" name="reproduce">Check</md-nav-item>
+            <md-nav-item md-nav-sref="erc.reproduce" name="reproduce">{{vm.checkORsubstituted}}</md-nav-item>
             <md-nav-item md-nav-sref="erc.inspect" name="inspect">Inspect</md-nav-item>
             <md-nav-item md-nav-sref="erc.manipulate" name="manipulate">Manipulate</md-nav-item>
             <md-nav-item md-nav-sref="erc.substitute" name="substitute">Substitute</md-nav-item>
