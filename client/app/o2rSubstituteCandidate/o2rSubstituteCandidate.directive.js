@@ -73,47 +73,46 @@
 							$mdDialog.cancel();
 					};
 
-		       function startSubstitutionUI() {
+				function startSubstitutionUI() {
 
-		          if (!Array.isArray(scope.substitutionRows) || scope.substitutionRows == undefined || scope.substitutionRows.length == 0 || !checkForFiles(scope.substitutionRows)) {
-		              logger.info("no substitution files choosen");
-		              window.alert("please choose files");
-		          } else {
-		 		          logger.info("initiateSubstitution");
-		 		          logger.debug("initiateSubstitution");
+					if(!Array.isArray(scope.substitutionRows) || scope.substitutionRows == undefined || scope.substitutionRows.length == 0 || !checkForFiles(scope.substitutionRows)) {
+						logger.info("no substitution files choosen");
+		             	window.alert("please choose files");
+		          	}else{
+		 		    	logger.info("initiateSubstitution");
+		 		    	logger.debug("initiateSubstitution");
 
-		              let substitutionMetadata = {};
-		              let arrayOfSubstitutionObjects = [];
+		              	let substitutionMetadata = {};
+		             	let arrayOfSubstitutionObjects = [];
 
-		              substitutionMetadata.metadataHandling = scope.metadata.selected;
-		              substitutionMetadata.base = scope.o2rBaseId;
-		              substitutionMetadata.overlay = scope.o2rOverlayId;
-		              substitutionMetadata.substitutionFiles = [];
+		              	substitutionMetadata.metadataHandling = scope.metadata.selected;
+		              	substitutionMetadata.base = scope.o2rBaseId;
+		              	substitutionMetadata.overlay = scope.o2rOverlayId;
+		              	substitutionMetadata.substitutionFiles = [];
 
-		              for (let i=0; i<scope.substitutionRows.length; i++) {
-		                let object_ = {};
-		                object_.base = scope.substitutionRows[i].basefile.filePath;
-		                object_.overlay = scope.substitutionRows[i].overlayfile.filePath;
-		                substitutionMetadata.substitutionFiles.push(object_);
-		              }
-									logger.debug("substitution with following metadata: %s", JSON.stringify(substitutionMetadata));
-									// start substitution
-		              httpRequests.substitute(substitutionMetadata)
-		                .then(function(res){
-												scope.substituted.id = res.data.id;	// substituted ERC ID
-												scope.substituted.data = res.config.data;	// data that was used to create substitution
-												logger.info("Finished substitution to new ERC with id [%s]", scope.substituted.id);
-												logger.debug("Finished substitution to new ERC with id [%s]", scope.substituted.id);
-												scope.substituted.url = "#!/erc/" + scope.substituted.id;
-												scope.finishedSubstitution = true;
+		              	for (let i=0; i<scope.substitutionRows.length; i++) {
+		                	let object_ = {};
+		                	object_.base = scope.substitutionRows[i].basefile.filePath;
+		                	object_.overlay = scope.substitutionRows[i].overlayfile.filePath;
+		                	substitutionMetadata.substitutionFiles.push(object_);
+		              	}
+						logger.debug("substitution with following metadata: %s", JSON.stringify(substitutionMetadata));
+						// start substitution
+		              	httpRequests.substitute(substitutionMetadata).then(function(res){
+							scope.substituted.id = res.data.id;	// substituted ERC ID
+							scope.substituted.data = res.config.data;	// data that was used to create substitution
+							logger.info("Finished substitution to new ERC with id [%s]", scope.substituted.id);
+							logger.debug("Finished substitution to new ERC with id [%s]", scope.substituted.id);
+							scope.substituted.url = "#!/erc/" + scope.substituted.id;
+							scope.finishedSubstitution = true;
 		                })
 		                .catch(function(err){
-											logger.info("Error while substitution: [%s]", err.data.error);
-											logger.debug("Error while substitution: [%s]", err.data.error);
-											window.alert("Error while substitution:\n" + err.data.error);
+							logger.info("Error while substitution: [%s]", err.data.error);
+							logger.debug("Error while substitution: [%s]", err.data.error);
+							window.alert("Error while substitution:\n" + err.data.error);
 		                });
-		          }
-		      };
+		          	}
+		      	};
 
 					function showSubstitutedERC() {
 							$window.open(scope.substituted.url);

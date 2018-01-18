@@ -66,6 +66,9 @@
         vm.showERC = showERC;
         vm.isEmpty = isEmpty;
         vm.fJob = compFJobSuccess.data;  // return last finished job --> now: xW5L7
+        if(typeof vm.fJob ==  "string"){
+            jobs.executeJob(vm.ercId);
+        }
         vm.substitution = {};
         if (vm.publication.substituted) {
             vm.checkORsubstituted = "Substitution results";

@@ -47,7 +47,7 @@
 					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
 							<div flex>
-								<md-button ui-sref="erc({ercid: pub.id})"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName}}</b></md-button>
+								<md-button ui-sref="erc({ercid: pub.id})"><img ng-show = "pub.substituted" title="This is an ERC based on a substitution" src="img/ic_shuffle_black_48px.svg" class="orcidImage"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName}}</b></md-button>
 								<h4 flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
 								<p style="background-color: red;" ng-show="pub.candidate">You still have to fill required metadata to create a regular ERC: <a href="/#!/creationProcess/{{pub.id}}" class="editForCandidates">EDIT</a></p>
 								<h4 flex><b>by </b><img src="img/orcid.png" class="orcidImage"> orcid.org/{{pub.user}}</h4>
