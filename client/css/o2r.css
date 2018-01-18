@@ -629,6 +629,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 
 .creationProcess-failure-toast > .md-toast-content{
 	background-color: red !important;
+	padding: 1em;
 }
 
 .creationProcess-divider{
