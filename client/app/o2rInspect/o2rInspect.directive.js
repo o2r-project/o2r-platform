@@ -47,9 +47,15 @@
                 }
                 
                 if(inspect.code[0]!=null){
-                    scope.code = prepareCode(inspect.code);
-                    scope.selectedCode = publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + 
-                                                                            '/data/' + inspect.publication.metadata.o2r.mainfile);
+                    if(inspect.code.length > 1){
+                        scope.code = prepareCode(inspect.code);
+                        scope.selectedCode = publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + 
+                                                                                '/data/' + inspect.publication.metadata.o2r.mainfile);
+                    }else{
+                        scope.selectedCode = publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + 
+                        '/data/' + inspect.code[0]);;
+                    }
+
                 }
                 scope.openMenu = openMenu;
 
