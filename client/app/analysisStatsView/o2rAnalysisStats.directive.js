@@ -387,6 +387,7 @@
                     failure: 'Analysis failed.',
                     running: 'Analysis is running.'
                 };
+                // FIXME enable comparison button if only "check" step is failure
                 switch(obj){
                     case 'success':
                         result = states.success;
@@ -394,6 +395,7 @@
                         break;
                     case 'failure':
                         result = states.failure;
+                        scope.disableComparisonButton = false;
                         break;
                     default:
                         result = states.running;
