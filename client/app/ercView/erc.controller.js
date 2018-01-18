@@ -31,6 +31,7 @@
         vm.originalSelected = true;
         vm.checkForOriginal = checkForOriginal;
         vm.showOriginal = showOriginal;
+        vm.checkORsubstituted = "Check";
         vm.openMenu = function($mdOpenMenu, ev){
             $mdOpenMenu(ev);
         };
@@ -67,6 +68,7 @@
         vm.fJob = compFJobSuccess.data;  // return last finished job --> now: xW5L7
         vm.substitution = {};
         if (vm.publication.substituted) {
+            vm.checkORsubstituted = "Substitution results";
             vm.substitution.substituted = vm.publication.substituted;
             vm.substitution.baseID = vm.publication.metadata.substitution.base;
             vm.substitution.overlayID = vm.publication.metadata.substitution.overlay;
