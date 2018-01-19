@@ -66,7 +66,9 @@
                     var q = search.prepareQuery('o2r', vm.searchTerm, coords, from.toISOString(), to.toISOString(), this.startindex_, this.size_, vm.onlyLibraries);
                     search.search(q)
                         .then(angular.bind(this, function(response){
-                            searchResults.hits.hits = searchResults.hits.hits.concat(response.hits.hits);
+                            logger.info('receiving reponse', response);
+                            var clearedHits = searchHelper.removeJobHits(response.data);
+                            searchResults.hits.hits = searchResults.hits.hits.concat(clearedHits.hits.hits);
                             this.numLoaded_ = searchResults.hits.hits.length;
                             map(searchResults);
                         }));
