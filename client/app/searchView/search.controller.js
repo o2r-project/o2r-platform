@@ -7,11 +7,13 @@
         .module('starter')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', '$interval', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search', 'customLeaflet'];
-    function SearchController($scope,$stateParams, $state, $q, $filter, $log, $interval, httpRequests, $location,searchAll, searchResults, header, icons,leafletData, search, customLeaflet){
+    SearchController.$inject = ['$scope','$stateParams','$state', '$q', '$filter', '$log', '$interval', 'httpRequests', '$location', 'searchAll', 'searchResults', 'header', 'icons','leafletData', 'search', 'customLeaflet', 'searchHelper'];
+    function SearchController($scope,$stateParams, $state, $q, $filter, $log, $interval, httpRequests, $location, searchAll, searchResults, header, icons,leafletData, search, customLeaflet, searchHelper){
         var logger = $log.getInstance('SearchCtrl');
         var abstractLimit = 200;
-        var fullSearch = searchAll.data.hits.hits;
+        var fullClean = searchHelper.removeJobHits(searchAll.data);
+        var fullSearch = fullClean.hits.hits;
+        searchResults = searchHelper.removeJobHits(searchResults.data);
         var coordinates_selected = {
             type: "Feature",
             geometry: {
@@ -35,13 +37,13 @@
         vm.icons = icons;
         vm.searchTerm = $stateParams.q; // reads term query from url
         vm.callingsearch=callingsearch;
-        vm.hits = searchResults.data.hits.total;
+        vm.hits = searchResults.hits.total;
         vm.onlyLibraries = $stateParams.libraries == 'true' || false;
         vm.highlightMap = customLeaflet.highlightMap;
         vm.resetAllUnhoveredList = resetAllUnhoveredList;
         vm.busyLoading = false;
         vm.infiniteItems = {
-            numLoaded_: searchResults.data.hits.hits.length,
+            numLoaded_: searchResults.hits.hits.length,
             total_: vm.hits,
             size_: size,
             startindex_: startindex,
@@ -64,7 +66,9 @@
                     var q = search.prepareQuery('o2r', vm.searchTerm, coords, from.toISOString(), to.toISOString(), this.startindex_, this.size_, vm.onlyLibraries);
                     search.search(q)
                         .then(angular.bind(this, function(response){
-                            searchResults.hits.hits = searchResults.hits.hits.concat(response.hits.hits);
+                            logger.info('receiving reponse', response);
+                            var clearedHits = searchHelper.removeJobHits(response.data);
+                            searchResults.hits.hits = searchResults.hits.hits.concat(clearedHits.hits.hits);
                             this.numLoaded_ = searchResults.hits.hits.length;
                             map(searchResults);
                         }));
@@ -117,7 +121,7 @@
             });
 
             vm.controls.custom.push(customLeaflet.createResetHighlightControl(resetAllUnhoveredList));
-            map(searchResults.data);
+            map(searchResults);
             calcDateRange(fullSearch);
             var fromVal, toVal;
             //check if from value is defined and set slider position to this value, otherwise set it to start value
