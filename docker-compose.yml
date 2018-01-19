@@ -78,7 +78,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.6
+    image: o2rproject/o2r-muncher:0.13.8
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -98,7 +98,7 @@ services:
       #- "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev" 
 
   loader:
-    image: o2rproject/o2r-loader:0.8.1
+    image: o2rproject/o2r-loader:0.8.3
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -191,7 +191,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.0
+    image: o2rproject/o2r-substituter:0.4.1
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -201,8 +201,7 @@ services:
     environment:
       - "SUBSTITUTER_MONGODB=mongodb://mongodb"
       - SUBSTITUTER_PORT=8090
-      - DEBUG=*
-      #substituter,substituter:*
+      - DEBUG=substituter,substituter:*
 
   inspecter:
     image: o2rproject/o2r-inspecter:0.0.1
