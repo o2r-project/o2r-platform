@@ -29,7 +29,7 @@
                 }
             }
             result.hits.total = result.hits.hits.length;
-            logger.info('removed job hits. resulting in ', result);
+            logger.info('removed ' + (obj.hits.total - result.hits.total) + ' job hits.');
             return result;
         }
     }
