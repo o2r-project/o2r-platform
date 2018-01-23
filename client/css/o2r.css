@@ -655,6 +655,11 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	padding-top: 8px;
 }
 
+.creationProcess-control-panel{
+	position: fixed;
+	right: 1%;
+	width: 20%;
+}
 /*
 .creationProcess-confirm-cancel{
 	z-index: 100;
