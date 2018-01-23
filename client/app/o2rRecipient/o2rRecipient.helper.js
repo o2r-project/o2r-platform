@@ -13,7 +13,9 @@
             setButtonTypes: setButtonTypes,
             shipTo: shipTo,
             publish: publish,
-            updateShipmentStatus: updateShipmentStatus
+            updateShipmentStatus: updateShipmentStatus,
+            showNewShipment: showNewShipment,
+            showStep1: showStep1
         };
         return service;
 
@@ -138,6 +140,18 @@
                 }
             }
             return result;
+        }
+
+        function showNewShipment(recip){
+            if(recip.recipient == 'download') return true;
+            if(recip.status == 'shipped' || recip.status == 'published') return false;
+            return true;
+        }
+
+        function showStep1(recip){
+            if(recip.recipient == 'download') return true;
+            if(recip.status == 'shipped' || recip.status == 'published') return false;
+            return true;
         }
     }
 })();

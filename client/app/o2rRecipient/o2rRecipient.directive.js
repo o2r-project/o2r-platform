@@ -5,7 +5,7 @@
  * 
  * o2r-recipient-object expects an object of following structure
  * {
- *  erdId: String //id of an erc
+ *  ercId: String //id of an erc
  *  shipmentInfo: Array //array of status objects of already existing shipments
  *  recipient: Object // contains response from /recipient
  * }
@@ -46,6 +46,8 @@
             scope.getIcon = getIcon;
             scope.publish = o2rRecipientHelper.publish;
             scope.shipmentIds = {};
+            scope.showNewShipment = o2rRecipientHelper.showNewShipment;
+            scope.showStep1 = o2rRecipientHelper.showStep1;
             // scope.shipments = o2rRecipientHelper.updateShipmentStatus(scope.recipient.shipmentInfo, scope.recipient.recipient);
             activate();
 
@@ -77,6 +79,7 @@
             function openMenu($mdMenu, ev){
                 $mdMenu.open(ev);
             }
+
         }
     }
 })();
