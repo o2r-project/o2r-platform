@@ -175,7 +175,15 @@
 
 		function uploadViaSciebo(url, path){
 			var _url = env.api + '/compendium/';
-			return $http.post(_url, {content_type:"compendium", share_url:url, path:"/"+path});
+			var _path = path;
+			if(_path) {
+				if (_path.substr(0, 1) !== '/') {
+					_path = '/' + _path;
+				}
+			} else {
+				_path = '/';
+			}
+			return $http.post(_url, {content_type:"workspace", share_url: url, path: _path});
 		}
 
 		// function toZenodo(compendiumID) {

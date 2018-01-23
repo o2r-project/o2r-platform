@@ -52,11 +52,12 @@
             <div ui-view flex="80"></div>
             <div class="creationProcess-control-panel" flex-xs="100" flex-gt-xs="20" flex="20" layout="column">
                     <md-card class="md-padding">
-                        <div layout="row">
+                        <div ng-if="vm.showERC" layout="row">
                             <span flex></span>
-                            <md-button href="{{vm.ercURL}}" ng-if="vm.showERC">Go to ERC</md-button>
+                            <md-button href="{{vm.ercURL}}" class="metabuttons o2r-created-button">Go to ERC</md-button>
                             <span flex></span>
                         </div>
+                        <md-divider ng-if="vm.showERC" class="creationProcess-divider"></md-divider>
                         <div layout="row">
                             <span flex></span>
                             <md-button ng-disabled="vm.state.current.name == 'creationProcess.uibindings'" class="md-raised metabuttons" ng-click="vm.nextState(vm.state.current.name)">Next</md-button>

@@ -108,10 +108,7 @@
         }
 
         function getUibindings(){
-            if(erc.metadata.o2r.interaction.ui_binding==undefined){
-                erc.metadata.o2r.interaction.ui_binding = [];
-            }
-            return angular.copy(erc.metadata.o2r.interaction.ui_binding);
+            return angular.copy(erc.metadata.o2r.interaction);
         }
 
         function getInputFiles(){

@@ -96,12 +96,12 @@
             function callback1(response){
                 $log.debug('executeJob callback1: %o', response);
                 return httpRequests.listSingleJob(response.data.job_id);
-                //(res) => {getJobStatus(res.steps);});
             }
             function callback2(job){
                 $log.debug('executeJob callback2: %o', job);
                 $rootScope.progressbar.complete();
                 setJobDone(checkStatus(job.data.steps));
+                setLastFinishedJobId(job.data.id);
                 deferred.resolve(job);
             }
             function errorHandler(e){

@@ -13,7 +13,8 @@ body{
 }
 
 .orcidImage{
-	width:18px;
+	width:12px;
+	margin-right: 2px;
 }
 
 .toLowerCase{
@@ -104,6 +105,12 @@ md-card-header-text{
 
 .o2r-download-exclude-image{
 	margin-left: 16px;
+}
+
+.o2r-created-button{
+	color: white !important;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	background-color: rgb(0,135,98);
 }
 
 /************************
@@ -617,11 +624,12 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 ************************/
 
 .creationProcess-success-toast > .md-toast-content{
-	background-color: green !important;
+	background-color: rgb(0,135,98) !important;
 }
 
 .creationProcess-failure-toast > .md-toast-content{
 	background-color: red !important;
+	padding: 1em;
 }
 
 .creationProcess-divider{
