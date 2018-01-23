@@ -269,7 +269,7 @@
 		}
 
 		function getLicenses(){
-			return $http.get("http://licenses.opendefinition.org/licenses/groups/all.json");
+			return $http.get("app/o2rHttp/licences.json");
 		}
 
 		/**

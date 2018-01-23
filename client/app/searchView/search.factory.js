@@ -94,7 +94,7 @@
                                 
                                 
                             },
-                            "relation": "contains"
+                            "relation": "intersects"
                         }
                     }
                 });
