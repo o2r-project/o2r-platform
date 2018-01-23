@@ -95,7 +95,7 @@ services:
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      #- "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev" 
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:1ab8868" 
 
   loader:
     image: o2rproject/o2r-loader:0.8.3
@@ -111,7 +111,7 @@ services:
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=o2rplatform_o2rstorage
-      #- "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev" 
+      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:1ab8868" 
       
   informer:
     image: o2rproject/o2r-informer:0.3.0
