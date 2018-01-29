@@ -176,7 +176,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:c4b2d27
+    image: o2rproject/o2r-shipper:168ae80
     restart: unless-stopped
     depends_on:
       - mongodb

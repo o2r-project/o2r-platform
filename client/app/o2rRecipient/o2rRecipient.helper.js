@@ -78,6 +78,7 @@
                     // buttonTypes[recip].type = "publish";
                     // shipmentIds[recip] = response.data.id;
                     recip.id = response.data.id;
+                    recip.status = response.data.status;
                     recip.spinner = false;
                     recip.showButton = true;
                 })
@@ -88,14 +89,19 @@
             }
         }
 
-        function publish(shipment_id){
+        function publish(shipment_id, recip){
             logger.info('publishing with id ', shipment_id);
+            recip.spinner = true;
             httpRequests.publishERC(shipment_id)
                 .then(function(response){
                     logger.info('published', response);
+                    recip.status = response.data.status;
+                    recip.id = response.data.id;
+                    recip.spinner = false;
                 })
                 .catch(function(err){
                     logger.info(err);
+                    recip.spinner = false;
                 });
         }
 
@@ -139,5 +145,6 @@
             }
             return result;
         }
+
     }
 })();
