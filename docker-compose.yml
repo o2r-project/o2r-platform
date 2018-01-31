@@ -212,6 +212,11 @@ services:
       - INSPECTER_PORT=8091
       - DEBUGME=inspecter
 
+  bindings:
+    build: ./bindings/o2r-bindings
+    ports:
+      - "8080:8080"
+
   platform:
     image: nginx:latest
     depends_on:
