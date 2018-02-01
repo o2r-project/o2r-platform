@@ -214,8 +214,6 @@ services:
 
   bindings:
     build: ./bindings/o2r-bindings
-    ports:
-      - "8080:8080"
 
   platform:
     image: nginx:latest

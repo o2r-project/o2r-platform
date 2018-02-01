@@ -36,7 +36,8 @@
 			getAllUsers: getAllUsers,
 			deleteCompendium: deleteCompendium,
 			substitute: substitute,
-			getCSV: getCSV
+			getCSV: getCSV,
+			createBinding: createBinding
 		};
 
 		return service;
@@ -266,6 +267,11 @@
 			var _url = env.api + '/compendium/' + id + '/metadata';
 			var body = {o2r: data};
 			return $http.put(_url, body);
+		}
+
+		function createBinding(){
+			console.log("bindings")
+			return $http.post(env.api + "/bindings");
 		}
 
 		function getLicenses(){
