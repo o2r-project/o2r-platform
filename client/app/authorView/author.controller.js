@@ -9,8 +9,10 @@
 
         function AuthorController(httpRequests, $scope, $stateParams, $log, $document, $mdDialog, metadata, authorInfo, author, Upload, env, header, icons){
             var logger = $log.getInstance('AuthorCtrl');
-            var vm = this;
-            httpRequests.createBinding();
+            var vm = this; 
+            httpRequests.createBinding().then(function(res){
+                console.log(res)
+            })
             vm.icons = icons;
             vm.allPubs = getAuthorInfo();
             vm.compExists = compExistence();

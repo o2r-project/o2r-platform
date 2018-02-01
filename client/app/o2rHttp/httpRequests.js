@@ -270,8 +270,7 @@
 		}
 
 		function createBinding(){
-			console.log("bindings")
-			return $http.post(env.api + "/bindings");
+			return $http.post(env.api + "/bindings", {id:5,text:"blabla"});
 		}
 
 		function getLicenses(){
