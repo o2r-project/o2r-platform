@@ -1,0 +1,75 @@
+<div layout="column">
+	<md-card>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+                <h4 class="white-font">{{o2r.title | cutLongName}}</h4>
+			</div>
+		</md-toolbar>
+		<md-card-content layout="column">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="General">
+                        <!-- Author Information -->
+                        <h4>Author(s)</h4>
+                        <div ng-repeat="author in o2r.creators">
+                            <p layout="column">
+                                {{author.name}} 
+                                <span>{{affiliation}}</span>                                
+                                <a ng-if="notNull(author.orcid) && !isUndefined(author.orcid)" ng-href="https://orcid.org/{{author.orcid}}"><img src="img/orcid.png" class="orcidImage"></img>orcid.org/{{author.orcid}}</a>
+                            </p>
+                        </div>
+                        <!-- End Author Information -->
+
+                        <!-- Publication Information -->
+                        <div layout="column">
+                            <h4>Title</h4> {{o2r.title}}    
+                            <h4>Abstract</h4> {{o2r.description}}   
+                            <h4>Publication Date</h4>{{o2r.publicationDate | date : 'yyyy-MM-dd'}}    
+                            <h4>Citation</h4> {{o2r.softwarePaperCitation}} 
+                            <!--Licenses--> 
+                            <h4>Licenses</h4>
+                            <div layout="column">
+                                <span>Text: {{o2r.license.text}}</span>
+                                <span>Code: {{o2r.license.code}}</span>
+                                <span>Data: {{o2r.license.data}}</span>
+                                <span>UiBindings: {{o2r.license.uibindings}}</span>
+                            </div>
+                            <!--End Licenses-->
+                            <span ng-if="o2r.keywords.length != 0">
+                                <h4>Keywords</h4>
+                                <span ng-repeat="keyword in o2r.keywords">{{keyword}}
+                                    <span ng-hide="$last">, </span>
+                                </span>
+                            </span>
+                            <span ng-if="o2r.researchQuestions.length != 0">
+                                <h4>Research Questions</h4>
+                                <span layout="column" ng-repeat="quest in o2r.researchQuestions">{{quest}}</span>
+                            </span>
+                            <span ng-if="o2r.researchHypotheses.length != 0">
+                                <h4>Research Hypotheses</h4>
+                                <span layout="column" ng-repeat="hyp in o2r.researchHypotheses">{{hyp}}</span>
+                            </span>
+                        </div>
+                        <!-- end publication information -->
+                </md-tab>
+
+                <md-tab label="Spacetime">
+                    <div layout="column">
+                        <leaflet ng-if="!destroy" lf-center="map.center" layers="map.layers" width="100%" height="200px"></leaflet>
+                        <span class="metadata-spacetime-padding"><strong>From</strong> {{o2r.temporal.begin | date : 'yyyy-MM-dd HH:mm'}}</span>
+                        <span><strong>To</strong> {{o2r.temporal.end | date : 'yyyy-MM-dd HH:mm'}}</span>
+                    </div>
+                </md-tab>
+
+                <md-tab label="UI Bindings">
+
+                </md-tab>
+            </md-tabs>
+            <div layout="row">
+                <span flex></span>
+                <md-button class="md-fab md-primary" ui-sref="creationProcess({ercid: compId})" aria-label="Edit Metadata">
+                    <md-icon class="white-font" md-svg-src="{{icons.edit}}"></md-icon>
+                </md-button>
+            </div>
+		</md-card-content>
+	</md-card>
+</div>

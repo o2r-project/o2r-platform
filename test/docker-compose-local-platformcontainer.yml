@@ -35,9 +35,26 @@ services:
     environment:
       - "MUNCHER_MONGODB=mongodb://mongodb"
       - MUNCHER_PORT=8080
-      - DEBUG=*
+      - DEBUG=*,-express:*,-express-session,-compression
     ports:
       - "8080:8080"
+    networks:
+      - "o2rnet"
+
+  loader:
+    image: loader
+    restart: unless-stopped
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+      - /var/run/docker.sock:/var/run/docker.sock
+    external_links:
+      - "test_mongodb_1:mongodb"
+    environment:
+      - "LOADER_MONGODB=mongodb://mongodb"
+      - LOADER_PORT=8088
+      - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
+    ports:
+      - "8088:8088"
     networks:
       - "o2rnet"
 
@@ -66,7 +83,7 @@ services:
       - "INFORMER_MONGODB=mongodb://mongodb"
       - INFORMER_MONGODB_HOST=mongodb
       - INFORMER_PORT=8082
-      - DEBUG=informer,
+      - DEBUG=informer
     ports:
       - "8082:8082"
     networks:
@@ -84,31 +101,20 @@ services:
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
       - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
     ports:
       - "8083:8083"
-    networks:
-      - "o2rnet"
-
-  elasticsearch:
-    image: elasticsearch:5
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - o2r_test_storage:/data/es
     networks:
       - "o2rnet"
 
   finder:
     image: finder
     restart: unless-stopped
-    depends_on:
-      - elasticsearch
     volumes:
       - o2r_test_storage:/tmp/o2r
-    links:
-      - elasticsearch
     external_links:
+      - "test_elasticsearch_1:elasticsearch"
       - "test_mongodb_1:mongodb"
     environment:
       - "FINDER_MONGODB_USER_DATABASE=mongodb://mongodb/muncher"
@@ -125,6 +131,7 @@ services:
 
   transportar:
     image: transportar
+    restart: unless-stopped
     volumes:
       - o2r_test_storage:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
@@ -136,6 +143,23 @@ services:
       - DEBUG=transportar
     ports:
       - "8086:8086"
+    networks:
+      - "o2rnet"
+
+  shipper:
+    image: shipper
+    restart: unless-stopped
+    volumes:
+      - o2r_test_storage:/tmp/o2r
+    external_links:
+      - "test_mongodb_1:database"
+    environment:
+      - "SHIPPER_MONGODB=mongodb://test_mongodb_1:27017/"
+      - SHIPPER_REPO_ZENODO_TOKEN=${ZENODO_TOKEN}
+      - SHIPPER_BOTTLE_HOST=0.0.0.0
+      - "SHIPPER_BASE_PATH=/tmp/o2r"
+    ports:
+      - "8087:8087"
     networks:
       - "o2rnet"
 
@@ -154,6 +178,8 @@ services:
       - bouncer
       - transportar
       - platform
+      - informer
+      - shipper
     volumes:
       - "./nginx-platformcontainer.conf:/etc/nginx/nginx.conf:ro"
     ports:

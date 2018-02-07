@@ -1,0 +1,20 @@
+<md-card>
+    <md-card-content layout="column">
+        <form>
+                <h4>Keywords</h4>
+                <md-chips ng-model="vm.optional.keywords" readonly="false" md-on-remove="vm.simpleUpdate('keywords', vm.optional.keywords)" md-on-add="vm.simpleUpdate('keywords', vm.optional.keywords)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <h4>Language</h4>
+                <md-chips ng-model="vm.optional.paperLanguage" readonly="false" md-on-remove="vm.simpleUpdate('paperLanguage', vm.optional.paperLanguage)" md-on-add="vm.simpleUpdate('paperLanguage', vm.optional.paperLanguage)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <h4>Research question(s)</h4>
+                <md-chips ng-model="vm.optional.researchQuestions" readonly="false" md-on-remove="vm.simpleUpdate('researchQuestions', vm.optional.researchQuestions)" md-on-add="vm.simpleUpdate('researchQuestions', vm.optional.researchQuestions)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+                <h4>Hypotheses</h4>
+                <md-chips ng-model="vm.optional.researchHypotheses" readonly="false" md-on-remove="vm.simpleUpdate('researchHypotheses', vm.optional.researchHypotheses)" md-on-add="vm.simpleUpdate('researchHypotheses', vm.optional.researchHypotheses)" md-removable="true" md-enable-chip-edit="true">
+                </md-chips>
+        </form>
+    </md-card-content>
+</md-card>
+
+

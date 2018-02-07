@@ -5,7 +5,7 @@
 				<h3 class="white-font">Upload ERC</h3>
 				<span flex></span>
 				<md-button class="md-icon-button" ng-click="vm.cancel()">
-					<md-icon md-svg-src="{{vm.icons.close}}" aria-label="Close" class="o2r-icon"></md-icon>
+					<md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.close}}" aria-label="Close" class="o2r-icon"></md-icon>
 				</md-button>
 			</div>
 		</md-toolbar>
@@ -26,23 +26,23 @@
 				</div>
 
 				<div ng-hide="vm.doneButton" class="upmod-checkbox">
-					<div>	
+					<!-- <div>	
 						<md-checkbox class="md-primary" ng-model="vm.checkRunAnalysis">
 							Automatically start analysis after upload
 						</md-checkbox>
-					</div>
-					<div>	
+					</div> -->
+					<!--<div>	
 						<md-checkbox class="md-primary" ng-model="vm.shipToZenodo">
 							Ship to Zenodo
 						</md-checkbox>
-					</div>
+					</div>-->
 				</div>		
 				<div ng-show="vm.doneButton && vm.checkUpload">
 					<p>File uploaded successfully</p>
 				</div>
 				<div ng-show="vm.doneButton && !vm.checkUpload">
 					<p>File upload failed!</p>
-					<p>{{vm.uploadError.data.error}}</p>
+					<p>{{vm.uploadError}}</p>
 				</div>
 
 				<div id="upmod-progress" ng-show="vm.onLoad" flex="90">
@@ -59,9 +59,8 @@
 			<md-button class="md-primary md-raised white-font" ng-click="vm.cancel()" ng-hide="vm.doneButton">
 				Cancel
 			</md-button>			
-			<md-button class="md-raised" ng-hide="!vm.doneButton" ng-click="vm.cancel()" >
+			<md-button class="md-raised" ng-hide="!vm.doneButton" ng-click="vm.done()" >
 				Done
 			</md-button>
-			
 		</md-dialog-actions>
 </md-dialog>

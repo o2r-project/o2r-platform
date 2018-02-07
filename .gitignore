@@ -4,21 +4,6 @@ client/bower_components/
 #ignore config.js
 client/app/config/config.js
 
-#ignore testfiles
-testFiles/
-
-#ignore node_modules
-node_modules/
-
-#ignore unit tests
-lib/
-spec/
-karma.conf.js
-
-# keep ignored until well implemented
-client/app/ercView/publications.spec.js
-package.json
-
 # ignore workspace settings
 .vscode/
 

@@ -1,48 +1,68 @@
 (function(){
     'use strict';
-    /* eslint-disable angular/window-service */
-    window.__env = window.__env || {};
 
-    var env = {
-        server : window.__env.server || 'http://localhost',
-        c_api: window.__env.api || '/api/v1',
-        sizeRestriction: window.__env.sizeRestriction || 10000000,
-        disableTracking: window.__env.disableTracking || false,
-        enableDebug: window.__env.enableDebug || false,
-        version: window.__env.version || 'deployment'
-    };
-    env.api = env.server + env.c_api;
-
-    /* eslint-enable angular/window-service */
     angular
         .module('starter', [
+            "conf",
+            "starter.o2rCodeHighlight",
+            "starter.o2rDisplayFiles",
+            "starter.o2rSubstituteCandidate",
+            "starter.o2rSubstituteMagnify",
+            "starter.o2rCompareBaseSubst",
+            "starter.o2rCompare",
+            "starter.o2rHttp",
+            "starter.o2rInspect",
+            "starter.o2rErcDownload",
+            "starter.o2rMetadataView",
+            "starter.o2rRecipient",
+            "starter.o2rUiBindingCreator",
             "treeControl",
-            "ui.router", 
-            "hljs", 
-            "ngFileUpload", 
+            "hljs",
+            "ui.router",
+            "ngFileUpload",
             'ngAnimate',
-            'ngAria', 
+            'ngAria',
             'ngMaterial',
-            'angulartics', 
+            'ngMessages',
+            'angulartics',
             'angulartics.piwik',
             'angularUtils.directives.dirPagination',
-            'ngProgress'])
-        .constant('env', env)
+            'ngProgress',
+            'ngIframeResizer',
+            'rzModule',
+            'ui-leaflet',
+            'angular-logger',
+            'angular-intro',
+            'ngCookies',
+            'ngSanitize',
+            'elasticsearch'])
         .constant('icons', icons())
-        .config(config);
-    
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', 'hljsServiceProvider', '$analyticsProvider'];
+        .config(config)
+        .run(run);
 
-    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, hljsServiceProvider, $analyticsProvider){
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$logProvider', '$analyticsProvider', 'hljsServiceProvider', '$compileProvider', '$mdDateLocaleProvider','$sceDelegateProvider', 'env', 'logEnhancerProvider'];
+
+    function config($stateProvider, $urlRouterProvider, $mdThemingProvider, $logProvider, $analyticsProvider, hljsServiceProvider, $compileProvider, $mdDateLocaleProvider, $sceDelegateProvider, env, logEnhancerProvider){
+        $compileProvider.preAssignBindingsEnabled(true);
+
+        $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/', 'https://markuskonkol.shinyapps.io/figure1_interactive',
+        'https://markuskonkol.shinyapps.io/figure1_interactive/', 'https://markuskonkol.shinyapps.io/interactiveFigure1/']);
         /* eslint-disable angular/window-service, angular/log */
-        $analyticsProvider.developerMode(window.__env.disableTracking);
-        if(window.__env.disableTracking) console.log("Tracking globally disabled!");
+        $analyticsProvider.developerMode(env.disableTracking);
+        if(env.disableTracking) console.log("Tracking globally disabled!");
 
-        $logProvider.debugEnabled(window.__env.enableDebug);
+        $logProvider.debugEnabled(env.enableDebug);
+        logEnhancerProvider.prefixPattern = '%2$s: ';
+        if(!env.enableDebug) console.log('Debug logs disabled!');
         /* eslint-enable angular/window-service, angular/log */
+
         hljsServiceProvider.setOptions({
             tabReplace: '    '
         });
+
+        $mdDateLocaleProvider.formatDate = function(date){
+            return moment(date).format('DD-MM-YYYY');
+        };
 
         var customPrimary = {
             '50': '#0681ff',
@@ -125,25 +145,48 @@
             .accentPalette('customAccent')
             .warnPalette('customWarn')
             .backgroundPalette('grey');
-            
-        $urlRouterProvider.otherwise("/home"); // For any unmatched url, send to /route1
+
+        $urlRouterProvider.when('', '/home');
+        $urlRouterProvider.when('/', '/home');
+        $urlRouterProvider.otherwise("/404"); // For any unmatched url, send to /404
         $stateProvider
             .state('home', {
-                url: "/home",
+                url: "/home?inspect",
                 templateUrl: "app/homeView/home.html",
                 controller: 'HomeController',
                 controllerAs: 'vm'
             })
-            .state('erc', {
-                url: "/erc/:ercid",
-                templateUrl: "app/ercView/erc.html",
-                controller: 'ErcController',
-                controllerAs: 'vm',
+            .state('creationProcess', {
+                url: "/creationProcess/:ercid",
+                templateUrl: "app/creationProcess/creationProcess.html",
+                controller: "CreationProcessController",
+                controllerAs: "vm",
                 resolve: {
-                    compInfo: compInfoService,
-                    compFJob: compFJobService,
-                    compSJob: compSJobService
+                    creationService: creationService
+                },
+                onExit: function(creationObject){
+                    creationObject.destroy();
                 }
+            })
+            .state('creationProcess.requiredMetadata', {
+                templateUrl: "app/creationProcess/requiredMetadata.html",
+                controller: 'RequiredMetaController',
+                controllerAs: 'vm'
+            })
+            .state('creationProcess.optionalMetadata', {
+                templateUrl: "app/creationProcess/optionalMetadata.html",
+                controller: 'OptionalMetaController',
+                controllerAs: 'vm'
+            })
+            .state('creationProcess.spacetimeMetadata', {
+                templateUrl: "app/creationProcess/spacetimeMetadata.html",
+                controller: 'SpaceTimeController',
+                controllerAs: 'vm'
+            })
+            .state('creationProcess.uibindings', {
+                templateUrl: "app/creationProcess/uibindings.html",
+                controller: 'UIBindingsController',
+                controllerAs: 'vm'
             })
             .state('author', {
                 url: "/author/:authorid",
@@ -151,16 +194,72 @@
                 controller: 'AuthorController',
                 controllerAs: 'vm',
                 resolve: {
-                    authorInfo: authorInfoService
+                    authorInfo: authorInfoService,
+                    author: authorService
                 }
             })
             .state('search', {
-                url: "/search?q",
+                url: "/search?q&coords&from&to&start&size&libraries",
                 templateUrl: "app/searchView/search.html",
                 controller: 'SearchController',
                 controllerAs: 'vm',
                 resolve: {
+                    searchAll: searchAllService,
                     searchResults: searchResultsService
+                }
+            })
+            .state('erc', {
+                url: "/erc/:ercid",
+                templateUrl: "app/ercView/erc.html",
+                controller: 'ErcController',
+                controllerAs: 'vm',
+                resolve: {
+                    erc: ercService,
+                    recipient: recipientService,
+                    compFJobSuccess: compFJobSuccessService,
+                    shipmentInfo : shipmentInfoService
+                }
+            })
+            .state('erc.reproduce', {
+                templateUrl: "app/reproduceView/reproduce.html",
+                controller: 'ReproduceController',
+                controllerAs: 'vm',
+                resolve: {
+                    compFJob: compFJobService,
+                    compSJob: compSJobService
+                }
+            })
+            .state('erc.inspect', {
+                templateUrl: "app/inspectView/inspect.html",
+                controller: 'InspectController',
+                controllerAs: 'vm'
+            })
+            .state('erc.manipulate', {
+                templateUrl: "app/manipulateView/manipulate.html",
+                controller: 'ManipulateController',
+                controllerAs: 'vm'
+            })
+            .state('erc.substitute', {
+                templateUrl: "app/substituteView/substitute.html",
+                controller: 'SubstituteController',
+                controllerAs: 'vm',
+                resolve: {
+                    substituteInfoService: substituteInfoService
+                }
+            })
+            .state('compareanalysis', {
+                url: "/compare/analysis?o&r&d&om&rm&dm",
+                templateUrl: "app/compareAnalysisView/compareAnalysis.html",
+                controller: "CompareAnalysisController",
+                controllerAs: 'vm'
+            })
+            .state('admin', {
+                url: "/admin",
+                templateUrl: "app/adminView/admin.html",
+                controller: "AdminController",
+                controllerAs: 'vm',
+                resolve: {
+                    admin: adminService
                 }
             })
             .state('impressum', {
@@ -175,16 +274,32 @@
                 controller: 'PrivacyController',
                 controllerAs: 'vm'
             })
+            .state('explore', {
+                url: "/explore",
+                templateUrl: "app/searchView/exploreERC.html",
+                controller: 'ExploreController',
+                controllerAs: 'vm'
+            })
             .state('404', {
                 url: "/404",
                 templateUrl: "app/templates/404.html"
             });
     }
 
+    run.$inject = ['$rootScope', '$state', '$log'];
+    function run($rootScope, $state, $log){
+        var logger = $log.getInstance('Run');
+        $rootScope.$on('$stateChangeError', function(event) {
+            logger.info('stateChangeError fired');
+            event.preventDefault();
+            return $state.go('404');
+        });
+    }
+
     function icons(){
-        var path = 'bower_components/material-design-icons/';
-        var path2 = '/svg/production/ic_';
-        var path3 = '_48px.svg';
+        var path = 'img/ic_';
+        var path2 = '_48px.svg';
+        var path3 = '_24px.svg';
         var object = {};
         var icons = [
             {name: 'upload', category: 'file', fn: 'file_upload'},
@@ -197,60 +312,232 @@
             {name: 'copy', category: 'av', fn: 'library_books'},
             {name: 'done', category: 'action', fn: 'done'},
             {name: 'fail', category: 'content', fn: 'clear'},
+            {name: 'run', category: 'av', fn: 'play_circle_outline'},
+            {name: 'skip', category: 'av', fn: 'not_interested'},
             {name: 'forward', category: 'content', fn: 'forward'},
             {name: 'info_outline', category: 'action', fn: 'info_outline'},
-            {name: 'rowing', category: 'action', fn: 'rowing'}
+            {name: 'rowing', category: 'action', fn: 'rowing'},
+            {name: 'add', category: 'content', fn: 'add'},
+            {name: 'remove', category: 'content', fn: 'remove'},
+            {name: 'edit', category: 'editor', fn: 'mode_edit'},
+            {name: 'lock_open', category: 'action', fn: 'lock_open'},
+            {name: 'lock_outline', category: 'action', fn: 'lock_outline'},
+            {name: 'navigate_next', category: 'image', fn: 'navigate_next'},
+            {name: 'navigate_before', category: 'image', fn: 'navigate_before'},
+            {name: 'required', category: 'action', fn: 'assignment_late'},
+            {name: 'graph', category: 'action', fn: 'assessment'},
+            {name: 'assignment', category: 'action', fn: 'assignment'},
+            {name: 'compass', category: 'action', fn: 'explore'},
+            {name: 'highlight_off', category: 'toggle', fn: 'highlight_off'},
+            {name: 'folder', category: 'file', fn: 'folder'},
+            {name: 'preview', category: 'action', fn: 'visibility'},
+            {name: 'substitution_options', category: 'action', fn: 'swap_horiz_black'},
+            {name: 'backArrow', category: 'navigation', fn: 'arrow_back'},
+            {name: 'cloudUpload', category: 'file', fn: 'cloud_upload'},
+            {name: 'cloudDone', category: 'file', fn: 'cloud_done'},
+            {name: 'cloudQueue', category: 'file', fn: 'cloud_queue'},
+            {name: 'shuffle', category: 'navigation', fn: 'shuffle'}
         ];
 
         for(var i in icons){
-            
-            object[icons[i].name] = path + icons[i].category + path2 + icons[i].fn + path3;
+            object[icons[i].name] = path + icons[i].fn + path2;
+            object[icons[i].name + '_small'] = path + icons[i].fn + path3;
         }
-        
+
         return object;
     }
 
-    authorInfoService.$inject = ['$stateParams', '$log', 'metadata'];
-    function authorInfoService($stateParams, $log, metadata){
+    authorInfoService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'httpRequests'];
+    function authorInfoService($stateParams, $log, $q, metadata, httpRequests){
+        var logger = $log.getInstance('authorInfo');
         var id = $stateParams.authorid;
-        $log.debug('authorInfoService, authorid: ' + id);
-        return metadata.callMetadata_author(id);
+        logger.info('authorid: ' + id);
+        return httpRequests.getSingleUser(id)
+            .then(function(result){
+                logger.info(result);
+                return metadata.callMetadata_author(id);
+            })
+            .catch(function(e){
+                logger.info(e);
+                return $q.reject(e.statusText);
+            });
     }
 
-    compInfoService.$inject = ['$stateParams', '$log', 'publications'];
-    function compInfoService($stateParams, $log, publications){
+    authorService.$inject = ['$stateParams', '$q', 'httpRequests'];
+    function authorService($stateParams, $q, httpRequests){
+        var id = $stateParams.authorid;
+        return httpRequests.getSingleUser(id)
+            .then(function(result){
+                if(result.status == 404){
+                    return $q.reject('404 Not Found');
+                } else return result;
+            });
+    }
+
+    compInfoService.$inject = ['$stateParams', '$log', '$q', 'publications'];
+    function compInfoService($stateParams, $log, $q, publications){
         var ercId = $stateParams.ercid;
         $log.debug('compInfoService, ercid: ' + ercId);
-        return publications.getRequest(ercId);
+        return publications.getRequest(ercId).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
     //TODO
     //query param status might need to be changed to filter all finished jobs
-    compFJobService.$inject = ['$stateParams', 'jobs'];
-    function compFJobService($stateParams, jobs){
+    compFJobService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compFJobService($stateParams,$q, jobs){
         var ercId = $stateParams.ercid;
         var query = {
-            compendium_id: ercId,
-            status: 'success'
+            compendium_id: ercId
+            //status: 'success'
         };
-        return jobs.callJobs(query);
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
-    compSJobService.$inject = ['$stateParams', 'jobs'];
-    function compSJobService($stateParams, jobs){
+    //query param status might need to be changed to filter all finished jobs
+    compFJobSuccessService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compFJobSuccessService($stateParams,$q, jobs){
+        var ercId = $stateParams.ercid;
+        var query = {
+            compendium_id: ercId
+            // status: 'success'
+        };
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                logger.info("No jobs finished in substituted ERC.\nPlease run analysis.");
+                return $q.reject('404 Not Found');
+            }
+            else {
+                if (result.data == "No analysis executed yet.") {
+                    return result;
+                } else {
+                    if (result.data.steps.check.status == "failure" || result.data.steps.check.status == "success") {
+                        return result;
+                    } else return {data: "No analysis finished that provides a html file for comparison reasons."};
+                }
+            }
+        });
+    }
+
+    compSJobService.$inject = ['$stateParams', '$q', 'jobs'];
+    function compSJobService($stateParams, $q, jobs){
         var ercId = $stateParams.ercid;
         var query = {
             compendium_id: ercId,
             status: 'running'
         };
-        return jobs.callJobs(query);
+        return jobs.callJobs(query).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
     }
 
-    searchResultsService.$inject = ['$stateParams', '$log', 'metadata'];
-    function searchResultsService($stateParams, $log, metadata){
-        $log.debug('searchResultsService, param: ', $stateParams);
-        var term = $stateParams.q;
-        $log.debug('searchResultsService, term: ' + term);
-        return metadata.callMetadata_search(term);
+    shipmentInfoService.$inject = ['$stateParams', '$q', 'httpRequests'];
+    function shipmentInfoService($stateParams, $q, httpRequests){
+        var deferred = $q.defer();
+        var ercId = $stateParams.ercid;
+        var result = [];
+        httpRequests.getCompShipments(ercId)
+            .then(function(response){
+                var counter = 0;
+                if(response.data.length === 0) deferred.resolve({data: []});
+                else {
+                    for(var i in response.data){
+                        httpRequests.getShipment(response.data[i])
+                        .then(function(res){
+                            result.push(res.data);
+                            counter++;
+                            if(counter == response.data.length){
+                                deferred.resolve(result);
+                            }
+                        });
+                    }
+                }
+            });
+        return deferred.promise;
     }
-})();  
+
+    searchAllService.$inject = ['search'];
+    function searchAllService(search){
+        var index = 'o2r';
+        var query = search.prepareQuery(index);
+        return search.search(query);
+    }
+
+    searchResultsService.$inject = ['$stateParams', '$log', '$q', 'metadata', 'search'];
+    function searchResultsService($stateParams, $log, $q, metadata, search){
+        var logger = $log.getInstance('searchResultsService');
+        var index = 'o2r';
+        logger.info('param: ', $stateParams);
+        var term, coords, from, to, start,libraries, size = null;
+        if($stateParams.q) term = $stateParams.q;
+        if($stateParams.coords) coords = angular.fromJson($stateParams.coords);
+        if($stateParams.from) from = angular.fromJson($stateParams.from);
+        if($stateParams.to) to = angular.fromJson($stateParams.to);
+        if($stateParams.start) start = angular.fromJson($stateParams.start);
+        if($stateParams.size) size = angular.fromJson($stateParams.size);
+        if($stateParams.libraries) libraries = angular.fromJson($stateParams.libraries);
+        var query = search.prepareQuery(index, term, coords, from, to, start, size, libraries);
+        return search.search(query);
+    }
+
+    // provides metadata for all compendia TODO #1 (substitution): not all but similar compendia
+    substituteInfoService.$inject = ['$log', '$q', 'metadataSimComp'];
+    function substituteInfoService($log, $q, metadataSimComp){
+        $log.debug('substituteInfoService');
+        return metadataSimComp.callMetadata_simComp().then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else {
+              return result;
+            }
+      });
+    }
+
+    ercService.$inject = ['$log', '$stateParams', '$q', 'publications'];
+    function ercService($log, $stateParams, $q, publications){
+        var ercId = $stateParams.ercid;
+        $log.debug('GET /erc/%s', ercId);
+        return publications.getRequest(ercId).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
+    }
+
+    recipientService.$inject = ['$log', '$q', 'httpRequests'];
+    function recipientService($log, $q, httpRequests){
+        $log.debug('GET /recipient/');
+        return httpRequests.getRecipient();
+    }
+
+    creationService.$inject = ['$log', '$stateParams', '$q', 'publications'];
+    function creationService($log, $stateParams, $q, publications){
+        var ercId = $stateParams.ercid;
+        $log.debug('GET /erc/%s', ercId);
+        return publications.getRequest(ercId).then(function(result){
+            if(result.status == 404){
+                return $q.reject('404 Not Found');
+            }
+            else return result;
+        });
+    }
+
+    adminService.$inject = ['$log', 'httpRequests'];
+    function adminService($log, httpRequests){
+        return httpRequests.getAllUsers();
+    }
+})();

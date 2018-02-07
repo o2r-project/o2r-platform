@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+PACKAGE_VERSION=$(cat README.md | grep -i --after-context 2 "platform version" | tail -1 | xargs)
+
+echo "Build hook running for version" $PACKAGE_VERSION
+docker build \
+  --build-arg VCS_REF=`git rev-parse --short HEAD` \
+  --build-arg VCS_URL=`git config --get remote.origin.url` \
+  --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` \
+  --build-arg VERSION=$PACKAGE_VERSION \
+  -t $IMAGE_NAME .

@@ -1,0 +1,60 @@
+<md-dialog-content layout-padding flex="90">
+
+  <div id="tableSubstitutionOptions">
+    <table id="tableSubstitution" style="width:100%">
+      <tr style="background-color: white;">
+        <th style="width:45%"><h2>base ERC:</h2></th>
+        <th style="width:10%"></th>
+        <th style="width:45%"><h2>overlay ERC:</h2></th>
+      </tr>
+      <tr>
+        <th><h3>{{o2rBaseTitle}}</h3></th>
+        <th></th>
+        <th><h3>{{o2rOverlayTitle}}</h3></th>
+      </tr>
+      <div class="substitution-rows">
+        <tr ng-repeat="row in substitutionRows">
+          <td>
+            <md-input-container>
+              <md-select ng-model="fileSelectBase" ng-change="selectSubstitutionFiles(fileSelectBase, baseType, this)" placeholder="Select a basefile">
+                <md-option ng-value="basefile" ng-repeat="basefile in o2rBase">{{ basefile.fileName }}</md-option>
+              </md-select>
+            </md-input-container>
+          </td>
+          <td>
+            <md-button title="magnify row" ng-click="magnifyFiles($event, this)"><md-icon aria-label md-svg-src="{{icons.search}}"></md-icon></md-button>
+            <md-button title="del row" class="md-raised" ng-click="delDropdown(this)"><md-icon aria-label md-svg-src="{{icons.remove}}"></md-icon></md-button>
+          </td>
+          <td>
+            <md-input-container>
+              <md-select ng-model="fileSelectOverlay" ng-change="selectSubstitutionFiles(fileSelectOverlay, overlayType, this)" placeholder="Select an overlayfile">
+                <md-option ng-value="overlayfile" ng-repeat="overlayfile in o2rOverlay">{{ overlayfile.fileName }}</md-option>
+              </md-select>
+            </md-input-container>
+          </td>
+        </tr>
+      </div>
+      <tr style="background-color: white;">
+        <td class="add-row-button"></td>
+        <td class="add-row-button">
+          <md-button title="add row" class="md-raised" ng-click="addDropdown()"><md-icon aria-label md-svg-src="{{icons.add}}"></md-icon></md-button>
+        </td>
+        <td class="add-row-button"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div>
+    <md-radio-group ng-model="metadata.selected" class="md-primary">
+      <md-radio-button ng-repeat="data in metadata.data" ng-value="data.value" ng-disabled="data.isDisabled">
+        {{data.label}}
+      </md-radio-button>
+    </md-radio-group>
+  </div>
+  <div>
+    <md-button ng-click="cancel()">cancel</md-button>
+    <md-button ng-click="startSubstitutionUI()">start substitution</md-button>
+    <md-button ng-if="finishedSubstitution" class="md-button o2r-created-button" analytics-on="click" title="Open the overlay ERC" ng-click="showSubstitutedERC()">Go to ERC</md-button>     
+  </div>
+
+</md-dialog-content>

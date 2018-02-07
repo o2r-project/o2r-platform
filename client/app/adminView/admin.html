@@ -1,0 +1,56 @@
+<div flex="100" layout="row">
+    <form name="adminForm" flex="70">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Admin Area</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-input-container>
+                    <label>Search</label>
+                    <input ng-model="vm.searchText">
+                </md-input-container>
+                <table width="100%">
+                    <thead align="left"><tr><th>Name</th><th>Id</th><th>Level</th><th></th></tr></thead>
+                    <tr ng-repeat="user in vm.users | filter:vm.searchText">
+                        <td>
+                            <md-input-container>
+                                {{user.name}}
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container>
+                            {{user.id}}
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container>
+                                <label>Level</label>
+                                <md-select ng-model="user.level">
+                                    <md-option ng-value="vm.levels.users">New User</md-option>
+                                    <md-option ng-value="vm.levels.knowns">Known User</md-option>
+                                    <md-option ng-value="vm.levels.editors">Editor</md-option>
+                                    <md-option ng-value="vm.levels.admins">Admin</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </td>
+                        <td><md-button ng-disabled="vm.disable(user)" class="md-primary" ng-click="vm.updateUser(user.id, user.level, $event)">Save</md-button></td>
+                    </tr>
+                </table>
+            </md-card-content>
+        </md-card>
+    </form>
+    <div flex="30">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">User levels</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                The o2r Web API requires specific <em>user levels</em> for some actions, such as creating or shipping compendia. A list of levels and their permissions is available <a href="http://o2r.info/o2r-web-api/user/#user-levels">here</a>.
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

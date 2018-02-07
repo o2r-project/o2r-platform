@@ -5,15 +5,27 @@
         .module('starter')
         .controller('UploadModalController', UploadModalController);
     
-    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs'];
+    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs', '$location', 'httpRequests'];
 
-    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs){
-        var authorId = $stateParams.authorid; // id from author
-
+    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs, $location, httpRequests){
+        var logger = $log.getInstance('UploadCtrl');
+        // var authorId = $stateParams.authorid; // id from author
+        var authorId;
+        var uploadSuccess = false;
+        var newErcId = '';
         var vm = this;
         vm.icons = icons;
-        vm.checkRunAnalysis = true;
-        vm.cancel = () => {$mdDialog.cancel()};
+        // vm.checkRunAnalysis = true;
+        vm.uploadedERCid = false;
+        vm.cancel = () => {
+            $mdDialog.cancel(); 
+        };
+        vm.done = function() {
+                        $mdDialog.cancel();
+                        if(uploadSuccess){
+                            $location.path('/creationProcess/' + newErcId);
+                        }
+                    };            
         vm.selected = (file) => {vm.f = file;};
         vm.onLoad = false;
         vm.doneButton = false;
@@ -41,41 +53,45 @@
         function uploader(file){
             Upload.upload({
                 url: env.api + '/compendium',
-                data: {compendium: file, 'content_type': 'compendium_v1'}
+                data: {compendium: file, 'content_type': 'workspace'}
             })
-            .then(successCallback, errorCallback, progress)
-            .then(execJobCallback, errorCallback);
-            
-            function successCallback(response){
-                if(vm.checkRunAnalysis){
-                    return jobs.executeJob(response.data.id);
-                } else {
-                    $log.debug('upload successCallback: %o', response);
-                    vm.doneButton = true;
-                    metadata.callMetadata_author(authorId);
-                    vm.checkUpload = true;
-                    file.progress = 100;
-                }
-            }
-            function errorCallback(response){
+            .progress(function(evt){
+                file.progress = parseInt(95.0 * evt.loaded/evt.total);
+            })
+            .success(function(response, status, headers, config){
+                newErcId = response.id;
+                vm.cancel = function(){
+                    logger.info('cancelling from success');
+                    httpRequests
+                    .deleteCompendium(newErcId)
+                    .then(function(res){
+                        logger.info('cancelled upload and deleted comp');
+                        $mdDialog.cancel();
+                    });
+                };
+                logger.info('upload successCallback: ', angular.toJson(response));
+                uploadSuccess = true;
+                vm.doneButton = true;
+                vm.checkUpload = true;
+                file.progress = 100;
+            })
+            .error(function(response, status, headers, config){
+                logger.info('upload errorCallback', response);
                 file.progress = 100;
                 vm.doneButton = true;
                 vm.checkUpload = false;
-                vm.uploadError = response;
-            }
-            function progress(evt){
-                file.progress = parseInt(95.0 * evt.loaded/evt.total);
-            }
-            function execJobCallback(response){
-                $log.debug('upload execJobCallback: %o', response);
-                if(vm.checkRunAnalysis){
-                    vm.doneButton = true;
-                    metadata.callMetadata_author(authorId);
-                    vm.checkUpload = true;
-                    file.progress = 100;
-                }
-            }
+                vm.uploadError = response.error;
+                uploadSuccess = false;
+            })
+            .xhr(function(xhr){
+                logger.info('xhr', xhr);
+                vm.cancel = function(){
+                    logger.info('overwrite cancel function');
+                    xhr.abort();
+                    $mdDialog.cancel();
+                };
+
+            });
         }
     }
-
 })();

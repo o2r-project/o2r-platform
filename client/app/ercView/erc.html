@@ -1,80 +1,112 @@
-<div layout="column">
-	<!--
-	<div layout="row" flex="30">
-		<md-card>
-			<md-card-content layout="column">
-			</md-card-content>
-		</md-card>
-	</div>
--->
-	<div layout="row">
-		<!-- folder tree -->
-		<div layout="column" flex="30">
-		<md-card>
-			<md-card-content>
-				<div layout="row">
-					<h3 class="erc-comptitle">{{vm.publication.metadata.o2r.title}}</h3>
-					<span flex></span>
-					<o2r-erc-download erc-id="{{vm.ercId}}"></o2r-erc-download>
-				</div>
-				<md-divider></md-divider>
-				<div id="erc-treediv">
-					<div layout="row">
-						<span flex></span>
-						<md-checkbox ng-model="vm.hideBagit" aria-label="Hide Bagit">
-							Hide Bagit files
-						</md-checkbox>
-					</div>
-					<treecontrol class="tree-classic" tree-model="vm.bagitToggle(vm.publication.files, vm.hideBagit)" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
-						<span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
-					</treecontrol>
-				</div>
-				<!--<md-button ng-show="vm.stillToArchive() && vm.loggedIn" ng-click="vm.sendToZenodo(vm.ercId)">Ship to Zenodo<md-icon aria-label md-svg-src="{{vm.icons.rowing}}"></md-icon></md-button>
-				-->
-			</md-card-content>
-		</md-card>
+<!-- Top nav -->
+<div flex="100" layout="row">
+    <div ng-if="vm.substitution.substituted" id="substitution-buttons">
+      <md-button class="md-raised" analytics-on="click" title="What is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE9900"><img title="This is an ERC based on a substitution" src="img/ic_shuffle_black_48px.svg" class="orcidImage">Substitution ERC</md-button>
+      <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the base ERC" target="_blank" ng-click="vm.showERC(vm.substitution.baseID)">base</a>
+      <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the overlay ERC" target="_blank" ng-click="vm.showERC(vm.substitution.overlayID)">overlay</a>
+      <!--<md-button class="md-raised" analytics-on="click" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">
+        <md-icon md-svg-icon="{{vm.icons.search}}"></md-icon>
+      </md-button>-->
+    </div>
+    <span flex></span>
+    <o2r-recipient ng-if="vm.loggedIn" o2r-recipient-object="vm.recipientObject"></o2r-recipient>
+</div>
 
-			<!-- Analysis -->
-			<o2r-analysis-stats o2r-finished="{{vm.fJob}}" o2r-started="{{vm.sJob}}" flex="30"></o2r-analysis-stats>
+<!-- Main view -->
+<div layout="row">
+    <!-- Sidenav -->
+    <md-sidenav
+        class="md-sidenav-left erc-side"
+        md-component-id="sidenav"
+        md-is-open="false"
+        md-whiteframe="5">
+        <md-toolbar>
+            <div layout="row">
+                <h1 class="md-toolbar-tools white-font">Files</h1><o2r-erc-download erc-id="{{vm.ercId}}" filesize="vm.overallSize"></o2r-erc-download>
+            </div>
+        </md-toolbar>
+        <md-content layout-padding layout="column" class="erc-side-content" ng-controller="ErcSidenavController as vm">
+            <div layout="row" class="erc-side-content">
+                <treecontrol class="tree-classic" tree-model="vm.publication.files" options="vm.treeOptions" on-selection="showSelected(node)" on-node-toggle="showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)" selected-node="node1">
+                    <span ng-click="vm.setOne(node.path)" analytics-category="ERC" analytics-on="click" analytics-event="show file {{node.name}}">{{node.name}}</span>
+                </treecontrol>
+            <span flex></span>
+            <md-button class="erc-side-collapse-button" ng-click="$parent.vm.toggleSidenav()" aria-label="Collapse sidenav">
+                <md-icon md-svg-icon="{{vm.icons.navigate_before}}"></md-icon>
+            </md-button>
+            </div>
+        </md-content>
+    </md-sidenav>
 
-		</div>
+    <div class="erc-side-toggle">
+        <md-button class="erc-side-toggle-button" ng-click="vm.toggleSidenav()" aria-label="Expand sidenav">
+            <md-icon md-svg-icon="{{vm.icons.navigate_next}}"></md-icon>
+        </md-button>
+    </div>
 
-		<!-- Content -->
-		<div layout="column" flex="65" flex-offset="5">
-		<md-card>
-			<md-card-header>
-				<md-card-header-text class="md-title" layout="row">
-					<span>{{vm.oneFile.path | cutPath}}</span>
-					<span flex></span>
-					<!-- Menu for downloading single file or copying absolute path -->
-					<md-menu ng-if="vm.oneFile.path">
-						<md-button class="md-icon-button" aria-label="show file path or download file" ng-click="vm.openMenu($mdOpenMenu, $event)">
-							<md-icon md-menu-origin md-svg-src="{{vm.icons.menu}}" class="o2r-icon"></md-icon>
-						</md-button>
-						<md-menu-content width="4">
-							<md-menu-item>
-								<md-input-container class="md-icon-float md-block">
-									<label></label>
-									<md-icon md-svg-src="{{vm.icons.copy}}" class="o2r-icon"></md-icon>
-									<input type="text" value="{{vm.server + vm.oneFile.path}}" onClick="this.select();" ng-readonly="true">
-								</md-input-container>
-							</md-menu-item>
-							<md-menu-divider></md-menu-divider>
-							<md-menu-item>
-								<md-button ng-href="{{vm.oneFile.path}}" download>
-									<md-icon flex="10" md-svg-src="{{vm.icons.download}}" class="o2r-icon"></md-icon>
-									Download file
-								</md-button>
-							</md-menu-item>
-						</md-menu-content>
-					</md-menu>
+    <!-- Left side -->
+    <md-card flex="50" class="erc-main" ng-hide="vm.mShowCodeData">
+        <md-card-header>
+            <md-card-header-text layout="row" class="o2r-dark-title">
+                <span class="o2r-grey-font">{{vm.file.name | cutLongName : 40}}</span>
+				<span flex></span>
+                <md-button class="erc-backtopaper-button" ng-hide="vm.originalSelected" ng-click="vm.showOriginal()">
+                    Back to paper
+                </md-button>
+                <!-- Menu for downloading single file or copying absolute path -->
+                <md-menu ng-if="vm.file.path">
+                    <md-button class="md-icon-button" aria-label="show file path or download file" ng-click="vm.openMenu($mdOpenMenu, $event)">
+                        <md-icon md-menu-origin md-svg-src="{{vm.icons.menu}}" class="o2r-icon"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-input-container class="md-icon-float md-block">
+                                <label></label>
+                                <md-icon md-svg-src="{{vm.icons.copy}}" class="o2r-icon"></md-icon>
+                                <input type="text" value="{{vm.server + vm.file.path}}" onClick="this.select();" ng-readonly="true">
+                            </md-input-container>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-href="{{vm.file.path}}" download>
+                                <md-icon flex="10" md-svg-src="{{vm.icons.download}}" class="o2r-icon"></md-icon>
+                                Download file
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <o2r-display-files o2r-file="{{vm.file}}"></o2r-display-files>
+        </md-card-content>
+    </md-card>
 
-				</md-card-header-text>
-			</md-card-header>
-			<md-card-content>
-				<o2r-display-files o2r-file="{{vm.oneFile}}"></o2r-display-files>
-			</md-card-content>
-		</md-card>
-		</div>
-	</div>
+    <!-- CodeDataView for manipulateView -->
+    <md-card flex="50" ng-if="vm.mShowCodeData">
+        <md-card-header class="erc-codedata-header">
+            <md-card-header-text layout="row">
+                <span flex></span>
+                <md-button class="erc-backtopaper-button" ng-click="vm.resetMCodeData()">
+                    Back to paper
+                </md-button>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content class="erc-codedata-content">
+            <o2r-inspect o2r-inspect-data="{{vm.mCodeData}}"></o2r-inspect>
+        </md-card-content>
+    </md-card>
+
+    <!-- Right side -->
+    <md-card flex="45" class="erc-rightside">
+        <md-nav-bar md-selected-nav-item="vm.currentNavItem" nav-bar-aria-label="Options">
+            <md-nav-item md-nav-sref="erc.reproduce" name="reproduce">{{vm.checkORsubstituted}}</md-nav-item>
+            <md-nav-item md-nav-sref="erc.inspect" name="inspect">Inspect</md-nav-item>
+            <md-nav-item md-nav-sref="erc.manipulate" name="manipulate">Manipulate</md-nav-item>
+            <md-nav-item md-nav-sref="erc.substitute" name="substitute">Substitute</md-nav-item>
+        </md-nav-bar>
+        <md-card-content>
+            <div ui-view></div>
+        </md-card-content>
+    </md-card>
 </div>

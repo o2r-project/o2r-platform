@@ -1,0 +1,32 @@
+<md-menu>
+    <md-button aria-label="ship to" class="md-raised" ng-click="openMenu($mdMenu, $event)">
+        <md-icon md-menu-origin class="o2r-icon" md-svg-src="{{icons.cloudUpload}}" aria-label="rowing"></md-icon>Ship to&nbsp;...
+    </md-button>
+    <md-menu-content width="4">
+        <md-menu-item>
+            <span md-menu-align-target>
+                <md-icon md-svg-src="{{icons.cloudUpload}}" arial-label="rowing"></md-icon>Ship to&nbsp;...
+            </span>
+        </md-menu-item>
+        <md-menu-item class="o2r-recipient-menu-item" ng-repeat="recip in rec" layout="row">
+            <!-- first step of shipment and only step for download -->
+            <md-button ng-if="(recip.status == undefined) || (recip.recipient == 'download')" ng-click="shipTo(recip, recipient.ercId)" aria-label="ship" md-prevent-menu-close="md-prevent-menu-close">
+                <md-icon md-svg-src="{{getIcon(recip.buttonType)}}" aria-label="ship"></md-icon>
+                {{recip.label}}
+            </md-button>
+            
+            <!-- second step of shipment. not available for download -->
+            <md-button ng-if="recip.status == 'shipped' && recip.recipient != 'download'" ng-click="publish(recip.id, recip)" aria-label="ship" md-prevent-menu-close="md-prevent-menu-close">
+                <md-icon md-svg-src="{{getIcon(recip.buttonType)}}" aria-label="ship"></md-icon>
+                Shipped. Publish!
+            </md-button>
+            
+            <!-- third step of shipment. if shipment has been published -->
+            <span ng-if="recip.status == 'published'">
+                <md-icon md-svg-src="{{getIcon(recip.buttonType)}}" aria-label="ship"></md-icon>
+                Published
+            </span>
+            <md-progress-circular ng-if="recip.spinner" md-diameter="30px"></md-progress-circular>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

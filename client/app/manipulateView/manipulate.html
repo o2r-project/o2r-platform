@@ -1,0 +1,15 @@
+<div class="manipulate-interactive">
+    <md-tabs class="manipulate-tabs" md-selected="vm.selectedTab" md-border-bottom md-autoselect>
+        <md-tab ng-repeat="figure in vm.figures track by $index"
+                label="Figure {{$index + 1}}">
+                <o2r-display-files o2r-file="{{figure.shinyURL}}" ng-if="vm.selectedTab == $index"></o2r-display-files>
+        </md-tab>
+    </md-tabs>
+    <div layout="row">
+        <span flex></span>
+        <md-button class="md-raised" aria-label="Inspect Code and Data" ng-click="vm.activateCodeData()">
+            Inspect Code and Data
+        </md-button>
+    <span flex></span>
+    </div>
+</div>

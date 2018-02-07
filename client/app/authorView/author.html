@@ -20,8 +20,11 @@
 					<md-icon ng-show="vm.sortType == 'id' && !vm.sortReverse" md-svg-src="{{vm.icons.upArrow}}" class="o2r-icon"></md-icon>					
 				</md-button>
 				<md-divider></md-divider>
-				<md-button>
-					Other Options
+				<md-button ng-click="vm.showProfile($event)">
+					Profile
+				</md-button>
+				<md-button ng-if="vm.showAdmin()" ui-sref="admin()">
+					Admin Area
 				</md-button>
 				
 			</md-card-content>
@@ -44,12 +47,13 @@
 					<md-list-item class="md-2-line" ng-repeat="pub in vm.allPubs | orderBy:vm.sortType:vm.sortReverse" ng-click="vm.selectComp(pub)">
 						<div class="md-list-item-text" layout="row">
 							<div flex>
-								<md-button ui-sref="erc({ercid: pub.id})"><b class="search-clickOnName">{{pub.metadata.o2r.title}}</b></md-button>
+								<md-button ui-sref="erc({ercid: pub.id})"><img ng-show = "pub.substituted" title="This is an ERC based on a substitution" src="img/ic_shuffle_black_48px.svg" class="orcidImage"><b class="search-clickOnName">{{pub.metadata.o2r.title | cutLongName}}</b></md-button>
 								<h4 flex><b>Created on:</b> {{pub.created | date : 'yyyy-MM-dd HH:mm'}}</h4>
-								<h4 flex><b>by</b> {{pub.user}}</h4>
+								<p style="background-color: red;" ng-show="pub.candidate">You still have to fill required metadata to create a regular ERC: <a href="/#!/creationProcess/{{pub.id}}" class="editForCandidates">EDIT</a></p>
+								<h4 flex><b>by </b><img src="img/orcid.png" class="orcidImage"> orcid.org/{{pub.user}}</h4>
 							</div>
 							<div>
-							<md-button ng-click="vm.selectComp(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
+								<md-button ng-click="vm.selectComp(pub)"><md-icon aria-label md-svg-src="{{vm.icons.info_outline}}"></md-icon></md-button>
 							</div>
 						</div>
 						<md-divider ng-if="!($last)"></md-divider>
@@ -68,7 +72,7 @@
 	</div>
 
 	<!-- metadata panel -->
-	<div layout="column" class="o2r-fixed author-metadata">
-		<o2r-metadata o2r-comp="{{vm.selectedComp}}" ng-if="vm.allPubs"></o2r-metadata>
+	<div layout="column" class="author-metadata">
+		<o2r-metadata-view o2r-comp="{{vm.selectedComp}}" ng-if="vm.allPubs"></o2r-metadata-view>
 	</div>
 </div>

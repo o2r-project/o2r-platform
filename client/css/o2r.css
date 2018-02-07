@@ -9,7 +9,16 @@ body{
 	padding: 2%;
 	padding-top: calc(64px + 1vh);
 	height: auto !important;
-	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/ 
+	min-height: calc(100vh - 64px - 64px - 33px); /*full height - header - footer - padding-top*/
+}
+
+.orcidImage{
+	width:12px;
+	margin-right: 2px;
+}
+
+.toLowerCase{
+	text-transform: lowercase;
 }
 
 .o2r-pointer{
@@ -24,10 +33,46 @@ body{
 	color: white !important;
 }
 
+.no-margin-top{
+	margin-top: 0;
+}
+
+.no-margin{
+	margin: 0;
+}
+
+.no-padding{
+	padding: 0;
+}
+
+.o2r-grey-font{
+	color: rgba(0,0,0,0.54);
+}
+
+.o2r-red-font{
+	color: rgb(120,17,24);
+}
+
+.o2r-dark-font{
+	color: rgb(67,69,83);
+}
+
+.o2r-blue-font{
+	color: rgb(0,66,134);
+}
+
 .footer{
 	height: 64px !important;
 }
 
+md-card-header-text{
+	width: 100%;
+	overflow-wrap: break-word;
+}
+
+#o2r-header{
+	z-index:100;
+}
 /*
 .no-link{
 	color: 0, 0, 0, 0.87 !important;
@@ -47,72 +92,69 @@ body{
 }
 
 .o2r-red-icon{
-	fill: #8e141c !important;
+	fill: rgb(120,17,24) !important;
 }
 
 .o2r-green-icon{
-	fill: green !important;
+	fill: rgb(0,135,98) !important;
 }
+
+.o2r-blue-icon{
+	fill: rgb(0,66,134) !important;
+}
+
+.o2r-download-exclude-image{
+	margin-left: 16px;
+}
+
+.o2r-created-button{
+	color: white !important;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	background-color: rgb(0,135,98);
+}
+
 /************************
    End General
 *************************/
 /***********************
-   Start ERC view
+   Start Display files view
 ************************/
-.erc-pdf{
+.display-files-pdf{
 	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.erc-html{
+.display-files-html{
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
+	overflow-x: auto;
 }
 
-.erc-html iframe{
+iframe.display-files-html{
 	border-style: none;
 }
 
-.erc-img{
+display-files-html iframe{
+	border-style: none;
+}
+
+.display-files-img{
 	max-width: 100%;
 }
 
-.erc-video{
+.display-files-video{
 	max-width: 100%;
 }
 
-.erc-bigfile-par{
+.display-files-bigfile-par{
 	text-align: center;
 }
 
-.erc-comptitle{
-	padding-left: 5%;
-}
-
-#erc-treediv{
-		padding-top: 5%;
-}
-md-card-header-text{
-	width: 100%;
-	overflow-wrap: break-word;
-}
-
-treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
-    background: url("../img/o2r-folder.png") no-repeat !important;
-}
-
-treecontrol.tree-classic li.tree-collapsed i.tree-branch-head {
-    background: url("../img/o2r-folder-closed.png") no-repeat !important;
-}
-
-treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
-    background: url("../img/o2r-file.png") no-repeat !important;
-}
 /***********************
-   End ERC view
+   End Display files view
 ************************/
 /***********************
    Start Author-Landingpage view
@@ -149,15 +191,82 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	width:15%;
 	position: relative;
 	top: 10%;
 }
 
-#home-logo-box{
-	padding-top: 10%;
+.home-label{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	color: #434553;
+}
+
+.home-logo-box{
+	padding-top: 5%;
+}
+
+.home-input-folder{
+	margin-bottom: 0;
+}
+
+.home-input-analysis{
+	margin-top: 0;
+	color: rgba(0, 0, 0, 0.54);
+}
+
+.home-example{
+	padding-top: 5vh;
 }
 /***********************
    End Home view
+************************/
+
+/***********************
+   Start creation process
+************************/
+.metabuttons{
+	width:100%;
+}
+
+.selectdemoSelectHeader {
+  /* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */ }
+  .selectdemoSelectHeader .demo-header-searchbox {
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    padding: 0; }
+  .selectdemoSelectHeader .demo-select-header {
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+    padding-left: 10.667px;
+    height: 48px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto; }
+  .selectdemoSelectHeader md-content._md {
+    max-height: 240px;
+}
+
+.md-select-width {
+	width:220px;
+}
+
+.md-select-margin {
+	margin-left:3%;
+}
+
+md-input-container.md-default-theme.md-input-invalid .md-char-counter, md-input-container.md-input-invalid .md-char-counter, md-input-container.md-default-theme.md-input-invalid .md-input-message-animation, md-input-container.md-input-invalid .md-input-message-animation, md-input-container.md-default-theme.md-input-invalid label, md-input-container.md-input-invalid label{
+	color: #d11d29;
+}
+
+
+/***********************
+   End creation process
 ************************/
 
 /***********************
@@ -168,16 +277,96 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 	right: 5vw;
 }
 
+.gobutton{
+	bottom: 1em;
+}
+
 .search-button{
-	bottom:1em;
+	bottom: 1em;
 }
 
 .search-clickOnName:hover{
 	text-decoration: underline;
 }
 
+.editForCandidates{
+	position:relative;
+	z-index:100;
+}
+
 .search-clickOnName{
 	font-size: 1.5em;
+}
+
+.search-right-nav{
+	right: 1vw;
+	width: 5vw;
+}
+
+.search-searchbar{
+	margin: 8px 8px 8px 8px;
+}
+
+/* .search-results{
+	padding-top: 8px;
+} */
+
+.search-result-list-item:hover{
+	background-color: rgba(0, 0, 0, 0.12);
+}
+.search-highlight-result{
+	background-color: rgba(0, 0, 0, 0.12);
+}
+.search-results-wrapper{
+	/* overflow-y: auto; */
+	height: 80vh;
+}
+
+.search-left-side{
+	height: 80vh;
+}
+
+.search-results:hover{
+	background-color: rgba(0, 0, 0, 0.12);
+}
+
+.search-results-divider{
+	margin-top: 8px;
+}
+
+.search-results-abstract{
+	text-align: justify;
+}
+
+.search-keyword-container{
+	padding-left: 0 !important;
+}
+
+.search-keyword-trigger{
+	padding: 5px 5px 5px 5px;
+	border-radius: 2px;
+}
+
+.search-keyword-trigger:hover{
+	background: rgba(0, 0, 0, 0.12);
+}
+
+#search-virtual-repeat-container{
+	height: 80vh;
+}
+
+#search-results-md-card-content{
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.rzslider .rz-selection{
+	background: #004286;
+}
+
+.rzslider .rz-pointer{
+	background-color: #004286;
 }
 
 /***********************
@@ -214,7 +403,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 #upmod-prog-text{
 	width: 70px;
 	text-align: center;
-	padding-top: 10px;	
+	padding-top: 10px;
 }
 
 .upmod-checkbox{
@@ -230,7 +419,8 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 ************************/
 ul.pagination {
     display: inline-block;
-    padding: 0;
+	padding: 0;
+	padding-top: 5%;
     margin: 0;
 }
 
@@ -253,4 +443,374 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 /***********************
    End pagination of search results
 ************************/
+/***********************
+	Start MetadatView
+************************/
+.edit-button:hover{
+	cursor: pointer;
+}
 
+.edit-metadata-label-color{
+	color: rgba(0,0,0, 0.54);
+}
+
+.metadata-spacetime-padding{
+	padding-top: 5px;
+}
+
+.metadata-author-padding{
+	padding-bottom: 5px;
+}
+/***********************
+	End MetadatView
+************************/
+/***********************
+	Start compareView
+************************/
+o2r-compare md-card-content{
+	overflow-y: hidden;
+}
+/***********************
+	End compareView
+************************/
+/***********************
+   Start ERC view
+************************/
+treecontrol.tree-classic li.tree-expanded i.tree-branch-head {
+    background: url("../img/o2r-folder.png") no-repeat !important;
+}
+
+treecontrol.tree-classic li.tree-collapsed i.tree-branch-head {
+    background: url("../img/o2r-folder-closed.png") no-repeat !important;
+}
+
+treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
+    background: url("../img/o2r-file.png") no-repeat !important;
+}
+
+.erc-main{
+	height: 85vh;
+	margin-left: 0;
+}
+
+.erc-main > md-card-content{
+	overflow-y: auto;
+}
+
+.erc-main > md-card-header{
+	min-height: 2vh;
+}
+.erc-rightside{
+	height: 85vh;
+}
+
+.erc-side-toggle{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	/*background-color: white;*/
+}
+
+.erc-side-toggle-button{
+	min-width: 15px !important;
+	/*max-width: 15px !important;*/
+	min-height: 88px !important;
+	margin: 0 !important;
+	margin-top: 40vh !important;
+	/*padding-bottom: 42vh !important;*/
+}
+
+.erc-side-collapse-button{
+	margin-right: 0 !important;
+	min-width: 15px !important;
+	min-height: 88px !important;
+	max-height: 88px !important;
+	margin-top: 27vh !important;
+}
+
+.erc-side-content{
+	padding-right: 0 !important;
+}
+
+.erc-side-checkbox{
+	margin-top: 12px !important;
+}
+
+.erc-side{
+	height: 85vh;
+	margin-top: calc(64px + 1vh + 8px); /* navbar height + padding top + margin top */
+	margin-bottom: 8px;
+	min-width: 35vw !important;
+}
+
+.erc-side-button-row{
+	margin-right: 15px;
+}
+
+.erc-codedata-header{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.erc-codedata-content{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.erc-backtopaper-button{
+	min-width: 113.344px !important;
+}
+/***********************
+   End ERC view
+************************/
+/***********************
+	Start inspectView
+************************/
+
+.inspect-menu-button{
+	padding: 0!important;
+	height: 30px!important;
+	width: 30px!important;
+	line-height: normal!important;
+	vertical-align: top!important;
+}
+
+.inspect-divider{
+	margin-top: 0.5vh;
+	margin-bottom: 0.5vh;
+}
+.inspect-code{
+	height: 35vh;
+	overflow-y: auto;
+	margin-top: 0.5vh;
+}
+
+.inspect-data{
+	height: 37vh;
+	overflow-y: auto;
+	margin-top: 0.5vh;
+}
+
+/***********************
+	End inspectView
+************************/
+/***********************
+	Start manipulateView
+************************/
+
+.manipulate-interactive{
+	overflow-y: auto;
+}
+
+.manipulate-tabs{
+	height: 70vh;
+}
+
+/***********************
+	End manipulateView
+************************/
+/***********************
+	Start reproduceView
+************************/
+
+.reproduce-dialog{
+	max-height: 85% !important;
+}
+
+/***********************
+	End reproduceView
+************************/
+/***********************
+	Start creationProcessView
+************************/
+
+.creationProcess-success-toast > .md-toast-content{
+	background-color: rgb(0,135,98) !important;
+}
+
+.creationProcess-failure-toast > .md-toast-content{
+	background-color: red !important;
+	padding: 1em;
+}
+
+.creationProcess-divider{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.creationProcess-binding-step{
+	padding: 8px;
+	margin: 18px 0;
+	vertical-align: middle;
+}
+
+.creationProcess-binding-step-inst{
+	margin: 18px 0;
+	vertical-align: middle;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.creationProcess-step-separate{
+	margin: 18px 0;
+}
+
+.creationProcess-summary{
+	overflow-y: auto;
+}
+
+.creationProcess-summary-table{
+	border: none;
+	padding-top: 8px;
+}
+
+.creationProcess-control-panel{
+	position: fixed;
+	right: 1%;
+	width: 20%;
+}
+/*
+.creationProcess-confirm-cancel{
+	z-index: 100;
+}
+*/
+.md-dialog-container{
+	z-index: 100 !important;
+}
+
+.required-last-author{
+	margin-bottom: 0;
+}
+
+.required-add-author{
+	margin-top: 0 !important;
+}
+
+.required-author-placeholder{
+	height: 40px;
+	width: 28px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin: 6px 8px 6px 8px;
+}
+
+.required-whiteframe-padding{
+	padding: 5px 5px 5px 5px;
+}
+/***********************
+	End creationProcessView
+************************/
+/***********************
+	Start IntroJs
+************************/
+.introjs-donebutton{
+	color: #333 !important;
+}
+
+.introjs-helperNumberLayer{
+	background: linear-gradient(to bottom, #006599 0%, #004286 100%) !important;
+}
+/***********************
+	End IntroJs
+************************/
+/***********************
+	Start AnalysisStats
+************************/
+#analysisStats {
+	height: auto !important;
+	max-height: calc(85vh - 64px - 16px - 16px - 32px); /*full height of card - navbar - padding-top - padding-bottom - button-layout-row*/
+	display: block;
+	overflow: scroll;
+}
+#analysisStats table{
+	border: none;
+	padding-top: 8px;
+}
+/***********************
+	End AnalysisStats
+************************/
+/***********************
+	Start Substitution
+************************/
+#substitute_ERCview {
+	height: auto !important;
+	max-height: calc(85vh - 64px - 16px); /*full height of card - navbar - padding-bottom*/
+	display: block;
+	overflow: scroll;
+}
+
+#substitution-buttons {
+	margin-left: 2em;
+}
+
+.md-select-menu-container {
+	z-index: 101 !important;
+}
+
+table {
+	 border: 2px solid black;
+}
+
+th, td {
+	border-bottom: 1px solid black;
+}
+
+td.add-row-button {
+	border-bottom: white;
+}
+
+.substitute_candidate{
+	max-width: 100%;
+	min-width: 80%;
+}
+
+#magnifyFiles{
+	max-width: 100%;
+	max-height: 80%;
+	width: 100%;
+	height: 80%;
+}
+
+#compareTwoFiles{
+	height: 100%;
+}
+
+.substitute_magnifier{
+	max-width: 100%;
+	max-height: 80%;
+	width: 100%;
+	height: 80%;
+}
+
+.substitute_magnifier > md-card-header{
+	min-height: 2vh;
+}
+
+.substitute_magnifier > md-card-content{
+	overflow-y: auto;
+}
+
+o2r-substitute-magnify{
+	height: 100%;
+}
+
+.substitute_magnifier_Card{
+	height: 100%;
+}
+
+.substitute_magnifier_Card > o2r-display-files > iframe.display-files-html{
+	height: 100% !important;
+}
+/***********************
+	End Substitution
+***********************/
+/***********************
+	Start o2rRecipient
+***********************/
+
+.o2r-recipient-menu-item{
+	padding-right: 16px;
+}
+
+/***********************
+	End o2rRecipient
+***********************/

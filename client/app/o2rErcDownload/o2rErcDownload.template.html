@@ -1,0 +1,29 @@
+<md-menu>
+    <md-button class="white-font" aria-label="open download menu" ng-click="openMenu($mdOpenMenu, $event)">
+        <md-icon md-svg-src="{{icons.download}}" class="o2r-white-icon"></md-icon>
+        <span md-menu-origin>Download files</span>
+    </md-button>
+    <md-menu-content width="2">
+        <md-menu-item>
+            <small ng-if="excImg(excludeImg)">Uncompressed: {{size.dockerExclude | filesize : 1}}</small>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.zip?image={{excImg(excludeImg)}}" download>
+                <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
+                .zip
+            </md-button>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar?image={{excImg(excludeImg)}}" download>
+                <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
+                .tar
+            </md-button>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-href="/api/v1/compendium/{{ercId}}.tar.gz?image={{excImg(excludeImg)}}" download>
+                <md-icon md-svg-src="{{icons.download}}" class="o2r-icon"></md-icon>
+                .tar.gz
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

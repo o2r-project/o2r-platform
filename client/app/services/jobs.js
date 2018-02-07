@@ -4,19 +4,22 @@
     angular
         .module('starter')
         .factory('jobs', jobs);
-        
+
     jobs.$inject = ['$rootScope', '$log', '$q', 'httpRequests', 'ngProgressFactory'];
-    
+
     function jobs($rootScope, $log, $q, httpRequests, ngProgressFactory){
         var executionStatus = {};
         var jobDone = true;
+        var lastFinishedJobId = null;
 
         var service = {
             callJobs: callJobs,
             checkStatus: checkStatus,
             executeJob: executeJob,
             getExecStatus: getExecStatus,
-            getJobDone: getJobDone
+            getJobDone: getJobDone,
+            getLastFinishedJobId: getLastFinishedJobId,
+            setLastFinishedJobId: setLastFinishedJobId
         };
 
         return service;
@@ -34,7 +37,7 @@
                 .then(callback1)
                 .then(callback2)
                 .catch(errorHandler);
-            
+
             return deferred.promise;
 
             function callback1(joblist){
@@ -79,9 +82,9 @@
         */
         function executeJob(id){
             $rootScope.progressbar = ngProgressFactory.createInstance();
-			$rootScope.progressbar.setHeight('3px');
+			$rootScope.progressbar.setHeight('10px');
 			$rootScope.progressbar.start();
-			//$timeout($rootScope.progressbar.complete(),100);            
+			//$timeout($rootScope.progressbar.complete(),100);
             var deferred = $q.defer();
             httpRequests.newJob({'compendium_id': id})
                 .then(callback1)
@@ -89,15 +92,16 @@
                 .catch(errorHandler);
 
             return deferred.promise;
-            
+
             function callback1(response){
                 $log.debug('executeJob callback1: %o', response);
                 return httpRequests.listSingleJob(response.data.job_id);
-                //(res) => {getJobStatus(res.steps);});
             }
             function callback2(job){
                 $log.debug('executeJob callback2: %o', job);
+                $rootScope.progressbar.complete();
                 setJobDone(checkStatus(job.data.steps));
+                setLastFinishedJobId(job.data.id);
                 deferred.resolve(job);
             }
             function errorHandler(e){
@@ -124,6 +128,15 @@
         function setJobDone(bool){
             jobDone = bool;
             $rootScope.$broadcast('changedJobDone');
+        }
+
+        function getLastFinishedJobId(){
+            return lastFinishedJobId;
+        }
+
+        function setLastFinishedJobId(id){
+            lastFinishedJobId = id;
+            $rootScope.$broadcast('changedLastFinishedJobId');
         }
     }
 })();

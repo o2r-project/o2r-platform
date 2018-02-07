@@ -1,0 +1,52 @@
+<md-dialog aria-label="check results" flex="90" class="reproduce-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="white-font">Check Results</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <md-icon class="o2r-white-icon" md-svg-src="{{vm.icons.close}}" arial-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    
+    <md-dialog-content>
+        <div class="md-dialog-content">
+
+            <div layout="row">
+                <md-card flex="33">
+                    <md-card-header>
+                        <md-card-header-text>
+                            <span>Original File</span>
+                            <span flex></span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        <o2r-display-files o2r-file="{{vm.original}}"></o2r-display-files>
+                    </md-card-content>
+                </md-card>
+                <md-card flex="33" flex-offset="1">
+                    <md-card-header>
+                        <md-card-header-text>
+                            <span>Reproduced File</span>
+                            <span flex></span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        <o2r-display-files o2r-file="{{vm.reproduced}}"></o2r-display-files>
+                    </md-card-content>
+                </md-card>
+                <md-card flex="33" flex-offset="1">
+                    <md-card-header>
+                        <md-card-header-text>
+                            <span>Differences</span>
+                            <span flex></span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        <o2r-display-files o2r-file="{{vm.difference}}"></o2r-display-files>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

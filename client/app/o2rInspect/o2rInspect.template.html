@@ -1,0 +1,48 @@
+<!--upper part -->
+{{code.name}}
+<div>
+    <div layout="row">
+        <span class="o2r-grey-font">{{selectedCode.name}}</span>
+        <span flex></span>
+        <md-menu md-position-mode="target-right target" ng-if="(code.length > 1)">
+            <md-button aria-label="Codefiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
+                <md-icon md-menu-origin md-svg-icon="{{icons.menu}}"></md-icon>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item ng-repeat="item in code track by $index">
+                    <md-button ng-click="selectCode(item)">
+                        {{item.name}}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </div>
+    <div class="inspect-code">
+        <o2r-display-files o2r-file="{{selectedCode}}"></o2r-display-files>
+    </div>
+</div>
+
+
+<md-divider class="inspect-divider"></md-divider>
+
+<!-- lower part -->
+<div layout="row">
+    <span class="o2r-grey-font">{{selectedData.name}}</span>
+    <span flex></span>
+    <md-menu md-position-mode="target-right target" ng-if="(datasets.length > 1)">
+        <md-button aria-label="Datafiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
+            <md-icon md-menu-origin md-svg-icon="{{icons.menu}}"></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+            <md-menu-item ng-repeat="item in datasets track by $index">
+                <md-button ng-click="selectData(item)">
+                    {{item.name}}
+                </md-button>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+</div>
+
+<div class="inspect-data">
+    <o2r-display-files o2r-file="{{selectedData}}"></o2r-display-files>
+</div>
