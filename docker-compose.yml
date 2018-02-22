@@ -126,7 +126,7 @@ services:
       - DEBUG=informer
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.8.0
+    image: o2rproject/o2r-bouncer:0.10.1
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -211,6 +211,22 @@ services:
     environment:
       - INSPECTER_PORT=8091
       - DEBUGME=inspecter
+
+  guestlister:
+    image: o2rproject/o2r-guestlister:0.0.1
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - configmongodb
+    environment:
+      - "GUESTLISTER_MONGODB=mongodb://mongodb"
+      - GUESTLISTER_PORT=8383
+      - DEBUG=guestlister
+      - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
+      - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
 
   platform:
     image: nginx:latest
