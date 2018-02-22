@@ -243,6 +243,5 @@ services:
       - "./dev/nginx.conf:/etc/nginx/nginx.conf:ro"
       #- "./dev/socket.html:/usr/share/nginx/html/dev/socket.html:ro"
       - "./client:/usr/share/nginx/html:ro"
-      #- "./dev/config-toolbox.js:/etc/nginx/html/app/config/config.js:ro"
     ports:
       - "80:80"
