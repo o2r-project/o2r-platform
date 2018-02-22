@@ -60,7 +60,6 @@ The services can be started using `docker-compose` on the following platforms
 
 * Unix based systems
 * Windows with Docker for Windows
-* Windows with Docker Toolbox
 
  by running:
 
@@ -105,16 +104,6 @@ docker-compose up
 ```
 
 The services are available at `http://localhost`.
-
-### Windows with Docker Toolbox
-
-When using docker-compose with Docker Toolbox/Machine on Windows, [volume paths are no longer converted from by default](https://github.com/docker/compose/releases/tag/1.9.0), but we need this conversion to be able to mount the docker volume to the o2r microservices.
-To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
-
-Also, the client's defaults (i.e. using `localhost`) does not work.
-Therefore must mount a config file to point the API to the correct location (see also [Configure](#configure)), by uncommenting the line in `docker-compose.yml`, which mounts the file `test/config-toolbox.js` to the webserver at the right location (`service: nginx`).
-
-After running docker-compose as described above, the services are available at `http://<machine-ip>`.
 
 ### Restart from scratch
 
