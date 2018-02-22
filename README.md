@@ -54,28 +54,46 @@ If you see an error related to the MongoDB in the first "up", abort and restart.
 
 _The client must be build on the host!_
 
-**Required settings**
+**Running the platform**
 
-Some of the settings to run the platform cannot be published for security reasons.
-Therefor these must be provided at runtime using _environment variables_ as is described in the OS-specific instructions below.
+The services can be started using `docker-compose` on the following platforms
+
+* Unix based systems
+* Windows with Docker for Windows
+
+ by running:
+
+```bash
+docker-compose up
+```
+
+## Configuration (optional)
+
+The platform provides two options to pass on environment variables to configure authorization, remote repositories and the slack monitoring bot:
+
+1. The `.env` file contains default values to configure the platform to work with the offline OAuth server o2r-guestlister. Note that quotation marks are not parsed but instead treated as part of the variable value. For more information on how the `.env` file works, see the docker-compose [documentation](https://docs.docker.com/compose/env-file/).
+
+2. Environment variables defined in the shell have priority over the values set in the `.env` file. Setting the variables in the shell allows to override the default configuration, for example to use [ORCID](https://members.orcid.org/api/oauth2) as the OAuth server:
+
+```bash
+OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> SHIPPER_REPO_TOKENS=<...> docker-compose up
+```
+
+Strings containing quotation marks (e.g. `SHIPPER_REPO_TOKENS`) have to be escaped.
 
 The environment parameters are as follows:
 
 - `OAUTH_CLIENT_ID` identifier for the platform with auth provider
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
-- `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication, probably `http://localhost/api/v1/auth/login` (includes with machine IP when using Docker Toolbox)
+- `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication, probably `http://localhost/api/v1/auth/login`
 - `SHIPPER_REPO_TOKENS` a JSON object, that holds the authentication tokens for shipping to remote repositories such as [Zenodo](https://zenodo.org/) (optional). Must have the form `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. Replace `$ZENODO_TOKEN` etc. with your personal access token.
 - `SLACK_BOT_TOKEN` and `SLACK_VERIFICATION_TOKEN`, required for monitoring with Slack (optional)
 
-### Linux
-
-```bash
-OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> ZENODO_TOKEN=<...> docker-compose up
-```
+To configure the platform to use ORCID instead of the o2r-guestlister, see the [ORCID section](https://github.com/o2r-project/reference-implementation#orcid-optional) in the reference implementation.
 
 ### Windows with Docker for Windows
 
-The environmental variables must be passed separately on Windows, followed by the docker-compose commands:
+When using the shell to provide environmental variables, these must be passed separately on Windows, followed by the docker-compose commands:
 
 ```powershell
 $env:OAUTH_CLIENT_ID = <...>
@@ -86,20 +104,6 @@ docker-compose up
 ```
 
 The services are available at `http://localhost`.
-
-### Windows with Docker Toolbox
-
-When using docker-compose with Docker Toolbox/Machine on Windows, [volume paths are no longer converted from by default](https://github.com/docker/compose/releases/tag/1.9.0), but we need this conversion to be able to mount the docker volume to the o2r microservices.
-To re-enable this conversion for `docker-compose >= 1.9.0` set the environment variable `COMPOSE_CONVERT_WINDOWS_PATHS=1`.
-
-Also, the client's defaults (i.e. using `localhost`) does not work.
-Therefore must mount a config file to point the API to the correct location (see also [Configure](#configure)), by uncommenting the line in `docker-compose.yml`, which mounts the file `test/config-toolbox.js` to the webserver at the right location (`service: nginx`).
-
-```
-OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> SHIPPER_REPO_TOKENS=<...> docker-compose up
-```
-
-The services are available at `http://<machine-ip>`.
 
 ### Restart from scratch
 
