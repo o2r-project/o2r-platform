@@ -56,7 +56,7 @@ _The client must be build on the host!_
 
 **Running the platform**
 
-The services can be started using *docker-compose* on the following platforms
+The services can be started using `docker-compose` on the following platforms
 
 * Unix based systems
 * Windows with Docker for Windows
@@ -74,7 +74,7 @@ The platform provides two options to pass on environment variables to configure 
 
 1. The `.env` file contains default values to configure the platform to work with the offline OAuth server o2r-guestlister. Note that quotation marks are not parsed but instead treated as part of the variable value. For more information on how the `.env` file works, see the docker-compose [documentation](https://docs.docker.com/compose/env-file/).
 
-2. Environment variables defined in the shell have priority over the values set in the `.env` file. Setting the variables in the shell allows to override the default configuration, for example to use ORCID as the OAuth server:
+2. Environment variables defined in the shell have priority over the values set in the `.env` file. Setting the variables in the shell allows to override the default configuration, for example to use [ORCID](https://members.orcid.org/api/oauth2) as the OAuth server:
 
 ```bash
 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> SHIPPER_REPO_TOKENS=<...> docker-compose up
