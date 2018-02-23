@@ -78,7 +78,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.8
+    image: o2rproject/o2r-muncher:0.15.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -95,10 +95,10 @@ services:
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:1ab8868" 
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559" 
 
   loader:
-    image: o2rproject/o2r-loader:0.8.3
+    image: o2rproject/o2r-loader:0.10.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -111,7 +111,7 @@ services:
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=o2rplatform_o2rstorage
-      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:1ab8868" 
+      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559" 
       
   informer:
     image: o2rproject/o2r-informer:0.3.0
@@ -144,7 +144,7 @@ services:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: o2rproject/o2r-finder:0.5.1
+    image: o2rproject/o2r-finder:0.6.1
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -162,7 +162,7 @@ services:
       - BATCH_COUNT=20
 
   transporter:
-    image: o2rproject/o2r-transporter:0.4.1
+    image: o2rproject/o2r-transporter:0.5.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -176,7 +176,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:168ae80
+    image: o2rproject/o2r-shipper:e7398ab
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -191,7 +191,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.1
+    image: o2rproject/o2r-substituter:0.4.3
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -213,7 +213,7 @@ services:
       - DEBUGME=inspecter
 
   guestlister:
-    image: o2rproject/o2r-guestlister:0.0.1
+    image: o2rproject/o2r-guestlister:0.1.0
     restart: unless-stopped
     depends_on:
       - mongodb
