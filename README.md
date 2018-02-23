@@ -67,31 +67,31 @@ The services can be started using `docker-compose` on the following platforms
 docker-compose up
 ```
 
+The platform is available at `http://localhost`.
+
 ## Configuration (optional)
 
-The platform provides two options to pass on environment variables to configure authorization, remote repositories and the slack monitoring bot:
+The platform provides two options to pass on environment variables to configure authorization, remote repositories and the Slack monitoring bot:
 
-1. The `.env` file contains default values to configure the platform to work with the offline OAuth server o2r-guestlister. Note that quotation marks are not parsed but instead treated as part of the variable value. For more information on how the `.env` file works, see the docker-compose [documentation](https://docs.docker.com/compose/env-file/).
-
-2. Environment variables defined in the shell have priority over the values set in the `.env` file. Setting the variables in the shell allows to override the default configuration, for example to use [ORCID](https://members.orcid.org/api/oauth2) as the OAuth server:
+1. The `.env` file contains default values to configure the platform to work with the offline OAuth server [o2r-guestlister]https://github.com/o2r-project/o2r-guestlister). Note that quotation marks are not parsed but instead treated as part of the variable value. For more information on how the `.env` file works, see the docker-compose [documentation](https://docs.docker.com/compose/env-file/).
+2. Environment variables defined in the shell have priority over the values set in the `.env` file and can to override the default configuration, for example to use [ORCID](https://members.orcid.org/api/oauth2) as the OAuth server:
 
 ```bash
 OAUTH_CLIENT_ID=<...> OAUTH_CLIENT_SECRET=<...> OAUTH_URL_CALLBACK=<...> SHIPPER_REPO_TOKENS=<...> docker-compose up
 ```
 
-Strings containing quotation marks (e.g. `SHIPPER_REPO_TOKENS`) have to be escaped.
+Strings containing quotation marks (e.g. `SHIPPER_REPO_TOKENS`) have to be escaped when used in the shell.
+For details on configuring the platform to use ORCID instead of the o2r-guestlister, see the [ORCID section](https://github.com/o2r-project/reference-implementation#orcid-optional) in the reference implementation documentation.
 
 The environment parameters are as follows:
 
 - `OAUTH_CLIENT_ID` identifier for the platform with auth provider
 - `OAUTH_CLIENT_SECRET` password for identification with the auth provider
 - `OAUTH_URL_CALLBACK` the URL that the authentication service redirects the user to, important to complete the authentication, probably `http://localhost/api/v1/auth/login`
-- `SHIPPER_REPO_TOKENS` a JSON object, that holds the authentication tokens for shipping to remote repositories such as [Zenodo](https://zenodo.org/) (optional). Must have the form `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. Replace `$ZENODO_TOKEN` etc. with your personal access token.
+- `SHIPPER_REPO_TOKENS` a JSON object, that holds the authentication tokens for shipping to remote repositories such as [Zenodo](https://zenodo.org/) (optional). Must have the (unescaped) form `{"zenodo": "$ZENODO_TOKEN", "zenodo_sandbox": "$ZENODO_SANDBOX_TOKEN", "download": "" }`. Replace `$ZENODO_TOKEN` etc. with your personal access token.
 - `SLACK_BOT_TOKEN` and `SLACK_VERIFICATION_TOKEN`, required for monitoring with Slack (optional)
 
-To configure the platform to use ORCID instead of the o2r-guestlister, see the [ORCID section](https://github.com/o2r-project/reference-implementation#orcid-optional) in the reference implementation.
-
-### Windows with Docker for Windows
+### Configuration with Docker for Windows
 
 When using the shell to provide environmental variables, these must be passed separately on Windows, followed by the docker-compose commands:
 
@@ -102,8 +102,6 @@ $env:OAUTH_URL_CALLBACK = <...>
 $env:ZENODO_TOKEN = <...>
 docker-compose up
 ```
-
-The services are available at `http://localhost`.
 
 ### Restart from scratch
 
@@ -116,17 +114,18 @@ docker images | grep o2r | awk '{print $3}' | xargs docker rmi --force
 
 ### Use non-default version of o2r-meta and containerit
 
-Two core steps for compendium creation are provided by the standalone tools [o2r-meta]() and [containerit]().
-These tools are used in a containerized version and the specific tool can be selected via an environment variable for both `muncher` and `loader` in the compose configuration (see comments in the file).
+Two core steps for compendium creation are provided by the standalone tools [o2r-meta](https://github.com/o2r-project/o2r-meta) and [containerit](https://github.com/o2r-project/containerit/).
+These tools are used in a containerized version with different version tags ([o2r-meta](https://hub.docker.com/r/o2rproject/o2r-meta/tags/), [containerit](https://hub.docker.com/r/o2rproject/containerit/tags/)) and the specific tool can be selected via an environment variable for both `muncher` and `loader` in the compose configuration (see comments in the file).
 
 For _metadata extraction and brokering_, see the respective [`loader` configuration property `LOADER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-loader/#configuration) and [`muncher` configuration property `MUNCHER_META_TOOL_CONTAINER`](https://github.com/o2r-project/o2r-muncher/#configuration).
-For testing metadata tools under development setting the property to `o2rproject/o2r-meta:dev` could be useful.
+For testing metadata tools under development setting the property to `o2rproject/o2r-meta:dev` can be useful.
 
 For _container manifest creation_, see the [`muncher` configuration property `MUNCHER_CONTAINERIT_IMAGE`](https://github.com/o2r-project/o2r-muncher/#configuration).
 
 ### Note
 
-(Re-)starting containers manually might cause problems with the platform due to newly assigned IP-adresses. To avoid this problem, __restart the platform container__ after (re-)starting other containers manually. 
+(Re-)starting containers manually might cause problems with the platform due to newly assigned IP-addressees.
+To avoid this problem, __restart the platform container__ after (re-)starting other containers manually. 
 
 ## User levels
 
