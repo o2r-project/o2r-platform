@@ -36,8 +36,6 @@
         function link(scope, iElement, attrs){
             scope.$watch('o2rInspectData', function(newVal, oldVal){
                 var inspect = angular.fromJson(newVal);
-                if(!inspect.hasOwnProperty('code')) throw 'o2rInspectData.code undefined';
-                if(!inspect.hasOwnProperty('data')) throw 'o2rInspectData.data undefined';
                 if(!inspect.hasOwnProperty('publication')) throw 'o2rInspectData.publication undefined';
                
                 scope.icons = icons;

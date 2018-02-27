@@ -132,7 +132,7 @@
                         compendiumId: erc.id,
                         task: "inspect",
                         purpose: "showPaperData",
-                        mainfile: erc.metadata.o2r.inputfiles
+                        dataset: erc.metadata.o2r.inputfiles
                     }                    
                 }
                 erc.metadata.o2r.interaction.push(codeBinding);

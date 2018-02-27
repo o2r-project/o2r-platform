@@ -46,7 +46,7 @@
         $compileProvider.preAssignBindingsEnabled(true);
 
         $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/', 'https://markuskonkol.shinyapps.io/figure1_interactive',
-        'https://markuskonkol.shinyapps.io/figure1_interactive/', 'https://markuskonkol.shinyapps.io/interactiveFigure1/']);
+        'https://markuskonkol.shinyapps.io/figure1_interactive/', 'https://markuskonkol.shinyapps.io/interactiveFigure1/', 'https://markuskonkol.shinyapps.io/figure4/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
         if(env.disableTracking) console.log("Tracking globally disabled!");
