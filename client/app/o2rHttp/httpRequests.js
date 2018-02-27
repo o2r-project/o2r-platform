@@ -269,8 +269,8 @@
 			return $http.put(_url, body);
 		}
 
-		function createBinding(){
-			return $http.post(env.api + "/bindings", {id:5,text:"blabla"});
+		function createBinding(binding){
+			return $http.post(env.api + '/bindings', binding);
 		}
 
 		function getLicenses(){

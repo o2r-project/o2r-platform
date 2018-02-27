@@ -51,62 +51,60 @@
             scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
             scope.codefile = {path: scope.codefiles[0], lineHighlight: ""}; //only use first codefile so far
             scope.figures = ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5"];
-            scope.step3Done = step3Done;
-            scope.step5Done = step5Done;
+            //scope.markCodeDone = markCodeDone;
+            //scope.sliderValuesDone = sliderValuesDone;
             scope.selectionEvent = selectionEvent;
-            scope.step4Done = step4Done;
+            //scope.markVariableDone = markVariableDone;
             scope.showOriginalCode = true;
             scope.selectedText = {};
             scope.selectedVariable = {};
             scope.openDialog = openDialog;
             scope.submit = submit;
-            scope.editStep3 = editStep3;
-            scope.editStep4 = editStep4;
+            //scope.markCodeEdit = markCodeEdit;
+            //scope.markVariableEdit = markVariableEdit;
             
-            scope.steps = {};
-            scope.steps.step1 = {};
-            scope.steps.step2 = {};
-            scope.steps.step3 = {};
-            scope.steps.step4 = {};
-            scope.steps.step5 = {};
-            scope.steps.step6 = {};
+            scope.binding = {};
+            scope.binding.purpose = {};
+            scope.binding.figure = {};
+            scope.binding.widget = {};
+            scope.binding.code = {};
+            scope.binding.markCode = {};
+            scope.binding.markVariable = {};
+            scope.binding.sliderValues = {};
+            scope.binding.finish = {};
             
             activate();
             
-            scope.$watch('steps.step1.selected', function(newVal, oldVal){
+            scope.$watch('binding.purpose.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
-                    if(scope.steps.step2.show){
+                    /*if(scope.steps.step2.show){
+                        //resetStep7();
+                        resetStep6();
                         resetStep5();
-                        resetStep3();
                         resetStep4();
+                        resetStep3();
                         resetStep2();
-                        resetStep1();
-                    }
-                        
+                    }*/
                     switch (newVal) {
                         case 0:
-                        scope.steps.step2.show = true;
+                            showFigureCode();
                         break;
                         default:
-                        scope.steps.step2.show = true;
                         break;
                     }
                 }
             });
             
-            scope.$watch('steps.step2.selected', function(newVal, oldVal){
+            scope.$watch('binding.figure.selected', function(newVal, oldVal){
                 if(typeof newVal === 'number'){
-                    if(scope.steps.step3.show){
+                    /*if(scope.steps.step3.show){
+                        resetStep6();
+                        resetStep4();
                         resetStep5();
                         resetStep3();
-                        resetStep4();
-                        resetStep2();
-                    }
-                    switch (newVal) {
-                        case 0:
-                        scope.steps.step3.show = true;
-                        scope.steps.step5.type = newVal;
-                    }
+                    }*/
+                    //scope.steps.step3.show = true;
+                    //scope.steps.step6.type = newVal;
                 }
             });
 
@@ -122,12 +120,19 @@
 
             //////////////////
 
+            function showFigureCode(){
+                scope.binding.figure.show = true;
+                scope.binding.markCode.show = true;
+                scope.binding.code = true;
+            }
+
             function activate(){
-                resetStep1();
+                resetPurpose();
+                /*resetStep1();
                 resetStep2();
                 resetStep3();
                 resetStep4();
-                resetStep5();
+                resetStep5();*/
             }
             
             function prepareCodefiles(files){
@@ -146,30 +151,30 @@
                 return files;
             }
 
-            function step3Done(){
+            function markCodeDone(){
                 logger.info(selectedLinesIndex);
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
-                scope.steps.step3.showSelectedText = true;
-                scope.steps.step3.disable = true;
-                scope.steps.step4.show = true;
-            }
-            
-            function step4Done(){
+                scope.steps.step4.showSelectedText = true;
                 scope.steps.step4.disable = true;
                 scope.steps.step5.show = true;
-                scope.steps.step5.showButton = true;
+            }
+            
+            /*function step5Done(){
+                scope.steps.step5.disable = true;
+                scope.steps.step6.show = true;
+                scope.steps.step6.showButton = true;
             }
 
-            function step5Done(){
-                scope.steps.step5.showButton = false;
-            }
+            function step6Done(){
+                scope.steps.step6.showButton = false;
+            }*/
 
             function selectionEvent(){
                 // only check selection if we are in step 3 or 4
                 
                 // check selection for step 3
-                if(scope.steps.step3.show && !scope.steps.step4.show){
+                if(scope.steps.step4.show && !scope.steps.step5.show){
                     // var selection = $window.getSelection().toString();
                     var selection = $window.getSelection().getRangeAt(0).toString();
                     // ignore click events
@@ -177,10 +182,10 @@
                         var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
                         scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
-                        scope.steps.step3.disable = false;
+                        scope.steps.step4.disable = false;
                     }
                     // check selection for step 4
-                } else if(scope.steps.step4.show && !scope.steps.step5.show){
+                } else if(scope.steps.step5.show && !scope.steps.step6.show){
                     var selection = $window.getSelection().toString();
                     // scope.steps.step4.result.selection = selection;
                     if(selection.length != 0){
@@ -189,13 +194,13 @@
                         if(scope.selectedVariable){
                             scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
                             scope.selectedText.lineHighlight = "" + scope.selectedVariable.line.start;
-                            scope.steps.step4.disable = false;
+                            scope.steps.step5.disable = false;
                         } else {
                             scope.selectedText.lineHighlight = "";
-                            scope.steps.step4.disable = true;
+                            scope.steps.step5.disable = true;
                         }
                         // show information in the frontend regardless of valid/invalid selection
-                        scope.steps.step4.showSelection = true;
+                        scope.steps.step5.showSelection = true;
                     }
                 }
             }
@@ -220,19 +225,20 @@
                 });
             }
 
-            function resetStep1(){
-                scope.steps.step1.show = true;
-                scope.steps.step1.options = [{text: "Change a variable continously", value:0}, {text: "Provide predefined values", value: 1},
-                                            {text: "Select a data subset", value: 2}, {text: "Provide different visualisations", value: 3},
-                                            {text: "Show data underlying the figure", value: 4}, {text: "Show code underlying the figure", value: 5}];
-                scope.steps.step1.selected = null;
-                scope.steps.step2.show = false;
-                scope.showOriginalCode = true;
+            function resetPurpose(){
+                scope.binding.purpose.show = true;
+                scope.binding.purpose.options = [{text: "Show code underlying a figure", value:0}, {text: "Show code underlying a result", value: 1}];
+                scope.binding.purpose.selected = null;
+                //scope.steps.step2.show = false;
+                //scope.showOriginalCode = true;
             }
-        
+
+            function resetFigure(){
+                scope.bidning.figure.selected = null;
+            }
+            /*
             function resetStep2(){
-                scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Radio buttons", value:1}, {text: "Numeric input", value:1},
-                                            {text: "Button", value:1}];
+                scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Radio buttons", value:1}];
                 scope.steps.step2.selected = null;
                 scope.steps.step3.show = false;
                 scope.showOriginalCode = true;
@@ -267,6 +273,10 @@
                 scope.steps.step5.step_size = null;
             }
 
+            function resetStep6(){
+
+            }
+
             function editStep3(){
                 resetStep5();
                 resetStep4();
@@ -277,7 +287,12 @@
                 resetStep5();
                 resetStep4();
             }
-            
+
+            function editStep5(){
+                //resetStep5();
+                //resetStep4();
+            }            
+            */
             function submit(){
                 var result = {};
                 // TODO

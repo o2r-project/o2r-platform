@@ -214,6 +214,10 @@ services:
 
   bindings:
     build: ./bindings/o2r-bindings
+    volumes:
+     - o2rstorage:/tmp/o2r
+    environment: 
+     - DEBUG=bindings
 
   platform:
     image: nginx:latest
