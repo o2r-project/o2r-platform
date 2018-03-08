@@ -78,7 +78,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.15.0
+    image: o2rproject/o2r-muncher:0.17.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -123,10 +123,10 @@ services:
       - "INFORMER_MONGODB=mongodb://mongodb"
       - INFORMER_MONGODB_HOST=mongodb
       - INFORMER_PORT=8082
-      - DEBUG=informer
+      - DEBUG=informer,informer:*
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.10.1
+    image: o2rproject/o2r-bouncer:0.11.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -134,10 +134,8 @@ services:
     environment:
       - "BOUNCER_MONGODB=mongodb://mongodb"
       - BOUNCER_PORT=8083
-      - DEBUG=bouncer
+      - DEBUG=bouncer,bouncer:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
-      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
       - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
@@ -213,7 +211,7 @@ services:
       - DEBUGME=inspecter
 
   guestlister:
-    image: o2rproject/o2r-guestlister:0.1.0
+    image: o2rproject/o2r-guestlister:0.2.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -221,10 +219,8 @@ services:
     environment:
       - "GUESTLISTER_MONGODB=mongodb://mongodb"
       - GUESTLISTER_PORT=8383
-      - DEBUG=guestlister
+      - DEBUG=guestlister,guestlister:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
-      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
 
