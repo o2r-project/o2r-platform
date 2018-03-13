@@ -1,6 +1,6 @@
 <div layout="row">
     <o2r-display-files ng-if="showOriginalCode" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
-    <o2r-display-files ng-if="binding.code.showSelectedText" o2r-file="{{selectedText}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
+    <o2r-display-files ng-if="markCode.showSelectedText" o2r-file="{{selectedText}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <!-- STEPS -->
     <md-card layout-fill flex="30">
         <md-card-title>
@@ -13,63 +13,49 @@
         <md-card-content>
                 <div layout="column">
                     <!-- Purpose -->
-                    <div ng-show="binding.purpose.show" layout="row">
+                    <div ng-show="purposes.show" layout="row">
                         <md-input-container flex class="md-block">
                             <label>Select a purpose</label>
-                            <md-select ng-model="binding.purpose.selected">
-                                <md-option ng-repeat="opt in binding.purpose.options" ng-value="opt.value">
-                                    {{opt.text}}
+                            <md-select ng-model="purposes.selected">
+                                <md-option ng-repeat="option in purposes" ng-value="option.value">
+                                    {{option.text}}
                                 </md-option>
                             </md-select>
                         </md-input-container>
                     </div>
                     <!-- Figure -->
-                    <div ng-show="binding.figure.show" layout="row">
+                    <div ng-show="figures.show" layout="row">
                         <md-input-container flex class="md-block">
                             <label>For which figure?</label>
-                            <md-select ng-model="selectedFigure">
+                            <md-select ng-model="figures.selected">
                                 <md-option ng-repeat="fig in figures" ng-value="fig">
                                 {{fig}}
                                 </md-option>
                             </md-select>
                         </md-input-container>
                     </div>
-                    <!-- STEP 3 -->
-                    <div ng-show="steps.step3.show" layout="row">
-                        <md-input-container flex class="md-block">
-                            <label>Select a Widget</label>
-                            <md-select ng-model="steps.step3.selected">
-                                <md-option ng-repeat="opt in steps.step3.options" ng-value="opt.value">
-                                    {{opt.text}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
                     <!-- <md-divider ng-if="steps.step3.show"></md-divider> -->
-                    <!-- STEP 4 -->
-                    <div ng-show="binding.markCode.show">
+                    <!-- Mark code -->
+                    <div ng-show="markCode.show">
                         <div layout="row">
                             <span class="creationProcess-binding-step-inst">Extract code snippets by highlighting those code snippets which are relevant for the selected figure</span>
                         </div>
                         <div layout="row">
                             <span flex></span>
-                            <md-button ng-if="!binding.markCode.show" class="md-raised md-fab md-mini" ng-click="markCodeDone()" aria-label="done" ng-disabled="binding.markCode.disable">
+                            <md-button ng-if="!markVariable.show" class="md-raised md-fab md-mini" ng-click="markCodeDone()" aria-label="done" ng-disabled="markCode.disable">
                                 <md-icon md-svg-src="{{icons.done}}"></md-icon>
                             </md-button>
-                            <md-button ng-if="binding.markCode.disable && binding.markCode.show" ng-click="markCodeDone()" class="md-raised md-fab md-mini" aria-label="Edit">
+                            <md-button ng-if="markCode.disable && markCode.show" ng-click="editMarkCode()" class="md-raised md-fab md-mini" aria-label="Edit">
                                 <md-icon md-svg-src="{{icons.edit}}"></md-icon>
                             </md-button>
                         </div>
                     </div>
                 <!-- <md-divider ng-if="steps.step4.show"></md-divider> -->
-                <!-- STEP 5 -->
-                <div ng-show="steps.step5.show" class="creationProcess-step-separate" layout="row">
-                    <div layout="row">
-                        <strong class="creationProcess-binding-step">Step 5</strong>
-                    </div>
+                <!-- Mark variable -->
+                <div ng-show="markVariable.show" class="creationProcess-step-separate" layout="row">
                     <div flex layout="column">
                         <span class="creationProcess-binding-step-inst">Mark the variable and the value which should be manipulated by the slider</span>
-                        <span ng-show="steps.step5.showSelection">
+                        <span ng-show="markVariable.showSelection">
                             <span ng-hide="!selectedVariable">
                                 Selected <strong>{{selectedVariable.varName}}</strong> with value <strong>{{selectedVariable.val}}</strong>
                             </span>
@@ -79,43 +65,64 @@
                         </span>
                         <div layout="row">
                             <span flex></span>
-                            <md-button ng-if="!steps.step5.show" class="md-raised md-fab md-mini" ng-click="step4Done()" aria-label="update" ng-disabled="steps.step4.disable">
+                            <md-button ng-if="!widgets.show" class="md-raised md-fab md-mini" ng-click="markVariableDone()" aria-label="update" ng-disabled="markVariable.disable">
                                 <md-icon md-svg-src="{{icons.done}}"></md-icon>
                             </md-button>
-                            <md-button ng-if="steps.step5.disable && steps.step6.show" ng-click="editStep5()" class="md-raised md-fab md-mini" aria-label="Edit">
+                            <md-button ng-if="markVariable.disable && widgets.show" ng-click="editMarkVariable()" class="md-raised md-fab md-mini" aria-label="Edit">
                                 <md-icon md-svg-src="{{icons.edit}}"></md-icon>
                             </md-button>
                         </div>
                     </div>
                 </div>
                 <!-- <md-divider ng-if="steps.step5.show"></md-divider> -->
-                <!-- STEP 6 -->
-                <div ng-show="steps.step6.show" layout="row" class="creationProcess-step-separate">
-                    <div>
-                        <strong class="creationProcess-binding-step">Step 6</strong>
-                    </div>
+                <!-- Widgets -->
+                <div ng-show="widgets.show" layout="row" class="creationProcess-step-separate">
                     <form name="form" flex>
                         <md-input-container flex class="md-block">
-                            <label>Enter minimum value for variable</label>
-                            <input type="number" name="min_value" ng-model="steps.step6.min_value" required>
-                            <div ng-messages="form.min_value.$error">
-                                <div ng-message="required">Required field</div>
-                            </div>
+                            <label>Select a Widget</label>
+                            <md-select ng-model="widgets.selected">
+                                <md-option ng-repeat="option in widgets.options" ng-value="option.value">
+                                    {{option.text}}
+                                </md-option>
+                            </md-select>
                         </md-input-container>
-                        <md-input-container flex class="md-block">
-                            <label>Enter maximum value for variable}</label>
-                            <input type="number" name="max_value" ng-model="steps.step6.max_value" required>
-                            <div ng-messages="form.max_value.$error">
-                                <div ng-message="required">Required field</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container flex class="md-block">
-                            <label>Enter step size for variable</label>
-                            <input type="number" name="step_size" ng-model="steps.step6.step_size" required>
-                            <div ng-messages="form.step_size.$error">
-                                <div ng-message="required">Required field</div>
-                            </div>
-                        </md-input-container>
+                        <div ng-show="sliderWidget.show">
+                            <md-input-container flex class="md-block">
+                                <label>Enter minimum value for variable</label>
+                                <input type="number" name="min_value" ng-model="widgets.min_value" required>
+                                <div ng-messages="form.min_value.$error">
+                                    <div ng-message="required">Required field</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex class="md-block">
+                                <label>Enter maximum value for variable}</label>
+                                <input type="number" name="max_value" ng-model="widgets.max_value" required>
+                                <div ng-messages="form.max_value.$error">
+                                    <div ng-message="required">Required field</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex class="md-block">
+                                    <label>Enter initial value for variable}</label>
+                                    <input type="number" name="init_value" ng-model="widgets.init_value" required>
+                                    <div ng-messages="form.init_value.$error">
+                                        <div ng-message="required">Required field</div>
+                                    </div>
+                            </md-input-container>                            
+                            <md-input-container flex class="md-block">
+                                <label>Enter step size for variable</label>
+                                <input type="number" name="step_size" ng-model="widgets.step_size" required>
+                                <div ng-messages="form.step_size.$error">
+                                    <div ng-message="required">Required field</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex class="md-block">
+                                    <label>Enter a label</label>
+                                    <input type="text" name="label" ng-model="widgets.label" required>
+                                    <div ng-messages="form.label_value.$error">
+                                        <div ng-message="required">Required field</div>
+                                    </div>
+                            </md-input-container>   
+                        </div>
                         <!-- <div layout="row">
                             <span flex></span>
                             <md-button class="md-raised md-fab md-mini" ng-if="steps.step5.showButton" ng-click="step5Done()" aria-label="done" ng-disabled="!form.$valid">
