@@ -2,7 +2,16 @@
     <md-tabs class="manipulate-tabs" md-selected="vm.selectedTab" md-border-bottom md-autoselect>
         <md-tab ng-repeat="figure in vm.manipulations track by $index"
                 label="Figure {{$index + 1}}">
-                <o2r-display-files o2r-file="{{figure.shinyURL}}" ng-if="vm.selectedTab == $index"></o2r-display-files>
+                <h3>{{figure.widget.label}}</h3>
+                <md-slider-container>
+                    <span></span>
+                    <md-slider flex min={{figure.widget.min}} max={{figure.widget.max}} ng-model="color.red" aria-label="red" id="red-slider">
+                    </md-slider>
+                    <md-input-container>
+                        <input flex type="number" ng-model="color.red" aria-label="red" aria-controls="red-slider">
+                    </md-input-container>
+                </md-slider-container>
+                <!--<o2r-display-files o2r-file="{{figure.shinyURL}}" ng-if="vm.selectedTab == $index"></o2r-display-files>-->
         </md-tab>
     </md-tabs>
     <div layout="row">

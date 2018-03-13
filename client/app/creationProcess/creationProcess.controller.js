@@ -120,24 +120,6 @@
             creationObject.removeArtifacts("researchHypotheses");
             creationObject.removeArtifacts("author");
             var erc = creationObject.get();
-            if (erc.metadata.o2r.interaction.length == 0) {
-                var codeBinding = {
-                    compendiumId: erc.id,
-                    task: "inspect",
-                    purpose: "showPaperCode",
-                    mainfile: erc.metadata.o2r.mainfile
-                }
-                if (erc.metadata.o2r.inputfiles.length > 0){
-                    var dataBinding = {
-                        compendiumId: erc.id,
-                        task: "inspect",
-                        purpose: "showPaperData",
-                        dataset: erc.metadata.o2r.inputfiles
-                    }                    
-                }
-                erc.metadata.o2r.interaction.push(codeBinding);
-                erc.metadata.o2r.interaction.push(dataBinding);
-            }
             httpRequests
                 .updateMetadata(erc.id, erc.metadata.o2r)
                 .then(function(res){

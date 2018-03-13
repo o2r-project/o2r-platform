@@ -25,8 +25,8 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper", "icons"];
-    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons){
+    o2rUiBindingCreator.$inject = ['$log', '$window', '$document', '$http', '$mdDialog', 'env', 'o2rUiBindingCreatorHelper', 'icons', 'creationObject'];
+    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons, creationObject){
         return{
             restrict: 'E',
             scope: {
@@ -49,14 +49,14 @@
             // turn string into array and then add actual path
             // NOTE: Remove the prepareCodefiles wrapper as soon as the paths are consistent
             scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
-            scope.codefile = {path: scope.codefiles[0], lineHighlight: ""}; //only use first codefile so far
+            scope.codefile = {path: scope.codefiles[0], lineHighlight: ''}; //only use first codefile so far
             
             
-            scope.figures = ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5"];
-            scope.purposes = [{text: "Search for results using spatiotemporal properties", value:"discoverResult"}, 
-                                {text: "Show dataset and source code underlying a specific result in the text", value: "showNumberDataCode"},
-                                {text: "Manipulate a parameter used to compute a specific numerical result in the text", value: "manipulateNumber"},
-                                {text: "Manipulate a parameter used to compute a figure", value: "manipulateFigure"}];
+            scope.figures = ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5'];
+            scope.purposes = [{text: 'Search for results using spatiotemporal properties', value:'discoverResult'}, 
+                                {text: 'Show dataset and source code underlying a specific result in the text', value: 'showNumberDataCode'},
+                                {text: 'Manipulate a parameter used to compute a specific numerical result in the text', value: 'manipulateNumber'},
+                                {text: 'Manipulate a parameter used to compute a figure', value: 'manipulateFigure'}];
             scope.markCode = {};
             scope.markCodeDone = markCodeDone;
             scope.editMarkCode = editMarkCode;
@@ -67,7 +67,7 @@
             scope.editMarkVariable = editMarkVariable;
 
             scope.widgets = {};
-            scope.widgets.options = [{text: "Slider", value:"slider"}, {text: "Radio buttons", value:"radio"}];
+            scope.widgets.options = [{text: 'Slider', value:'slider'}, {text: 'Radio buttons', value:'radio'}];
             scope.sliderWidget = {};
             scope.widgets.selectedWidget = {};
 
@@ -86,7 +86,7 @@
                 resetMarkCode();
                 resetFigures();
                 switch (newVal) {
-                    case "manipulateFigure":
+                    case 'manipulateFigure':
                         manipulateFigure();
                     break;
                     default:
@@ -107,9 +107,9 @@
             });
 
             scope.$watch('widgets.selected', function(newVal, oldVal){                
-                if(newVal==="slider"){
+                if(newVal==='slider'){
                     scope.sliderWidget.show = true;
-                    scope.widgets.selectedWidget = "Slider";
+                    scope.widgets.selectedWidget = 'Slider';
                 } else{
                     scope.sliderWidget.show = false;
                 }
@@ -176,10 +176,10 @@
                         scope.selectedVariable = o2rUiBindingCreatorHelper.validateVariable(selection);
                         if(scope.selectedVariable){
                             scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
-                            scope.selectedText.lineHighlight = "" + scope.selectedVariable.line.start;
+                            scope.selectedText.lineHighlight = '' + scope.selectedVariable.line.start;
                             scope.markVariable.disable = false;
                         } else {
-                            scope.selectedText.lineHighlight = "";
+                            scope.selectedText.lineHighlight = '';
                             scope.markVariable.disable = true;
                         }
                         scope.markVariable.showSelection = true;
@@ -219,12 +219,12 @@
             function resetMarkCode(){
                 scope.markCode.showSelectedText = false;
                 scope.markCode.disable = true;
-                scope.selectedText.source = "";
+                scope.selectedText.source = '';
                 scope.showOriginalCode = true;
                 scope.markCode.showSelectedText = false;
                 scope.markCode.show = false;
                 selectedLinesIndex = [];
-                scope.codefile.lineHighlight = "";
+                scope.codefile.lineHighlight = '';
             }
 
             function resetWidgets(){
@@ -246,13 +246,13 @@
                 scope.markVariable.disable = true;
                 scope.markVariable.show = false;
                 scope.selectedVariable = {};
-                scope.selectedText.lineHighlight = "";
+                scope.selectedText.lineHighlight = '';
             }
 
             function editMarkCode(){
                 resetWidgets();
                 resetMarkVariable();
-                scope.selectedText.source = "";
+                scope.selectedText.source = '';
                 scope.markCode.showSelectedText = false;
                 scope.showOriginalCode = true;
                 scope.markCode.show = true;
@@ -262,7 +262,7 @@
             function editMarkVariable(){
                 resetWidgets();
                 scope.selectedVariable = {};
-                scope.selectedText.lineHighlight = "";
+                scope.selectedText.lineHighlight = '';
             }
 
             function submit(){
@@ -273,14 +273,16 @@
                     binding.codeLines = selectedLinesIndex;
                     binding.variable = scope.selectedVariable;
                     binding.widget = {
-                        "type": scope.widgets.selectedWidget,
-                        "min": scope.widgets.min_value,
-                        "max": scope.widgets.max_value,
-                        "init": scope.widgets.init_value,
-                        "step": scope.widgets.step_size,
-                        "label": scope.widgets.label
+                        'type': scope.widgets.selectedWidget,
+                        'min': scope.widgets.min_value,
+                        'max': scope.widgets.max_value,
+                        'init': scope.widgets.init_value,
+                        'step': scope.widgets.step_size,
+                        'label': scope.widgets.label
                     }
+                creationObject.addBinding(binding);        
             }
+
         }  
     }
 })();
