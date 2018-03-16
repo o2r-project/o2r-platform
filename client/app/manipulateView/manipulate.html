@@ -5,12 +5,13 @@
                 <h3>{{figure.widget.label}}</h3>
                 <md-slider-container>
                     <span></span>
-                    <md-slider flex min={{figure.widget.min}} max={{figure.widget.max}} ng-model="color.red" aria-label="red" id="red-slider">
+                    <md-slider flex min={{figure.widget.min}} max={{figure.widget.max}} ng-model="vm.threshold" id="slider">
                     </md-slider>
                     <md-input-container>
-                        <input flex type="number" ng-model="color.red" aria-label="red" aria-controls="red-slider">
+                        <input flex type="number" ng-model="vm.threshold" aria-controls="slider">
                     </md-input-container>
                 </md-slider-container>
+                <img src=vm.query></img>
                 <!--<o2r-display-files o2r-file="{{figure.shinyURL}}" ng-if="vm.selectedTab == $index"></o2r-display-files>-->
         </md-tab>
     </md-tabs>

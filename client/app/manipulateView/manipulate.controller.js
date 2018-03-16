@@ -5,15 +5,17 @@
         .module('starter')
         .controller('ManipulateController', ManipulateController);
     
-    ManipulateController.$inject = ['$scope', '$log', 'erc'];
-    function ManipulateController($scope, $log, erc){
+    ManipulateController.$inject = ['$scope', '$log', 'erc', 'httpRequests'];
+    function ManipulateController($scope, $log, erc, httpRequests){
         var manipulate = erc.metadata.o2r.interaction;
         var vm = this;
         vm.selectedTab = 0;
+        vm.threshold = null;
+        vm.query = "";
 
         vm.manipulations = [];
         manipulate.forEach(element => {
-            if (element.task === 'manipulation'){
+            if (element.task === 'manipulate'){
                 vm.manipulations.push(element);
             }
         });
@@ -25,15 +27,27 @@
             $scope.$parent.vm.resetMCodeData();
         });
 
-        $scope.$watch('vm.selectedTab', function(newVal, oldVal){
-            $log.debug('Tab changed to object: %s', newVal);
-            buildManipulationView(newVal);
+        $scope.$watch('vm.selectedTab', function(newValue, oldVal){
+            $log.debug('Tab changed to object: %s', newValue);
+            httpRequests.runManipulationService(vm.manipulations[newValue]).then(function(data){
+                console.log(data)
+            });
+            vm.query = 'http://localhost:8000/' + vm.manipulations[newValue].figure.replace(/\s/g, '').toLowerCase() + '?newValue=' + vm.manipulations[newValue].widget.init;
+            //buildManipulationView(newVal);
+            $scope.$watch('vm.threshold', function(newVal, oldVal){
+                if (newVal !=null){
+                    console.log(newVal)
+                    vm.query = 'http://localhost:8000/' + vm.manipulations[newValue].figure.replace(/\s/g, '').toLowerCase() + '?newValue=' + newVal;
+                }
+                console.log(newVal)
+            });
         });
 
         function buildManipulationView(item){
             var newObj = {};
                 newObj.code = [manipulate[item].underlyingCode];
                 newObj.data = [manipulate[item].underlyingData];
+                vm.threshold = manipulate[item].widget.init;
             $scope.$parent.vm.mSetCodeData(newObj);
         }
 

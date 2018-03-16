@@ -20,7 +20,6 @@
         vm.submit = submitter;
         vm.openDialog = openDialog;
         vm.openMenu = openMenu;
-        //vm.loggedIn = login.isLoggedIn;
         vm.user = {};
         vm.isLoggedIn;
         vm.sendScieboUrl = sendScieboUrl;
@@ -62,7 +61,7 @@
         };
 
         activate();
-        
+
         $scope.$on('setUser', function(){
             vm.user = login.getUser();
             vm.loggedIn = login.isLoggedIn();
@@ -149,34 +148,7 @@
                         .parent($document[0].body.children.main.children["ui-view"])
                 );
             }
-            /*
-            httpRequests
-                .uploadViaSciebo(url, path)
-				.then(function (response) {
-                    vm.validUrl=true;
-					httpRequests
-                        .singleCompendium(response.data.id)
-						.then(responseMetadata)
-						.catch(errorHandlerMetadata);
-
-					function responseMetadata(data){
-						progressbar.complete();
-						$location.path('/creationProcess/' + data.data.id);
-					}	
-
-					function errorHandlerMetadata(err){
-						$log.debug(err);
-						progressbar.complete();
-					}
-				})
-				.catch(function errorHandler(err){
-					$log.debug(err);
-					progressbar.complete();
-                    vm.validUrl=false;
-				});	
-                */
         }
-
 
         function submitter(id){
             $state.go('erc', {ercid: id});

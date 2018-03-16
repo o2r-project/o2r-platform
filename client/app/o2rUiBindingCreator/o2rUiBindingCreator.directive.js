@@ -25,8 +25,10 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ['$log', '$window', '$document', '$http', '$mdDialog', 'env', 'o2rUiBindingCreatorHelper', 'icons', 'creationObject'];
-    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons, creationObject){
+    o2rUiBindingCreator.$inject = ['$log', '$window', '$document', '$http', '$mdDialog', 'env', 'o2rUiBindingCreatorHelper', 
+                                    'icons', 'creationObject', 'httpRequests'];
+    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, 
+                                    icons, creationObject, httpRequests){
         return{
             restrict: 'E',
             scope: {
@@ -178,6 +180,7 @@
                             scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
                             scope.selectedText.lineHighlight = '' + scope.selectedVariable.line.start;
                             scope.markVariable.disable = false;
+                            scope.selectedVariable.text = selection;
                         } else {
                             scope.selectedText.lineHighlight = '';
                             scope.markVariable.disable = true;
@@ -266,11 +269,15 @@
             }
 
             function submit(){
+                var erc = creationObject.get();
                 var binding = {};
+                    binding.id = erc.id;
+                    binding.mainfile = erc.metadata.o2r.mainfile;
                     binding.purpose = scope.purposes.selected;
-                    binding.task = 'manipulation';
+                    binding.task = getTask(binding.purpose);
                     binding.figure = scope.figures.selected;
-                    binding.codeLines = selectedLinesIndex;
+                    //binding.codeLines = selectedLinesIndex;
+                    binding.codeLines = tempFunc();
                     binding.variable = scope.selectedVariable;
                     binding.widget = {
                         'type': scope.widgets.selectedWidget,
@@ -280,9 +287,22 @@
                         'step': scope.widgets.step_size,
                         'label': scope.widgets.label
                     }
-                creationObject.addBinding(binding);        
+                httpRequests.sendBinding(binding).then(function(data){
+                    console.log(data);
+                    creationObject.addBinding(binding);
+                });
             }
 
+            function getTask(purpose){
+                if (purpose === 'manipulateFigure') {
+                    return 'manipulate';
+                }
+            }
+
+            function tempFunc() {
+                let lines = '[{"start":25,"end":26},{"start":30,"end":30},{"start":34,"end":34},{"start":39,"end":40},{"start":122,"end":122},{"start":123,"end":124},{"start":125,"end":125},{"start":129,"end":129},{"start":133,"end":136},{"start":140,"end":141},{"start":153,"end":153},{"start":163,"end":164},{"start":169,"end":170},{"start":171,"end":172},{"start":173,"end":174},{"start":178,"end":178},{"start":190,"end":191},{"start":195,"end":201},{"start":205,"end":208},{"start":212,"end":214},{"start":218,"end":219},{"start":230,"end":230},{"start":241,"end":241},{"start":250,"end":252},{"start":256,"end":259},{"start":263,"end":266},{"start":270,"end":270},{"start":274,"end":276},{"start":278,"end":278},{"start":282,"end":283},{"start":287,"end":287},{"start":292,"end":292},{"start":310,"end":313},{"start":317,"end":318},{"start":322,"end":322},{"start":326,"end":328},{"start":332,"end":335},{"start":338,"end":339},{"start":340,"end":340}]';
+                return JSON.parse(lines);
+            }
         }  
     }
 })();

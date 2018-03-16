@@ -214,6 +214,9 @@ services:
 
   bindings:
     build: ./bindings/o2r-bindings
+    ports:
+     - "8092:8092"
+     - "8000:8000"
     volumes:
      - o2rstorage:/tmp/o2r
     environment: 

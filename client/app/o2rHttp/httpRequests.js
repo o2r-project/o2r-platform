@@ -37,7 +37,8 @@
 			deleteCompendium: deleteCompendium,
 			substitute: substitute,
 			getCSV: getCSV,
-			createBinding: createBinding
+			sendBinding: sendBinding,
+			runManipulationService: runManipulationService
 		};
 
 		return service;
@@ -269,8 +270,12 @@
 			return $http.put(_url, body);
 		}
 
-		function createBinding(binding){
-			return $http.post(env.api + '/bindings', binding);
+		function sendBinding(binding){
+			return $http.post(env.api + '/bindings/' + binding.task + '/' + binding.purpose, binding);
+		}
+
+		function runManipulationService(binding){
+			return $http.post(env.api + '/bindings/manipulate/run', binding);
 		}
 
 		function getLicenses(){
