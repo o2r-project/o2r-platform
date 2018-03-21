@@ -6,7 +6,7 @@
     <div id="home-create-erc" flex-xs="" flex-gt-xs="40" layout="column">
       <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="">
         <md-card-title>
-          <md-card-title-text>
+          <md-card-title-text><test-directive></test-directive>
             <span class="md-headline">Create</span>
 						<div ng-show="!vm.loggedIn">You have to login first.</div>
 					</md-card-title-text>
@@ -124,5 +124,6 @@
 		<span flex></span>
 		<span>More information about the project can be found at our <a href="http://o2r.info">project website</a>.</span>
 		<span flex></span>
+		<test>a</test>
 	</div>
 </div>

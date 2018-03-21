@@ -16,6 +16,7 @@
             "starter.o2rMetadataView",
             "starter.o2rRecipient",
             "starter.o2rUiBindingCreator",
+            'starter.o2rSpacetime',
             "treeControl",
             "hljs",
             "ui.router",
@@ -180,8 +181,7 @@
             })
             .state('creationProcess.spacetimeMetadata', {
                 templateUrl: "app/creationProcess/spacetimeMetadata.html",
-                controller: 'SpaceTimeController',
-                controllerAs: 'vm'
+                controller: 'SpaceTimeController'
             })
             .state('creationProcess.uibindings', {
                 templateUrl: "app/creationProcess/uibindings.html",

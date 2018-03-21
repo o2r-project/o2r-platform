@@ -4,7 +4,7 @@
  * o2r-comp must be an object with at least the following attributes:
  * 
  * {
- * id: String, //id has to contain the id of the compendium
+ * o2rComp: String, //id has to contain the id of the compendium
  * }
  * 
  * Example:

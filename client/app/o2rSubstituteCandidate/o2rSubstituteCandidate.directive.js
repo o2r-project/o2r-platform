@@ -41,7 +41,6 @@
 
 		function link(scope, iElement, attrs){
 			var logger = $log.getInstance('SubstituteCtrl');
-			var vm = this;
 
 			scope.icons = icons;
 			scope.substitutionRows = [{}];

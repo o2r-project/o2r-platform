@@ -223,8 +223,6 @@
                 //continue with editing
                 //no action needed for this
             }
-
-
         }
 
         function nextState(current){
