@@ -180,8 +180,7 @@
                 controllerAs: 'vm'
             })
             .state('creationProcess.spacetimeMetadata', {
-                templateUrl: "app/creationProcess/spacetimeMetadata.html",
-                controller: 'SpaceTimeController'
+                templateUrl: "app/creationProcess/spacetimeMetadata.html"
             })
             .state('creationProcess.uibindings', {
                 templateUrl: "app/creationProcess/uibindings.html",
