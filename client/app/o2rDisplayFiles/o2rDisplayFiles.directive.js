@@ -44,8 +44,8 @@
             }
         });
 
-	o2rDisplayFiles.$inject= ['$log', '$http', '$parse', 'env', 'httpRequests'];
-	function o2rDisplayFiles($log, $http, $parse, env, httpRequests){
+	o2rDisplayFiles.$inject= ['$log', '$http', 'env', 'httpRequests'];
+	function o2rDisplayFiles($log, $http, env, httpRequests){
 		return{
 			restrict: 'E',
 			templateUrl: 'app/o2rDisplayFiles/o2rDisplayFiles.template.html',
