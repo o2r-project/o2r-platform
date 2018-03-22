@@ -12,6 +12,10 @@
 
         var vm = this;
         vm.icons = icons;
+        vm.newBindingEdit = false;
+        vm.editBinding = null;
+        vm.createBinding = true;
+
         vm.bindings = creationObject.getUibindings();
         vm.input = creationObject.getInputFiles();
         vm.erc = creationObject.get();
@@ -28,8 +32,7 @@
         vm.hideAddBindingButton = false;
         vm.cancelNewBinding = cancelNewBinding;
         vm.cancelUpdateBinding = cancelUpdateBinding;  
-        
-        vm.startBindingCreation = startBindingCreation;
+
 
         /////////////////////////
 
@@ -86,13 +89,6 @@
                 vm.binding.underlyingCode = null;
             }
         }
-
-        function startBindingCreation(){
-            vm.newBindingEdit = false;
-            vm.editBinding = null;
-            vm.createBinding = true;
-        }
-
     }
 
 })();

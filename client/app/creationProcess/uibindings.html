@@ -1,6 +1,5 @@
 <md-card>
         <md-card-content>
-            <h4>UI Binding(s)</h4>
             {{html}}
             <!-- LIST EXISTING BINDINGS -->
             <md-list layout="column">
@@ -66,7 +65,6 @@
 
             <!-- ADD EXISTING SHINY APP --> 
             <div layout="column">
-                <h3>Create a new binding?<md-button class="md-raised md-primary white-font" ng-click="vm.startBindingCreation()" aria-label="Create One">Create One</md-button></h3>
                 <!--<md-input-container>
                     <label>ShinyURL</label>
                     <input ng-model="vm.binding.shinyURL" name="shinyurl">
@@ -97,7 +95,7 @@
 
             <!-- CREATE NEW SHINY APP AND ADD BINDING -->
             <div ng-if="vm.createBinding">
-                <o2r-ui-binding-creator o2r-codefiles="{{vm.mainfiles}}" o2r-erc-id="{{vm.erc.id}}"></o2r-ui-binding-creator>
+                <o2r-ui-binding-creator o2r-erc={{vm.erc.metadata.o2r}} o2r-erc-id={{vm.erc.id}}></o2r-ui-binding-creator>
             </div>
         </md-card-content>
 </md-card>

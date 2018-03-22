@@ -335,7 +335,8 @@
             {name: 'cloudUpload', category: 'file', fn: 'cloud_upload'},
             {name: 'cloudDone', category: 'file', fn: 'cloud_done'},
             {name: 'cloudQueue', category: 'file', fn: 'cloud_queue'},
-            {name: 'shuffle', category: 'navigation', fn: 'shuffle'}
+            {name: 'shuffle', category: 'navigation', fn: 'shuffle'},
+            {name: 'cut', category: 'content', fn: 'cut'}
         ];
 
         for(var i in icons){

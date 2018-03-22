@@ -32,7 +32,7 @@
         return{
             restrict: 'E',
             scope: {
-                codefiles: '@o2rCodefiles',
+                erc: '@o2rErc',
                 ercId: '@o2rErcId'
             },
             templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingCreator.template.html',
@@ -40,42 +40,112 @@
         };
 
         function link(scope, element, attrs){
-            if(!scope.codefiles) throw 'o2r-codefiles is undefined';
+            if(!scope.erc) throw 'o2r-erc is undefined';
             if(!scope.ercId) throw 'o2r-erc-id is undefined';
+            
+            scope.erc = JSON.parse(scope.erc);
+            scope.icons = icons;
 
             var logger = $log.getInstance('o2rUiBindingCreator');
-            var lines;
-            var codeText;
+            var lines, codeText;
             var selectedLinesIndex = [];
-            scope.icons = icons;
+            
             // turn string into array and then add actual path
             // NOTE: Remove the prepareCodefiles wrapper as soon as the paths are consistent
-            scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
+            scope.codefiles = prepareFiles(angular.fromJson(scope.erc.codefiles));
             scope.codefile = {path: scope.codefiles[0], lineHighlight: ''}; //only use first codefile so far
-            
-            
-            scope.figures = ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5'];
-            scope.purposes = [{text: 'Search for results using spatiotemporal properties', value:'discoverResult'}, 
-                                {text: 'Show dataset and source code underlying a specific result in the text', value: 'showNumberDataCode'},
+            scope.datafiles = prepareFiles(angular.fromJson(scope.erc.inputfiles));
+            selectedFile(scope.datafiles[0]); //only use first codefile so far
+
+            scope.figures = {
+                list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5'],
+                show: false,
+                selected: null
+            };
+
+            scope.purposes = {
+                list: [{text: 'Search for results using spatiotemporal properties', value:'discoverResult'}, 
+                                {text: 'Show dataset and source code underlying a figure', value: 'showFigureDataCode'},
                                 {text: 'Manipulate a parameter used to compute a specific numerical result in the text', value: 'manipulateNumber'},
-                                {text: 'Manipulate a parameter used to compute a figure', value: 'manipulateFigure'}];
-            scope.markCode = {};
-            scope.markCodeDone = markCodeDone;
-            scope.editMarkCode = editMarkCode;
+                                {text: 'Manipulate a parameter used to compute a figure', value: 'manipulateFigure'}],
+                selected: null,
+                show: true
+            };
+            
+            scope.code = {
+                mark: {
+                    showSelectedText: false,
+                    disable: false,
+                    extracted: false,
+                    show: false
+                },
+                cut: cutCode,
+                edit: editMarkCode,
+                confirm: confirmCode
+            };
 
-            scope.markVariable = {};
-            scope.markVariableDone = markVariableDone;
-            scope.selectedVariable = {};
-            scope.editMarkVariable = editMarkVariable;
+            scope.data = {
+                show: false,
+                mark: {
+                    selectedText: false
+                },
+                selected: selectedFile,
+                header: null,
+                selectedColumns: []
+            };
 
-            scope.widgets = {};
-            scope.widgets.options = [{text: 'Slider', value:'slider'}, {text: 'Radio buttons', value:'radio'}];
-            scope.sliderWidget = {};
-            scope.widgets.selectedWidget = {};
+            scope.variable = {
+                mark: {
+                    show: false,
+                    disable: false,
+                    showSelection: false
+                },
+                done: markVariableDone,
+                selected: {
+                    text: '',
+                    varName: '',
+                    val: ''
+                },
+                edit: editMarkVariable
+            };
+
+            scope.widgets = {
+                options: [{text: 'Slider', value:'slider'}, {text: 'Radio buttons', value:'radio'}, {text: 'Text input', value:'textinput'}],
+                selected: {},
+                slider: {
+                    show: false,
+                    min_value: null,
+                    max_value: null,
+                    step_size: null,
+                    init_value: null,
+                    label: null
+                },
+                show: false,
+                showButton: false,
+                type: null,
+                disable: false
+            };
+
+            scope.buttons = {
+                cut: {
+                    show: false,
+                    disable: true
+                },
+                edit: {
+                    show: false,
+                    disable: true
+                },
+                done: {
+                    show: false,
+                    disable: true
+                },
+            }
 
             scope.selectionEvent = selectionEvent;
             scope.showOriginalCode = true;
             scope.selectedText = {};
+            scope.showOriginalData = false;
+            scope.data.mark.showSelectedText = false;
             
             scope.openDialog = openDialog;
             scope.submit = submit;
@@ -89,8 +159,13 @@
                 resetFigures();
                 switch (newVal) {
                     case 'manipulateFigure':
-                        manipulateFigure();
-                    break;
+                        scope.purposes.selected = newVal;
+                        scope.figures.show = true;
+                        break;
+                    case 'showFigureDataCode':
+                        scope.purposes.selected = newVal;
+                        scope.figures.show = true;
+                        break;
                     default:
                     break;
                 }
@@ -98,24 +173,25 @@
             
             scope.$watch('figures.selected', function(newVal, oldVal){                
                 if(newVal){
-                    if(scope.markCode.show){
-                        resetMarkCode();
-                        resetMarkVariable();
-                        resetWidgets();
+                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'showFigureDataCode'){
+                        scope.code.mark.show = true;
+                        scope.buttons.cut.show = true;
+                        scope.buttons.edit.show = true;
+                        scope.buttons.done.show = true;
                     }
-                    scope.markCode.show = true;
-                    //scope.steps.step6.type = newVal;
                 }
             });
 
             scope.$watch('widgets.selected', function(newVal, oldVal){                
-                if(newVal==='slider'){
-                    scope.sliderWidget.show = true;
-                    scope.widgets.selectedWidget = 'Slider';
-                } else{
-                    scope.sliderWidget.show = false;
+                if (scope.purposes.selected === 'manipulateFigure'){
+                    if(newVal === 'slider'){
+                        scope.widgets.slider.show = true;
+                        //scope.widgets.selected = 'Slider';
+                    } else{
+                        scope.widgets.slider.show = false;
+                    }                        
                 }
-            });            
+            });     
 
             scope.$watch('codefile', function(newVal, oldVal){
                 $http.get(newVal.path)
@@ -127,11 +203,11 @@
                 });
             });
 
-            //////////////////
+            scope.addItem = function(item) {
+                scope.data.header[item].selected = scope.data.header[item].selected;
+            };
 
-            function manipulateFigure(){
-                scope.figures.show = true;
-            }
+            //////////////////
 
             function activate(){
                 resetPurpose();
@@ -141,51 +217,84 @@
                 resetMarkVariable();
             }
             
-            function prepareCodefiles(files){
+            function prepareFiles(files){
                 for(var i in files){
                     files[i] = env.api + '/compendium/' + scope.ercId + '/data/' + files[i];
                 }
                 return files;
             }
 
-            function markCodeDone(){
+            function selectedFile(file){
+                scope.datafile = {path: file, lineHighlight: '', type: 'text/csv'};
+                httpRequests.getCSV(scope.datafile.path)
+                .then(function(res){
+                    scope.data.header = res.data.replace('"','').replace(/"/g,'').split('\n')[0].split(',');
+                    scope.data.header.shift();
+                    var temp = [];    
+                    scope.data.header.forEach(element => {
+                        temp.push({name: element, selected: false});
+                    });
+                    scope.data.header = temp;
+                    console.log(scope.data.header)
+                });
+            }
+
+            function cutCode(){
                 logger.info(selectedLinesIndex);
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
-                scope.markCode.showSelectedText = true;
-                scope.markCode.disable = true;
-                scope.markVariable.show = true;
+                scope.code.mark.showSelectedText = true;
+                scope.code.mark.disable = true;
+                scope.buttons.edit.disable = false;
+                scope.buttons.cut.disable = true;
+                scope.buttons.done.disable = false;
+            }
+
+            function confirmCode(){
+                scope.buttons.done.disable = true;
+                scope.buttons.cut.disable = true;
+                if (scope.purposes.selected === 'manipulateFigure'){
+                    scope.variable.mark.show = true;
+                } else if (scope.purposes.selected === 'showFigureDataCode'){
+                    scope.code.mark.extracted = true;
+                    scope.showOriginalCode = false;
+                    scope.code.mark.showSelectedText = false;
+                    scope.showOriginalData = true;
+                    scope.data.mark.show = true;
+                }                
             }
             
             function markVariableDone(){
-                scope.markVariable.disable = true;
-                scope.widgets.show = true;
-                scope.widgets.showButton = true;
+                scope.variable.mark.disable = true;
+                if (scope.purposes.selected === 'manipulateFigure'){
+                    scope.widgets.show = true;
+                    scope.widgets.showButton = true;
+                }
             }
 
             function selectionEvent(){
-                if(scope.markCode.show && !scope.markVariable.show){
+                if(scope.code.mark.show && !scope.variable.mark.show){
                     var selection = $window.getSelection().getRangeAt(0).toString();
                     if(selection.length != 0){
                         var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
                         scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
-                        scope.markCode.disable = false;
+                        scope.buttons.cut.disable = false;
                     }
-                } else if(scope.markVariable.show && !scope.widgets.show){
+                } else if(scope.variable.mark.show && !scope.widgets.show){
                     var selection = $window.getSelection().toString();
                     if(selection.length != 0){
-                        scope.selectedVariable = o2rUiBindingCreatorHelper.validateVariable(selection);
-                        if(scope.selectedVariable){
-                            scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
-                            scope.selectedText.lineHighlight = '' + scope.selectedVariable.line.start;
-                            scope.markVariable.disable = false;
-                            scope.selectedVariable.text = selection;
+                        scope.variable.selected = o2rUiBindingCreatorHelper.validateVariable(selection);
+                        if(scope.variable.selected){
+                            scope.variable.selected.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
+                            scope.selectedText.lineHighlight = '' + scope.variable.selected.line.start;
+                            scope.variable.mark.disable = false;
+                            scope.variable.selected.text = selection;
                         } else {
                             scope.selectedText.lineHighlight = '';
-                            scope.markVariable.disable = true;
+                            scope.variable.mark.disable = true;
                         }
-                        scope.markVariable.showSelection = true;
+                        scope.variable.mark.showSelection = true;
                     }
                 }
             }
@@ -220,18 +329,18 @@
             }
 
             function resetMarkCode(){
-                scope.markCode.showSelectedText = false;
-                scope.markCode.disable = true;
+                scope.code.mark.showSelectedText = false;
+                scope.code.mark.disable = true;
                 scope.selectedText.source = '';
                 scope.showOriginalCode = true;
-                scope.markCode.showSelectedText = false;
-                scope.markCode.show = false;
+                scope.code.mark.show = false;
+                scope.buttons.done.disable = true;
                 selectedLinesIndex = [];
                 scope.codefile.lineHighlight = '';
             }
 
             function resetWidgets(){
-                scope.sliderWidget.show = false;
+                scope.widgets.slider.show = false;
                 scope.widgets.showButton = true;
                 scope.widgets.type = null;
                 scope.widgets.disable = true;
@@ -245,26 +354,29 @@
             }
             
             function resetMarkVariable(){
-                scope.markVariable.showSelection = false;
-                scope.markVariable.disable = true;
-                scope.markVariable.show = false;
-                scope.selectedVariable = {};
+                scope.variable.mark.showSelection = false;
+                scope.variable.mark.disable = true;
+                scope.variable.mark.show = false;
+                scope.variable.selected = {};
                 scope.selectedText.lineHighlight = '';
             }
 
             function editMarkCode(){
                 resetWidgets();
                 resetMarkVariable();
+                scope.buttons.done.disable = false;
                 scope.selectedText.source = '';
-                scope.markCode.showSelectedText = false;
+                scope.code.mark.showSelectedText = false;
                 scope.showOriginalCode = true;
-                scope.markCode.show = true;
+                scope.code.mark.show = true;
+                scope.code.mark.extracted = false;
+                scope.showOriginalData = false;
                 selectedLinesIndex = [];
             }
 
             function editMarkVariable(){
                 resetWidgets();
-                scope.selectedVariable = {};
+                scope.variable.selected = {};
                 scope.selectedText.lineHighlight = '';
             }
 
@@ -278,14 +390,14 @@
                     binding.figure = scope.figures.selected;
                     //binding.codeLines = selectedLinesIndex;
                     binding.codeLines = tempFunc();
-                    binding.variable = scope.selectedVariable;
+                    binding.variable = scope.variable.selected;
                     binding.widget = {
-                        'type': scope.widgets.selectedWidget,
-                        'min': scope.widgets.min_value,
-                        'max': scope.widgets.max_value,
-                        'init': scope.widgets.init_value,
-                        'step': scope.widgets.step_size,
-                        'label': scope.widgets.label
+                        'type': scope.widgets.selected,
+                        'min': scope.widgets.slider.min_value,
+                        'max': scope.widgets.slider.max_value,
+                        'init': scope.widgets.slider.init_value,
+                        'step': scope.widgets.slider.step_size,
+                        'label': scope.widgets.slider.label
                     }
                 httpRequests.sendBinding(binding).then(function(data){
                     console.log(data);
@@ -296,6 +408,8 @@
             function getTask(purpose){
                 if (purpose === 'manipulateFigure') {
                     return 'manipulate';
+                }else if(purpose === 'showFigureDataCode'){
+                    return 'inspect'
                 }
             }
 
