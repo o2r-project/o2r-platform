@@ -153,6 +153,10 @@ display-files-html iframe{
 	text-align: center;
 }
 
+ul.display-files-RData{
+	list-style-type: none;
+}
+
 /***********************
    End Display files view
 ************************/
