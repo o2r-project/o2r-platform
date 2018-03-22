@@ -169,52 +169,49 @@
             	selected: {
             		value: null,
 					type: "",
+					// only used for Matrices (Dimensions)
 					longestRow: undefined
                 },
 				FullJSONString: "",
 
 				// operations
-                depthOf: function (object) {
-					let level = 1;
-					let key;
-					for(key in object) {
-						if (!object.hasOwnProperty(key)) continue;
-
-						if(typeof object[key] === 'object'){
-							let depth = this.depthOf(object[key]) + 1;
-							level = Math.max(depth, level);
-						}
-					}
-					return level;
-				},
 
                 is1DArray: function () {
                     let obj = {};
+                    let array = [];
                     let selectedAttribute = this.selected.value;
-                    if (selectedAttribute[0].constructor !== obj.constructor && this.depthOf(selectedAttribute) === 1 && selectedAttribute.length > 1) this.selected.type = "array";
-                },
+                    if (selectedAttribute[0] != undefined) {
+                 	   if (selectedAttribute[0].constructor !== obj.constructor && selectedAttribute[0].constructor !== array.constructor) this.selected.type = "array";
+                    }
+				},
 
 				isMatrix: function () {
 					let array = [];
 					let selectedAttribute = this.selected.value;
-					if (selectedAttribute[0].constructor === array.constructor) {
-						this.selected.type = "matrix";
-						this.findLongestRow();
+                    if (selectedAttribute[0] != undefined) {
+                        if (selectedAttribute[0].constructor === array.constructor) {
+                            this.selected.type = "matrix";
+                            this.findLongestRow();
+                        }
                     }
 				},
 
 				isObjectArray: function () {
 					let obj = {};
                     let selectedAttribute = this.selected.value;
-					if (selectedAttribute[0].constructor === obj.constructor && !selectedAttribute[0].length) this.selected.type = "objects";
+                    if (selectedAttribute[0] != undefined) {
+                        if (selectedAttribute[0].constructor === obj.constructor && !selectedAttribute[0].length) this.selected.type = "objectArray";
+                    }
 				},
 
-            	isPrimitive: function () {
-            		let array = [];
+				isObject: function () {
             		let obj = {};
-                    let selectedAttribute = this.selected.value;
-					if (selectedAttribute.length === 1 && selectedAttribute[0].constructor !== obj.constructor && selectedAttribute[0].constructor !== array.constructor) this.selected.type = "primitive";
-            	},
+            		let selectedAttribute = this.selected.value;
+            		if (selectedAttribute.constructor === obj.constructor) {
+            			this.selected.type = "object";
+            			this.selected.value = JSON.stringify(this.selected.value, null, 4);
+                    }
+				},
 
 				findLongestRow: function () {
             		let currentLongest = new Array(0);
@@ -226,9 +223,6 @@
 				},
 
 				newSelection: function (selected) {
-
-                    console.log(scope);
-                    setTimeout(function(){}, 500);
 					this.selected.value = selected;
 					this.selected.type = "";
 					this.selected.longestRow = undefined;
@@ -236,12 +230,13 @@
 
 					// get selected data type
 					if (selected != null) {
+
                         try {
                             // check if:
                             this.is1DArray();
                             this.isMatrix();
                             this.isObjectArray();
-                            this.isPrimitive();
+                            this.isObject();
                         }
                         catch (e) {
                             console.error(e);

@@ -9,9 +9,9 @@
 </div>
 <div flex></div>
 </div>
-<!--
-<script type="text/javascript" src="bower_components/iframe-resizer/js/iframeResizer.WindowContent.min.js"></script>
--->
+
+<script type="text/javascript" src="../../bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
+
 <!-- display data depending on its mime type -->
 <object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="display-files-pdf" type="application/pdf" data="{{file.path}}"></object>
 <img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="display-files-img" ng-src="{{file.path}}" />
@@ -25,25 +25,29 @@
 
 <!-- RData Visualisation -->
 <div ng-if="useHljs && (file.size <= sizeRestriction) && (file.type=='application/x-r-data') && file.containsRData">
-
-    <h3>Select an attribute:</h3>
+    <h3>Select an attribute:
+        <nobr>
+            <!-- Attribute Selector -->
+            <select size="{{file.source.length}}" ng-model="rdata_attribute" ng-options="val as key for (key , val) in file.source" ng-change="RData.newSelection(rdata_attribute)">
+                <option value="" ng-select="selected">--- please select an attribute ---</option>
+            </select>
+        </nobr>
+    </h3>
 
     <!-- Attribute Selector -->
-    <select size="{{file.source.length}}" ng-model="rdata_attribute" ng-options="val as key for (key , val) in file.source" ng-change="RData.newSelection(rdata_attribute)">
+    <!--<select size="{{file.source.length}}" ng-model="rdata_attribute" ng-options="val as key for (key , val) in file.source" ng-change="RData.newSelection(rdata_attribute)">
         <option value="" ng-select="selected">--- please select an attribute ---</option>
     </select>
-
+-->
     <br/>
     <div ng-if="RData.selected.value != null">
 
-        <!-- Primitives -->
-        <pre ng-if="RData.selected.type == 'primitive'" o2r-code-highlight o2r-source="{{RData.selected.value}}" class="language-json"></pre>
-
-        <!--  Arrays or Objects -->
-        <div ng-if="RData.selected.type == 'objects' || RData.selected.type == 'array'">
+        <!--  Arrays of Primitives or Objects -->
+        <div ng-if="RData.selected.type == 'objectArray' || RData.selected.type == 'array'">
             <ul class="display-files-RData">
                 <li ng-repeat="item in RData.getRows() | startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
-                    <pre o2r-code-highlight o2r-source="{{item}}" class="language-json">{{$index}}:</pre>
+                    <pre o2r-code-highlight o2r-source="{{item}}" ng-if="item != null" class="language-json"></pre>
+                    <pre o2r-code-highlight o2r-source="undefined" ng-if="item == null" class="language-json"></pre>
                 </li>
             </ul>
 
@@ -51,7 +55,7 @@
             <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
                 Previous
             </button>
-            {{currentPage+1}}/{{numberOfPages()}}
+            <label>{{currentPage+1}}/{{numberOfPages()}}</label>
             <button ng-disabled="currentPage >= RData.selected.value.length/pageSize-1" ng-click="currentPage=currentPage+1">
                 Next
             </button>
@@ -75,6 +79,12 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Objects -->
+        <div ng-if="RData.selected.type == 'object'">
+            <pre o2r-code-highlight o2r-source="{{RData.selected.value}}" class="language-json"></pre>
+        </div>
+
     </div>
 
     <!-- Before Selection, or when Selection is dropped, show the entire JSON data -->
