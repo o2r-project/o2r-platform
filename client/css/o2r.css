@@ -113,6 +113,16 @@ md-card-header-text{
 	background-color: rgb(0,135,98);
 }
 
+table {
+	border: 1px solid #004286;
+	padding: 3px;
+}
+
+th, td {
+	border-bottom: 1px solid #004286;
+	padding: 3px 0;
+}
+
 /************************
    End General
 *************************/
@@ -744,14 +754,6 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 
 .md-select-menu-container {
 	z-index: 101 !important;
-}
-
-table {
-	 border: 2px solid black;
-}
-
-th, td {
-	border-bottom: 1px solid black;
 }
 
 td.add-row-button {
