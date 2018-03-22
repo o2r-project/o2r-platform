@@ -47,13 +47,15 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "xpack.security.enabled=false"
+      - "cluster.routing.allocation.disk.watermark.low=5gb"
+      - "cluster.routing.allocation.disk.watermark.high=5gb"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     mem_limit: 1g
-#    ports:
-#      - "9200:9200"
+    #ports:
+    #  - "9200:9200"
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
     environment:
@@ -62,6 +64,8 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
       - "xpack.security.enabled=false"
+      - "cluster.routing.allocation.disk.watermark.low=5gb"
+      - "cluster.routing.allocation.disk.watermark.high=5gb"
     ulimits:
       memlock:
         soft: -1
@@ -78,7 +82,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.13.8
+    image: o2rproject/o2r-muncher:0.18.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -95,10 +99,12 @@ services:
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:1ab8868" 
+      #- "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559" 
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev"
+      #- MUNCHER_ALLOW_INVALID_METADATA=true
 
   loader:
-    image: o2rproject/o2r-loader:0.8.3
+    image: o2rproject/o2r-loader:0.10.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -111,7 +117,8 @@ services:
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=o2rplatform_o2rstorage
-      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:1ab8868" 
+      #- "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
+      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev"
       
   informer:
     image: o2rproject/o2r-informer:0.3.0
@@ -123,10 +130,10 @@ services:
       - "INFORMER_MONGODB=mongodb://mongodb"
       - INFORMER_MONGODB_HOST=mongodb
       - INFORMER_PORT=8082
-      - DEBUG=informer
+      - DEBUG=informer,informer:*
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.8.0
+    image: o2rproject/o2r-bouncer:0.11.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -134,17 +141,15 @@ services:
     environment:
       - "BOUNCER_MONGODB=mongodb://mongodb"
       - BOUNCER_PORT=8083
-      - DEBUG=bouncer
+      - DEBUG=bouncer,bouncer:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
-      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
       - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
 
   finder:
-    image: o2rproject/o2r-finder:0.5.1
+    image: o2rproject/o2r-finder:0.6.2
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -162,7 +167,7 @@ services:
       - BATCH_COUNT=20
 
   transporter:
-    image: o2rproject/o2r-transporter:0.4.1
+    image: o2rproject/o2r-transporter:0.5.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -176,7 +181,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:168ae80
+    image: o2rproject/o2r-shipper:e7398ab
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -191,7 +196,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.1
+    image: o2rproject/o2r-substituter:0.4.3
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -212,6 +217,20 @@ services:
       - INSPECTER_PORT=8091
       - DEBUGME=inspecter
 
+  guestlister:
+    image: o2rproject/o2r-guestlister:0.2.0
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - configmongodb
+    environment:
+      - "GUESTLISTER_MONGODB=mongodb://mongodb"
+      - GUESTLISTER_PORT=8383
+      - DEBUG=guestlister,guestlister:*
+      - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
+      - OAUTH_URL_AUTHORIZATION=${OAUTH_URL_AUTHORIZATION}
+      - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
+
   platform:
     image: nginx:latest
     depends_on:
@@ -227,6 +246,5 @@ services:
       - "./dev/nginx.conf:/etc/nginx/nginx.conf:ro"
       #- "./dev/socket.html:/usr/share/nginx/html/dev/socket.html:ro"
       - "./client:/usr/share/nginx/html:ro"
-      #- "./dev/config-toolbox.js:/etc/nginx/html/app/config/config.js:ro"
     ports:
       - "80:80"
