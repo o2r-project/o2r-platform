@@ -40,22 +40,16 @@
         };
 
         function link(scope, element, attrs){
-            if(!scope.erc) throw 'o2r-erc is undefined';
-            if(!scope.ercId) throw 'o2r-erc-id is undefined';
-            
-            scope.erc = JSON.parse(scope.erc);
-            scope.icons = icons;
-
             var logger = $log.getInstance('o2rUiBindingCreator');
-            var lines, codeText;
-            var selectedLinesIndex = [];
-            
-            // turn string into array and then add actual path
-            // NOTE: Remove the prepareCodefiles wrapper as soon as the paths are consistent
-            scope.codefiles = prepareFiles(angular.fromJson(scope.erc.codefiles));
-            scope.codefile = {path: scope.codefiles[0], lineHighlight: ''}; //only use first codefile so far
-            scope.datafiles = prepareFiles(angular.fromJson(scope.erc.inputfiles));
-            selectedFile(scope.datafiles[0]); //only use first codefile so far
+
+            scope.erc = JSON.parse(scope.erc);
+            scope.icons = icons;            
+
+            scope.codefile = {
+                path: env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.mainfile, 
+                lineHighlight: ''
+            };
+            scope.datafile = env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.inputfiles[0]; 
 
             scope.figures = {
                 list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5'],
@@ -64,34 +58,32 @@
             };
 
             scope.purposes = {
-                list: [{text: 'Search for results using spatiotemporal properties', value:'discoverResult'}, 
-                                {text: 'Show dataset and source code underlying a figure', value: 'showFigureDataCode'},
-                                {text: 'Manipulate a parameter used to compute a specific numerical result in the text', value: 'manipulateNumber'},
-                                {text: 'Manipulate a parameter used to compute a figure', value: 'manipulateFigure'}],
-                selected: null,
-                show: true
+                list: [{text: 'Show data and code underlying a figure', value: 'figureDataCode'},
+                            {text: 'Manipulate a parameter used to compute a number', value: 'manipulateNumber'},
+                            {text: 'Manipulate a parameter used to compute a figure', value: 'manipulateFigure'}],
+                show: true,
+                selected: null
             };
             
             scope.code = {
                 mark: {
                     showSelectedText: false,
-                    disable: false,
                     extracted: false,
                     show: false
                 },
                 cut: cutCode,
-                edit: editMarkCode,
+                edit: editCode,
                 confirm: confirmCode
             };
 
             scope.data = {
                 show: false,
-                mark: {
-                    selectedText: false
-                },
-                selected: selectedFile,
+                selected: getHeader,
                 header: null,
-                selectedColumns: []
+                selectedColumns: [],
+                confirm: confirmData,
+                all: false,
+                edit: editData
             };
 
             scope.variable = {
@@ -127,28 +119,38 @@
             };
 
             scope.buttons = {
-                cut: {
+                cutCode: {
                     show: false,
                     disable: true
                 },
-                edit: {
+                editCode: {
                     show: false,
                     disable: true
                 },
-                done: {
+                doneCode: {
                     show: false,
                     disable: true
                 },
+                doneData: {
+                    disable: true
+                },
+                editData: {
+                    disable: true
+                }
             }
 
             scope.selectionEvent = selectionEvent;
             scope.showOriginalCode = true;
             scope.selectedText = {};
             scope.showOriginalData = false;
-            scope.data.mark.showSelectedText = false;
             
             scope.openDialog = openDialog;
+            
+            scope.readyForSubmission= false;
             scope.submit = submit;
+
+            var lines, codeText;
+            var selectedLinesIndex = [];
             
             activate();
             
@@ -162,7 +164,7 @@
                         scope.purposes.selected = newVal;
                         scope.figures.show = true;
                         break;
-                    case 'showFigureDataCode':
+                    case 'figureDataCode':
                         scope.purposes.selected = newVal;
                         scope.figures.show = true;
                         break;
@@ -173,11 +175,11 @@
             
             scope.$watch('figures.selected', function(newVal, oldVal){                
                 if(newVal){
-                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'showFigureDataCode'){
+                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'figureDataCode'){
                         scope.code.mark.show = true;
-                        scope.buttons.cut.show = true;
-                        scope.buttons.edit.show = true;
-                        scope.buttons.done.show = true;
+                        scope.buttons.cutCode.show = true;
+                        scope.buttons.editCode.show = true;
+                        scope.buttons.doneCode.show = true;
                     }
                 }
             });
@@ -205,26 +207,40 @@
 
             scope.addItem = function(item) {
                 scope.data.header[item].selected = scope.data.header[item].selected;
+                var atLeastOneSelectedColumn = false;
+                scope.data.header.forEach(element => {
+                    if (element.selected){
+                        console.log(element.selected);
+                        atLeastOneSelectedColumn = true; 
+                    }
+                });
+                scope.buttons.doneData.disable = !atLeastOneSelectedColumn;
             };
 
-            //////////////////
+            scope.toggleAll = function(){
+                if(scope.data.all){
+                    scope.data.header.forEach(element => {
+                        element.selected = true;
+                    });
+                }else {
+                    scope.data.header.forEach(element => {
+                        element.selected = false;
+                    });
+                }
+                scope.buttons.doneData.disable = !scope.buttons.doneData.disable;
+            }
 
+            //////////////////
             function activate(){
                 resetPurpose();
                 resetFigures();
                 resetMarkCode();
                 resetWidgets();
                 resetMarkVariable();
-            }
-            
-            function prepareFiles(files){
-                for(var i in files){
-                    files[i] = env.api + '/compendium/' + scope.ercId + '/data/' + files[i];
-                }
-                return files;
+                getHeader(scope.datafile);
             }
 
-            function selectedFile(file){
+            function getHeader(file){
                 scope.datafile = {path: file, lineHighlight: '', type: 'text/csv'};
                 httpRequests.getCSV(scope.datafile.path)
                 .then(function(res){
@@ -235,7 +251,6 @@
                         temp.push({name: element, selected: false});
                     });
                     scope.data.header = temp;
-                    console.log(scope.data.header)
                 });
             }
 
@@ -244,26 +259,33 @@
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
                 scope.code.mark.showSelectedText = true;
-                scope.code.mark.disable = true;
-                scope.buttons.edit.disable = false;
-                scope.buttons.cut.disable = true;
-                scope.buttons.done.disable = false;
+                //scope.code.mark.disable = true;
+                scope.buttons.editCode.disable = false;
+                scope.buttons.cutCode.disable = true;
+                scope.buttons.doneCode.disable = false;
             }
 
             function confirmCode(){
-                scope.buttons.done.disable = true;
-                scope.buttons.cut.disable = true;
+                scope.buttons.doneCode.disable = true;
+                scope.buttons.cutCode.disable = true;
+                scope.buttons.editCode.disable = false;
                 if (scope.purposes.selected === 'manipulateFigure'){
                     scope.variable.mark.show = true;
-                } else if (scope.purposes.selected === 'showFigureDataCode'){
+                } else if (scope.purposes.selected === 'figureDataCode'){
                     scope.code.mark.extracted = true;
                     scope.showOriginalCode = false;
                     scope.code.mark.showSelectedText = false;
                     scope.showOriginalData = true;
-                    scope.data.mark.show = true;
+                    scope.data.show = true;
                 }                
             }
             
+            function confirmData(){
+                scope.readyForSubmission = true;
+                scope.buttons.doneData.disable = true;
+                scope.buttons.editData.disable = false;
+            }
+
             function markVariableDone(){
                 scope.variable.mark.disable = true;
                 if (scope.purposes.selected === 'manipulateFigure'){
@@ -279,7 +301,7 @@
                         var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
                         scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
-                        scope.buttons.cut.disable = false;
+                        scope.buttons.cutCode.disable = false;
                     }
                 } else if(scope.variable.mark.show && !scope.widgets.show){
                     var selection = $window.getSelection().toString();
@@ -330,11 +352,10 @@
 
             function resetMarkCode(){
                 scope.code.mark.showSelectedText = false;
-                scope.code.mark.disable = true;
                 scope.selectedText.source = '';
                 scope.showOriginalCode = true;
                 scope.code.mark.show = false;
-                scope.buttons.done.disable = true;
+                scope.buttons.doneCode.disable = true;
                 selectedLinesIndex = [];
                 scope.codefile.lineHighlight = '';
             }
@@ -361,10 +382,11 @@
                 scope.selectedText.lineHighlight = '';
             }
 
-            function editMarkCode(){
+            function editCode(){
                 resetWidgets();
                 resetMarkVariable();
-                scope.buttons.done.disable = false;
+                scope.buttons.doneCode.disable = false;
+                scope.buttons.editCode.disable = true;
                 scope.selectedText.source = '';
                 scope.code.mark.showSelectedText = false;
                 scope.showOriginalCode = true;
@@ -372,6 +394,12 @@
                 scope.code.mark.extracted = false;
                 scope.showOriginalData = false;
                 selectedLinesIndex = [];
+            }
+
+            function editData(){
+                scope.buttons.doneData.disable = false;
+                scope.buttons.editData.disable = true;
+                scope.readyForSubmission = false;
             }
 
             function editMarkVariable(){
@@ -390,15 +418,23 @@
                     binding.figure = scope.figures.selected;
                     //binding.codeLines = selectedLinesIndex;
                     binding.codeLines = tempFunc();
-                    binding.variable = scope.variable.selected;
-                    binding.widget = {
-                        'type': scope.widgets.selected,
-                        'min': scope.widgets.slider.min_value,
-                        'max': scope.widgets.slider.max_value,
-                        'init': scope.widgets.slider.init_value,
-                        'step': scope.widgets.slider.step_size,
-                        'label': scope.widgets.slider.label
+                    if (binding.purpose === 'figureDataCode'){
+                        binding.dataset = {
+                            file: scope.datafile.path.split('/').pop(),
+                            columns: getSelectedColumns()
+                        }        
+                    }else if(binding.purpose === 'manipulateFigure'){
+                        binding.variable = scope.variable.selected;
+                        binding.widget = {
+                            'type': scope.widgets.selected,
+                            'min': scope.widgets.slider.min_value,
+                            'max': scope.widgets.slider.max_value,
+                            'init': scope.widgets.slider.init_value,
+                            'step': scope.widgets.slider.step_size,
+                            'label': scope.widgets.slider.label
+                        }
                     }
+
                 httpRequests.sendBinding(binding).then(function(data){
                     console.log(data);
                     creationObject.addBinding(binding);
@@ -408,9 +444,19 @@
             function getTask(purpose){
                 if (purpose === 'manipulateFigure') {
                     return 'manipulate';
-                }else if(purpose === 'showFigureDataCode'){
+                }else if(purpose === 'figureDataCode'){
                     return 'inspect'
                 }
+            }
+
+            function getSelectedColumns(){
+                var selectedColumns = [];
+                scope.data.header.forEach(element => {
+                    if (element.selected){
+                        selectedColumns.push(element)
+                    }
+                });
+                return selectedColumns;
             }
 
             function tempFunc() {

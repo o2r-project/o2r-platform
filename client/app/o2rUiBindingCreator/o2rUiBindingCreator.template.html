@@ -1,7 +1,7 @@
 <div layout="row">
     <o2r-display-files ng-if="showOriginalCode" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <o2r-display-files ng-if="code.mark.showSelectedText" o2r-file="{{selectedText}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
-    <div layout="column" ng-if="showOriginalData">
+    <div layout="column" ng-if="showOriginalData" flex="70">
         <md-menu md-position-mode="target-right target" ng-if="(datafiles.length > 1)">
             <md-button aria-label="Datafiles Menu" class="md-icon-button inspect-menu-button" ng-click="$mdMenu.open($event)">
                 <md-icon md-menu-origin md-svg-icon="{{icons.menu}}"></md-icon>
@@ -15,13 +15,15 @@
             </md-menu-content>
         </md-menu>    
         <div layout="row">
+            <md-checkbox ng-model="data.all" ng-change="toggleAll()">
+                Select all
+            </md-checkbox>            
             <md-checkbox ng-repeat="title in data.header track by $index" 
-                                ng-model="title.selected" ng-change="addItem($index)">
+                                ng-model="data.header[$index].selected" ng-change="addItem($index)">
                 {{title.name}}
             </md-checkbox>
-          </div>
+        </div>
         <o2r-display-files o2r-file="{{datafile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
-        <o2r-display-files ng-if="data.mark.showSelectedText" o2r-file="{{selectedText}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     </div>
     <!-- STEPS -->
     <md-card layout-fill flex="30">
@@ -63,22 +65,28 @@
                         </div>
                         <div layout="row">
                             <span flex></span>
-                            <md-button ng-show="buttons.cut.show" class="md-raised md-fab md-mini" ng-click="code.cut()" aria-label="cut" ng-disabled="buttons.cut.disable">
+                            <md-button ng-show="buttons.cutCode.show" ng-click="code.cut()" class="md-raised md-fab md-mini" aria-label="cut" ng-disabled="buttons.cutCode.disable">
                                 <md-icon md-svg-src="{{icons.cut}}"></md-icon>
                             </md-button>
-                            <md-button ng-show="buttons.edit.show" ng-click="code.edit()" class="md-raised md-fab md-mini" aria-label="Edit" ng-disabled="buttons.edit.disable">
+                            <md-button ng-show="buttons.editCode.show" ng-click="code.edit()" class="md-raised md-fab md-mini" aria-label="Edit" ng-disabled="buttons.editCode.disable">
                                 <md-icon md-svg-src="{{icons.edit}}"></md-icon>
                             </md-button>
-                            <md-button ng-show="buttons.done.show" ng-click="code.confirm()" class="md-raised md-fab md-mini" aria-label="Done" ng-disabled="buttons.done.disable">
+                            <md-button ng-show="buttons.doneCode.show" ng-click="code.confirm()" class="md-raised md-fab md-mini" aria-label="Done" ng-disabled="buttons.doneCode.disable">
                                 <md-icon md-svg-src="{{icons.done}}"></md-icon>
                             </md-button>                            
                         </div>
                     </div>
                     <!-- Mark data -->
-                    <div ng-show="data.mark.show">
+                    <div ng-show="data.show">
                         <div layout="row">
                             <span class="creationProcess-binding-step-inst">Mark data subsets relevant for the selected figure</span>
                         </div>
+                        <md-button ng-click="data.confirm()" class="md-raised md-fab md-mini" aria-label="doneData" ng-disabled="buttons.doneData.disable">
+                            <md-icon md-svg-src="{{icons.done}}"></md-icon>
+                        </md-button> 
+                        <md-button ng-click="data.edit()" class="md-raised md-fab md-mini" aria-label="Edit Data" ng-disabled="buttons.editData.disable">
+                                <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+                        </md-button>
                     </div>
                     <!-- Mark variable -->
                     <div ng-show="variable.mark.show" class="creationProcess-step-separate" layout="row">
@@ -158,6 +166,10 @@
                     <md-button class="md-raised md-fab md-mini" ng-click="openDialog($event)" aria-label="check">
                         <md-icon md-svg-src="{{icons.preview}}"></md-icon>
                     </md-button>
+                    <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
+                </div> 
+                <md-divider ng-show="readyForSubmissiond"></md-divider>
+                <div ng-show="readyForSubmission" layout-padding layout="row">
                     <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
                 </div>                
             </div>
