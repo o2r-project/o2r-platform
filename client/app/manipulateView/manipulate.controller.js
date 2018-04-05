@@ -28,12 +28,12 @@
         });
 
         $scope.$watch('vm.selectedTab', function(newValue, oldVal){
+            buildManipulationView(newValue);
             $log.debug('Tab changed to object: %s', newValue);
             httpRequests.runManipulationService(vm.manipulations[newValue]).then(function(data){
                 console.log(data)
             });
             vm.query = 'http://localhost:8000/' + vm.manipulations[newValue].figure.replace(/\s/g, '').toLowerCase() + '?newValue=' + vm.manipulations[newValue].widget.init;
-            //buildManipulationView(newVal);
             $scope.$watch('vm.threshold', function(newVal, oldVal){
                 if (newVal !=null){
                     console.log(newVal)
@@ -45,7 +45,7 @@
 
         function buildManipulationView(item){
             var newObj = {};
-                newObj.code = [manipulate[item].underlyingCode];
+                newObj.code = [vm.manipulations[item].codesnippet];
                 newObj.data = [manipulate[item].underlyingData];
                 vm.threshold = manipulate[item].widget.init;
             $scope.$parent.vm.mSetCodeData(newObj);

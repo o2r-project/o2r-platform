@@ -60,7 +60,7 @@
             scope.purposes = {
                 list: [{text: 'Show data and code underlying a figure', value: 'figureDataCode'},
                             {text: 'Manipulate a parameter used to compute a number', value: 'manipulateNumber'},
-                            {text: 'Manipulate a parameter used to compute a figure', value: 'manipulateFigure'}],
+                            {text: 'Manipulate a parameter used to compute a figure', value: 'figure'}],
                 show: true,
                 selected: null
             };
@@ -160,7 +160,7 @@
                 resetMarkCode();
                 resetFigures();
                 switch (newVal) {
-                    case 'manipulateFigure':
+                    case 'figure':
                         scope.purposes.selected = newVal;
                         scope.figures.show = true;
                         break;
@@ -175,7 +175,7 @@
             
             scope.$watch('figures.selected', function(newVal, oldVal){                
                 if(newVal){
-                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'figureDataCode'){
+                    if(scope.purposes.selected === 'figure' || scope.purposes.selected === 'figureDataCode'){
                         scope.code.mark.show = true;
                         scope.buttons.cutCode.show = true;
                         scope.buttons.editCode.show = true;
@@ -185,7 +185,7 @@
             });
 
             scope.$watch('widgets.selected', function(newVal, oldVal){                
-                if (scope.purposes.selected === 'manipulateFigure'){
+                if (scope.purposes.selected === 'figure'){
                     if(newVal === 'slider'){
                         scope.widgets.slider.show = true;
                         //scope.widgets.selected = 'Slider';
@@ -269,7 +269,7 @@
                 scope.buttons.doneCode.disable = true;
                 scope.buttons.cutCode.disable = true;
                 scope.buttons.editCode.disable = false;
-                if (scope.purposes.selected === 'manipulateFigure'){
+                if (scope.purposes.selected === 'figure'){
                     scope.variable.mark.show = true;
                 } else if (scope.purposes.selected === 'figureDataCode'){
                     scope.code.mark.extracted = true;
@@ -288,7 +288,7 @@
 
             function markVariableDone(){
                 scope.variable.mark.disable = true;
-                if (scope.purposes.selected === 'manipulateFigure'){
+                if (scope.purposes.selected === 'figure'){
                     scope.widgets.show = true;
                     scope.widgets.showButton = true;
                 }
@@ -423,7 +423,7 @@
                             file: scope.datafile.path.split('/').pop(),
                             columns: getSelectedColumns()
                         }        
-                    }else if(binding.purpose === 'manipulateFigure'){
+                    }else if(binding.purpose === 'figure'){
                         binding.variable = scope.variable.selected;
                         binding.widget = {
                             'type': scope.widgets.selected,
@@ -437,12 +437,12 @@
 
                 httpRequests.sendBinding(binding).then(function(data){
                     console.log(data);
-                    creationObject.addBinding(binding);
+                    creationObject.addBinding(data.data.data);
                 });
             }
 
             function getTask(purpose){
-                if (purpose === 'manipulateFigure') {
+                if (purpose === 'figure') {
                     return 'manipulate';
                 }else if(purpose === 'figureDataCode'){
                     return 'inspect'
