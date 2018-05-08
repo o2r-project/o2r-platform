@@ -271,11 +271,11 @@
 		}
 
 		function sendBinding(binding){
-			return $http.post(env.api + '/bindings/' + binding.task + '/' + binding.purpose, binding);
+			return $http.post(env.api + '/bindings/' + binding.purpose, binding);
 		}
 
 		function runManipulationService(binding){
-			return $http.post(env.api + '/bindings/manipulate/run', binding);
+			return $http.post(env.api + '/bindings/runPlumberService', binding);
 		}
 
 		function getLicenses(){

@@ -15,7 +15,7 @@
 
         vm.manipulations = [];
         manipulate.forEach(element => {
-            if (element.task === 'manipulate'){
+            if (element.purpose === 'manipulateFigure'){
                 vm.manipulations.push(element);
             }
         });
@@ -33,21 +33,30 @@
             httpRequests.runManipulationService(vm.manipulations[newValue]).then(function(data){
                 console.log(data)
             });
-            vm.query = 'http://localhost:8000/' + vm.manipulations[newValue].figure.replace(/\s/g, '').toLowerCase() + '?newValue=' + vm.manipulations[newValue].widget.init;
+            vm.query = 'http://localhost:' + vm.manipulations[newValue].port + '/' + vm.manipulations[newValue].result.value.replace(/\s/g, '').toLowerCase() + '?newValue=' + vm.manipulations[newValue].code.parameter.val;
             $scope.$watch('vm.threshold', function(newVal, oldVal){
                 if (newVal !=null){
-                    console.log(newVal)
-                    vm.query = 'http://localhost:8000/' + vm.manipulations[newValue].figure.replace(/\s/g, '').toLowerCase() + '?newValue=' + newVal;
+                    vm.query = 'http://localhost:' + vm.manipulations[newValue].port + '/' + vm.manipulations[newValue].result.value.replace(/\s/g, '').toLowerCase() + '?newValue=' + newVal;
                 }
-                console.log(newVal)
             });
         });
 
         function buildManipulationView(item){
+            vm.radio, vm.slider = false;
+            var binding = vm.manipulations[item];
             var newObj = {};
-                newObj.code = [vm.manipulations[item].codesnippet];
-                newObj.data = [manipulate[item].underlyingData];
-                vm.threshold = manipulate[item].widget.init;
+                newObj.code = [binding.codesnippet];
+            vm.threshold = binding.code.parameter.val;
+                if (binding.datafile){
+                    newObj.data = [binding.datafile];
+                }else{
+                    newObj.data = erc.metadata.o2r.inputfiles;
+                }
+                if (binding.code.parameter.widget.type == 'radio'){
+                    vm.radio=true;
+                } else if(binding.code.parameter.widget.type == 'slider'){
+                    vm.slider=true
+                }
             $scope.$parent.vm.mSetCodeData(newObj);
         }
 

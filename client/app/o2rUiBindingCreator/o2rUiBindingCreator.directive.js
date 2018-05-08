@@ -41,15 +41,34 @@
 
         function link(scope, element, attrs){
             var logger = $log.getInstance('o2rUiBindingCreator');
-
             scope.erc = JSON.parse(scope.erc);
             scope.icons = icons;            
+
+            scope.paper = {
+                path: env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.displayfile,
+                type: 'text/html'
+            };
 
             scope.codefile = {
                 path: env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.mainfile, 
                 lineHighlight: ''
             };
-            scope.datafile = env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.inputfiles[0]; 
+
+            scope.datafile = env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.inputfiles[0];
+            $http.get(scope.datafile).then(function(response){
+                scope.slider = {
+                    minValue: 1,
+                    maxValue: response.data.split(/\r\n|\n/).length,
+                    options: {
+                        floor:1,
+                        ceil: response.data.split(/\r\n|\n/).length,
+                        step: 1,
+                        noSwitching: true
+                    },
+                    from: undefined,
+                    to: undefined
+                };
+            }); 
 
             scope.figures = {
                 list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5'],
@@ -58,9 +77,10 @@
             };
 
             scope.purposes = {
-                list: [{text: 'Show data and code underlying a figure', value: 'figureDataCode'},
-                            {text: 'Manipulate a parameter used to compute a number', value: 'manipulateNumber'},
-                            {text: 'Manipulate a parameter used to compute a figure', value: 'figure'}],
+                list: [ {text: 'Show data and code underlying a figure', value: 'inspectCodeDataFigure'},
+                        {text: 'Show data and code underlying a number', value: 'inspectCodeDataNumber'},
+                        {text: 'Manipulate the parameter underlying a figure', value: 'manipulateFigure'},
+                        {text: 'Manipulate the parameter underlying a number', value: 'manipulateNumber'}],
                 show: true,
                 selected: null
             };
@@ -83,7 +103,9 @@
                 selectedColumns: [],
                 confirm: confirmData,
                 all: false,
-                edit: editData
+                edit: editData,
+                doneDataButtonDisable: true,
+                editDataButtonDisable: true
             };
 
             scope.variable = {
@@ -102,15 +124,18 @@
             };
 
             scope.widgets = {
-                options: [{text: 'Slider', value:'slider'}, {text: 'Radio buttons', value:'radio'}, {text: 'Text input', value:'textinput'}],
+                options: [{text: 'Slider', value:'slider'}, {text: 'Radio buttons', value:'radio'}],
                 selected: {},
                 slider: {
                     show: false,
                     min_value: null,
                     max_value: null,
                     step_size: null,
-                    init_value: null,
                     label: null
+                },
+                radio: {
+                    show: false,
+                    options: []
                 },
                 show: false,
                 showButton: false,
@@ -131,16 +156,14 @@
                     show: false,
                     disable: true
                 },
-                doneData: {
-                    disable: true
-                },
                 editData: {
                     disable: true
                 }
             }
 
             scope.selectionEvent = selectionEvent;
-            scope.showOriginalCode = true;
+            scope.showOriginalCode = false;
+            scope.showPaper = true;
             scope.selectedText = {};
             scope.showOriginalData = false;
             
@@ -152,19 +175,21 @@
             var lines, codeText;
             var selectedLinesIndex = [];
             
-            activate();
+            resetAll();
             
             scope.$watch('purposes.selected', function(newVal, oldVal){
                 resetWidgets();
                 resetMarkVariable();
                 resetMarkCode();
                 resetFigures();
+                resetData();
+                scope.showPaper = true;
                 switch (newVal) {
-                    case 'figure':
+                    case 'manipulateFigure':
                         scope.purposes.selected = newVal;
                         scope.figures.show = true;
                         break;
-                    case 'figureDataCode':
+                    case 'inspectCodeDataFigure':
                         scope.purposes.selected = newVal;
                         scope.figures.show = true;
                         break;
@@ -175,7 +200,9 @@
             
             scope.$watch('figures.selected', function(newVal, oldVal){                
                 if(newVal){
-                    if(scope.purposes.selected === 'figure' || scope.purposes.selected === 'figureDataCode'){
+                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'inspectCodeDataFigure'){
+                        scope.showPaper = false;
+                        scope.showOriginalCode = true;
                         scope.code.mark.show = true;
                         scope.buttons.cutCode.show = true;
                         scope.buttons.editCode.show = true;
@@ -185,12 +212,13 @@
             });
 
             scope.$watch('widgets.selected', function(newVal, oldVal){                
-                if (scope.purposes.selected === 'figure'){
+                if (scope.purposes.selected === 'manipulateFigure'){
                     if(newVal === 'slider'){
+                        scope.widgets.radio.show = false;
                         scope.widgets.slider.show = true;
-                        //scope.widgets.selected = 'Slider';
-                    } else{
+                    } else if(newVal === 'radio'){
                         scope.widgets.slider.show = false;
+                        scope.widgets.radio.show = true;
                     }                        
                 }
             });     
@@ -214,7 +242,7 @@
                         atLeastOneSelectedColumn = true; 
                     }
                 });
-                scope.buttons.doneData.disable = !atLeastOneSelectedColumn;
+                scope.data.doneDataButtonDisable = !atLeastOneSelectedColumn;
             };
 
             scope.toggleAll = function(){
@@ -227,18 +255,8 @@
                         element.selected = false;
                     });
                 }
-                scope.buttons.doneData.disable = !scope.buttons.doneData.disable;
-            }
-
-            //////////////////
-            function activate(){
-                resetPurpose();
-                resetFigures();
-                resetMarkCode();
-                resetWidgets();
-                resetMarkVariable();
-                getHeader(scope.datafile);
-            }
+                scope.data.doneDataButtonDisable = !scope.data.doneDataButtonDisable;
+            };
 
             function getHeader(file){
                 scope.datafile = {path: file, lineHighlight: '', type: 'text/csv'};
@@ -252,7 +270,7 @@
                     });
                     scope.data.header = temp;
                 });
-            }
+            };
 
             function cutCode(){
                 logger.info(selectedLinesIndex);
@@ -263,36 +281,36 @@
                 scope.buttons.editCode.disable = false;
                 scope.buttons.cutCode.disable = true;
                 scope.buttons.doneCode.disable = false;
-            }
+            };
 
             function confirmCode(){
                 scope.buttons.doneCode.disable = true;
                 scope.buttons.cutCode.disable = true;
                 scope.buttons.editCode.disable = false;
-                if (scope.purposes.selected === 'figure'){
+                if (scope.purposes.selected === 'manipulateFigure'){
                     scope.variable.mark.show = true;
-                } else if (scope.purposes.selected === 'figureDataCode'){
+                } else if (scope.purposes.selected === 'inspectCodeDataFigure'){
                     scope.code.mark.extracted = true;
                     scope.showOriginalCode = false;
                     scope.code.mark.showSelectedText = false;
                     scope.showOriginalData = true;
                     scope.data.show = true;
                 }                
-            }
+            };
             
             function confirmData(){
                 scope.readyForSubmission = true;
-                scope.buttons.doneData.disable = true;
+                scope.data.doneDataButtonDisable = true;
                 scope.buttons.editData.disable = false;
-            }
+            };
 
             function markVariableDone(){
                 scope.variable.mark.disable = true;
-                if (scope.purposes.selected === 'figure'){
+                if (scope.purposes.selected === 'manipulateFigure'){
                     scope.widgets.show = true;
                     scope.widgets.showButton = true;
                 }
-            }
+            };
 
             function selectionEvent(){
                 if(scope.code.mark.show && !scope.variable.mark.show){
@@ -319,7 +337,7 @@
                         scope.variable.mark.showSelection = true;
                     }
                 }
-            }
+            };
             
             function openDialog(ev){
                 $mdDialog.show({
@@ -341,47 +359,6 @@
                 });
             }
 
-            function resetPurpose(){
-                scope.purposes.show = true;
-                scope.purposes.selected = null;
-            }
-
-            function resetFigures(){
-                scope.figures.selected = null;
-            }
-
-            function resetMarkCode(){
-                scope.code.mark.showSelectedText = false;
-                scope.selectedText.source = '';
-                scope.showOriginalCode = true;
-                scope.code.mark.show = false;
-                scope.buttons.doneCode.disable = true;
-                selectedLinesIndex = [];
-                scope.codefile.lineHighlight = '';
-            }
-
-            function resetWidgets(){
-                scope.widgets.slider.show = false;
-                scope.widgets.showButton = true;
-                scope.widgets.type = null;
-                scope.widgets.disable = true;
-                scope.widgets.min_value = null;
-                scope.widgets.max_value = null;
-                scope.widgets.step_size = null;
-                scope.widgets.init_value = null;
-                scope.widgets.label = null;
-                scope.widgets.selected = null;
-                scope.widgets.show = false;
-            }
-            
-            function resetMarkVariable(){
-                scope.variable.mark.showSelection = false;
-                scope.variable.mark.disable = true;
-                scope.variable.mark.show = false;
-                scope.variable.selected = {};
-                scope.selectedText.lineHighlight = '';
-            }
-
             function editCode(){
                 resetWidgets();
                 resetMarkVariable();
@@ -397,7 +374,7 @@
             }
 
             function editData(){
-                scope.buttons.doneData.disable = false;
+                scope.data.doneDataButtonDisable = false;
                 scope.buttons.editData.disable = true;
                 scope.readyForSubmission = false;
             }
@@ -412,40 +389,50 @@
                 var erc = creationObject.get();
                 var binding = {};
                     binding.id = erc.id;
-                    binding.mainfile = erc.metadata.o2r.mainfile;
+                    binding.port = "800" + erc.metadata.o2r.interaction.length;
                     binding.purpose = scope.purposes.selected;
-                    binding.task = getTask(binding.purpose);
-                    binding.figure = scope.figures.selected;
-                    //binding.codeLines = selectedLinesIndex;
-                    binding.codeLines = tempFunc();
-                    if (binding.purpose === 'figureDataCode'){
+
+                    binding.code = {};
+                    binding.code.file = erc.metadata.o2r.mainfile; 
+                    binding.code.codeLines = tempFunc();
+
+                    if (binding.purpose === 'inspectCodeDataFigure'){
+                        binding.result = {};
+                        binding.result.type = 'figure',
+                        binding.result.value = scope.figures.selected;
                         binding.dataset = {
                             file: scope.datafile.path.split('/').pop(),
-                            columns: getSelectedColumns()
+                            columns: getSelectedColumns(),
+                            rows: scope.slider.minValue + "-" + scope.slider.maxValue
                         }        
-                    }else if(binding.purpose === 'figure'){
-                        binding.variable = scope.variable.selected;
-                        binding.widget = {
-                            'type': scope.widgets.selected,
-                            'min': scope.widgets.slider.min_value,
-                            'max': scope.widgets.slider.max_value,
-                            'init': scope.widgets.slider.init_value,
-                            'step': scope.widgets.slider.step_size,
-                            'label': scope.widgets.slider.label
-                        }
+                    }else if(binding.purpose === 'manipulateFigure'){
+                        binding.result = {};
+                        binding.result.type = 'figure',
+                        binding.result.value = scope.figures.selected;
+                        binding.code.parameter = scope.variable.selected;
+                        binding.code.parameter.widget = getWidget();
                     }
-
+                console.log(binding)
                 httpRequests.sendBinding(binding).then(function(data){
                     console.log(data);
                     creationObject.addBinding(data.data.data);
                 });
             }
 
-            function getTask(purpose){
-                if (purpose === 'figure') {
-                    return 'manipulate';
-                }else if(purpose === 'figureDataCode'){
-                    return 'inspect'
+            function getWidget(){
+                if (scope.widgets.selected == 'slider'){
+                    return {
+                        'type': scope.widgets.selected,
+                        'min': scope.widgets.slider.min_value,
+                        'max': scope.widgets.slider.max_value,
+                        'step': scope.widgets.slider.step_size,
+                        'label': scope.widgets.slider.label
+                    }
+                }else if(scope.widgets.selected == 'radio'){
+                    return {
+                        'type': scope.widgets.selected,
+                        'options': scope.widgets.radio.options
+                    }
                 }
             }
 
@@ -460,9 +447,68 @@
             }
 
             function tempFunc() {
-                let lines = '[{"start":25,"end":26},{"start":30,"end":30},{"start":34,"end":34},{"start":39,"end":40},{"start":122,"end":122},{"start":123,"end":124},{"start":125,"end":125},{"start":129,"end":129},{"start":133,"end":136},{"start":140,"end":141},{"start":153,"end":153},{"start":163,"end":164},{"start":169,"end":170},{"start":171,"end":172},{"start":173,"end":174},{"start":178,"end":178},{"start":190,"end":191},{"start":195,"end":201},{"start":205,"end":208},{"start":212,"end":214},{"start":218,"end":219},{"start":230,"end":230},{"start":241,"end":241},{"start":250,"end":252},{"start":256,"end":259},{"start":263,"end":266},{"start":270,"end":270},{"start":274,"end":276},{"start":278,"end":278},{"start":282,"end":283},{"start":287,"end":287},{"start":292,"end":292},{"start":310,"end":313},{"start":317,"end":318},{"start":322,"end":322},{"start":326,"end":328},{"start":332,"end":335},{"start":338,"end":339},{"start":340,"end":340}]';
+                let lines = '[{"start":25,"end":26},{"start":30,"end":30},{"start":34,"end":34},{"start":39,"end":40},{"start":122,"end":122},{"start":123,"end":124},{"start":125,"end":125},{"start":129,"end":129},{"start":133,"end":136},{"start":140,"end":141},{"start":153,"end":153},{"start":163,"end":164},{"start":169,"end":170},{"start":171,"end":172},{"start":173,"end":174},{"start":178,"end":178},{"start":190,"end":191},{"start":195,"end":201},{"start":205,"end":208},{"start":212,"end":214},{"start":218,"end":219},{"start":230,"end":230},{"start":241,"end":241},{"start":250,"end":252},{"start":256,"end":259},{"start":263,"end":266},{"start":270,"end":270},{"start":274,"end":276},{"start":278,"end":278},{"start":282,"end":283},{"start":287,"end":287},{"start":292,"end":292},{"start":310,"end":313},{"start":317,"end":318},{"start":322,"end":322},{"start":326,"end":328},{"start":331,"end":335},{"start":338,"end":339},{"start":340,"end":340}]';
                 return JSON.parse(lines);
             }
+
+            //////////////////
+            function resetAll(){
+                resetPurpose();
+                resetFigures();
+                resetMarkCode();
+                resetData();
+                resetWidgets();
+                resetMarkVariable();
+                scope.readyForSubmission = false;
+                getHeader(scope.datafile);
+            }            
+
+            function resetPurpose(){
+                scope.purposes.show = true;
+                scope.purposes.selected = null;
+            }
+
+            function resetFigures(){
+                scope.figures.selected = null;
+            }
+
+            function resetMarkCode(){
+                scope.code.mark.showSelectedText = false;
+                scope.selectedText.source = '';
+                scope.showOriginalCode = false;
+                scope.code.mark.show = false;
+                scope.buttons.doneCode.disable = true;
+                selectedLinesIndex = [];
+                scope.codefile.lineHighlight = '';
+            }
+
+            function resetData(){
+                scope.data.show = false;
+                scope.showOriginalData = false;
+                scope.data.selectedColumns = [];
+            }
+
+            function resetWidgets(){
+                scope.widgets.slider.show = false;
+                scope.widgets.showButton = true;
+                scope.widgets.type = null;
+                scope.widgets.disable = true;
+                scope.widgets.min_value = null;
+                scope.widgets.max_value = null;
+                scope.widgets.step_size = null;
+                scope.widgets.label = null;
+                scope.widgets.selected = null;
+                scope.widgets.show = false;
+            }
+            
+            function resetMarkVariable(){
+                scope.variable.mark.showSelection = false;
+                scope.variable.mark.disable = true;
+                scope.variable.mark.show = false;
+                scope.variable.selected = {};
+                scope.selectedText.lineHighlight = '';
+            }
+
         }  
     }
 })();

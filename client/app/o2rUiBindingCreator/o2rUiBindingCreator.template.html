@@ -1,4 +1,5 @@
 <div layout="row">
+    <o2r-display-files ng-if="showPaper" o2r-file="{{paper}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <o2r-display-files ng-if="showOriginalCode" o2r-file="{{codefile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <o2r-display-files ng-if="code.mark.showSelectedText" o2r-file="{{selectedText}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     <div layout="column" ng-if="showOriginalData" flex="70">
@@ -14,16 +15,21 @@
                 </md-menu-item>
             </md-menu-content>
         </md-menu>    
-        <div layout="row">
-            <md-checkbox ng-model="data.all" ng-change="toggleAll()">
-                Select all
-            </md-checkbox>            
-            <md-checkbox ng-repeat="title in data.header track by $index" 
-                                ng-model="data.header[$index].selected" ng-change="addItem($index)">
-                {{title.name}}
-            </md-checkbox>
+        <div layout="column">
+            <md-input-container flex class="md-block">
+                <p>Select columns:</p>
+                <md-checkbox ng-model="data.all" ng-change="toggleAll()">
+                    Select all
+                </md-checkbox>            
+                <md-checkbox ng-repeat="title in data.header track by $index" 
+                                    ng-model="data.header[$index].selected" ng-change="addItem($index)">
+                    {{title.name}}
+                </md-checkbox>
+                <p>Select the range of rows:</p>
+                <rzslider rz-slider-model="slider.minValue" rz-slider-high="slider.maxValue" rz-slider-options="slider.options"></rzslider>
+            </md-input-container>
+            <o2r-display-files o2r-file="{{datafile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
         </div>
-        <o2r-display-files o2r-file="{{datafile}}" ng-mouseup="selectionEvent()" flex="70"></o2r-display-files>
     </div>
     <!-- STEPS -->
     <md-card layout-fill flex="30">
@@ -81,7 +87,7 @@
                         <div layout="row">
                             <span class="creationProcess-binding-step-inst">Mark data subsets relevant for the selected figure</span>
                         </div>
-                        <md-button ng-click="data.confirm()" class="md-raised md-fab md-mini" aria-label="doneData" ng-disabled="buttons.doneData.disable">
+                        <md-button ng-click="data.confirm()" class="md-raised md-fab md-mini" aria-label="doneData" ng-disabled="data.doneDataButtonDisable">
                             <md-icon md-svg-src="{{icons.done}}"></md-icon>
                         </md-button> 
                         <md-button ng-click="data.edit()" class="md-raised md-fab md-mini" aria-label="Edit Data" ng-disabled="buttons.editData.disable">
@@ -91,14 +97,14 @@
                     <!-- Mark variable -->
                     <div ng-show="variable.mark.show" class="creationProcess-step-separate" layout="row">
                         <div flex layout="column">
-                            <span class="creationProcess-binding-step-inst">Mark the variable and the value which should be manipulated by the slider</span>
+                            <span class="creationProcess-binding-step-inst">Mark the variable and the value which should be manipulated</span>
                             <span ng-show="variable.mark.showSelection">
                                 <span ng-hide="!variable.selected">
                                     Selected <strong>{{variable.selected.varName}}</strong> with value <strong>{{variable.selected.val}}</strong>
                                 </span>
-                                <span ng-show="!variable.selected">
-                                    <strong>Invalid Selection</strong>pch = 16
-                                </span>
+                                <!--<span ng-show="!variable.selected">
+                                    <strong>Invalid Selection</strong>
+                                </span>-->
                             </span>
                             <div layout="row">
                                 <span flex></span>
@@ -136,14 +142,7 @@
                                     <div ng-messages="form.max_value.$error">
                                         <div ng-message="required">Required field</div>
                                     </div>
-                                </md-input-container>
-                                <md-input-container flex class="md-block">
-                                        <label>Enter initial value for variable}</label>
-                                        <input type="number" name="init_value" ng-model="widgets.slider.init_value" required>
-                                        <div ng-messages="form.init_value.$error">
-                                            <div ng-message="required">Required field</div>
-                                        </div>
-                                </md-input-container>                            
+                                </md-input-container>                           
                                 <md-input-container flex class="md-block">
                                     <label>Enter step size for variable</label>
                                     <input type="number" name="step_size" ng-model="widgets.slider.step_size" required>
@@ -159,16 +158,20 @@
                                         </div>
                                 </md-input-container>   
                             </div>
+                            <div ng-show="widgets.radio.show">
+                                <md-input-container flex class="md-block">
+                                        <label>Type in options (press enter)</label>
+                                        <md-chips ng-model="widgets.radio.options" readonly="false" md-removable="true" md-enable-chip-edit="true"></md-chips>
+                                </md-input-container>                                
+                            </div>
                         </form>
-                    </div>
-                <md-divider ng-if="form.$valid"></md-divider>
-                <div ng-show="form.$valid" layout-padding layout="row">
-                    <md-button class="md-raised md-fab md-mini" ng-click="openDialog($event)" aria-label="check">
+                    </div>    
+                <div ng-show="form.$valid || widgets.radio.show" layout-padding layout="row">
+                    <!--<md-button class="md-raised md-fab md-mini" ng-click="openDialog($event)" aria-label="check">
                         <md-icon md-svg-src="{{icons.preview}}"></md-icon>
-                    </md-button>
+                    </md-button>-->
                     <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
                 </div> 
-                <md-divider ng-show="readyForSubmissiond"></md-divider>
                 <div ng-show="readyForSubmission" layout-padding layout="row">
                     <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
                 </div>                

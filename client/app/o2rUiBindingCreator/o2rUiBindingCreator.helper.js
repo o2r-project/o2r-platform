@@ -159,15 +159,17 @@
                 var tmp2 = selection.split('<-');
                 var variable = {};
                 if(tmp.length > 1) {
-                    variable.val = parseFloat(tmp[1]);
+                    if(isNaN(tmp[1])){
+                        variable.val = tmp[1];
+                    }else{
+                        variable.val = parseFloat(tmp[1]);
+                    }
+
                     variable.varName = tmp[0];
                 }
                 else {
                     variable.val = parseFloat(tmp2[1]);
                     variable.varName = tmp2[0];
-                }
-                if(isNaN(variable.val)) {
-                    variable = null;
                 }
                 return variable;
             }
