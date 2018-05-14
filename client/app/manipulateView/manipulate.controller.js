@@ -51,15 +51,17 @@
             var binding = vm.manipulations[item];
             var newObj = {};
                 newObj.code = [binding.codesnippet];
-            vm.threshold = binding.code.parameter.val;
+           
                 if (binding.datafile){
                     newObj.data = [binding.datafile];
                 }else{
                     newObj.data = erc.metadata.o2r.inputfiles;
                 }
                 if (binding.code.parameter.widget.type == 'radio'){
+                    vm.threshold = binding.code.parameter.val.substring(1, binding.code.parameter.val.length-1);
                     vm.radio=true;
                 } else if(binding.code.parameter.widget.type == 'slider'){
+                    vm.threshold = binding.code.parameter.val;
                     vm.slider=true
                 }
             $scope.$parent.vm.mSetCodeData(newObj);
