@@ -1,0 +1,59 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "any-promise": {
+      "dev": true,
+      "integrity": "sha1-q8av7tzqUugJzcA3au0845Y10X8=",
+      "resolved": "https://registry.npmjs.org/any-promise/-/any-promise-1.3.0.tgz",
+      "version": "1.3.0"
+    },
+    "bluebird": {
+      "dev": true,
+      "integrity": "sha1-aSeKHh02WhgXuojzIUwvlCd50K4=",
+      "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.1.5.tgz",
+      "version": "3.1.5"
+    },
+    "bower": {
+      "integrity": "sha1-rfU1KcjUrwLvJPuNU0HBQZ0z4vc=",
+      "resolved": "https://registry.npmjs.org/bower/-/bower-1.8.2.tgz",
+      "version": "1.8.2"
+    },
+    "es": {
+      "dev": true,
+      "integrity": "sha512-bcnlEcn4d7UO6n1fcCByRQr8vwDhI2SbAMA1kRYswoIBMIs4OqO7QbA//CR9hZLIPc9x+RGqWAyFtUXwjbfszg==",
+      "requires": {
+        "bluebird": "3.1.5",
+        "thenify-all": "1.6.0"
+      },
+      "resolved": "https://registry.npmjs.org/es/-/es-0.6.0.tgz",
+      "version": "0.6.0"
+    },
+    "eslint": "^4.19.1",
+    "lint": {
+      "dev": true,
+      "integrity": "sha1-Ne0GTzIlR8MxNY2JmGhmSWi6Nx8=",
+      "resolved": "https://registry.npmjs.org/lint/-/lint-1.1.2.tgz",
+      "version": "1.1.2"
+    },
+    "thenify": {
+      "dev": true,
+      "integrity": "sha1-5p44obq+lpsBCCB5eLn2K4hgSDk=",
+      "requires": {
+        "any-promise": "1.3.0"
+      },
+      "resolved": "https://registry.npmjs.org/thenify/-/thenify-3.3.0.tgz",
+      "version": "3.3.0"
+    },
+    "thenify-all": {
+      "dev": true,
+      "integrity": "sha1-GhkY1ALY/D+Y+/I02wvMjMEOlyY=",
+      "requires": {
+        "thenify": "3.3.0"
+      },
+      "resolved": "https://registry.npmjs.org/thenify-all/-/thenify-all-1.6.0.tgz",
+      "version": "1.6.0"
+    }
+  },
+  "devDependencies": {}
+}

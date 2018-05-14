@@ -1,7 +1,7 @@
 (function(){
-	'use strict';
+    'use strict';
 
-	angular
+  angular
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 

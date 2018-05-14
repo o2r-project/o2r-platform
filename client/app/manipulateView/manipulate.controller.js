@@ -1,6 +1,6 @@
 (function(){
     'use strict';
-
+    
     angular
         .module('starter')
         .controller('ManipulateController', ManipulateController);
@@ -41,6 +41,11 @@
             });
         });
 
+        $scope.$on('broadcastSelection', function(e, d){
+            console.log(e)
+            console.log(d)
+        })
+
         function buildManipulationView(item){
             vm.radio, vm.slider = false;
             var binding = vm.manipulations[item];
@@ -59,8 +64,5 @@
                 }
             $scope.$parent.vm.mSetCodeData(newObj);
         }
-
-        /////////////////
-
     }
 })()
