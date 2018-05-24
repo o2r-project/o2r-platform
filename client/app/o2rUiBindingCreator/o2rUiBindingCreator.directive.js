@@ -71,7 +71,8 @@
             }); 
 
             scope.figures = {
-                list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5'],
+                list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5', 'Figure 6', 'Figure 7', 'Figure 8',
+                        'Figure 9', 'Figure 10', 'Figure 11', 'Figure 12'],
                 show: false,
                 selected: null
             };
@@ -446,8 +447,21 @@
                 return selectedColumns;
             }
 
-            function tempFunc() {
-                let lines = '[{"start":25,"end":26},{"start":30,"end":30},{"start":34,"end":34},{"start":39,"end":40},{"start":122,"end":122},{"start":123,"end":124},{"start":125,"end":125},{"start":129,"end":129},{"start":133,"end":136},{"start":140,"end":141},{"start":153,"end":153},{"start":163,"end":164},{"start":169,"end":170},{"start":171,"end":172},{"start":173,"end":174},{"start":178,"end":178},{"start":190,"end":191},{"start":195,"end":201},{"start":205,"end":208},{"start":212,"end":214},{"start":218,"end":219},{"start":230,"end":230},{"start":241,"end":241},{"start":250,"end":252},{"start":256,"end":259},{"start":263,"end":266},{"start":270,"end":270},{"start":274,"end":276},{"start":278,"end":278},{"start":282,"end":283},{"start":287,"end":287},{"start":292,"end":292},{"start":310,"end":313},{"start":317,"end":318},{"start":322,"end":322},{"start":326,"end":328},{"start":331,"end":335},{"start":338,"end":339},{"start":340,"end":340}]';
+            function tempFunc() {            
+                // spacetimeFigure4Radio
+                //let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":35,"end":35},{"start":40,"end":41},{"start":128,"end":131},{"start":134,"end":134},{"start":137,"end":140},{"start":143,"end":144},{"start":147,"end":147},{"start":155,"end":156},{"start":161,"end":166},{"start":169,"end":169},{"start":183,"end":184},{"start":187,"end":193},{"start":196,"end":199},{"start":202,"end":204},{"start":207,"end":208},{"start":215,"end":215},{"start":222,"end":224},{"start":227,"end":230},{"start":260,"end":260},{"start":233,"end":236},{"start":239,"end":239},{"start":242,"end":244},{"start":246,"end":246},{"start":249,"end":250},{"start":253,"end":253},{"start":257,"end":257},{"start":271,"end":275},{"start":278,"end":279},{"start":282,"end":282},{"start":285,"end":287},{"start":290,"end":290},{"start":292,"end":294},{"start":297,"end":298},{"start":300,"end":300}]';
+                
+                // spacetimeFigure4Slider
+                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":35,"end":35},{"start":40,"end":41},{"start":128,"end":131},{"start":134,"end":134},{"start":137,"end":140},{"start":143,"end":144},{"start":147,"end":147},{"start":155,"end":156},{"start":161,"end":166},{"start":169,"end":169},{"start":183,"end":184},{"start":187,"end":193},{"start":196,"end":199},{"start":202,"end":204},{"start":207,"end":208},{"start":215,"end":215},{"start":222,"end":224},{"start":227,"end":230},{"start":260,"end":260},{"start":233,"end":236},{"start":239,"end":239},{"start":242,"end":244},{"start":246,"end":246},{"start":249,"end":250},{"start":253,"end":253},{"start":257,"end":257},{"start":271,"end":275},{"start":278,"end":279},{"start":282,"end":282},{"start":285,"end":287},{"start":290,"end":294},{"start":297,"end":298},{"start":300,"end":300}]';                
+                
+                // spacetimeFigure1Slider
+                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":40,"end":40},{"start":50,"end":50},{"start":53,"end":67},{"start":69,"end":72},{"start":74,"end":83},{"start":85,"end":90},{"start":93,"end":99},{"start":101,"end":113},{"start":118,"end":119},{"start":121,"end":123}]';
+
+                // assemblyProcessFigure3Slider
+                let lines = '[{"start":38,"end":45},{"start":47,"end":47},{"start":52,"end":54},{"start":65,"end":113},{"start":116,"end":118},{"start":128,"end":128},{"start":130,"end":131},{"start":151,"end":168},{"start":170,"end":188}]';
+
+                // assemblyProcessFigure4
+                //let lines = '[{"start":38,"end":45},{"start":47,"end":47},{"start":52,"end":54},{"start":65,"end":113},{"start":116,"end":118},{"start":128,"end":128},{"start":130,"end":131},{"start":133,"end":134},{"start":234,"end":236},{"start":242,"end":262}]';
                 return JSON.parse(lines);
             }
 

@@ -50,8 +50,8 @@
             vm.radio, vm.slider = false;
             var binding = vm.manipulations[item];
             var newObj = {};
-                newObj.code = [binding.codesnippet];
-           
+                newObj.code = [binding.codesnippet];  
+
                 if (binding.datafile){
                     newObj.data = [binding.datafile];
                 }else{

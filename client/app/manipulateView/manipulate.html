@@ -4,7 +4,7 @@
             <h3>{{binding.code.parameter.widget.label}}</h3>
             <div ng-if="vm.slider">
                 <md-slider-container>
-                    <md-slider flex min={{binding.code.parameter.widget.min}} max={{binding.code.parameter.widget.max}} 
+                    <md-slider flex min={{binding.code.parameter.widget.min}} max={{binding.code.parameter.widget.max}} step={{binding.code.parameter.widget.step}}
                                 ng-model="vm.threshold" id="slider">
                     </md-slider>
                     <md-input-container>
@@ -15,8 +15,7 @@
             <div ng-if="vm.radio">
                 <md-radio-group ng-model="vm.threshold" layout="row">
                     <md-radio-button ng-repeat="option in binding.code.parameter.widget.options track by $index" 
-                                        ng-value="{{binding.code.parameter.widget.options[$index]}}" 
-                                        class="md-primary">{{binding.code.parameter.widget.options[$index]}}
+                                        ng-value="option">{{binding.code.parameter.widget.options[$index]}}
                     </md-radio-button>
                 </md-radio-group>
             </div>
