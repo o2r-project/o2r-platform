@@ -200,17 +200,6 @@
                             <div ng-message="required">Required field</div>
                         </div>
                     </md-input-container>
-                    <md-input-container flex md-is-error="vm.showError('uibindinglicense')">
-                        <label>UI Binding License</label>
-                        <md-select ng-model="vm.required.ui_bindingLicense"  name="uibindinglicense" required>
-                            <md-option ng-repeat="license in vm.ui_bindingLicense track by $index" value="{{$index}}">
-                                {{license.title}} ({{license.id}})
-                            </md-option>
-                        </md-select>
-                        <div ng-messages="requiredForm.uibindinglicense.$error">
-                            <div ng-message="required">Required field</div>
-                        </div>
-                    </md-input-container>
                 </div>
             </div>
         </md-card-content>

@@ -40,7 +40,6 @@
         vm.textLicense=[];
         vm.codeLicense=[];
         vm.dataLicense=[];
-        vm.ui_bindingLicense=[];
         
         vm.showAlert = function(env){
             $mdDialog.show(
@@ -94,7 +93,6 @@
                     if(vm.required.license.text) prepareLicense('textLicense', vm.required.license.text, vm.textLicense);
                     if(vm.required.license.code) prepareLicense('codeLicense', vm.required.license.code, vm.codeLicense);
                     if(vm.required.license.data) prepareLicense('dataLicense', vm.required.license.data, vm.dataLicense);
-                    if(vm.required.license.uibindings) prepareLicense('ui_bindingLicense', vm.required.license.uibindings, vm.ui_bindingLicense);
 
                     $scope.$watch('vm.required.textLicense', function(newVal, oldVal){
                         try{
@@ -113,12 +111,7 @@
                             vm.updateLicense('data', vm.dataLicense[newVal].id);
                         } catch (e){}
                     });
-
-                    $scope.$watch('vm.required.ui_bindingLicense', function(newVal, oldVal){
-                        try{
-                            vm.updateLicense('uibindings', vm.ui_bindingLicense[newVal].id);
-                        } catch (e){}
-                    });
+                    useTemplateLicense('open');
                 })
                 .catch(function(err){
                     logger.info(err)
@@ -132,7 +125,6 @@
                 licenses[i].domain_data ? vm.dataLicense.push(licenses[i]) : null;
                 licenses[i].domain_software ? vm.codeLicense.push(licenses[i]) : null;
             }
-            vm.ui_bindingLicense = vm.codeLicense;
         }
 
         function getLicenseIndex(id, licenses){
@@ -209,12 +201,10 @@
                 prepareLicense('textLicense', openLicense[0], vm.textLicense);
                 prepareLicense('codeLicense', openLicense[1], vm.codeLicense);
                 prepareLicense('dataLicense', openLicense[2], vm.dataLicense);
-                prepareLicense('ui_bindingLicense', openLicense[3], vm.ui_bindingLicense);
             } else if(type == 'closed'){
                 prepareLicense('textLicense', closedLicense[0], vm.textLicense);
                 prepareLicense('codeLicense', closedLicense[1], vm.codeLicense);
                 prepareLicense('dataLicense', closedLicense[2], vm.dataLicense);
-                prepareLicense('ui_bindingLicense', closedLicense[3], vm.ui_bindingLicense);
             }
         }
 
@@ -287,7 +277,6 @@
             if((fieldname == 'textlicense') ||
                 (fieldname == 'codelicense') ||
                 (fieldname == 'datalicense') ||
-                (fieldname == 'uibindinglicense') ||
                 (fieldname == 'viewfile')){
                 // if tab was switched and form is invalid OR input was touched and is invalid show error message in input
                 if(($scope.$parent.vm.switchedTab && field.$invalid) || (field.$touched && field.$invalid)){
