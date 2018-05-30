@@ -9,17 +9,89 @@
 </div>
 <div flex></div>
 </div>
-<!--
-<script type="text/javascript" src="bower_components/iframe-resizer/js/iframeResizer.WindowContent.min.js"></script>
--->
+
+<script type="text/javascript" src="../../bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
+
 <!-- display data depending on its mime type -->
 <iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="display-files-pdf" type="application/pdf" data="{{file.path}}"></object>
 <img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="display-files-img" ng-src="{{file.path}}" />
 <audio controls ng-if="(mime =='audio') && (file.size <= sizeRestriction)"><source ng-src="{{file.path}}" type="{{file.type}}"></source>Your browser does not support audio element.</audio>
 <video class="display-files-video" ng-if="(mime =='video') && (file.size <= sizeRestriction)" controls><source ng-src="{{file.path}}"></source>Your browser does not support the video tag.</video>
+
 <!-- <hljs hljs-include="file.path" ng-if="useHljs && (file.size <= sizeRestriction)"></hljs> -->
-<pre ng-if="useHljs && (file.size <= sizeRestriction)" o2r-code-highlight o2r-source="{{file.source}}" o2r-line-highlight="{{file.lineHighlight}}" class="language-{{file.fileEnding}}"></pre>
+
+<!-- Visualise code and data that is NOT RData -->
+<pre ng-if='useHljs && (file.size <= sizeRestriction) && (file.type !== "application/x-r-data")' o2r-code-highlight o2r-source="{{file.source}}" o2r-line-highlight="{{file.lineHighlight}}" class="language-{{file.fileEnding}}"></pre>
+
+<!-- RData Visualisation -->
+<div ng-if="useHljs && (file.size <= sizeRestriction) && (file.type=='application/x-r-data') && file.containsRData">
+    <h3>Select an attribute:
+        <nobr>
+            <!-- Attribute Selector -->
+            <select size="{{file.source.length}}" ng-model="rdata_attribute" ng-options="val as key for (key , val) in file.source" ng-change="RData.newSelection(rdata_attribute)">
+                <option value="" ng-select="selected">--- please select an attribute ---</option>
+            </select>
+        </nobr>
+    </h3>
+
+    <!-- Attribute Selector -->
+    <!--<select size="{{file.source.length}}" ng-model="rdata_attribute" ng-options="val as key for (key , val) in file.source" ng-change="RData.newSelection(rdata_attribute)">
+        <option value="" ng-select="selected">--- please select an attribute ---</option>
+    </select>
+-->
+    <br/>
+    <div ng-if="RData.selected.value != null">
+
+        <!--  Arrays of Primitives or Objects -->
+        <div ng-if="RData.selected.type == 'objectArray' || RData.selected.type == 'array'">
+            <ul class="display-files-RData">
+                <li ng-repeat="item in RData.getRows() | startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
+                    <pre o2r-code-highlight o2r-source="{{item}}" ng-if="item != null" class="language-json"></pre>
+                    <pre o2r-code-highlight o2r-source="undefined" ng-if="item == null" class="language-json"></pre>
+                </li>
+            </ul>
+
+            <!-- List Pagination -->
+            <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                Previous
+            </button>
+            <label>{{currentPage+1}}/{{numberOfPages()}}</label>
+            <button ng-disabled="currentPage >= RData.selected.value.length/pageSize-1" ng-click="currentPage=currentPage+1">
+                Next
+            </button>
+
+        </div>
+
+        <!-- Matrices -->
+        <div ng-if="RData.selected.type == 'matrix'">
+            <table md-table style="width:100%">
+                <thead md-head>
+                    <tr md-row>
+                        <td md-column></td>
+                        <td md-column ng-repeat="col in RData.selected.longestRow track by $index"><b>Column {{$index}}</b></td>
+                    </tr>
+                </thead>
+                <tbody md-body ng-repeat="row in RData.getRows() track by $index">
+                    <tr md-row>
+                        <td md-head ><b>Row {{$index}}</b></td>
+                        <td style="text-align:center" md-cell ng-repeat="value in row">{{value}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Objects -->
+        <div ng-if="RData.selected.type == 'object'">
+            <pre o2r-code-highlight o2r-source="{{RData.selected.value}}" class="language-json"></pre>
+        </div>
+
+    </div>
+
+    <!-- Before Selection, or when Selection is dropped, show the entire JSON data -->
+    <pre ng-if="RData.selected.value == null" o2r-code-highlight o2r-source="{{RData.FullJSONString}}" class="language-json"></pre>
+
+</div>
 
 <iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <div ng-if="(file.type=='text/csv') && (file.size <= sizeRestriction)">

@@ -22,7 +22,7 @@
             vm.selected = []; //required for md-data-table
             vm.openDialog = openDialog;
             vm.showProfile = showProfile;
-            vm.showAdmin = () => ((getUserGroup(author.data.level) == 'Admins') || (getUserGroup(author.data.level) == 'Editors'));
+            vm.showAdmin = () => ((getUserGroup(author.data.level) == 'Admin') || (getUserGroup(author.data.level) == 'Editor'));
 
             logger.info('vm.allPubs: ',vm.allPubs);
 

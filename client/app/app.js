@@ -36,7 +36,8 @@
             'angular-intro',
             'ngCookies',
             'ngSanitize',
-            'elasticsearch'])
+            'elasticsearch',
+            'md.data.table'])
         .constant('icons', icons())
         .config(config)
         .run(run);
