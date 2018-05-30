@@ -44,8 +44,8 @@
             }
         });
 
-	o2rDisplayFiles.$inject= ['$log', '$http', 'env', 'httpRequests'];
-	function o2rDisplayFiles($log, $http, env, httpRequests){
+	o2rDisplayFiles.$inject= ['$log', '$http', 'env', 'httpRequests', '$window'];
+	function o2rDisplayFiles($log, $http, env, httpRequests, $window){
 		return{
 			restrict: 'E',
 			templateUrl: 'app/o2rDisplayFiles/o2rDisplayFiles.template.html',
@@ -55,7 +55,7 @@
 			link: link
 		};
 
-		function link(scope, iElement, attrs){		
+		function link(scope, iElement, attrs){
 			scope.file;
 			scope.sizeRestriction = env.sizeRestriction;
 
@@ -83,7 +83,6 @@
 
 					scope.useHljs = useHljs();
 					scope.file.fileEnding = setFileType();
-
 
 					function setFileType(){
 						// set File type based on file ending
@@ -141,6 +140,19 @@
 					}
 
 					scope.parseCsv = parseCsv();
+
+					$('iframe').on("load", function(){
+
+						var iframe = $('iframe').contents();
+			
+						iframe.on("mousedown, mouseup, click", function(){
+							console.log("frame");
+						});
+				
+						iframe.click(function(){
+							console.log("frame");
+						});
+					});
 					
 					function parseCsv(){
 						if (scope.file.type == 'text/csv'){
@@ -154,13 +166,12 @@
 						}
 					}					
 					
-					function useHljs(){						
+					function useHljs(){		
 						if( (scope.file.type == 'text/csv') ||  (scope.file.type == 'application/pdf') || (scope.mime == 'image') || (scope.mime == 'audio') || (scope.mime == 'video') || (scope.file.type == 'text/html') || (scope.file.type == 'text/shiny')){
 							return false;
 						}
 						return true;
 					}
-					
 				}
 			});
 

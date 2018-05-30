@@ -1,15 +1,1 @@
-<md-card>
-    <md-card-content layout="column">
-        <h2>Specify the spatial properties of your dataset(s)</h2>
-        <leaflet lf-center="vm.map.center" layers="vm.map.layers" lf-draw="vm.map.drawOptions" width="100%" height="400px"></leaflet>
-        <h2>Specify the temporal properties of your dataset(s)</h2>
-        <div>
-            <span class="edit-metadata-label-color">From</span>
-            <md-datepicker ng-model="vm.spacetime.temporal.begin" md-placeholder="starting date" ng-change="vm.updateTemporal('begin', vm.spacetime.temporal.begin)"></md-datepicker>
-            <span class="edit-metadata-label-color" style = "margin-left:20%;">To</span>
-            <md-datepicker ng-model="vm.spacetime.temporal.end" md-placeholder="end date" ng-change="vm.updateTemporal('end', vm.spacetime.temporal.end)"></md-datepicker>          
-        </div>
-    </md-card-content>
-</md-card>
-
-
+<o2r-spacetime></o2r-spacetime>

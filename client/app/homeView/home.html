@@ -6,7 +6,7 @@
     <div id="home-create-erc" flex-xs="" flex-gt-xs="40" layout="column">
       <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="">
         <md-card-title>
-          <md-card-title-text>
+          <md-card-title-text><test-directive></test-directive>
             <span class="md-headline">Create</span>
 						<div ng-show="!vm.loggedIn">You have to login first.</div>
 					</md-card-title-text>
@@ -60,9 +60,15 @@
 									Garcia et al., <em>A question driven socio-hydrological modeling process</em>, <a href="https://doi.org/10.5194/hess-20-73-2016" target="_blank">10.5194/hess-20-73-2016</a>
 								</md-button>
 							</md-menu-item>
+							<md-menu-item>
+								<md-button ng-click="vm.useExample(vm.publicLink, '/spacetime.zip')">
+									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
+									Pebesma, <em>spacetime: Spatio-Temporal Data in R</em>, <a href="https://doi.org/10.18637/jss.v051.i07" target="_blank">10.18637/jss.v051.i07</a>
+								</md-button>
+							</md-menu-item>
 						</md-menu-content>
 					</md-menu>
-        </md-card-title>
+		</md-card-title>
 		<form name="scieboSubmit" ng-submit="vm.submit()" flex-offset="20">
 			<md-input-container md-no-float class="md-icon-float md-block" >
 				<div ng-if="!vm.validUrl">Url or path not valid</div>

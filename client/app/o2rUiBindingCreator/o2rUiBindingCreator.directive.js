@@ -25,12 +25,14 @@
         .module('starter.o2rUiBindingCreator')
         .directive('o2rUiBindingCreator', o2rUiBindingCreator);
     
-    o2rUiBindingCreator.$inject = ["$log", "$window", "$document", "$http", "$mdDialog", "env", "o2rUiBindingCreatorHelper", "icons"];
-    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, icons){
+    o2rUiBindingCreator.$inject = ['$log', '$window', '$document', '$http', '$mdDialog', 'env', 'o2rUiBindingCreatorHelper', 
+                                    'icons', 'creationObject', 'httpRequests'];
+    function o2rUiBindingCreator($log, $window, $document, $http, $mdDialog, env, o2rUiBindingCreatorHelper, 
+                                    icons, creationObject, httpRequests){
         return{
             restrict: 'E',
             scope: {
-                codefiles: '@o2rCodefiles',
+                erc: '@o2rErc',
                 ercId: '@o2rErcId'
             },
             templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingCreator.template.html',
@@ -38,77 +40,189 @@
         };
 
         function link(scope, element, attrs){
-            if(!scope.codefiles) throw 'o2r-codefiles is undefined';
-            if(!scope.ercId) throw 'o2r-erc-id is undefined';
-
             var logger = $log.getInstance('o2rUiBindingCreator');
-            var lines;
-            var codeText;
-            var selectedLinesIndex = [];
-            scope.icons = icons;
-            // turn string into array and then add actual path
-            // NOTE: Remove the prepareCodefiles wrapper as soon as the paths are consistent
-            scope.codefiles = prepareCodefiles(angular.fromJson(scope.codefiles));
-            scope.codefile = {path: scope.codefiles[0], lineHighlight: ""}; //only use first codefile so far
-            scope.figures = ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5"];
-            scope.step3Done = step3Done;
-            scope.step5Done = step5Done;
+            scope.erc = JSON.parse(scope.erc);
+            scope.icons = icons;            
+
+            scope.paper = {
+                path: env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.displayfile,
+                type: 'text/html'
+            };
+
+            scope.codefile = {
+                path: env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.mainfile, 
+                lineHighlight: ''
+            };
+
+            scope.datafile = env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.inputfiles[0];
+            $http.get(scope.datafile).then(function(response){
+                scope.slider = {
+                    minValue: 1,
+                    maxValue: response.data.split(/\r\n|\n/).length,
+                    options: {
+                        floor:1,
+                        ceil: response.data.split(/\r\n|\n/).length,
+                        step: 1,
+                        noSwitching: true
+                    },
+                    from: undefined,
+                    to: undefined
+                };
+            }); 
+
+            scope.figures = {
+                list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5', 'Figure 6', 'Figure 7', 'Figure 8',
+                        'Figure 9', 'Figure 10', 'Figure 11', 'Figure 12'],
+                show: false,
+                selected: null
+            };
+
+            scope.purposes = {
+                list: [ {text: 'Show data and code underlying a figure', value: 'inspectCodeDataFigure'},
+                        {text: 'Show data and code underlying a number', value: 'inspectCodeDataNumber'},
+                        {text: 'Manipulate the parameter underlying a figure', value: 'manipulateFigure'},
+                        {text: 'Manipulate the parameter underlying a number', value: 'manipulateNumber'}],
+                show: true,
+                selected: null
+            };
+            
+            scope.code = {
+                mark: {
+                    showSelectedText: false,
+                    extracted: false,
+                    show: false
+                },
+                cut: cutCode,
+                edit: editCode,
+                confirm: confirmCode
+            };
+
+            scope.data = {
+                show: false,
+                selected: getHeader,
+                header: null,
+                selectedColumns: [],
+                confirm: confirmData,
+                all: false,
+                edit: editData,
+                doneDataButtonDisable: true,
+                editDataButtonDisable: true
+            };
+
+            scope.variable = {
+                mark: {
+                    show: false,
+                    disable: false,
+                    showSelection: false
+                },
+                done: markVariableDone,
+                selected: {
+                    text: '',
+                    varName: '',
+                    val: ''
+                },
+                edit: editMarkVariable
+            };
+
+            scope.widgets = {
+                options: [{text: 'Slider', value:'slider'}, {text: 'Radio buttons', value:'radio'}],
+                selected: {},
+                slider: {
+                    show: false,
+                    min_value: null,
+                    max_value: null,
+                    step_size: null,
+                    label: null
+                },
+                radio: {
+                    show: false,
+                    options: []
+                },
+                show: false,
+                showButton: false,
+                type: null,
+                disable: false
+            };
+
+            scope.buttons = {
+                cutCode: {
+                    show: false,
+                    disable: true
+                },
+                editCode: {
+                    show: false,
+                    disable: true
+                },
+                doneCode: {
+                    show: false,
+                    disable: true
+                },
+                editData: {
+                    disable: true
+                }
+            }
+
             scope.selectionEvent = selectionEvent;
-            scope.step4Done = step4Done;
-            scope.showOriginalCode = true;
+            scope.showOriginalCode = false;
+            scope.showPaper = true;
             scope.selectedText = {};
-            scope.selectedVariable = {};
+            scope.showOriginalData = false;
+            
             scope.openDialog = openDialog;
+            
+            scope.readyForSubmission= false;
             scope.submit = submit;
-            scope.editStep3 = editStep3;
-            scope.editStep4 = editStep4;
+
+            var lines, codeText;
+            var selectedLinesIndex = [];
             
-            scope.steps = {};
-            scope.steps.step1 = {};
-            scope.steps.step2 = {};
-            scope.steps.step3 = {};
-            scope.steps.step4 = {};
-            scope.steps.step5 = {};
-            scope.steps.step6 = {};
+            resetAll();
             
-            activate();
-            
-            scope.$watch('steps.step1.selected', function(newVal, oldVal){
-                if(typeof newVal === 'number'){
-                    if(scope.steps.step2.show){
-                        resetStep5();
-                        resetStep3();
-                        resetStep4();
-                        resetStep2();
-                        resetStep1();
-                    }
-                        
-                    switch (newVal) {
-                        case 0:
-                        scope.steps.step2.show = true;
+            scope.$watch('purposes.selected', function(newVal, oldVal){
+                resetWidgets();
+                resetMarkVariable();
+                resetMarkCode();
+                resetFigures();
+                resetData();
+                scope.showPaper = true;
+                switch (newVal) {
+                    case 'manipulateFigure':
+                        scope.purposes.selected = newVal;
+                        scope.figures.show = true;
                         break;
-                        default:
-                        scope.steps.step2.show = true;
+                    case 'inspectCodeDataFigure':
+                        scope.purposes.selected = newVal;
+                        scope.figures.show = true;
                         break;
-                    }
+                    default:
+                    break;
                 }
             });
             
-            scope.$watch('steps.step2.selected', function(newVal, oldVal){
-                if(typeof newVal === 'number'){
-                    if(scope.steps.step3.show){
-                        resetStep5();
-                        resetStep3();
-                        resetStep4();
-                        resetStep2();
-                    }
-                    switch (newVal) {
-                        case 0:
-                        scope.steps.step3.show = true;
-                        scope.steps.step5.type = newVal;
+            scope.$watch('figures.selected', function(newVal, oldVal){                
+                if(newVal){
+                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'inspectCodeDataFigure'){
+                        scope.showPaper = false;
+                        scope.showOriginalCode = true;
+                        scope.code.mark.show = true;
+                        scope.buttons.cutCode.show = true;
+                        scope.buttons.editCode.show = true;
+                        scope.buttons.doneCode.show = true;
                     }
                 }
             });
+
+            scope.$watch('widgets.selected', function(newVal, oldVal){                
+                if (scope.purposes.selected === 'manipulateFigure'){
+                    if(newVal === 'slider'){
+                        scope.widgets.radio.show = false;
+                        scope.widgets.slider.show = true;
+                    } else if(newVal === 'radio'){
+                        scope.widgets.slider.show = false;
+                        scope.widgets.radio.show = true;
+                    }                        
+                }
+            });     
 
             scope.$watch('codefile', function(newVal, oldVal){
                 $http.get(newVal.path)
@@ -120,85 +234,111 @@
                 });
             });
 
-            //////////////////
+            scope.addItem = function(item) {
+                scope.data.header[item].selected = scope.data.header[item].selected;
+                var atLeastOneSelectedColumn = false;
+                scope.data.header.forEach(element => {
+                    if (element.selected){
+                        console.log(element.selected);
+                        atLeastOneSelectedColumn = true; 
+                    }
+                });
+                scope.data.doneDataButtonDisable = !atLeastOneSelectedColumn;
+            };
 
-            function activate(){
-                resetStep1();
-                resetStep2();
-                resetStep3();
-                resetStep4();
-                resetStep5();
-            }
-            
-            function prepareCodefiles(files){
-                // for(var i in files){
-                //     var parts = files[i].split('/');
-                //     var result = '';
-                //     for(var j in parts){
-                //         if(j==0) result += env.api + '/compendium/' + parts[j] + '/data';
-                //         else result += '/' + parts[j];
-                //     }
-                //     files[i] = result;
-                // }
-                for(var i in files){
-                    files[i] = env.api + '/compendium/' + scope.ercId + '/data/' + files[i];
+            scope.toggleAll = function(){
+                if(scope.data.all){
+                    scope.data.header.forEach(element => {
+                        element.selected = true;
+                    });
+                }else {
+                    scope.data.header.forEach(element => {
+                        element.selected = false;
+                    });
                 }
-                return files;
-            }
+                scope.data.doneDataButtonDisable = !scope.data.doneDataButtonDisable;
+            };
 
-            function step3Done(){
+            function getHeader(file){
+                scope.datafile = {path: file, lineHighlight: '', type: 'text/csv'};
+                httpRequests.getCSV(scope.datafile.path)
+                .then(function(res){
+                    scope.data.header = res.data.replace('"','').replace(/"/g,'').split('\n')[0].split(',');
+                    scope.data.header.shift();
+                    var temp = [];    
+                    scope.data.header.forEach(element => {
+                        temp.push({name: element, selected: false});
+                    });
+                    scope.data.header = temp;
+                });
+            };
+
+            function cutCode(){
                 logger.info(selectedLinesIndex);
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
-                scope.steps.step3.showSelectedText = true;
-                scope.steps.step3.disable = true;
-                scope.steps.step4.show = true;
-            }
-            
-            function step4Done(){
-                scope.steps.step4.disable = true;
-                scope.steps.step5.show = true;
-                scope.steps.step5.showButton = true;
-            }
+                scope.code.mark.showSelectedText = true;
+                //scope.code.mark.disable = true;
+                scope.buttons.editCode.disable = false;
+                scope.buttons.cutCode.disable = true;
+                scope.buttons.doneCode.disable = false;
+            };
 
-            function step5Done(){
-                scope.steps.step5.showButton = false;
-            }
+            function confirmCode(){
+                scope.buttons.doneCode.disable = true;
+                scope.buttons.cutCode.disable = true;
+                scope.buttons.editCode.disable = false;
+                if (scope.purposes.selected === 'manipulateFigure'){
+                    scope.variable.mark.show = true;
+                } else if (scope.purposes.selected === 'inspectCodeDataFigure'){
+                    scope.code.mark.extracted = true;
+                    scope.showOriginalCode = false;
+                    scope.code.mark.showSelectedText = false;
+                    scope.showOriginalData = true;
+                    scope.data.show = true;
+                }                
+            };
+            
+            function confirmData(){
+                scope.readyForSubmission = true;
+                scope.data.doneDataButtonDisable = true;
+                scope.buttons.editData.disable = false;
+            };
+
+            function markVariableDone(){
+                scope.variable.mark.disable = true;
+                if (scope.purposes.selected === 'manipulateFigure'){
+                    scope.widgets.show = true;
+                    scope.widgets.showButton = true;
+                }
+            };
 
             function selectionEvent(){
-                // only check selection if we are in step 3 or 4
-                
-                // check selection for step 3
-                if(scope.steps.step3.show && !scope.steps.step4.show){
-                    // var selection = $window.getSelection().toString();
+                if(scope.code.mark.show && !scope.variable.mark.show){
                     var selection = $window.getSelection().getRangeAt(0).toString();
-                    // ignore click events
                     if(selection.length != 0){
                         var lines = o2rUiBindingCreatorHelper.getSelectionLines(selection, codeText);
                         selectedLinesIndex = o2rUiBindingCreatorHelper.removeOverlap(lines, selectedLinesIndex);
                         scope.codefile.lineHighlight = o2rUiBindingCreatorHelper.setUpLineHighlight(selectedLinesIndex);
-                        scope.steps.step3.disable = false;
+                        scope.buttons.cutCode.disable = false;
                     }
-                    // check selection for step 4
-                } else if(scope.steps.step4.show && !scope.steps.step5.show){
+                } else if(scope.variable.mark.show && !scope.widgets.show){
                     var selection = $window.getSelection().toString();
-                    // scope.steps.step4.result.selection = selection;
                     if(selection.length != 0){
-                        scope.selectedVariable = o2rUiBindingCreatorHelper.validateVariable(selection);
-                        // if selection is valid assign values to scope variable
-                        if(scope.selectedVariable){
-                            scope.selectedVariable.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
-                            scope.selectedText.lineHighlight = "" + scope.selectedVariable.line.start;
-                            scope.steps.step4.disable = false;
+                        scope.variable.selected = o2rUiBindingCreatorHelper.validateVariable(selection);
+                        if(scope.variable.selected){
+                            scope.variable.selected.line = o2rUiBindingCreatorHelper.getSelectionLines(selection, scope.selectedText.source);
+                            scope.selectedText.lineHighlight = '' + scope.variable.selected.line.start;
+                            scope.variable.mark.disable = false;
+                            scope.variable.selected.text = selection;
                         } else {
-                            scope.selectedText.lineHighlight = "";
-                            scope.steps.step4.disable = true;
+                            scope.selectedText.lineHighlight = '';
+                            scope.variable.mark.disable = true;
                         }
-                        // show information in the frontend regardless of valid/invalid selection
-                        scope.steps.step4.showSelection = true;
+                        scope.variable.mark.showSelection = true;
                     }
                 }
-            }
+            };
             
             function openDialog(ev){
                 $mdDialog.show({
@@ -220,71 +360,173 @@
                 });
             }
 
-            function resetStep1(){
-                scope.steps.step1.show = true;
-                scope.steps.step1.options = [{text: "Change a variable continously", value:0}, {text: "Provide predefined values", value: 1},
-                                            {text: "Select a data subset", value: 2}, {text: "Provide different visualisations", value: 3},
-                                            {text: "Show data underlying the figure", value: 4}, {text: "Show code underlying the figure", value: 5}];
-                scope.steps.step1.selected = null;
-                scope.steps.step2.show = false;
+            function editCode(){
+                resetWidgets();
+                resetMarkVariable();
+                scope.buttons.doneCode.disable = false;
+                scope.buttons.editCode.disable = true;
+                scope.selectedText.source = '';
+                scope.code.mark.showSelectedText = false;
                 scope.showOriginalCode = true;
-            }
-        
-            function resetStep2(){
-                scope.steps.step2.options = [{text: "Slider", value:0}, {text: "Radio buttons", value:1}, {text: "Numeric input", value:1},
-                                            {text: "Button", value:1}];
-                scope.steps.step2.selected = null;
-                scope.steps.step3.show = false;
-                scope.showOriginalCode = true;
-            }
-        
-            function resetStep3(){
-                scope.steps.step3.showSelectedText = false;
-                scope.steps.step3.disable = true;
-        
-                scope.selectedText.source = "";
-                scope.showOriginalCode = true;
-                scope.steps.step3.showSelectedText = false;
-                scope.steps.step4.show = false;
+                scope.code.mark.show = true;
+                scope.code.mark.extracted = false;
+                scope.showOriginalData = false;
                 selectedLinesIndex = [];
-                scope.codefile.lineHighlight = "";
-            }
-        
-            function resetStep4(){
-                scope.steps.step4.showSelection = false;
-                scope.steps.step4.disable = true;
-                scope.steps.step5.show = false;
-                scope.selectedVariable = {};
-                scope.selectedText.lineHighlight = "";
-            }
-        
-            function resetStep5(){
-                scope.steps.step5.showButton = true;
-                scope.steps.step5.type = null;
-                scope.steps.step5.disable = true;
-                scope.steps.step5.min_value = null;
-                scope.steps.step5.max_value = null;
-                scope.steps.step5.step_size = null;
             }
 
-            function editStep3(){
-                resetStep5();
-                resetStep4();
-                resetStep3();
+            function editData(){
+                scope.data.doneDataButtonDisable = false;
+                scope.buttons.editData.disable = true;
+                scope.readyForSubmission = false;
             }
 
-            function editStep4(){
-                resetStep5();
-                resetStep4();
+            function editMarkVariable(){
+                resetWidgets();
+                scope.variable.selected = {};
+                scope.selectedText.lineHighlight = '';
+            }
+
+            function submit(){
+                var erc = creationObject.get();
+                var binding = {};
+                    binding.id = erc.id;
+                    binding.port = "800" + erc.metadata.o2r.interaction.length;
+                    binding.purpose = scope.purposes.selected;
+
+                    binding.code = {};
+                    binding.code.file = erc.metadata.o2r.mainfile; 
+                    binding.code.codeLines = tempFunc();
+
+                    if (binding.purpose === 'inspectCodeDataFigure'){
+                        binding.result = {};
+                        binding.result.type = 'figure',
+                        binding.result.value = scope.figures.selected;
+                        binding.dataset = {
+                            file: scope.datafile.path.split('/').pop(),
+                            columns: getSelectedColumns(),
+                            rows: scope.slider.minValue + "-" + scope.slider.maxValue
+                        }        
+                    }else if(binding.purpose === 'manipulateFigure'){
+                        binding.result = {};
+                        binding.result.type = 'figure',
+                        binding.result.value = scope.figures.selected;
+                        binding.code.parameter = scope.variable.selected;
+                        binding.code.parameter.widget = getWidget();
+                    }
+                console.log(binding)
+                httpRequests.sendBinding(binding).then(function(data){
+                    console.log(data);
+                    creationObject.addBinding(data.data.data);
+                });
+            }
+
+            function getWidget(){
+                if (scope.widgets.selected == 'slider'){
+                    return {
+                        'type': scope.widgets.selected,
+                        'min': scope.widgets.slider.min_value,
+                        'max': scope.widgets.slider.max_value,
+                        'step': scope.widgets.slider.step_size,
+                        'label': scope.widgets.slider.label
+                    }
+                }else if(scope.widgets.selected == 'radio'){
+                    return {
+                        'type': scope.widgets.selected,
+                        'options': scope.widgets.radio.options
+                    }
+                }
+            }
+
+            function getSelectedColumns(){
+                var selectedColumns = [];
+                scope.data.header.forEach(element => {
+                    if (element.selected){
+                        selectedColumns.push(element)
+                    }
+                });
+                return selectedColumns;
+            }
+
+            function tempFunc() {            
+                // spacetimeFigure4Radio
+                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":35,"end":35},{"start":40,"end":41},{"start":128,"end":131},{"start":134,"end":134},{"start":137,"end":140},{"start":143,"end":144},{"start":147,"end":147},{"start":155,"end":156},{"start":161,"end":166},{"start":169,"end":169},{"start":183,"end":184},{"start":187,"end":193},{"start":196,"end":199},{"start":202,"end":204},{"start":207,"end":208},{"start":215,"end":215},{"start":222,"end":224},{"start":227,"end":230},{"start":260,"end":260},{"start":233,"end":236},{"start":239,"end":239},{"start":242,"end":244},{"start":246,"end":246},{"start":249,"end":250},{"start":253,"end":253},{"start":257,"end":257},{"start":271,"end":275},{"start":278,"end":279},{"start":282,"end":282},{"start":285,"end":287},{"start":290,"end":290},{"start":292,"end":294},{"start":297,"end":298},{"start":300,"end":300}]';
+                
+                // spacetimeFigure4Slider
+                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":35,"end":35},{"start":40,"end":41},{"start":128,"end":131},{"start":134,"end":134},{"start":137,"end":140},{"start":143,"end":144},{"start":147,"end":147},{"start":155,"end":156},{"start":161,"end":166},{"start":169,"end":169},{"start":183,"end":184},{"start":187,"end":193},{"start":196,"end":199},{"start":202,"end":204},{"start":207,"end":208},{"start":215,"end":215},{"start":222,"end":224},{"start":227,"end":230},{"start":260,"end":260},{"start":233,"end":236},{"start":239,"end":239},{"start":242,"end":244},{"start":246,"end":246},{"start":249,"end":250},{"start":253,"end":253},{"start":257,"end":257},{"start":271,"end":275},{"start":278,"end":279},{"start":282,"end":282},{"start":285,"end":287},{"start":290,"end":294},{"start":297,"end":298},{"start":300,"end":300}]';                
+                
+                // spacetimeFigure1Slider
+                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":40,"end":40},{"start":50,"end":50},{"start":53,"end":67},{"start":69,"end":72},{"start":74,"end":83},{"start":85,"end":90},{"start":93,"end":99},{"start":101,"end":113},{"start":118,"end":119},{"start":121,"end":123}]';
+
+                // assemblyProcessFigure3Slider
+                // let lines = '[{"start":37,"end":47},{"start":52,"end":54},{"start":65,"end":113},{"start":116,"end":118},{"start":128,"end":128},{"start":130,"end":131},{"start":149,"end":165},{"start":170,"end":188}]';
+
+                // assemblyProcessFigure4
+                //let lines = '[{"start":38,"end":45},{"start":47,"end":47},{"start":52,"end":54},{"start":65,"end":113},{"start":116,"end":118},{"start":128,"end":128},{"start":130,"end":131},{"start":133,"end":134},{"start":234,"end":236},{"start":242,"end":266}]';
+            
+                //Paper: spacetimemodel, Figure1 Widget: slider Parameter: intensity
+                let lines = '[{"start":18,"end":22},{"start":27,"end":29},{"start":31,"end":34},{"start":39,"end":46},{"start":51,"end":54},{"start":56,"end":58},{"start":60,"end":66},{"start":70,"end":82},{"start":87,"end":101},{"start":106,"end":106},{"start":110,"end":121},{"start":124,"end":131}]';
+                
+                return JSON.parse(lines);
+            }
+
+            //////////////////
+            function resetAll(){
+                resetPurpose();
+                resetFigures();
+                resetMarkCode();
+                resetData();
+                resetWidgets();
+                resetMarkVariable();
+                scope.readyForSubmission = false;
+                getHeader(scope.datafile);
+            }            
+
+            function resetPurpose(){
+                scope.purposes.show = true;
+                scope.purposes.selected = null;
+            }
+
+            function resetFigures(){
+                scope.figures.selected = null;
+            }
+
+            function resetMarkCode(){
+                scope.code.mark.showSelectedText = false;
+                scope.selectedText.source = '';
+                scope.showOriginalCode = false;
+                scope.code.mark.show = false;
+                scope.buttons.doneCode.disable = true;
+                selectedLinesIndex = [];
+                scope.codefile.lineHighlight = '';
+            }
+
+            function resetData(){
+                scope.data.show = false;
+                scope.showOriginalData = false;
+                scope.data.selectedColumns = [];
+            }
+
+            function resetWidgets(){
+                scope.widgets.slider.show = false;
+                scope.widgets.showButton = true;
+                scope.widgets.type = null;
+                scope.widgets.disable = true;
+                scope.widgets.min_value = null;
+                scope.widgets.max_value = null;
+                scope.widgets.step_size = null;
+                scope.widgets.label = null;
+                scope.widgets.selected = null;
+                scope.widgets.show = false;
             }
             
-            function submit(){
-                var result = {};
-                // TODO
-                // Add creation of final object containing all required information of a figure here
-                // Wait until the structure of this object was specified.
-                // Call http request to submit metadata of figure
+            function resetMarkVariable(){
+                scope.variable.mark.showSelection = false;
+                scope.variable.mark.disable = true;
+                scope.variable.mark.show = false;
+                scope.variable.selected = {};
+                scope.selectedText.lineHighlight = '';
             }
+
         }  
     }
 })();

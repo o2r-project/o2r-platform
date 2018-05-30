@@ -13,6 +13,7 @@
 <script type="text/javascript" src="../../bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
 
 <!-- display data depending on its mime type -->
+<iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="display-files-pdf" type="application/pdf" data="{{file.path}}"></object>
 <img ng-if="(mime =='image') && (file.size <= sizeRestriction)" class="display-files-img" ng-src="{{file.path}}" />
 <audio controls ng-if="(mime =='audio') && (file.size <= sizeRestriction)"><source ng-src="{{file.path}}" type="{{file.type}}"></source>Your browser does not support audio element.</audio>
@@ -93,7 +94,6 @@
 </div>
 
 <iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
-<iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <div ng-if="(file.type=='text/csv') && (file.size <= sizeRestriction)">
     <table style="width:100%">
         <tr ng-repeat="row in csvContent">

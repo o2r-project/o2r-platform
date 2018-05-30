@@ -22,7 +22,7 @@
     			scope: {
     				o2rBaseFile: '@',
     				o2rOverlayFile: '@',
-            o2rOverlayId: '@'
+                    o2rOverlayId: '@'
     			},
     			link: link
     		};

@@ -65,7 +65,6 @@
         logger.info(vm.shipmentInfo);
         vm.sendToRecipient = sendToRecipient;
         // vm.publishInZenodo = publishInZenodo;
-
         // only necessary for substitited ERC
         vm.showERC = showERC;
         vm.isEmpty = isEmpty;
@@ -90,6 +89,28 @@
         activate();
 
         /////
+
+        $(document).ready(function(){
+            setTimeout(function(){ 
+            var iframe = $('iframe').contents();
+                iframe.click(function(){
+                    var selectedText = document.getElementsByTagName('iframe')[0].
+                        contentWindow.document.getSelection().toString();
+                    vm.publication.metadata.o2r.interaction.forEach(function(element){
+                        if (element.result.value == selectedText) {
+                            $scope.$broadcast('broadcastSelection', selectedText);
+                            switchTab();
+                        }
+                    });
+
+                });
+            }, 3000);
+        });
+
+        function switchTab() {
+            vm.currentNavItem = 'manipulate';
+            $state.go('erc.manipulate')
+        }
 
         function activate(){
             header.setTitle('o2r - Examine ERC');
@@ -243,7 +264,6 @@
         }
 
         /**
-         *
          * @param {Object} obj, expects an object with two attributes: code, data. Each attribute is an array
          */
         function mSetCodeData(obj){

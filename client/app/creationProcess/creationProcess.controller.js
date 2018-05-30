@@ -5,9 +5,11 @@
         .module('starter')
         .controller('CreationProcessController', CreationProcessController);
 
-    CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'header', 'creationService', 'creationObject', 'httpRequests', 'icons', '$window'];
+    CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'header', 'creationService', 
+                                            'creationObject', 'httpRequests', 'icons', '$window'];
 
-    function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, header, creationService, creationObject, httpRequests, icons, $window){
+    function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, header, creationService, 
+                                            creationObject, httpRequests, icons, $window){
         var logger = $log.getInstance('CreationPro');
         //default substate
         var defView = 'creationProcess.requiredMetadata';
@@ -221,8 +223,6 @@
                 //continue with editing
                 //no action needed for this
             }
-
-
         }
 
         function nextState(current){

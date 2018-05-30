@@ -16,6 +16,7 @@
             "starter.o2rMetadataView",
             "starter.o2rRecipient",
             "starter.o2rUiBindingCreator",
+            'starter.o2rSpacetime',
             "treeControl",
             "hljs",
             "ui.router",
@@ -47,7 +48,7 @@
         $compileProvider.preAssignBindingsEnabled(true);
 
         $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://markuskonkol.shinyapps.io/main/', 'https://markuskonkol.shinyapps.io/mjomeiAnalysis2/', 'https://markuskonkol.shinyapps.io/figure1_interactive',
-        'https://markuskonkol.shinyapps.io/figure1_interactive/', 'https://markuskonkol.shinyapps.io/interactiveFigure1/']);
+        'https://markuskonkol.shinyapps.io/figure1_interactive/', 'https://markuskonkol.shinyapps.io/interactiveFigure1/', 'https://markuskonkol.shinyapps.io/figure4/']);
         /* eslint-disable angular/window-service, angular/log */
         $analyticsProvider.developerMode(env.disableTracking);
         if(env.disableTracking) console.log("Tracking globally disabled!");
@@ -180,9 +181,7 @@
                 controllerAs: 'vm'
             })
             .state('creationProcess.spacetimeMetadata', {
-                templateUrl: "app/creationProcess/spacetimeMetadata.html",
-                controller: 'SpaceTimeController',
-                controllerAs: 'vm'
+                templateUrl: "app/creationProcess/spacetimeMetadata.html"
             })
             .state('creationProcess.uibindings', {
                 templateUrl: "app/creationProcess/uibindings.html",
@@ -337,7 +336,8 @@
             {name: 'cloudUpload', category: 'file', fn: 'cloud_upload'},
             {name: 'cloudDone', category: 'file', fn: 'cloud_done'},
             {name: 'cloudQueue', category: 'file', fn: 'cloud_queue'},
-            {name: 'shuffle', category: 'navigation', fn: 'shuffle'}
+            {name: 'shuffle', category: 'navigation', fn: 'shuffle'},
+            {name: 'cut', category: 'content', fn: 'cut'}
         ];
 
         for(var i in icons){

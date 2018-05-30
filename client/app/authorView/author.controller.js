@@ -5,12 +5,12 @@
         .module('starter')
         .controller('AuthorController', AuthorController);
 
-        AuthorController.$inject = ['$scope', '$stateParams','$log', '$document', '$mdDialog', 'metadata', 'authorInfo', 'author', 'Upload', 'env', 'header', 'icons'];
+        AuthorController.$inject = ['httpRequests','$scope', '$stateParams','$log', '$document', '$mdDialog', 'metadata', 'authorInfo', 'author', 'Upload', 'env', 'header', 'icons'];
 
-        function AuthorController($scope, $stateParams, $log, $document, $mdDialog, metadata, authorInfo, author, Upload, env, header, icons){
+        function AuthorController(httpRequests, $scope, $stateParams, $log, $document, $mdDialog, metadata, authorInfo, author, Upload, env, header, icons){
             var logger = $log.getInstance('AuthorCtrl');
-            var vm = this;
-           
+            var vm = this; 
+
             vm.icons = icons;
             vm.allPubs = getAuthorInfo();
             vm.compExists = compExistence();

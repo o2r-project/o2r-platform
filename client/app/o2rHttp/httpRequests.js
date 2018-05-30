@@ -1,7 +1,7 @@
 (function(){
-	'use strict';
+    'use strict';
 
-	angular
+  angular
 		.module('starter.o2rHttp')
 		.factory('httpRequests', httpRequests);
 
@@ -36,7 +36,9 @@
 			getAllUsers: getAllUsers,
 			deleteCompendium: deleteCompendium,
 			substitute: substitute,
-			getCSV: getCSV
+			getCSV: getCSV,
+			sendBinding: sendBinding,
+			runManipulationService: runManipulationService
 		};
 
 		return service;
@@ -266,6 +268,14 @@
 			var _url = env.api + '/compendium/' + id + '/metadata';
 			var body = {o2r: data};
 			return $http.put(_url, body);
+		}
+
+		function sendBinding(binding){
+			return $http.post(env.api + '/bindings/' + binding.purpose, binding);
+		}
+
+		function runManipulationService(binding){
+			return $http.post(env.api + '/bindings/runPlumberService', binding);
 		}
 
 		function getLicenses(){

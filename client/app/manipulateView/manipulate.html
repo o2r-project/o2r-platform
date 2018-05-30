@@ -1,8 +1,25 @@
 <div class="manipulate-interactive">
     <md-tabs class="manipulate-tabs" md-selected="vm.selectedTab" md-border-bottom md-autoselect>
-        <md-tab ng-repeat="figure in vm.figures track by $index"
-                label="Figure {{$index + 1}}">
-                <o2r-display-files o2r-file="{{figure.shinyURL}}" ng-if="vm.selectedTab == $index"></o2r-display-files>
+        <md-tab ng-repeat="binding in vm.manipulations track by $index" label="Figure {{$index + 1}}">
+            <h3>{{binding.code.parameter.widget.label}}</h3>
+            <div ng-if="vm.slider">
+                <md-slider-container>
+                    <md-slider flex min={{binding.code.parameter.widget.min}} max={{binding.code.parameter.widget.max}} step={{binding.code.parameter.widget.step}}
+                                ng-model="vm.threshold" id="slider">
+                    </md-slider>
+                    <md-input-container>
+                        <input flex type="number" ng-model="vm.threshold" aria-controls="slider">
+                    </md-input-container>
+                </md-slider-container>
+            </div>
+            <div ng-if="vm.radio">
+                <md-radio-group ng-model="vm.threshold" layout="row">
+                    <md-radio-button ng-repeat="option in binding.code.parameter.widget.options track by $index" 
+                                        ng-value="option">{{binding.code.parameter.widget.options[$index]}}
+                    </md-radio-button>
+                </md-radio-group>
+            </div>
+            <img src={{vm.query}}>
         </md-tab>
     </md-tabs>
     <div layout="row">

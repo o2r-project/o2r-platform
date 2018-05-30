@@ -10,5 +10,5 @@ client/app/config/config.js
 # ignore npm debug logs
 npm-debug.log
 
-# libraries
+# ignore modules
 node_modules
