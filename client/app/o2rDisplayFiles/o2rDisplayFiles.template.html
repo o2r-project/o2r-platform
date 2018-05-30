@@ -9,9 +9,9 @@
 </div>
 <div flex></div>
 </div>
-
+<!--
 <script type="text/javascript" src="../../bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
-
+-->
 <!-- display data depending on its mime type -->
 <iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="display-files-pdf" type="application/pdf" data="{{file.path}}"></object>
