@@ -137,6 +137,7 @@ th, td {
 }
 
 .display-files-html{
+	min-height: 90em;
 	min-width: 100%;
 	margin-left: auto;
 	margin-right: auto;

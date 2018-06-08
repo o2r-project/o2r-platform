@@ -9,9 +9,9 @@
 </div>
 <div flex></div>
 </div>
-
+<!--
 <script type="text/javascript" src="../../bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
-
+-->
 <!-- display data depending on its mime type -->
 <iframe set-iframe-height ng-src="{{file.path}}" ng-if="(file.type=='text/html') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <object ng-if="(file.type=='application/pdf') && (file.size <= sizeRestriction)" class="display-files-pdf" type="application/pdf" data="{{file.path}}"></object>
@@ -92,8 +92,6 @@
     <pre ng-if="RData.selected.value == null" o2r-code-highlight o2r-source="{{RData.FullJSONString}}" class="language-json"></pre>
 
 </div>
-
-<iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <div ng-if="(file.type=='text/csv') && (file.size <= sizeRestriction)">
     <table style="width:100%">
         <tr ng-repeat="row in csvContent">
