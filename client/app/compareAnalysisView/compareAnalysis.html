@@ -35,7 +35,16 @@
                         <o2r-display-files o2r-file="{{vm.reproduced}}"></o2r-display-files>
                     </md-card-content>
                 </md-card>
-                <md-card flex="33" flex-offset="1">
+
+                <md-card flex="33" flex-offset="1" ng-if="vm.check.status == 'success'">
+                    <md-card-header>
+                        <md-card-header-text>
+                            <span>No differences found!</span>
+                            <span flex></span>
+                        </md-card-header-text>
+                    </md-card-header>
+                </md-card>
+                <md-card flex="33" flex-offset="1" ng-if="vm.check.status != 'success'">
                     <md-card-header>
                         <md-card-header-text>
                             <span>Differences</span>

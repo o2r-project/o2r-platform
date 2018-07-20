@@ -24,7 +24,7 @@
             vm.reproduced.path = $stateParams.r || env.api + '/job/' + jobId + '/data/' + currentCompendium.metadata.o2r.displayfile;
             vm.reproduced.type = $stateParams.rm || 'text/html';
             vm.difference = {};
-            // FIXME get job metadata <job_id>?steps=check
+            vm.check = jobMetadata.data.steps.check;
             vm.difference.path = $stateParams.d || env.api + '/job/' + jobId + '/data/diffHTML.html';
             vm.difference.type = $stateParams.dm || 'text/html';
             vm.cancel = cancel;
