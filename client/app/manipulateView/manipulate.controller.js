@@ -58,7 +58,12 @@
                     newObj.data = erc.metadata.o2r.inputfiles;
                 }
                 if (binding.code.parameter.widget.type == 'radio'){
-                    vm.threshold = binding.code.parameter.val.substring(1, binding.code.parameter.val.length-1);
+                    if (typeof binding.code.parameter.val == 'number'){
+                        vm.threshold = binding.code.parameter.val    
+                    }
+                    if (typeof binding.code.parameter.val == 'string'){
+                        vm.threshold = binding.code.parameter.val.substring(1, binding.code.parameter.val.length-1);
+                    }
                     vm.radio=true;
                 } else if(binding.code.parameter.widget.type == 'slider'){
                     vm.threshold = binding.code.parameter.val;
