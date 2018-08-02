@@ -390,7 +390,6 @@
                 var erc = creationObject.get();
                 var binding = {};
                     binding.id = erc.id;
-                    binding.port = "800" + erc.metadata.o2r.interaction.length;
                     binding.purpose = scope.purposes.selected;
 
                     binding.code = {};
@@ -413,11 +412,38 @@
                         binding.code.parameter = scope.variable.selected;
                         binding.code.parameter.widget = getWidget();
                     }
-                console.log(binding)
-                httpRequests.sendBinding(binding).then(function(data){
-                    console.log(data);
-                    creationObject.addBinding(data.data.data);
-                });
+                    console.log(binding)
+                    httpRequests.listAllCompendia().then(function(data){
+                        console.log("All compendia: ")
+                        console.log(data)
+                        let port = getNumber(data.data.results, erc.id);
+                        if(port == undefined){
+                            console.log("No more ports available.")
+                        }else{
+                            binding.port = "5" + port +  + erc.metadata.o2r.interaction.length; 
+                            httpRequests.sendBinding(binding).then(function(data){
+                                console.log(data);
+                                creationObject.addBinding(data.data.data);
+                            });
+                            }
+                    });
+            }
+
+            function getNumber(res, ercid){
+                let slot=undefined;
+                for(let i=0; i<res.length; i++){
+                    if(res[i]===ercid){
+                        slot = i.toString();
+                        console.log("found: " + slot + " " + ercid) 
+                    }
+                }
+                if(slot.length < 2){
+                    slot = 0 + slot.toString();
+                }
+                if(slot.length > 2 || Number(slot) > 49){
+                    slot = undefined;
+                }
+                return slot;
             }
 
             function getWidget(){
@@ -539,7 +565,7 @@
                     //let lines = '[{"start":32,"end":33}, {"start":40,"end":40}, {"start":55,"end":55}, {"start":149,"end":151}, {"start":237,"end":237}, {"start":386,"end":408}, {"start":420,"end":434}, {"start":497,"end":512}]';
 
                 // Geochronological_database_and_classification_system, Figure 2
-                let lines = '[{"start":29,"end":285}, {"start":290,"end":1352}, {"start":1357,"end":1372}, {"start":1376,"end":1376}]';
+                let lines = '[{"start":29,"end":285}, {"start":290,"end":1352}, {"start":1357,"end":1372}, {"start":1377,"end":1377}]';
 
                 return JSON.parse(lines);
             }
