@@ -82,7 +82,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.18.0
+    image: o2rproject/o2r-muncher:0.19.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -93,18 +93,19 @@ services:
       # FIXME: remove mount to volumes, only works under Linux, see https://github.com/o2r-project/o2r-muncher/issues/80
       - /var/lib/docker/volumes/:/var/lib/docker/volumes
     environment:
-      - "MUNCHER_MONGODB=mongodb://mongodb"
+      - "MUNCHER_MONGODB=mongodb://mongodb:27017"
       - MUNCHER_PORT=8080
       - MUNCHER_VOLUME=o2rplatform_o2rstorage
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      #- "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559" 
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev"
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:ae16160"
+      - MUNCHER_SAVE_IMAGE_TARBALL=false # saves space and time during dev
+      #- "MUNCHER_META_TOOL_CONTAINER=meta:dev"
       #- MUNCHER_ALLOW_INVALID_METADATA=true
 
   loader:
-    image: o2rproject/o2r-loader:0.10.0
+    image: o2rproject/o2r-loader:0.11.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -113,12 +114,12 @@ services:
       - o2rstorage:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - "LOADER_MONGODB=mongodb://mongodb"
+      - "LOADER_MONGODB=mongodb://mongodb:27017"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=o2rplatform_o2rstorage
-      #- "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:5c12559"
-      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:dev"
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:ae16160"
+      #- "LOADER_META_TOOL_CONTAINER=meta:dev"
       
   informer:
     image: o2rproject/o2r-informer:0.3.0
@@ -133,7 +134,7 @@ services:
       - DEBUG=informer,informer:*
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.11.0
+    image: o2rproject/o2r-bouncer:0.12.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -147,6 +148,7 @@ services:
       - OAUTH_URL_TOKEN=${OAUTH_URL_TOKEN}
       - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - OAUTH_STARTUP_FAIL_ON_ERROR=false
 
   finder:
     image: o2rproject/o2r-finder:0.6.2
@@ -167,7 +169,7 @@ services:
       - BATCH_COUNT=20
 
   transporter:
-    image: o2rproject/o2r-transporter:0.5.0
+    image: o2rproject/o2r-transporter:0.6.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -176,12 +178,12 @@ services:
       - o2rstorage:/tmp/o2r
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      - "TRANSPORTER_MONGODB=mongodb://mongodb"
+      - "TRANSPORTER_MONGODB=mongodb://mongodb:27017"
       - TRANSPORTER_PORT=8081
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:e7398ab
+    image: o2rproject/o2r-shipper:9ee605f
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -196,7 +198,7 @@ services:
       PYTHONUNBUFFERED: "0"
 
   substituter:
-    image: o2rproject/o2r-substituter:0.4.3
+    image: o2rproject/o2r-substituter:0.5.0
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -218,7 +220,8 @@ services:
       - DEBUGME=inspecter
 
   bindings:
-    build: ./bindings/o2r-bindings
+    image: o2rproject/o2r-bindings:0.0.1
+    #build: ./bindings/o2r-bindings
     ports:
      - "8092:8092"
      - "8000:8000"
