@@ -220,10 +220,11 @@ services:
       - DEBUGME=inspecter
 
   bindings:
+    #image: o2rproject/o2r-bindings:0.0.1
     build: ./bindings/o2r-bindings
     ports:
      - "8092:8092"
-     - "8000-8009:8000-8009"
+     - "5000-5499:5000-5499"
     volumes:
      - o2rstorage:/tmp/o2r
     environment: 

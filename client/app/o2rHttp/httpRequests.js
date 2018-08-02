@@ -10,7 +10,8 @@
 	function httpRequests($http, $log, $q, env){
 		var logger = $log.getInstance('httpRequests');
 		var service = {
-			listCompendia : listCompendia,
+			listAllCompendia: listAllCompendia,
+			listCompendia: listCompendia,
 			singleCompendium: singleCompendium,
 			listRelatedJobs: listRelatedJobs,
 			newJob: newJob,
@@ -52,6 +53,11 @@
 
 		function getCSV(file){
 			return $http.get(file);
+		}
+
+		function listAllCompendia(){
+			var _url= env.api + '/compendium';
+			return $http.get(_url);
 		}
 
 		function listCompendia(query){
