@@ -24,6 +24,7 @@
         vm.publication = erc;
         compendium.setCompendium(vm.publication);
         vm.ercId = vm.publication.id;
+        vm.articleDoiUrl = vm.publication.metadata.o2r.identifier.doiurl;
         vm.recipientObject = {};
         vm.recipientObject.ercId = vm.ercId;
         vm.recipientObject.shipmentInfo = vm.shipmentInfo;

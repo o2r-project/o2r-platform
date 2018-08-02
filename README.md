@@ -130,7 +130,7 @@ To avoid this problem, __restart the platform container__ after (re-)starting ot
 ## User levels
 
 The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
-By default, users may create compendia, but if you want to develop features for editors or admins, you can adjust a user's level in the admin view (.
+By default, users may create compendia, but if you want to develop features for editors or admins, you can adjust a user's level in the admin view.
 
 ## Proxy for o2r microservices
 
@@ -146,7 +146,7 @@ docker exec -it o2r-platform /bin/bash
 ip addr show docker0 | grep -Po 'inet \K[\d.]+'
 ```
 
-Note: If you want to run this in a Makefile, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
+Note: If you want to run this in a `Makefile`, `$(CURDIR)` will come in handy to create the mount paths instead of using `$(pwd)`.
 
 ## WebSocket testing
 
@@ -154,9 +154,9 @@ The compose configuration also makes a simple test page for WebSockets available
 
 ## Platform Version
 
-1.0.0
+1.0.1
 
 ## License
 
 o2r-platform is licensed under Apache License, Version 2.0, see file LICENSE.
-Copyright &copy; 2017 - o2r project.
+Copyright &copy; 2018 - o2r project.

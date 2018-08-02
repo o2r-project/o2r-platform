@@ -17,6 +17,15 @@ body{
 	margin-right: 2px;
 }
 
+#doi-button {
+	margin-left: 28px;
+}
+
+.doiLogoImage{
+	width:12px;
+	margin-right: 5px;
+}
+
 .toLowerCase{
 	text-transform: lowercase;
 }
@@ -63,6 +72,10 @@ body{
 
 .footer{
 	height: 64px !important;
+}
+
+.footer small {
+	font-size: small;
 }
 
 md-card-header-text{
