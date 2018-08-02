@@ -448,24 +448,99 @@
             }
 
             function tempFunc() {            
-                // spacetimeFigure4Radio
-                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":35,"end":35},{"start":40,"end":41},{"start":128,"end":131},{"start":134,"end":134},{"start":137,"end":140},{"start":143,"end":144},{"start":147,"end":147},{"start":155,"end":156},{"start":161,"end":166},{"start":169,"end":169},{"start":183,"end":184},{"start":187,"end":193},{"start":196,"end":199},{"start":202,"end":204},{"start":207,"end":208},{"start":215,"end":215},{"start":222,"end":224},{"start":227,"end":230},{"start":260,"end":260},{"start":233,"end":236},{"start":239,"end":239},{"start":242,"end":244},{"start":246,"end":246},{"start":249,"end":250},{"start":253,"end":253},{"start":257,"end":257},{"start":271,"end":275},{"start":278,"end":279},{"start":282,"end":282},{"start":285,"end":287},{"start":290,"end":290},{"start":292,"end":294},{"start":297,"end":298},{"start":300,"end":300}]';
+                // A_Bayesian_posterior_predictive_framework_for_weighting_ensemble_regional_climate_models: Figure 4
+                    //let lines = '[{"start":27,"end":32}, {"start":36,"end":42}, {"start":51,"end":57}, {"start":64,"end":64}, {"start":66,"end":117}, {"start":123,"end":179}, {"start":192,"end":195}]';
                 
-                // spacetimeFigure4Slider
-                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":35,"end":35},{"start":40,"end":41},{"start":128,"end":131},{"start":134,"end":134},{"start":137,"end":140},{"start":143,"end":144},{"start":147,"end":147},{"start":155,"end":156},{"start":161,"end":166},{"start":169,"end":169},{"start":183,"end":184},{"start":187,"end":193},{"start":196,"end":199},{"start":202,"end":204},{"start":207,"end":208},{"start":215,"end":215},{"start":222,"end":224},{"start":227,"end":230},{"start":260,"end":260},{"start":233,"end":236},{"start":239,"end":239},{"start":242,"end":244},{"start":246,"end":246},{"start":249,"end":250},{"start":253,"end":253},{"start":257,"end":257},{"start":271,"end":275},{"start":278,"end":279},{"start":282,"end":282},{"start":285,"end":287},{"start":290,"end":294},{"start":297,"end":298},{"start":300,"end":300}]';                
-                
-                // spacetimeFigure1Slider
-                // let lines = '[{"start":27,"end":28},{"start":31,"end":31},{"start":40,"end":40},{"start":50,"end":50},{"start":53,"end":67},{"start":69,"end":72},{"start":74,"end":83},{"start":85,"end":90},{"start":93,"end":99},{"start":101,"end":113},{"start":118,"end":119},{"start":121,"end":123}]';
+                // A question driven socio-hydrological modeling process: Figure 6
+                    //let lines = '[{"start":28,"end":34}, {"start":36,"end":144}]';
 
-                // assemblyProcessFigure3Slider
-                // let lines = '[{"start":37,"end":47},{"start":52,"end":54},{"start":65,"end":113},{"start":116,"end":118},{"start":128,"end":128},{"start":130,"end":131},{"start":149,"end":165},{"start":170,"end":188}]';
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 1
+                    //let lines = '[{"start":24,"end":29}, {"start":35,"end":41}, {"start":46,"end":55}, {"start":60,"end":77}, {"start":81,"end":93}, {"start":98,"end":112}, {"start":118,"end":143}]';
 
-                // assemblyProcessFigure4
-                //let lines = '[{"start":38,"end":45},{"start":47,"end":47},{"start":52,"end":54},{"start":65,"end":113},{"start":116,"end":118},{"start":128,"end":128},{"start":130,"end":131},{"start":133,"end":134},{"start":234,"end":236},{"start":242,"end":266}]';
-            
-                //Paper: spacetimemodel, Figure1 Widget: slider Parameter: intensity
-                let lines = '[{"start":18,"end":22},{"start":27,"end":29},{"start":31,"end":34},{"start":39,"end":46},{"start":51,"end":54},{"start":56,"end":58},{"start":60,"end":66},{"start":70,"end":82},{"start":87,"end":101},{"start":106,"end":106},{"start":110,"end":121},{"start":124,"end":131}]';
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 2a
+                    //let lines = '[{"start":24,"end":29}, {"start":46,"end":51}, {"start":60,"end":63}, {"start":81,"end":82}, {"start":98,"end":99}, {"start":101,"end":112}, {"start":118,"end":119}, {"start":2447,"end":2447}, {"start":2618,"end":2638}]';
+
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 2b
+                    //let lines = '[{"start":24,"end":29}, {"start":35,"end":41}, {"start":46,"end":55}, {"start":60,"end":63}, {"start":81,"end":82}, {"start":98,"end":112}, {"start":118,"end":119}, {"start":2618,"end":2618}, {"start":2447,"end":2448}, {"start":2620,"end":2622}, {"start":2645,"end":2666}]';
+
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 3a
+                    //let lines = '[{"start":24,"end":29}, {"start":35,"end":41}, {"start":46,"end":55}, {"start":60,"end":77}, {"start":81,"end":93}, {"start":98,"end":112}, {"start":151,"end":672}, {"start":678,"end":704}, {"start":2007,"end":2168}, {"start":1195,"end":1356}, {"start":1362,"end":1388}, {"start":1394,"end":1394}, {"start":2174,"end":2200}, {"start":2205,"end":2271}, {"start":2351,"end":2377}, {"start":2554,"end":2559}]';
+
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 3b
+                    //let lines = '[{"start":24,"end":29}, {"start":35,"end":41}, {"start":46,"end":55}, {"start":60,"end":67}, {"start":82,"end":82}, {"start":86,"end":87}, {"start":98,"end":112}, {"start":2447,"end":2447}, {"start":2477,"end":2492}]';
+
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 4
+                    //let lines = '[{"start":24,"end":29}, {"start":35,"end":41}, {"start":46,"end":55}, {"start":60,"end":77}, {"start":81,"end":93}, {"start":98,"end":112}, {"start":151,"end":672}, {"start":678,"end":704}, {"start":710,"end":784}, {"start":790,"end":799}, {"start":805,"end":827}]';
+
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 5
+                    //let lines = '[{"start":24,"end":29}, {"start":35,"end":41}, {"start":46,"end":55}, {"start":60,"end":77}, {"start":81,"end":93}, {"start":98,"end":112}, {"start":118,"end":119}, {"start":151,"end":509}, {"start":805,"end":812}, {"start":1195,"end":1356}, {"start":1362,"end":1388}, {"start":1393,"end":1460}, {"start":1466,"end":1473}, {"start":1480,"end":1492}]';
+
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 6
+                    //let lines = '[{"start":24,"end":27}, {"start":46,"end":47}, {"start":60,"end":63}, {"start":98,"end":112}, {"start":711,"end":711}, {"start":805,"end":812}, {"start":1499,"end":1513}, {"start":1520,"end":1542}, {"start":1548,"end":1556}, {"start":1565,"end":2168}, {"start":2174,"end":2200}, {"start":2205,"end":2271}, {"start":2278,"end":2285}, {"start":2310,"end":2321}, {"start":2328,"end":2344}]';
+                    
+                // A_space_time statistical_climate_model_for_hurricane_intensification: Figure 11
+                    //let lines = '[{"start":24,"end":29}, {"start":46,"end":51}, {"start":60,"end":67}, {"start":81,"end":82}, {"start":98,"end":112}, {"start":118,"end":119}, {"start":151,"end":672}, {"start":2450,"end":2450}, {"start":2499,"end":2547}]';
                 
+                // Assembly_processes_of_gastropod_community_change: Figure 3 
+                    //let lines = '[{"start":40,"end":46}, {"start":57,"end":57}, {"start":78,"end":80}, {"start":1056,"end":1080}, {"start":1148,"end":1150}, {"start":1086,"end":1086}, {"start":1160,"end":1160}, {"start":1162,"end":1163}, {"start":1186,"end":1223}]';
+
+                // Assembly_processes_of_gastropod_community_change: Figure 3 
+                    //let lines = '[{"start":40,"end":46}, {"start":57,"end":57}, {"start":78,"end":80}, {"start":1270,"end":1272}, {"start":1282,"end":1302}]';
+
+                // Automatic_landslide_length_and_width_estimation_based_on_the_geometric_processing, Figure 9a
+                    //let lines = '[{"start":58,"end":73}, {"start":94,"end":278}, {"start":347,"end":348}, {"start":350,"end":352}, {"start":361,"end":361}, {"start":363,"end":364}, {"start":367,"end":367}]';
+
+                // Automatic_landslide_length_and_width_estimation_based_on_the_geometric_processing, Figure 9a
+                    //let lines = '[{"start":58,"end":73}, {"start":94,"end":278}, {"start":350,"end":352}, {"start":360,"end":360}, {"start":362,"end":362}, {"start":364,"end":365}]';
+
+                // Automatic_landslide_length_and_width_estimation_based_on_the_geometric_processing, Figure 10a
+                    //let lines = '[{"start":58,"end":73}, {"start":94,"end":352}, {"start":370,"end":370}, {"start":372,"end":372}, {"start":379,"end":381}]';
+
+                // Automatic_landslide_length_and_width_estimation_based_on_the_geometric_processing, Figure 10b
+                    //let lines = '[{"start":58,"end":73}, {"start":94,"end":352}, {"start":371,"end":372}, {"start":375,"end":376}, {"start":379,"end":379}, {"start":383,"end":384}]';
+
+                // Automatic_landslide_length_and_width_estimation_based_on_the_geometric_processing, Figure 10b
+                    //let lines = '[{"start":46,"end":47}, {"start":53,"end":53}, {"start":56,"end":60}, {"start":63,"end":74}, {"start":77,"end":85}, {"start":89,"end":117}]';
+
+                // Development_of_a_new_gasflaring_emission_dataset_for_southern_West_Africa, Figure 2a
+                    //let lines = '[{"start":23,"end":45}, {"start":52,"end":89}, {"start":94,"end":109}]';
+
+                // Have_precipitation_extremes_and_annual_totals_been_increasing, Figure 1a
+                    //let lines = '[{"start":39,"end":39}, {"start":49,"end":72}]';
+
+                // Have_precipitation_extremes_and_annual_totals_been_increasing, Figure 1b
+                    //let lines = '[{"start":39,"end":45}, {"start":79,"end":111}]';
+
+                // INSYDE_a_synthetic_probabilistic_flood_damage_model_based_on_explicit_cost_analysis
+                    //let lines = '[{"start":28,"end":28}, {"start":36,"end":336}, {"start":341,"end":367}, {"start":371,"end":422}]';
+
+                // Technical_note_A_bootstrapped_LOESS_regression_approach_for_comparing_soil_depth_profiles, figure 2a
+                    //let lines = '[{"start":31,"end":31}, {"start":42,"end":85}]';
+
+                // Technical_note_A_bootstrapped_LOESS_regression_approach_for_comparing_soil_depth_profiles, figure 2b
+                    //let lines = '[{"start":31,"end":31}, {"start":99,"end":146}]';
+
+                // Technical_note_Estimating_unbiased_transferfunction, figure 4
+                    //let lines = '[{"start":20,"end":26}, {"start":37,"end":80}]';
+
+                // Technical_note_Fourier_approach_for_estimating_the_thermal_attributes_of_streams, figure 2
+                    //let lines = '[{"start":48,"end":59}, {"start":75,"end":77}, {"start":81,"end":111}]';
+
+                // Interactions_among_temperature_moisture_and_oxygen_conventrations, figure 1
+                    //let lines = '[{"start":32,"end":33}, {"start":39,"end":40}, {"start":55,"end":55}, {"start":101,"end":121}]';
+
+                // Interactions_among_temperature_moisture_and_oxygen_conventrations, figure 3
+                    //let lines = '[{"start":32,"end":33}, {"start":40,"end":40}, {"start":149,"end":151}, {"start":386,"end":408}, {"start":417,"end":417}]';
+
+                // Interactions_among_temperature_moisture_and_oxygen_conventrations, figure 4, 
+                    //let lines = '[{"start":32,"end":33}, {"start":40,"end":40}, {"start":149,"end":151}, {"start":386,"end":408}, {"start":420,"end":434}, {"start":467,"end":491}]';
+
+                // Interactions_among_temperature_moisture_and_oxygen_conventrations, figure 5
+                    //let lines = '[{"start":32,"end":33}, {"start":40,"end":40}, {"start":55,"end":55}, {"start":149,"end":151}, {"start":237,"end":237}, {"start":386,"end":408}, {"start":420,"end":434}, {"start":497,"end":512}]';
+
+                // Geochronological_database_and_classification_system, Figure 2
+                let lines = '[{"start":29,"end":285}, {"start":290,"end":1352}, {"start":1357,"end":1372}, {"start":1376,"end":1376}]';
+
                 return JSON.parse(lines);
             }
 
