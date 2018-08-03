@@ -590,6 +590,21 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 /***********************
    End ERC view
 ************************/
+
+/***********************
+	Start uiView
+************************/
+.button-green {
+	background-color: rgb(0,135,98) !important;
+}
+
+.button-red {
+	background-color: red !important;
+}
+/***********************
+   End uiView
+************************/
+
 /***********************
 	Start inspectView
 ************************/
