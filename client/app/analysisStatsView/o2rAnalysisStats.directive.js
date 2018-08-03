@@ -205,6 +205,28 @@
                         'o2r-blue-icon': true
                     }
                 },
+                image_save: {
+                    started: {
+                        'o2r-green-icon' : false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    finished: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': false
+                    },
+                    running: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    },
+                    skipped: {
+                        'o2r-green-icon': false,
+                        'o2r-red-icon': false,
+                        'o2r-blue-icon': true
+                    }
+                },
                 cleanup: {
                     started: {
                         'o2r-green-icon' : false,
@@ -387,7 +409,7 @@
                     failure: 'Analysis failed.',
                     running: 'Analysis is running.'
                 };
-                // FIXME enable comparison button if only "check" step is failure
+                
                 switch(obj){
                     case 'success':
                         result = states.success;
