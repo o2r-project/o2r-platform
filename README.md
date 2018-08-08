@@ -1,6 +1,6 @@
 # The o2r platform
 
-_Leveraging reproducible research_ by providing a powerful user interface for the [o2r Web API](http://o2r.info/o2r-web-api/).
+_Leveraging reproducible research_ by providing a powerful user interface for the [o2r Web API](https://o2r.info/api/).
 
 ## Libraries
 
@@ -129,7 +129,7 @@ To avoid this problem, __restart the platform container__ after (re-)starting ot
 
 ## User levels
 
-The o2r microservices require users to have specific [user level](http://o2r.info/o2r-web-api/user/#user-levels) to be allowed certain tasks.
+The o2r microservices require users to have specific [user level](https://o2r.info/api/user/#user-levels) to be allowed certain tasks.
 By default, users may create compendia, but if you want to develop features for editors or admins, you can adjust a user's level in the admin view.
 
 ## Proxy for o2r microservices
