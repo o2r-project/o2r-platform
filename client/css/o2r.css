@@ -78,7 +78,7 @@ body{
 	font-size: small;
 }
 
-md-card-header-text{
+.md-card-header-text {
 	width: 100%;
 	overflow-wrap: break-word;
 }
@@ -86,12 +86,7 @@ md-card-header-text{
 #o2r-header{
 	z-index:100;
 }
-/*
-.no-link{
-	color: 0, 0, 0, 0.87 !important;
-	text-decoration: none;
-}
-*/
+
 .o2r-fixed{
 	position: fixed;
 }
