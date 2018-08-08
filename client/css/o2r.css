@@ -187,6 +187,12 @@ ul.display-files-RData{
 /***********************
    Start Author-Landingpage view
 ************************/
+.ngTruncateToggleText {
+    color: black;
+    font-size: 90%;
+    font-style: italic;
+}
+
 .author-left-nav{
 	left: 1vw;
 	width: 15vw;
