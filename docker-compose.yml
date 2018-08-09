@@ -221,7 +221,6 @@ services:
 
   bindings:
     image: o2rproject/o2r-bindings:0.0.1
-    #build: ./bindings/o2r-bindings
     ports:
      - "8092:8092"
      - "5000-5499:5000-5499"
