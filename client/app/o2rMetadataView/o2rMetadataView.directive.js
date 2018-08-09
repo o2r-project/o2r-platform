@@ -76,7 +76,7 @@
                         baselayers: {
                             xyz: {
                                 name: 'OpenStreetMap',
-                                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                                 type: 'xyz'
                             }
                         },

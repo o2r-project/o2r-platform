@@ -34,11 +34,11 @@
             },
             {
                 element: '#home-create-erc',
-                intro: 'You can upload ERC from your PC or directly from the cloud.'
+                intro: 'You can upload workspaces from your PC or directly from the cloud.'
             },
             {
                 element: '#home-create-examples',
-                intro: 'Check out our example ERCs, to see how it works.'
+                intro: 'Check out our example workspaces, to see how it works.'
             },
             {
                 element: '#home-inspect-erc',

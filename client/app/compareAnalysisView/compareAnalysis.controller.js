@@ -25,7 +25,7 @@
             vm.reproduced.type = $stateParams.rm || 'text/html';
             vm.difference = {};
             vm.check = jobMetadata.data.steps.check;
-            vm.difference.path = $stateParams.d || env.api + '/job/' + jobId + '/data/diffHTML.html';
+            vm.difference.path = $stateParams.d || vm.check.display.diff;
             vm.difference.type = $stateParams.dm || 'text/html';
             vm.cancel = cancel;
             logger.info('compareAnalysisView  loaded with params:', $stateParams);

@@ -65,8 +65,8 @@
                     .title('Help')
                     .htmlContent(
                         'For more information, see <br>' + 
-                        '<a href="http://o2r.info/results/" target="_blank">o2r results</a> <br>' + 
-                        '<a href="http://o2r.info/erc-spec/spec/" target="_blank">ERC specification</a> <br>' +
+                        '<a href="https://o2r.info/results/" target="_blank">o2r results</a> <br>' + 
+                        '<a href="https://o2r.info/erc-spec/spec/" target="_blank">ERC specification</a> <br>' +
                         '<a href="http://www.dlib.org/dlib/january17/nuest/01nuest.html" target="_blank">Opening the publication cycle with ERC</a>'
                     )
                     .targetEvent(ev)

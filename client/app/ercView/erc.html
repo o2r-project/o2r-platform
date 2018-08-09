@@ -4,7 +4,7 @@
       <md-button class="md-raised md-button md-ink-ripple" analytics-on="click" aria-label="open article via DOI" title="Link to original article via DOI" ng-href="{{vm.articleDoiUrl}}" target="_blank"><img title="DOI logo" src="img/DOI_logo.svg" class="doiLogoImage">Article</md-button>
     </div>
     <div ng-if="vm.substitution.substituted" id="substitution-buttons">
-      <md-button class="md-raised" analytics-on="click" title="What is a substitution?" href="http://o2r.info/o2r-web-api/compendium/substitute/" target="_blank" style="background-color:#CE9900"><img title="This is an ERC based on a substitution" src="img/ic_shuffle_black_48px.svg" class="orcidImage">Substitution ERC</md-button>
+      <md-button class="md-raised" analytics-on="click" title="What is a substitution?" href="https://o2r.info/api/compendium/substitute/" target="_blank" style="background-color:#CE9900"><img title="This is an ERC based on a substitution" src="img/ic_shuffle_black_48px.svg" class="orcidImage">Substitution ERC</md-button>
       <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the base ERC" target="_blank" ng-click="vm.showERC(vm.substitution.baseID)">base</a>
       <a class="md-button md-ink-ripple md-raised" analytics-on="click" title="Open the overlay ERC" target="_blank" ng-click="vm.showERC(vm.substitution.overlayID)">overlay</a>
       <!--<md-button class="md-raised" analytics-on="click" title="compare base and substituted display file" ng-disabled="(vm.isEmpty(vm.fJob.steps))" ng-click="vm.compareSubstBaseHtml()">

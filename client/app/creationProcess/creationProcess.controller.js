@@ -148,12 +148,18 @@
             vm.isValid = val;
         }
 
-        function showToast(error){
+        function showToast(error) {
             var text = 'Saved successfully!';
             var toastClass = 'creationProcess-success-toast';
-            if(angular.isDefined(error)){
+            if (angular.isDefined(error)) {
                 text = 'Failed saving!';
                 toastClass = 'creationProcess-failure-toast';
+                if(error.data && error.data.error) {
+                    text += '\n' + error.data.error;
+                }
+                if (error.data && error.data.log) {
+                    text += '\n' + error.data.log;
+                }
             }
             $mdToast.show(
                 $mdToast
@@ -161,7 +167,7 @@
                     .textContent(text)
                     .position('top right')
                     .toastClass(toastClass)
-                    .hideDelay(3000)
+                    .hideDelay(6000)
                     .parent($document[0].body.children.main.children["ui-view"])
             );
         }

@@ -51,7 +51,7 @@
                                                                                 '/data/' + inspect.publication.metadata.o2r.mainfile);
                     }else{
                         scope.selectedCode = publications.getContentById(inspect.publication, '/api/v1/compendium/' + inspect.publication.id + 
-                        '/data/' + inspect.code[0]);;
+                        '/data/' + inspect.code[0]);
                     }
 
                 }

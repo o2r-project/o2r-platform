@@ -83,7 +83,7 @@
                             '<table>' + 
                             '<tr><td>Name: </td><td>' + author.data.name + '</td></tr>' +
                             '<tr><td>ORCID: </td><td><img src="img/orcid.png" alt="ORCID icon" height="12" />&nbsp;<a href="https://orcid.org/' + author.data.id + '">orcid.org/' + author.data.id + '</a></td></tr>' +
-                            '<tr><td>Level (<a href="http://o2r.info/o2r-web-api/user/#user-levels" title="Information about user levels">?</a>): </td><td>' + getUserGroup(author.data.level) + '</td></tr>' +
+                            '<tr><td>Level (<a href="https://o2r.info/api/user/#user-levels" title="Information about user levels">?</a>): </td><td>' + getUserGroup(author.data.level) + '</td></tr>' +
                             '</table>' +
                             '<br><br>If you want to change your user level, please send an email to daniel.nuest@uni-muenster.de.'
                         )

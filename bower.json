@@ -5,7 +5,7 @@
     "Markus Konkol",
     "Jan Suleiman"
   ],
-  "description": "client application for the o2r platform <http://o2r.info>",
+  "description": "client application for the o2r platform <https://o2r.info>",
   "main": "",
   "license": "Apache-2.0",
   "ignore": [
