@@ -2,9 +2,7 @@
     <form name="adminForm" flex="70">
         <md-card>
             <md-card-title>
-                <md-card-title-text class="md-headline">
-                    Admin Area
-                </md-card-title-text>
+                <md-card-title-text class="md-headline">Admin Area</md-card-title-text>
             </md-card-title>
             <md-card-content>
                 <md-input-container>
@@ -15,14 +13,10 @@
                     <thead align="left"><tr><th>Name</th><th>Id</th><th>Level</th><th></th></tr></thead>
                     <tr ng-repeat="user in vm.users | filter:vm.searchText">
                         <td>
-                            <md-input-container>
-                                {{user.name}}
-                            </md-input-container>
+                            <md-input-container>{{user.name}}</md-input-container>
                         </td>
                         <td>
-                            <md-input-container>
-                            {{user.id}}
-                            </md-input-container>
+                            <md-input-container>{{user.id}}</md-input-container>
                         </td>
                         <td>
                             <md-input-container>
@@ -44,9 +38,7 @@
     <div flex="30">
         <md-card>
             <md-card-title>
-                <md-card-title-text class="md-headline">
-                    User levels
-                </md-card-title-text>
+                <md-card-title-text class="md-headline">User levels</md-card-title-text>
             </md-card-title>
             <md-card-content>
                 The o2r Web API requires specific <em>user levels</em> for some actions, such as creating or shipping compendia. A list of levels and their permissions is available <a href="https://o2r.info/api/user/#user-levels">here</a>.

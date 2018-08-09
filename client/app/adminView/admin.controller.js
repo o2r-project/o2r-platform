@@ -5,8 +5,8 @@
         .module('starter')
         .controller('AdminController', AdminController);
     
-    AdminController.$inject = ['$scope', '$log', '$state', '$document', '$mdToast', '$mdDialog', 'admin', 'env', 'httpRequests', 'login'];
-    function AdminController($scope, $log, $state, $document, $mdToast, $mdDialog, admin, env, httpRequests, login){
+    AdminController.$inject = ['$log', '$state', '$document', '$mdToast', '$mdDialog', 'admin', 'env', 'httpRequests', 'login'];
+    function AdminController($log, $state, $document, $mdToast, $mdDialog, admin, env, httpRequests, login) {
         var logger = $log.getInstance('AdminCtrl');
         var vm = this;
         vm.users = admin;
@@ -21,8 +21,8 @@
         function activate(){
             // if user has not the right user level, the user will be forwarded to 404 page
             httpRequests.getSingleUser(login.getUser().orcid)
-                .then(function(res){
-                    if(res.data.level < vm.levels.editors){
+                .then(function (res) {
+                    if (res.data.level < vm.levels.editors) {
                         $state.go('404');
                     }
                 });
@@ -39,25 +39,27 @@
 
             $mdDialog.show(confirm).then(function(){
                 httpRequests.setUserLevel(id, level)
-                    .then(function(response){
+                    .then(function (response) {
                         logger.info(response);
                         showToast();
                     })
                     .catch(function(e){
                         showToast(e);
                     });
-            }, function(){});
+            });
         }
 
-        function disable(u){
-            if(typeof u.level == 'number') return false;
+        function disable(u) {
+            if (typeof u.level === 'number') {
+                return false;
+            }
             return true;
         }
 
         function showToast(error){
             var text = 'Saved successfully';
             var tClass = 'creationProcess-success-toast';
-            if(angular.isDefined(error)){
+            if (angular.isDefined(error)) {
                 text = 'Failed saving!';
                 tClass = 'creationProcess-failure-toast';
             }

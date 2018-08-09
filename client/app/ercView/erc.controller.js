@@ -5,12 +5,10 @@
         .module('starter')
         .controller('ErcController', ErcController);
 
-    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header', 
-                                '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 
-                                    'compendium', 'recipient', 'shipmentInfo'];
+    ErcController.$inject = ['$scope', '$stateParams', '$log', '$state', '$window', '$mdDialog', 'erc', 'publications', 'icons', 'header',
+                                '$mdSidenav', 'env', 'ngProgressFactory', 'httpRequests', 'login', 'compFJobSuccess', 'jobs', 'compendium', 'recipient', 'shipmentInfo'];
     function ErcController($scope, $stateParams, $log, $state, $window, $mdDialog, erc, publications, icons, header, 
-                                $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, 
-                                    compendium, recipient, shipmentInfo){
+                                $mdSidenav, env, ngProgressFactory, httpRequests, login, compFJobSuccess, jobs, compendium, recipient, shipmentInfo){
         var logger = $log.getInstance('ErcCtrl');
         var defView = {};
         defView.state = 'erc.reproduce';
@@ -82,9 +80,9 @@
 
         /////
         var bindings = vm.publication.metadata.o2r.interaction;
-        for (let binding in bindings){
+        for(let binding in bindings){
             httpRequests.runManipulationService(bindings[binding]).then(function(data){
-                logger.info('Started service: %s', data)
+                logger.info('Started service: %s', data);
             });
         }
 
@@ -107,7 +105,7 @@
 
         function switchTab() {
             vm.currentNavItem = 'manipulate';
-            $state.go('erc.manipulate')
+            $state.go('erc.manipulate');
         }
 
         function activate(){
@@ -156,8 +154,8 @@
                         base.compFJobSucc = result.data;
 
                         let html = {};
-                        html.base = base.compFJobSucc.steps.check.display.diff // "/api/v1/job/<job_id/path/to/html>"
-                        html.subst = subst.compFJobSucc.steps.check.display.diff  // "/api/v1/job/<job_id/path/to/html>"
+                        html.base = base.compFJobSucc.steps.check.display.diff; // "/api/v1/job/<job_id/path/to/html>"
+                        html.subst = subst.compFJobSucc.steps.check.display.diff;  // "/api/v1/job/<job_id/path/to/html>"
 
                         $mdDialog.show({
                             template: '<md-dialog aria-label="check results" class="substitute_magnifier"><o2r-compare-base-subst o2r-base-html="'+html.base+'" o2r-subst-html="'+html.subst+'" flex="100"></o2r-compare-base-subst></md-dialog>',
@@ -221,7 +219,7 @@
 			})
             .catch(function (err){
                 logger.info(err);
-            });     
+            });
         }
 
         function publishInZenodo(){
@@ -229,12 +227,12 @@
                 .then(function (res){
                     httpRequests.publishERC(res.data[0])
                     .then(function (res2){
-                        logger.info("published")
-                        logger.info(res2)
+                        logger.info("published");
+                        logger.info(res2);
                     })
                     .catch(function (err2){
                         logger.info(err2);
-                    })
+                    });
                 })
                 .catch(function (err){
                     logger.info(err);

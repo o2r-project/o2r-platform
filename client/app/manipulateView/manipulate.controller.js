@@ -40,8 +40,8 @@
         });
 
         $scope.$on('broadcastSelection', function(e, d){
-            console.log(e)
-            console.log(d)
+            console.log(e);
+            console.log(d);
         })
 
         function buildManipulationView(item){

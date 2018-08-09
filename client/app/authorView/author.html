@@ -30,7 +30,6 @@
 			</md-card-content>
 		</md-card>
 	</div>
-
 	<!-- list of compendia -->
 	<div layout="column" flex="60" flex-offset="15">
 		<md-card ng-if="vm.allPubs">
@@ -39,8 +38,6 @@
 					<md-list-item class="md-2-line">
 						<div class="md-list-item-text" layout="row">
 							<h3 flex>TITLE</h3>
-							<!--<h4 flex>CREATED ON</h4>-->
-							<!--<p flex>USER</p>-->
 						</div>
 					</md-list-item>
 					<md-divider></md-divider>
@@ -61,16 +58,13 @@
 				</md-list>
 			</md-card-content>
 		</md-card>
-		
 		<!-- Message if not a single compendium has been uploaded yet -->
 		<md-card ng-if="!vm.allPubs">
 			<md-card-content>
 				<span>No compendia uploaded yet.</span>
 			</md-card-content>
 		</md-card>
-
 	</div>
-
 	<!-- metadata panel -->
 	<div layout="column" class="author-metadata">
 		<o2r-metadata-view o2r-comp="{{vm.selectedComp}}" ng-if="vm.allPubs"></o2r-metadata-view>

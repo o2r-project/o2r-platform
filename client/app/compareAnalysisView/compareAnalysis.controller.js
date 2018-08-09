@@ -5,8 +5,8 @@
         .module('starter')
         .controller('CompareAnalysisController', CompareAnalysisController);
 
-    CompareAnalysisController.$inject = ['$scope', '$stateParams', '$log', '$mdDialog', 'env', 'icons', 'jobs', 'httpRequests', 'compendium'];
-    function CompareAnalysisController($scope, $stateParams, $log, $mdDialog, env, icons, jobs, httpRequests, compendium) {
+    CompareAnalysisController.$inject = ['$stateParams', '$log', '$mdDialog', 'env', 'icons', 'jobs', 'httpRequests', 'compendium'];
+    function CompareAnalysisController($stateParams, $log, $mdDialog, env, icons, jobs, httpRequests, compendium) {
         var logger = $log.getInstance('compareAnalysisCtrl');
         var vm = this;
         vm.icons = icons;

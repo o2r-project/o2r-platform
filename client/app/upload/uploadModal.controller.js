@@ -5,17 +5,15 @@
         .module('starter')
         .controller('UploadModalController', UploadModalController);
     
-    UploadModalController.$inject = ['$scope', '$stateParams', '$mdDialog', '$log', 'metadata', 'Upload', 'env', 'icons', 'jobs', '$location', 'httpRequests'];
+    UploadModalController.$inject = ['$scope', '$mdDialog', '$log', 'Upload', 'env', 'icons', '$location', 'httpRequests'];
 
-    function UploadModalController($scope, $stateParams, $mdDialog, $log, metadata, Upload, env, icons, jobs, $location, httpRequests){
+    function UploadModalController($scope, $mdDialog, $log, Upload, env, icons, $location, httpRequests) {
         var logger = $log.getInstance('UploadCtrl');
-        // var authorId = $stateParams.authorid; // id from author
         var authorId;
         var uploadSuccess = false;
         var newErcId = '';
         var vm = this;
         vm.icons = icons;
-        // vm.checkRunAnalysis = true;
         vm.uploadedERCid = false;
         vm.cancel = () => {
             $mdDialog.cancel(); 

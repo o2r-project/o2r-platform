@@ -5,9 +5,9 @@
         .module('starter')
         .controller('AuthorController', AuthorController);
 
-        AuthorController.$inject = ['httpRequests','$scope', '$stateParams','$log', '$document', '$mdDialog', 'metadata', 'authorInfo', 'author', 'Upload', 'env', 'header', 'icons'];
+        AuthorController.$inject = ['$scope', '$log', '$document', '$mdDialog', 'authorInfo', 'author', 'Upload', 'env', 'header', 'icons'];
 
-        function AuthorController(httpRequests, $scope, $stateParams, $log, $document, $mdDialog, metadata, authorInfo, author, Upload, env, header, icons){
+        function AuthorController($scope, $log, $document, $mdDialog, authorInfo, author, Upload, env, header, icons){
             var logger = $log.getInstance('AuthorCtrl');
             var vm = this; 
 
@@ -40,12 +40,6 @@
 
             function activate(){
                 header.setTitle('o2r - Author page');
-
-                // httpRequests
-                //     .setUserLevel('0000-0003-1042-8548', 42)
-                //     .then(function(response){
-                //         logger.info('set user level', response);
-                //     });
             }
             
             function getAuthorInfo(){
