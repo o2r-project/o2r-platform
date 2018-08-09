@@ -111,7 +111,7 @@
                             vm.updateLicense('data', vm.dataLicense[newVal].id);
                         } catch (e){}
                     });
-                    useTemplateLicense('open');
+                    //useTemplateLicense('open');
                 })
                 .catch(function(err){
                     logger.info(err)

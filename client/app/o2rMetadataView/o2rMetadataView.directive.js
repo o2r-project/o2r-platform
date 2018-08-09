@@ -49,6 +49,7 @@
                 scope.destroy = false;
                 comp = angular.fromJson(value);
                 scope.o2r = comp.metadata.o2r;
+                console.log(scope.o2r.description);
                 scope.compId = comp.id;
                 logger.info('received compendium with id:', scope.compId);
                 var maplayer;

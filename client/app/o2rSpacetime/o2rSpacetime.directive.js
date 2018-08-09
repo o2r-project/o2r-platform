@@ -7,8 +7,8 @@
 
     angular.module('starter.o2rSpacetime')
         .directive('o2rSpacetime', o2rSpacetime);
-    o2rSpacetime.$inject = ['$log', 'creationObject', 'leafletDrawEvents', 'leafletData', '$interval'];
-    function o2rSpacetime($log, creationObject, leafletDrawEvents, leafletData, $interval){
+    o2rSpacetime.$inject = ['$log', 'creationObject', 'leafletData', '$interval'];
+    function o2rSpacetime($log, creationObject, leafletData, $interval){
         return {
             restrict: 'E',      
             scope: true,
@@ -63,34 +63,34 @@
                             "geojson": {
                                 "type": "Feature",
                                 "bbox": [
-                                    -181.0,
-                                    181.0,
-                                    -181.0,
-                                    181.0
+                                    -180.0,
+                                    170.0,
+                                    -170.0,
+                                    170.0
                                 ],
                                 "geometry": {
                                     "type": "Polygon",
                                     "coordinates": [
                                         [
                                             [
-                                            181.0,
-                                            181.0
+                                            170.0,
+                                            170.0
                                             ],
                                             [
-                                            -181.0,
-                                            181.0
+                                            -170.0,
+                                            170.0
                                             ],
                                             [
-                                            -181.0,
-                                            -181.0
+                                            -170.0,
+                                            -170.0
                                             ],
                                             [
-                                            181.0,
-                                            -181.0
+                                            170.0,
+                                            -170.0
                                             ],
                                             [
-                                            181.0,
-                                            181.0
+                                            170.0,
+                                            170.0
                                             ]
                                         ]
                                     ]
@@ -118,7 +118,7 @@
                         center: {
                             lat: 42.20133,
                             lng: 5.19110,
-                            zoom: 4
+                            zoom: 1
                         },
                         drawOptions: {
                             position: "bottomright",
