@@ -2,24 +2,18 @@
 	<md-card>
 		<md-toolbar>
 			<div class="md-toolbar-tools">
-                <h4 class="white-font">Metadata</h4>
+                <h4 class="white-font">Metadata 
+                    <md-button class="md-raised" ui-sref="creationProcess({ercid: compId})" aria-label="Edit Metadata">
+                        <md-icon class="white-font" md-svg-src="{{icons.edit}}"></md-icon>
+                    </md-button>
+                </h4>
 			</div>
 		</md-toolbar>
-		<md-card-content layout="column">
-            <div layout="row">
-                <span flex></span>
-                <md-button class="md-fab md-primary" ui-sref="creationProcess({ercid: compId})" aria-label="Edit Metadata">
-                    <md-icon class="white-font" md-svg-src="{{icons.edit}}"></md-icon>
-                </md-button>
-            </div>
+		<md-card-content layout="column">               
+            <h4>Title</h4> {{o2r.title}}
             <h4>Author(s)</h4>
-            <div ng-repeat="author in o2r.creators">
-                <p layout="column">
-                    {{author.name}} 
-                </p>
-            </div>
-            <div layout="column">
-                <h4>Title</h4> {{o2r.title}}    
+            <div >
+                <p ng-repeat="author in o2r.creators">{{author.name}}</p>
                 <h4>Abstract</h4> 
                 <p ng-text-truncate="o2r.description" ng-tt-chars-threshold="300" ng-tt-more-label="read more" ng-tt-less-label="read less"></p>   
             </div>

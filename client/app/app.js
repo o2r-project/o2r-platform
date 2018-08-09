@@ -175,11 +175,6 @@
                 controller: 'RequiredMetaController',
                 controllerAs: 'vm'
             })
-            .state('creationProcess.optionalMetadata', {
-                templateUrl: "app/creationProcess/optionalMetadata.html",
-                controller: 'OptionalMetaController',
-                controllerAs: 'vm'
-            })
             .state('creationProcess.spacetimeMetadata', {
                 templateUrl: "app/creationProcess/spacetimeMetadata.html"
             })

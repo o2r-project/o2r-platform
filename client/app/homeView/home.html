@@ -4,120 +4,97 @@
 	<md-content class="md-padding" layout-xs="column" layout="row" layout-align="center">
 		<!-- Create ERC -->
     <div id="home-create-erc" flex-xs="" flex-gt-xs="40" layout="column">
-      <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="">
-        <md-card-title>
-          <md-card-title-text><test-directive></test-directive>
-            <span class="md-headline">Create</span>
+      	<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="">
+        	<md-card-title>
+				<md-card-title-text><test-directive></test-directive>
+					<span class="md-headline">Create</span>
 						<div ng-show="!vm.loggedIn">You have to login first.</div>
-					</md-card-title-text>
-					<md-menu>
-						<md-button id="home-create-examples" aria-label="example ercs" ng-click="vm.openMenu($mdMenu, $event)">
-							Examples
-						</md-button>
-						<md-menu-content width="3">
-							<md-menu-item>
-								<span md-menu-origin>Examples</span>
-							</md-menu-item>
-							<!--<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, 'metatainer')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
-									Metatainer
-								</md-button>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, 'sleeptainer')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
-									Sleeptainer
-								</md-button>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, 'markdowntainer-units')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
-									Markdowntainer-Units
-								</md-button>
-							</md-menu-item>-->
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/workspace-rmd-data')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
+				</md-card-title-text>
+				<md-menu>
+					<md-button id="home-create-examples" aria-label="example ercs" ng-click="vm.openMenu($mdMenu, $event)">Examples</md-button>
+					<md-menu-content width="3">
+						<md-menu-item>
+							<span md-menu-origin>Examples</span>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-click="vm.useExample(vm.publicLink, '/workspace-rmd-data')">
+								<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
 									R Markdown
-								</md-button>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/workspace-rmd-data-other')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
-									R Markdown (different data)
-								</md-button>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/workspace-rmd-data-random')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
-									R Markdown (random plot)
-								</md-button>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/Aquestiondrivenprocess')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-click="vm.useExample(vm.publicLink, '/workspace-rmd-data-other')">
+								<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
+										R Markdown (different data)
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-click="vm.useExample(vm.publicLink, '/workspace-rmd-data-random')">
+								<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
+										R Markdown (random plot)
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-click="vm.useExample(vm.publicLink, '/Aquestiondrivenprocess')">
+								<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
 									Garcia et al., <em>A question driven socio-hydrological modeling process</em>, <a href="https://doi.org/10.5194/hess-20-73-2016" target="_blank">10.5194/hess-20-73-2016</a>
-								</md-button>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/spacetime.zip')">
-									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-click="vm.useExample(vm.publicLink, '/spacetime.zip')">
+								<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
 									Pebesma, <em>spacetime: Spatio-Temporal Data in R</em>, <a href="https://doi.org/10.18637/jss.v051.i07" target="_blank">10.18637/jss.v051.i07</a>
-								</md-button>
-							</md-menu-item>
-						</md-menu-content>
-					</md-menu>
-		</md-card-title>
-		<form name="scieboSubmit" ng-submit="vm.submit()" flex-offset="20">
-			<md-input-container md-no-float class="md-icon-float md-block" >
-				<div ng-if="!vm.validUrl">Url or path not valid</div>
-				<input type="url" name="scieboUrl" placeholder="Insert link to public folder" ng-model="vm.scieboUrl" flex="70" required>
-			</md-input-container>
-			<md-input-container md-no-float class="md-icon-float md-block home-input-folder">
-				<input type="text" placeholder="Folder name (optional)" ng-model="vm.scieboPath" flex="70">
-			</md-input-container>	
-			<md-input-container md-no-float class="md-icon-float md-block home-input-analysis">
-				<!--<md-checkbox class="md-primary" ng-model="vm.checkRunAnalysis">
-							Start analysis after upload
-				</md-checkbox>-->	
-				<md-button ng-click="vm.sendScieboUrl(vm.scieboUrl, vm.scieboPath, vm.checkRunAnalysis)" class="md-primary md-raised white-font" ng-disabled="!vm.loggedIn || !scieboSubmit.scieboUrl.$valid">Load from public share</md-button>
-			</md-input-container>
-			<p>OR</p>
-			<md-button ng-click="vm.openDialog($event)" class="go-button md-primary md-raised white-font" ng-disabled="!vm.loggedIn">Upload Workspace as .zip file</md-button>	
-		</form>			
-      </md-card>
-		</div>    
+							</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</md-card-title>
+			<form name="scieboSubmit" ng-submit="vm.submit()" flex-offset="20">
+				<md-input-container md-no-float class="md-icon-float md-block" >
+					<div ng-if="!vm.validUrl">Url or path not valid</div>
+					<input type="url" name="scieboUrl" placeholder="Insert link to public folder" ng-model="vm.scieboUrl" flex="70" required>
+				</md-input-container>
+				<md-input-container md-no-float class="md-icon-float md-block home-input-folder">
+					<input type="text" placeholder="Folder name (optional)" ng-model="vm.scieboPath" flex="70">
+				</md-input-container>	
+				<md-input-container md-no-float class="md-icon-float md-block home-input-analysis">
+					<md-button ng-click="vm.sendScieboUrl(vm.scieboUrl, vm.scieboPath, vm.checkRunAnalysis)" class="md-primary md-raised white-font" ng-disabled="!vm.loggedIn || !scieboSubmit.scieboUrl.$valid">Load from public share</md-button>
+				</md-input-container>
+				<p>OR</p>
+				<md-button ng-click="vm.openDialog($event)" class="go-button md-primary md-raised white-font" ng-disabled="!vm.loggedIn">Upload Workspace as .zip file</md-button>	
+			</form>			
+      	</md-card>
+	</div>    
 	<!-- Inspect ERC -->
 	<div id="home-inspect-erc" flex-xs="" flex-gt-xs="40" layout="column">
-      <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="" style="height:100%;">
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Examine</span>
-					</md-card-title-text>
-					<md-menu ng-hide="true">
-						<md-button id="home-inspect-examples" aria-label="example ids" ng-click="vm.openMenu($mdMenu, $event)">
-							Examples
-						</md-button>
-						<md-menu-content>
-							<md-menu-item>
-								<span md-menu-origins>Examples</span>
-							</md-menu-item>
-							<md-menu-item>
-								<md-button>
-									1234abv
-								</md-button>
-							</md-menu-item>
-						</md-menu-content>
-					</md-menu>
-        </md-card-title>
-				<form ng-submit="vm.submit(vm.ercID)" flex-offset="20">
-					<md-input-container md-no-float class="md-icon-float md-block" >
-						<input type="text" placeholder="Inspect ERC: Enter ID" flex="70" ng-model="vm.ercID">
-						<md-button type="submit" class="go-button md-primary md-raised white-font">Go</md-button>
-					</md-input-container>
-				</form>
-      </md-card>
+		<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="" style="height:100%;">
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">Examine</span>
+				</md-card-title-text>
+				<md-menu ng-hide="true">
+					<md-button id="home-inspect-examples" aria-label="example ids" ng-click="vm.openMenu($mdMenu, $event)">
+						Examples
+					</md-button>
+					<md-menu-content>
+						<md-menu-item>
+							<span md-menu-origins>Examples</span>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button>
+								1234abv
+							</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</md-card-title>
+			<form ng-submit="vm.submit(vm.ercID)" flex-offset="20">
+				<md-input-container md-no-float class="md-icon-float md-block" >
+					<input type="text" placeholder="Inspect ERC: Enter ID" flex="70" ng-model="vm.ercID">
+					<md-button type="submit" class="go-button md-primary md-raised white-font">Go</md-button>
+				</md-input-container>
+			</form>
+		</md-card>
     </div>
 	</md-content>
 	<div layout="row">
