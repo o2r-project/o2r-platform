@@ -6,10 +6,10 @@
         .controller('CreationProcessController', CreationProcessController);
 
     CreationProcessController.$inject = ['$scope', '$document', '$log', '$state', '$mdDialog', '$mdToast', 'header', 'creationService', 
-                                            'creationObject', 'httpRequests', 'icons', '$window'];
+                                            'creationObject', 'httpRequests', 'icons', '$window', 'ngProgressFactory'];
 
     function CreationProcessController($scope, $document, $log, $state, $mdDialog, $mdToast, header, creationService, 
-                                            creationObject, httpRequests, icons, $window){
+                                            creationObject, httpRequests, icons, $window, ngProgressFactory){
         var logger = $log.getInstance('CreationPro');
         //default substate
         var defView = 'creationProcess.requiredMetadata';
@@ -116,6 +116,10 @@
         }
 
         function updateMetadata(){
+            var progressbar = ngProgressFactory.createInstance();
+			progressbar.setHeight('10px');
+            progressbar.start();
+            
             creationObject.removeArtifacts("keywords");
             creationObject.removeArtifacts("paperLanguage");
             creationObject.removeArtifacts("researchQuestions");
@@ -130,6 +134,7 @@
                     vm.ercURL= "#!/erc/" + erc.id;
                     vm.showERC=true;
                     saved = true;
+                    progressbar.complete();
                     showToast();
                     vm.saveOrUpdate = "Update";
                 })
