@@ -5,9 +5,9 @@
         .module('starter')
         .controller('UIBindingsController', UIBindingsController);
     
-    UIBindingsController.$inject = ['$scope', '$log', 'creationObject'];
+    UIBindingsController.$inject = ['$log', 'creationObject'];
 
-    function UIBindingsController($scope, $log, creationObject){
+    function UIBindingsController($log, creationObject){
         var logger = $log.getInstance('UiBindings');
         var vm = this;
             vm.erc = creationObject.get();
