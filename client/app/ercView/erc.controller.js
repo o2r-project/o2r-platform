@@ -48,17 +48,8 @@
 
         vm.inspect = {};
         vm.inspect.data = vm.publication.metadata.o2r.inputfiles;
-        /* TODO
-        Replace this code with the right path to code files as soon as metadata contains this information
-        */
+
         vm.inspect.code = [];
-        /*
-        vm.inspect.code.push({
-            path: vm.publication.metadata.raw.file.filepath,
-            type: vm.publication.metadata.raw.file.mimetype,
-            name: vm.publication.metadata.raw.file.filename
-        });
-        */
 
         vm.loggedIn = login.isLoggedIn();
         vm.shipped = false;
@@ -90,6 +81,12 @@
         activate();
 
         /////
+        var bindings = vm.publication.metadata.o2r.interaction;
+        for (let binding in bindings){
+            httpRequests.runManipulationService(bindings[binding]).then(function(data){
+                logger.info('Started service: %s', data)
+            });
+        }
 
         $(document).ready(function(){
             setTimeout(function(){ 

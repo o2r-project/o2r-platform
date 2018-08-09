@@ -30,9 +30,7 @@
         $scope.$watch('vm.selectedTab', function(newValue, oldVal){
             buildManipulationView(newValue);
             $log.debug('Tab changed to object: %s', newValue);
-            httpRequests.runManipulationService(vm.manipulations[newValue]).then(function(data){
-                console.log(data)
-            });
+
             vm.query = 'http://localhost:' + vm.manipulations[newValue].port + '/' + vm.manipulations[newValue].result.value.replace(/\s/g, '').toLowerCase() + '?newValue=' + vm.manipulations[newValue].code.parameter.val;
             $scope.$watch('vm.threshold', function(newVal, oldVal){
                 if (newVal !=null){
