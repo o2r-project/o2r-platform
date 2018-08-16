@@ -82,8 +82,7 @@ services:
   #    - elasticsearch
 
   muncher:
-    image: o2rproject/o2r-muncher:0.19.0
-    restart: unless-stopped
+    image: o2rproject/o2r-muncher:0.21.0
     depends_on:
       - mongodb
       - configmongodb
@@ -93,20 +92,21 @@ services:
       # FIXME: remove mount to volumes, only works under Linux, see https://github.com/o2r-project/o2r-muncher/issues/80
       - /var/lib/docker/volumes/:/var/lib/docker/volumes
     environment:
-      - "MUNCHER_MONGODB=mongodb://mongodb:27017"
+      - "MUNCHER_MONGODB=mongodb://mongodb:27017/"
       - MUNCHER_PORT=8080
       - MUNCHER_VOLUME=o2rplatform_o2rstorage
       - MUNCHER_CONTAINER_USER=root
       - MUNCHER_CONTAINERIT_USER=root
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:ae16160"
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
       - MUNCHER_SAVE_IMAGE_TARBALL=false # saves space and time during dev
+      - MUNCHER_CONTAINERIT_IMAGE=o2rproject/containerit:geospatial-0.5.0.9000
+      - MUNCHER_CONTAINERIT_FILTER_BASE_IMAGE_PKGS=true
       #- "MUNCHER_META_TOOL_CONTAINER=meta:dev"
       #- MUNCHER_ALLOW_INVALID_METADATA=true
 
   loader:
     image: o2rproject/o2r-loader:0.11.0
-    restart: unless-stopped
     depends_on:
       - mongodb
       - configmongodb
@@ -114,33 +114,32 @@ services:
       - o2rstorage:/tmp/o2r
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - "LOADER_MONGODB=mongodb://mongodb:27017"
+      - "LOADER_MONGODB=mongodb://mongodb:27017/"
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=o2rplatform_o2rstorage
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:ae16160"
+      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
       #- "LOADER_META_TOOL_CONTAINER=meta:dev"
       
   informer:
-    image: o2rproject/o2r-informer:0.3.0
-    restart: unless-stopped
+    image: o2rproject/o2r-informer:0.5.0
     depends_on:
       - mongodb
       - configmongodb
     environment:
-      - "INFORMER_MONGODB=mongodb://mongodb"
+      - "INFORMER_MONGODB=mongodb://mongodb:27017/"
       - INFORMER_MONGODB_HOST=mongodb
+      - INFORMER_MONGODB_PORT=27017
       - INFORMER_PORT=8082
       - DEBUG=informer,informer:*
 
   bouncer:
-    image: o2rproject/o2r-bouncer:0.12.0
-    restart: unless-stopped
+    image: o2rproject/o2r-bouncer:0.12.1
     depends_on:
       - mongodb
       - configmongodb
     environment:
-      - "BOUNCER_MONGODB=mongodb://mongodb"
+      - "BOUNCER_MONGODB=mongodb://mongodb:27017/"
       - BOUNCER_PORT=8083
       - DEBUG=bouncer,bouncer:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
@@ -152,7 +151,6 @@ services:
 
   finder:
     image: o2rproject/o2r-finder:0.6.2
-    restart: unless-stopped
     depends_on:
       - mongodb
       - configmongodb
@@ -160,7 +158,7 @@ services:
     volumes:
       - o2rstorage:/tmp/o2r
     environment:
-      - "FINDER_MONGODB=mongodb://mongodb"
+      - "FINDER_MONGODB=mongodb://mongodb:27017/"
       - FINDER_PORT=8084
       - DEBUG=finder,finder:*
       - ELASTIC_SEARCH_URL=elasticsearch:9200
@@ -170,7 +168,6 @@ services:
 
   transporter:
     image: o2rproject/o2r-transporter:0.6.0
-    restart: unless-stopped
     depends_on:
       - mongodb
       - configmongodb
@@ -178,13 +175,12 @@ services:
       - o2rstorage:/tmp/o2r
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      - "TRANSPORTER_MONGODB=mongodb://mongodb:27017"
+      - "TRANSPORTER_MONGODB=mongodb://mongodb:27017/"
       - TRANSPORTER_PORT=8081
       - DEBUG=transporter,transporter:*
 
   shipper:
     image: o2rproject/o2r-shipper:9ee605f
-    restart: unless-stopped
     depends_on:
       - mongodb
       - configmongodb
@@ -199,20 +195,18 @@ services:
 
   substituter:
     image: o2rproject/o2r-substituter:0.5.0
-    restart: unless-stopped
     depends_on:
       - mongodb
       - configmongodb
     volumes:
       - o2rstorage:/tmp/o2r
     environment:
-      - "SUBSTITUTER_MONGODB=mongodb://mongodb"
+      - "SUBSTITUTER_MONGODB=mongodb://mongodb:27017/"
       - SUBSTITUTER_PORT=8090
       - DEBUG=substituter,substituter:*
 
   inspecter:
     image: o2rproject/o2r-inspecter:0.0.1
-    restart: unless-stopped
     volumes:
       - o2rstorage:/tmp/o2r
     environment:
@@ -230,13 +224,12 @@ services:
      - DEBUG=bindings
      
   guestlister:
-    image: o2rproject/o2r-guestlister:0.2.0
-    restart: unless-stopped
+    image: o2rproject/o2r-guestlister:0.2.1
     depends_on:
       - mongodb
       - configmongodb
     environment:
-      - "GUESTLISTER_MONGODB=mongodb://mongodb"
+      - "GUESTLISTER_MONGODB=mongodb://mongodb:27017/"
       - GUESTLISTER_PORT=8383
       - DEBUG=guestlister,guestlister:*
       - OAUTH_URL_CALLBACK=${OAUTH_URL_CALLBACK}
