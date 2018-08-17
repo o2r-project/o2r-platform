@@ -180,7 +180,7 @@ services:
       - DEBUG=transporter,transporter:*
 
   shipper:
-    image: o2rproject/o2r-shipper:9ee605f
+    image: o2rproject/o2r-shipper:8f95fd6
     depends_on:
       - mongodb
       - configmongodb
