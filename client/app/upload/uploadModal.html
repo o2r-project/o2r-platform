@@ -21,22 +21,10 @@
 							ngf-drop="vm.selected($file)" 
 							ng-model="vm.file" 
 							name="file" 
-							ngf-accept="'.zip'"><span ng-hide="vm.f.name">Click <br/ >or <br/> Drag 'n Drop</span><span ng-show="vm.f.name">{{vm.f.name}}</span></div>
+							ngf-accept="'.zip'"><span ng-hide="vm.f.name">Click<br />or<br/>Drag 'n Drop</span><span ng-show="vm.f.name">{{vm.f.name}}</span></div>
 					</form>
 				</div>
 
-				<div ng-hide="vm.doneButton" class="upmod-checkbox">
-					<!-- <div>	
-						<md-checkbox class="md-primary" ng-model="vm.checkRunAnalysis">
-							Automatically start analysis after upload
-						</md-checkbox>
-					</div> -->
-					<!--<div>	
-						<md-checkbox class="md-primary" ng-model="vm.shipToZenodo">
-							Ship to Zenodo
-						</md-checkbox>
-					</div>-->
-				</div>		
 				<div ng-show="vm.doneButton && vm.checkUpload">
 					<p>File uploaded successfully</p>
 				</div>
