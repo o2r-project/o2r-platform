@@ -412,7 +412,8 @@ md-input-container.md-default-theme.md-input-invalid .md-char-counter, md-input-
 	width: 90%;
     text-align: center;
    	padding: 50px 10px;
-    cursor: pointer;
+	cursor: pointer;
+	color: #888;
 }
 
 .upmod-dropbox.dragover {
