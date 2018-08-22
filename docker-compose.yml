@@ -100,7 +100,7 @@ services:
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
       - MUNCHER_SAVE_IMAGE_TARBALL=false # saves space and time during dev
-      - MUNCHER_CONTAINERIT_IMAGE=o2rproject/containerit:geospatial-0.5.0.9000
+      - MUNCHER_CONTAINERIT_IMAGE=o2rproject/containerit:geospatial-0.5.0.9003
       - MUNCHER_CONTAINERIT_FILTER_BASE_IMAGE_PKGS=true
       #- "MUNCHER_META_TOOL_CONTAINER=meta:dev"
       #- MUNCHER_ALLOW_INVALID_METADATA=true
@@ -118,7 +118,7 @@ services:
       - LOADER_PORT=8088
       - DEBUG=*,-mquery,-express:*,-express-session,-body-parser:*
       - LOADER_VOLUME=o2rplatform_o2rstorage
-      - "MUNCHER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
+      - "LOADER_META_TOOL_CONTAINER=o2rproject/o2r-meta:9198450"
       #- "LOADER_META_TOOL_CONTAINER=meta:dev"
       
   informer:
