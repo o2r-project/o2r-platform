@@ -30,7 +30,7 @@
                 $mdDialog.cancel();
             })
 
-            $scope.$on('loadedAllComps', function(event, data){ //allPubs will be set to comp_meta from metadata factory
+            $scope.$on('loadedAllComps', function(event, data) {
                 vm.allPubs = data;
             });
 

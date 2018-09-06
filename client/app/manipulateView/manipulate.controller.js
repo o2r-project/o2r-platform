@@ -31,13 +31,21 @@
             buildManipulationView(newValue);
             $log.debug('Tab changed to object: %s', newValue);
 
-            vm.query = 'http://localhost:' + vm.manipulations[newValue].port + '/' + vm.manipulations[newValue].result.value.replace(/\s/g, '').toLowerCase() + '?newValue=' + vm.manipulations[newValue].code.parameter.val;
+            vm.query = createUrl(vm.manipulations[newValue].port, vm.manipulations[newValue].result.value, vm.manipulations[newValue].code.parameter.val);
             $scope.$watch('vm.threshold', function(newVal, oldVal){
                 if (newVal !=null){
-                    vm.query = 'http://localhost:' + vm.manipulations[newValue].port + '/' + vm.manipulations[newValue].result.value.replace(/\s/g, '').toLowerCase() + '?newValue=' + newVal;
+                    vm.query = createUrl(vm.manipulations[newValue].port, vm.manipulations[newValue].result.value, newVal);
+                    console.log("query sent " + vm.query)
                 }
             });
         });
+
+        function createUrl(port, result, value){
+            if (typeof value == 'string'){
+                //value = value.substring(1, value.length-1);
+            } 
+            return 'http://localhost:' + port + '/' + result.replace(/\s/g, '').toLowerCase() + '?newValue=' + value;
+        }
 
         $scope.$on('broadcastSelection', function(e, d){
             console.log(e);

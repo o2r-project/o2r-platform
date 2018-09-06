@@ -72,8 +72,10 @@
             }); 
 
             scope.figures = {
-                list: ['Figure 1', 'Figure 2', 'Figure 3', 'Figure 4', 'Figure 5', 'Figure 6', 'Figure 7', 'Figure 8',
-                        'Figure 9', 'Figure 10', 'Figure 11', 'Figure 12'],
+                list: ['All', 'Figure 1', 'Figure 1a', 'Figure 1b', 'Figure 1c', 'Figure 1d', 'Figure 2', 'Figure 2a', 'Figure 2b', 'Figure 2c', 'Figure 2d', 'Figure 3', 'Figure 3a', 'Figure 3b', 'Figure 3c', 
+                        'Figure 4','Figure 4a', 'Figure 4b', 'Figure 4c', 'Figure 4d', 'Figure 4e', 'Figure 4f', 'Figure 5', 'Figure 6', 'Figure 6a', 'Figure 6b', 'Figure 7', 'Figure 8', 'Figure 8a', 'Figure 8b',
+                        'Figure 9', 'Figure 9a', 'Figure 9b', 'Figure 10', 'Figure 10a', 'Figure 10b', 'Figure 10c', 'Figure 11', 'Figure 12', 'Figure 13' , 'Figure 13a' , 'Figure 13b', 'Figure 14' , 'Figure 14a' , 'Figure 14b', 
+                        'Figure 15', 'Figure 16', 'Figure 17', 'Figure 17a', 'Figure 17b'],
                 show: false,
                 selected: null
             };
