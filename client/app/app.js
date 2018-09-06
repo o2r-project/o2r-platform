@@ -457,6 +457,8 @@
                             if(counter == response.data.length){
                                 deferred.resolve(result);
                             }
+                        },function(error) {
+                            $log.debug('Error getting shipments for %s', response.data[i]);
                         });
                     }
                 }

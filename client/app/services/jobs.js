@@ -40,9 +40,13 @@
 
             return deferred.promise;
 
-            function callback1(joblist){
-                $log.debug('in callJobs callback1: %o', joblist);
-                return httpRequests.listSingleJob(joblist.data.results[joblist.data.results.length-1]);
+            function callback1(response){
+                $log.debug('in callJobs callback1: %o', response);
+                if(response && response.data && response.data.results.length > 0) {
+                    return httpRequests.listSingleJob(response.data.results[response.data.results.length-1]);
+                } else {
+                    throw new Error('No jobs found.');
+                }
             }
             function callback2(job){
                 $log.debug('in callJobs callback2: %o', job);
@@ -54,7 +58,7 @@
                 $log.debug('in callJobs errorHandler: %o', e);
                 //overwrite execStatus with empty object
                 setExecStatus({});
-                setJobDone(true);
+                setJobDone(false);
                 deferred.resolve({data: 'No analysis executed yet.'});
             }
         }

@@ -4,9 +4,9 @@
 		<p>Opening Reproducible Research</p>
 	</div>
 	<md-content class="md-padding" layout-xs="column" layout="row" layout-align="center">
-		<!-- Create ERC -->
-		<div id="home-create-erc" flex-xs="" flex-gt-xs="40" layout="column">
-			<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="">
+
+		<div id="home-create-erc" flex-gt-xs="40" layout="column">
+			<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}">
 				<md-card-title>
 					<md-card-title-text>
 						<span class="md-headline">Create</span>
@@ -39,7 +39,7 @@
 								</md-button>
 							</md-menu-item>
 							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/Aquestiondrivenprocess')">
+								<md-button ng-click="vm.useExample(vm.publicLink, '/corpus_aquestiondrivenprocess')">
 									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
 									Garcia et al.,
 									<em>A question driven socio-hydrological modeling process</em>,
@@ -47,7 +47,7 @@
 								</md-button>
 							</md-menu-item>
 							<md-menu-item>
-								<md-button ng-click="vm.useExample(vm.publicLink, '/spacetime.zip')">
+								<md-button ng-click="vm.useExample(vm.publicLink, '/corpus_spacetime.zip')">
 									<md-icon md-svg-src="{{vm.icons.folder}}"></md-icon>
 									Pebesma,
 									<em>spacetime: Spatio-Temporal Data in R</em>,
@@ -57,35 +57,39 @@
 						</md-menu-content>
 					</md-menu>
 				</md-card-title>
-				<form name="scieboSubmit" ng-submit="vm.submit()" flex-offset="20">
+				<form name="scieboSubmit" ng-submit="vm.submit()" flex-offset="5">
+					<div layout="column">
 					<md-input-container md-no-float class="md-icon-float md-block">
 						<div ng-if="!vm.validUrl">Url or path not valid</div>
-						<input type="url" name="scieboUrl" placeholder="Insert link to public folder" ng-model="vm.scieboUrl" flex="70" required>
+						<input type="url" name="scieboUrl" placeholder="Insert link to public folder" ng-model="vm.scieboUrl" flex="90" required>
 					</md-input-container>
 					<md-input-container md-no-float class="md-icon-float md-block home-input-folder">
-						<input type="text" placeholder="Folder name (optional)" ng-model="vm.scieboPath" flex="70">
+						<input type="text" placeholder="Folder name (optional)" ng-model="vm.scieboPath" flex="90">
 					</md-input-container>
 					<md-input-container md-no-float class="md-icon-float md-block home-input-analysis">
-						<md-button ng-click="vm.sendScieboUrl(vm.scieboUrl, vm.scieboPath, vm.checkRunAnalysis)" class="md-primary md-raised white-font"
+						<md-button ng-click="vm.sendScieboUrl(vm.scieboUrl, vm.scieboPath)" class="md-primary md-raised white-font"
 						 ng-disabled="!vm.loggedIn || !scieboSubmit.scieboUrl.$valid">Load from public share</md-button>
 					</md-input-container>
-					<p>OR</p>
-					<md-button ng-click="vm.openDialog($event)" class="go-button md-primary md-raised white-font" ng-disabled="!vm.loggedIn">Upload Workspace as .zip file</md-button>
+					<md-input-container md-no-float class="md-icon-float md-block home-input-analysis">
+						<md-button ng-click="vm.openDialog($event)" class="go-button md-primary md-raised white-font" ng-disabled="!vm.loggedIn">Upload Workspace as .zip file</md-button>
+					</md-input-container>
+					</div>
 				</form>
 			</md-card>
 		</div>
-		<!-- Inspect ERC -->
-		<div id="home-inspect-erc" flex-xs="" flex-gt-xs="40" layout="column">
+		
+		<div id="home-examine-erc" flex-xs="" flex-gt-xs="40" layout="column">
 			<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch="" style="height:100%;">
 				<md-card-title>
 					<md-card-title-text>
 						<span class="md-headline">Examine</span>
-						<div>BETA! Examine published ERC from the <a href="https://sandbox.zenodo.org/communities/o2r/">o2r community on Zenodo Sandbox</a>.</div>
+						<div id="home-examine-examples">BETA! Examine published ERC from the <a href="https://sandbox.zenodo.org/communities/o2r/">o2r community on Zenodo Sandbox</a>, for example <code>10.5072/zenodo.238704</code> or <code>https://sandbox.zenodo.org/record/238798</code></div>
+						<div ng-show="!vm.loggedIn">If you open a compendium from a repository (i.e. not use an ERC ID below) you have to login first.</div>
 					</md-card-title-text>
 				</md-card-title>
-				<form ng-submit="vm.submit(vm.ercID)" flex-offset="20">
+				<form ng-submit="vm.submit(vm.ercID)" flex-offset="5">
 					<md-input-container md-no-float class="md-icon-float md-block">
-						<input type="text" placeholder="Zenodo link" flex="70" ng-model="vm.ercID">
+						<input type="text" placeholder="Zenodo link, DOI, or ERC ID" flex="90" ng-model="vm.ercID">
 						<md-button type="submit" class="go-button md-primary md-raised white-font">Go</md-button>
 					</md-input-container>
 				</form>
@@ -94,8 +98,7 @@
 	</md-content>
 	<div layout="row">
 		<span flex></span>
-		<span>More information about the project can be found at our
-			<a href="https://o2r.info">project website</a>.</span>
+		<span>Find more information on our project website <a href="https://o2r.info">https://o2r.info</a></span>
 		<span flex></span>
 	</div>
 </div>

@@ -14,6 +14,7 @@
         var inspectQuery = $stateParams.inspect || '';
         var cookie = 'introduction_was_seen';
         var vm = this;
+        var progressbar = ngProgressFactory.createInstance();
         vm.icons = icons;
         vm.publicLink = 'https://uni-muenster.sciebo.de/s/hAh8AZLYvHNgNA9';
         vm.useExample = useExample;
@@ -38,19 +39,23 @@
             },
             {
                 element: '#home-create-examples',
-                intro: 'Check out our example workspaces, to see how it works.'
+                intro: 'Check out our example workspaces, to see how the creation of an ERC based on a set of typical research files works.'
             },
             {
-                element: '#home-inspect-erc',
-                intro: 'Type in the ID of an existing ERC to directly see its content.'
+                element: '#home-examine-erc',
+                intro: 'Type in the ID of an existing ERC or a link to an ERC in an online repository (DOI) to examine its content.'
             },
             {
-                element: '#home-inspect-examples',
-                intro: 'Check out our example ERCs, to see how it works.'
+                element: '#home-examine-examples',
+                intro: 'Check out our example ERCs, to see how "finished" ERCs can be examined.'
             },
             {
                 element: '#o2r-erc-info',
-                intro: 'More information about ERC can be found here.'
+                intro: 'More information about ERC can be found in this article.'
+            },
+            {
+                element: '#home-api-spec',
+                intro: 'More information about this reference implementation, the APIs, and the ERC specification can be found here.'
             }
             ],
             tooltipPosition: 'auto',
@@ -100,58 +105,79 @@
             vm.scieboPath = url.split('path=/')[1];
         }
 
-        function sendScieboUrl(url, path, analysis){
-            var progressbar = ngProgressFactory.createInstance();
+        function showErrorToast(error){
+            var text = error;
+            var toastClass = 'creationProcess-failure-toast';
+            $mdToast.show(
+                $mdToast
+                    .simple()
+                    .textContent(text)
+                    .action('Close')
+                    .position('top right')
+                    .toastClass(toastClass)
+                    .hideDelay(false)
+                    .parent($document[0].body.children.main.children["ui-view"])
+            );
+        }
+
+        function loadCallback(response){
+            var id = response.data.id;
+            logger.info('Load of ' + id + ' completed');
+            progressbar.complete();
+            $location.path('/creationProcess/' + id);
+        }
+
+        function publishCallback(response){
+            var id = response.data.id;
+            logger.info('Load of ' + id + ' completed, now publishing...');
+
+            httpRequests
+                .singleCompendium(id)
+                .then(function(resp) {
+                    return httpRequests.updateMetadata(resp.data.id, resp.data.metadata.o2r);
+                })
+                .then(function(response) {
+                    logger.info('Published ' + id);
+                    progressbar.complete();    
+                    $location.path('/erc/' + id);
+                })
+                .catch(loadErrorHandler);
+        }
+
+        function loadErrorHandler(err){
+            logger.info('Load error ' + JSON.stringify(err));
+            $log.debug(err);
+            progressbar.complete();
+            showErrorToast(err);
+        }
+
+        function sendScieboUrl(url, path){
+            logger.info('Create from Sciebo: ' + url);
 			progressbar.setHeight('10px');
 			progressbar.start();
 
-            var id;
             httpRequests
                 .uploadViaSciebo(url, path)
-                .then(scieboCallback)
-                .catch(errorHandler);
-
-            function scieboCallback(response){
-                id = response.data.id;
-                if(analysis){
-                    httpRequests
-                        .newJob({compendium_id: id})
-                        .then(goToCreation)
-                        .catch(errorHandler);
-                } else {
-                    goToCreation();
-                }
-            }
-
-            function goToCreation(){
-                progressbar.complete();
-                $location.path('/creationProcess/' + id);
-            }
-
-            function errorHandler(err){
-                $log.debug(err);
-                progressbar.complete();
-                showToast(err);
-            }
-
-            function showToast(error){
-                var text = error;
-                var toastClass = 'creationProcess-failure-toast';
-                $mdToast.show(
-                    $mdToast
-                        .simple()
-                        .textContent(text)
-                        .action('Close')
-                        .position('top right')
-                        .toastClass(toastClass)
-                        .hideDelay(false)
-                        .parent($document[0].body.children.main.children["ui-view"])
-                );
-            }
+                .then(loadCallback)
+                .catch(loadErrorHandler);
         }
 
         function submitter(id){
-            $state.go('erc', {ercid: id});
+            logger.info('Examine: ' + id);
+			progressbar.setHeight('10px');
+            progressbar.start();
+            
+            // check if compendium exists, then just open it
+            httpRequests.compendiumExists(id, function(compendium_id) {
+                progressbar.complete();
+                $state.go('erc', {ercid: compendium_id});
+            }, function(the_id) {
+            // otherwise could be remote compendium, try to load it
+            httpRequests
+                .uploadViaZenodo(the_id)
+                .then(publishCallback)
+                .catch(loadErrorHandler);
+            });
         };
 
         function openDialog(ev){

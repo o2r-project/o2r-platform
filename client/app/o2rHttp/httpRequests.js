@@ -13,6 +13,7 @@
 			listAllCompendia: listAllCompendia,
 			listCompendia: listCompendia,
 			singleCompendium: singleCompendium,
+			compendiumExists: compendiumExists,
 			listRelatedJobs: listRelatedJobs,
 			newJob: newJob,
 			listJobs: listJobs,
@@ -32,6 +33,7 @@
 			getRecipient: getRecipient,
 			updateMetadata: updateMetadata,
 			uploadViaSciebo: uploadViaSciebo,
+			uploadViaZenodo: uploadViaZenodo,
 			getLicenses: getLicenses,
 			setUserLevel: setUserLevel,
 			getAllUsers: getAllUsers,
@@ -88,6 +90,21 @@
 		function singleCompendium(id){
 			var _url = env.api + '/compendium/' + id;
 			return $http.get(_url);
+		}
+
+		/*
+		* @Desc does a specific compendium exist?
+		* @Param id, id of requested compendium
+		*/
+		function compendiumExists(id, exists, doesNotExist){
+			var _url = env.api + '/compendium/' + id;
+            $http.get(_url)
+                .then(function (data){
+					exists(id);
+                })
+                .catch(function (error, status){
+					doesNotExist(id);
+            });
 		}
 
 		/*
@@ -190,8 +207,38 @@
 				}
 			} else {
 				_path = '/';
+			logger.info(_url, idOrUrl);
 			}
+			logger.info(_url, 'workspace', url);
 			return $http.post(_url, {content_type:"workspace", share_url: url, path: _path});
+		}
+
+		function uploadViaZenodo(idOrUrl, path){
+			var _url = env.api + '/compendium/';
+			var _path = path;
+			if(_path) {
+				if (_path.substr(0, 1) !== '/') {
+					_path = '/' + _path;
+				}
+			} else {
+				_path = '/';
+			}
+
+			var _data = {
+				content_type:"compendium",
+				path: _path
+			}
+
+			if(idOrUrl.startsWith('http')) {
+				_data.share_url = idOrUrl;
+			} else if(idOrUrl.startsWith('10.5281') || idOrUrl.startsWith('10.5072')) { // sandbox DOIs starting with 10.5072 are taken apart by loader
+				_data.doi = idOrUrl;
+			} else {
+				_data.zenodo_record_id = idOrUrl;
+			}
+
+			logger.info(_url, 'compendium', _data);
+			return $http.post(_url, _data);
 		}
 
 		// function toZenodo(compendiumID) {
