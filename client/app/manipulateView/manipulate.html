@@ -1,11 +1,12 @@
 <div class="manipulate-interactive">
     <md-tabs class="manipulate-tabs" md-selected="vm.selectedTab" md-border-bottom md-autoselect>
-        <md-tab ng-repeat="binding in vm.manipulations track by $index" label="Figure {{$index + 1}}">
-            <h3>{{binding.code.parameter.widget.label}}</h3>
+        <!--<md-tab ng-repeat="binding in vm.manipulations track by $index" label="Figure {{$index + 1}}">-->
+            <md-tab ng-repeat="binding in vm.manipulations track by $index" label="{{vm.manipulations[$index].result.value}}">
+            <p>You can change the original parameter <b>{{binding.code.parameter.text}}</b> within the range <b>{{binding.code.parameter.widget.min}} - {{binding.code.parameter.widget.max}}</b></p>
             <div ng-if="vm.slider">
                 <md-slider-container>
                     <md-slider flex min={{binding.code.parameter.widget.min}} max={{binding.code.parameter.widget.max}} step={{binding.code.parameter.widget.step}}
-                                ng-model="vm.threshold" id="slider">
+                                ng-model="vm.threshold">
                     </md-slider>
                     <md-input-container>
                         <input flex type="number" ng-model="vm.threshold" aria-controls="slider">
@@ -19,7 +20,12 @@
                     </md-radio-button>
                 </md-radio-group>
             </div>
-            <img src={{vm.query}}>
+            <div style = "text-align: center;">
+                <img src={{vm.query}} style = "width:450px;">
+            </div>
+            <div>
+                <p style = "text-align: center;">{{binding.result.value}}: {{binding.code.parameter.widget.label}}</p>
+            </div>
         </md-tab>
     </md-tabs>
     <div layout="row">

@@ -193,10 +193,10 @@
                 'figure': 'All',
                 'lines': '[{"start":39,"end":111}]'
                 },
-                {//
+                {//Demoversion
                 'title': 'INSYDE: a synthetic, probabilistic flood damage model based on explicit cost analysis',
-                'figure': 'Figure 3a',
-                'lines': '[{"start":28,"end":422}]'
+                'figure': 'Figure 3',
+                'lines': '[{"start":45,"end":53}, {"start":59,"end":87}, {"start":93,"end":98}, {"start":103,"end":131}, {"start":139,"end":154}]'
                 },
                 {//
                 'title': 'Technical note: A bootstrapped LOESS regression approach for comparing soil depth profiles',
@@ -507,6 +507,21 @@
                 'title': 'mice: Multivariate Imputation by Chained Equations in R',
                 'figure': 'All',
                 'lines': '[{"start":30,"end":829}]'
+                },
+                {
+                'title': 'Support Vector Machines in R',
+                'figure': 'Figure 1',
+                'lines': '[{"start":25,"end":25}, {"start":43,"end":46}]'
+                },
+                {
+                'title': 'Support Vector Machines in R',
+                'figure': 'Figure 2',
+                'lines': '[{"start":25,"end":25}, {"start":48,"end":49}, {"start":54,"end":54}]'
+                },
+                {
+                'title': 'Support Vector Machines in R',
+                'figure': 'All',
+                'lines': '[{"start":22,"end":58}]'
                 }
             ];
 

@@ -15,9 +15,7 @@
 
         vm.manipulations = [];
         manipulate.forEach(element => {
-            if (element.purpose === 'manipulateFigure'){
-                vm.manipulations.push(element);
-            }
+            vm.manipulations.push(element);
         });
 
         vm.activateCodeData = () => $scope.$parent.vm.activateMCodeData();

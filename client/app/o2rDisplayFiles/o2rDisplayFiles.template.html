@@ -96,7 +96,7 @@
 <iframe scrolling="no" ng-iframe-resizer ng-src="{{file.path}}" ng-if="(file.type=='text/shiny') && (file.size <= sizeRestriction)" class="display-files-html"></iframe>
 <div ng-if="(file.type=='text/csv') && (file.size <= sizeRestriction)">
     <table style="width:100%">
-        <tr ng-repeat="row in csvContent">
+        <tr align="left" ng-repeat="row in csvContent">
           <th ng-repeat="value in row">{{value}}</th>
         </tr>
       </table>

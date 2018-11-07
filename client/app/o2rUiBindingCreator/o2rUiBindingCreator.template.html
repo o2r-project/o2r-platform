@@ -41,21 +41,11 @@
         </md-card-title>
         <md-card-content>
                 <div layout="column">
-                    <!-- Purpose -->
-                    <div ng-show="purposes.show" layout="row">
-                        <md-input-container flex class="md-block">
-                            <label>Select a purpose</label>
-                            <md-select ng-model="purposes.selected">
-                                <md-option ng-repeat="option in purposes.list" ng-value="option.value">
-                                    {{option.text}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
                     <!-- Figure -->
-                    <div ng-show="figures.show" layout="row">
+                    <div ng-show="figures.show" layout="column">
+                        <span class="creationProcess-binding-step-inst"><strong>STEP 1:</strong> Select a figure</span>
                         <md-input-container flex class="md-block">
-                            <label>For which figure?</label>
+                            <label>Select figure</label>
                             <md-select ng-model="figures.selected">
                                 <md-option ng-repeat="fig in figures.list" ng-value="fig">
                                 {{fig}}
@@ -66,7 +56,7 @@
                     <!-- Mark code -->
                     <div ng-show="code.mark.show">
                         <div layout="row">
-                            <span class="creationProcess-binding-step-inst">Mark relevant code lines</span>
+                            <span class="creationProcess-binding-step-inst"><strong>STEP 2:</strong> Mark the code lines for {{figures.selected}}</span>
                         </div>
                         <div layout="row">
                             <span flex></span>
@@ -81,25 +71,13 @@
                             </md-button>                            
                         </div>
                     </div>
-                    <!-- Mark data -->
-                    <div ng-show="data.show">
-                        <div layout="row">
-                            <span class="creationProcess-binding-step-inst">Mark data subsets relevant for the selected figure</span>
-                        </div>
-                        <md-button ng-click="data.confirm()" class="md-raised md-fab md-mini" aria-label="doneData" ng-disabled="data.doneDataButtonDisable">
-                            <md-icon md-svg-src="{{icons.done}}"></md-icon>
-                        </md-button> 
-                        <md-button ng-click="data.edit()" class="md-raised md-fab md-mini" aria-label="Edit Data" ng-disabled="buttons.editData.disable">
-                                <md-icon md-svg-src="{{icons.edit}}"></md-icon>
-                        </md-button>
-                    </div>
                     <!-- Mark variable -->
                     <div ng-show="variable.mark.show" class="creationProcess-step-separate" layout="row">
                         <div flex layout="column">
-                            <span class="creationProcess-binding-step-inst">Mark the variable and the value which should be manipulated</span>
+                            <span class="creationProcess-binding-step-inst"><strong>STEP 3:</strong> Mark the parameter that should be manipulated</span>
                             <span ng-show="variable.mark.showSelection">
                                 <span ng-hide="!variable.selected">
-                                    Selected <strong>{{variable.selected.varName}}</strong> with value <strong>{{variable.selected.val}}</strong>
+                                    Selected parameter: <strong>{{variable.selected.varName}}</strong> with the value <strong>{{variable.selected.val}}</strong>
                                 </span>
                                 <!--<span ng-show="!variable.selected">
                                     <strong>Invalid Selection</strong>
@@ -119,6 +97,7 @@
                     <!-- Widgets -->
                     <div ng-show="widgets.show" layout="row" class="creationProcess-step-separate">
                         <form name="form" flex>
+                            <span class="creationProcess-binding-step-inst"><strong>STEP 4:</strong> Configure a UI widget for parameter <strong>{{variable.selected.varName}}</strong></span>
                             <md-input-container flex class="md-block">
                                 <label>Select a Widget</label>
                                 <md-select ng-model="widgets.selected">
@@ -163,14 +142,35 @@
                                         <md-chips ng-model="widgets.radio.options" readonly="false" md-removable="true" md-enable-chip-edit="true"></md-chips>
                                 </md-input-container>                                
                             </div>
+                            <div layout="row">
+                                <span flex></span>
+                                <md-button ng-show="true" ng-click="widgets.edit()" class="md-raised md-fab md-mini" aria-label="Edit" ng-disabled="">
+                                    <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+                                </md-button>
+                                <md-button ng-show="true" ng-click="widgets.confirm()" class="md-raised md-fab md-mini" aria-label="Confirm" ng-disabled="">
+                                    <md-icon md-svg-src="{{icons.done}}"></md-icon>
+                                </md-button>                            
+                            </div>
                         </form>
-                    </div>    
-                <div ng-show="form.$valid || widgets.radio.show" layout-padding layout="row">
-                    <!--<md-button class="md-raised md-fab md-mini" ng-click="openDialog($event)" aria-label="check">
+                    </div>   
+                    <!-- Mark data -->
+                    <div ng-show="data.show">
+                        <div layout="row">
+                            <span class="creationProcess-binding-step-inst"><strong>STEP 5:</strong> Mark data subset for Figure 3</span>
+                        </div>
+                        <md-button ng-click="data.confirm()" class="md-raised md-fab md-mini" aria-label="doneData" ng-disabled="data.doneDataButtonDisable">
+                            <md-icon md-svg-src="{{icons.done}}"></md-icon>
+                        </md-button> 
+                        <md-button ng-click="data.edit()" class="md-raised md-fab md-mini" aria-label="Edit Data" ng-disabled="buttons.editData.disable">
+                                <md-icon md-svg-src="{{icons.edit}}"></md-icon>
+                        </md-button>
+                    </div> 
+                <!--<div ng-show="form.$valid || widgets.radio.show" layout-padding layout="row">
+                    <md-button class="md-raised md-fab md-mini" ng-click="openDialog($event)" aria-label="check">
                         <md-icon md-svg-src="{{icons.preview}}"></md-icon>
-                    </md-button>-->
+                    </md-button>
                     <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
-                </div> 
+                </div> -->
                 <div ng-show="readyForSubmission" layout-padding layout="row">
                     <md-button flex class="md-raised md-primary white-font" ng-click="submit()" aria-label="Done">Finish</md-button>
                 </div>                

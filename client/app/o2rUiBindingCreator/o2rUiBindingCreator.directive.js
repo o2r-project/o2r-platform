@@ -41,9 +41,10 @@
 
         function link(scope, element, attrs){
             var logger = $log.getInstance('o2rUiBindingCreator');
-            scope.erc = JSON.parse(scope.erc);
             scope.icons = icons;
-            scope.preselectedCode;            
+
+            scope.erc = JSON.parse(scope.erc);
+            scope.preselectedCode;
 
             scope.paper = {
                 path: env.api + '/compendium/' + scope.ercId + '/data/' + scope.erc.displayfile,
@@ -69,22 +70,14 @@
                     from: undefined,
                     to: undefined
                 };
-            }); 
+            });
 
             scope.figures = {
-                list: ['All', 'Figure 1', 'Figure 1a', 'Figure 1b', 'Figure 1c', 'Figure 1d', 'Figure 2', 'Figure 2a', 'Figure 2b', 'Figure 2c', 'Figure 2d', 'Figure 3', 'Figure 3a', 'Figure 3b', 'Figure 3c', 
+                /*list: ['All', 'Figure 1', 'Figure 1a', 'Figure 1b', 'Figure 1c', 'Figure 1d', 'Figure 2', 'Figure 2a', 'Figure 2b', 'Figure 2c', 'Figure 2d', 'Figure 3', 'Figure 3a', 'Figure 3b', 'Figure 3c', 
                         'Figure 4','Figure 4a', 'Figure 4b', 'Figure 4c', 'Figure 4d', 'Figure 4e', 'Figure 4f', 'Figure 5', 'Figure 6', 'Figure 6a', 'Figure 6b', 'Figure 7', 'Figure 8', 'Figure 8a', 'Figure 8b',
                         'Figure 9', 'Figure 9a', 'Figure 9b', 'Figure 10', 'Figure 10a', 'Figure 10b', 'Figure 10c', 'Figure 11', 'Figure 12', 'Figure 13' , 'Figure 13a' , 'Figure 13b', 'Figure 14' , 'Figure 14a' , 'Figure 14b', 
-                        'Figure 15', 'Figure 16', 'Figure 17', 'Figure 17a', 'Figure 17b'],
-                show: false,
-                selected: null
-            };
-
-            scope.purposes = {
-                list: [ {text: 'Show data and code underlying a figure', value: 'inspectCodeDataFigure'},
-                        {text: 'Show data and code underlying a number', value: 'inspectCodeDataNumber'},
-                        {text: 'Manipulate the parameter underlying a figure', value: 'manipulateFigure'},
-                        {text: 'Manipulate the parameter underlying a number', value: 'manipulateNumber'}],
+                        'Figure 15', 'Figure 16', 'Figure 17', 'Figure 17a', 'Figure 17b'],*/
+                list: ['Figure 1', 'Figure 2', 'Figure 3', 'Table 1', 'Table 2', 'Table 3'],        
                 show: true,
                 selected: null
             };
@@ -98,18 +91,6 @@
                 cut: cutCode,
                 edit: editCode,
                 confirm: confirmCode
-            };
-
-            scope.data = {
-                show: false,
-                selected: getHeader,
-                header: null,
-                selectedColumns: [],
-                confirm: confirmData,
-                all: false,
-                edit: editData,
-                doneDataButtonDisable: true,
-                editDataButtonDisable: true
             };
 
             scope.variable = {
@@ -139,12 +120,24 @@
                 },
                 radio: {
                     show: false,
-                    options: []
+                    options: [],
+                    label: null
                 },
                 show: false,
-                showButton: false,
-                type: null,
-                disable: false
+                confirm: confirmWidget, //disable missing
+                edit: editWidget        //disable missing
+            };
+
+            scope.data = {
+                show: false,
+                selected: getHeader,
+                header: null,
+                selectedColumns: [],
+                confirm: confirmData,
+                all: false,
+                edit: editData,
+                doneDataButtonDisable: true,
+                editDataButtonDisable: true
             };
 
             scope.buttons = {
@@ -171,8 +164,6 @@
             scope.selectedText = {};
             scope.showOriginalData = false;
             
-            scope.openDialog = openDialog;
-            
             scope.readyForSubmission= false;
             scope.submit = submit;
 
@@ -181,43 +172,19 @@
             
             resetAll();
             
-            scope.$watch('purposes.selected', function(newVal, oldVal){
-                resetWidgets();
-                resetMarkVariable();
-                resetMarkCode();
-                resetFigures();
-                resetData();
-                scope.showPaper = true;
-                switch (newVal) {
-                    case 'manipulateFigure':
-                        scope.purposes.selected = newVal;
-                        scope.figures.show = true;
-                        break;
-                    case 'inspectCodeDataFigure':
-                        scope.purposes.selected = newVal;
-                        scope.figures.show = true;
-                        break;
-                    default:
-                    break;
-                }
-            });
-            
             scope.$watch('figures.selected', function(newVal, oldVal){                
                 if(newVal){
-                    if(scope.purposes.selected === 'manipulateFigure' || scope.purposes.selected === 'inspectCodeDataFigure'){
-                        scope.showPaper = false;
-                        scope.showOriginalCode = true;
-                        scope.code.mark.show = true;
-                        scope.buttons.cutCode.show = true;
-                        scope.buttons.editCode.show = true;
-                        scope.buttons.doneCode.show = true;
-                    }
+                    scope.showPaper = false;
+                    scope.showOriginalCode = true;
+                    scope.code.mark.show = true;
+                    scope.buttons.cutCode.show = true;
+                    scope.buttons.editCode.show = true;
+                    scope.buttons.doneCode.show = true;
                 }
                 scope.preselectedCode = o2rUiBindingExamples.findPaper(JSON.parse(scope.erc).title, newVal);
             });
 
             scope.$watch('widgets.selected', function(newVal, oldVal){                
-                if (scope.purposes.selected === 'manipulateFigure'){
                     if(newVal === 'slider'){
                         scope.widgets.radio.show = false;
                         scope.widgets.slider.show = true;
@@ -225,7 +192,6 @@
                         scope.widgets.slider.show = false;
                         scope.widgets.radio.show = true;
                     }                        
-                }
             });     
 
             scope.$watch('codefile', function(newVal, oldVal){
@@ -268,7 +234,7 @@
                 httpRequests.getCSV(scope.datafile.path)
                 .then(function(res){
                     scope.data.header = res.data.replace('"','').replace(/"/g,'').split('\n')[0].split(',');
-                    scope.data.header.shift();
+                    //scope.data.header.shift();
                     var temp = [];    
                     scope.data.header.forEach(element => {
                         temp.push({name: element, selected: false});
@@ -282,7 +248,6 @@
                 scope.selectedText.source = o2rUiBindingCreatorHelper.mergeSelectedCode(selectedLinesIndex, codeText);
                 scope.showOriginalCode = false;
                 scope.code.mark.showSelectedText = true;
-                //scope.code.mark.disable = true;
                 scope.buttons.editCode.disable = false;
                 scope.buttons.cutCode.disable = true;
                 scope.buttons.doneCode.disable = false;
@@ -292,15 +257,7 @@
                 scope.buttons.doneCode.disable = true;
                 scope.buttons.cutCode.disable = true;
                 scope.buttons.editCode.disable = false;
-                if (scope.purposes.selected === 'manipulateFigure'){
-                    scope.variable.mark.show = true;
-                } else if (scope.purposes.selected === 'inspectCodeDataFigure'){
-                    scope.code.mark.extracted = true;
-                    scope.showOriginalCode = false;
-                    scope.code.mark.showSelectedText = false;
-                    scope.showOriginalData = true;
-                    scope.data.show = true;
-                }                
+                scope.variable.mark.show = true;
             };
             
             function confirmData(){
@@ -311,10 +268,18 @@
 
             function markVariableDone(){
                 scope.variable.mark.disable = true;
-                if (scope.purposes.selected === 'manipulateFigure'){
-                    scope.widgets.show = true;
-                    scope.widgets.showButton = true;
-                }
+                scope.widgets.show = true;
+            };
+
+            function confirmWidget(){
+                scope.widgets.slider.show = false;
+                scope.data.show = true;
+                scope.showOriginalData = true;
+                scope.code.mark.showSelectedText = false;
+            };
+
+            function editWidget(){
+                console.log("edit widget")
             };
 
             function selectionEvent(){
@@ -343,26 +308,6 @@
                     }
                 }
             };
-            
-            function openDialog(ev){
-                $mdDialog.show({
-                    controller: function($mdDialog, icons){
-                        this.parent = scope;
-                        this.icons = icons;
-                        this.cancel = () => $mdDialog.cancel();
-                        this.file = {
-                            path: 'https://markuskonkol.shinyapps.io/interactiveFigure1/',
-                            type: 'text/shiny'
-                        };
-                    },
-                    controllerAs: 'vm',
-                    templateUrl: 'app/o2rUiBindingCreator/o2rUiBindingSummary.template.html',
-                    parent: $document[0].body,
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    fullscreen: false
-                });
-            }
 
             function editCode(){
                 resetWidgets();
@@ -394,28 +339,20 @@
                 var erc = creationObject.get();
                 var binding = {};
                     binding.id = erc.id;
-                    binding.purpose = scope.purposes.selected;
-
                     binding.code = {};
                     binding.code.file = erc.metadata.o2r.mainfile; 
                     binding.code.codeLines = scope.preselectedCode;
+                    binding.code.parameter = scope.variable.selected;
+                    binding.code.parameter.widget = getWidget();
+                    binding.result = {};
+                    binding.result.type = 'figure',
+                    binding.result.value = scope.figures.selected;
+                    binding.dataset = {
+                        file: scope.datafile.path.split('/').pop(),
+                        columns: getSelectedColumns(),
+                        rows: scope.slider.minValue + "-" + scope.slider.maxValue
+                    };
 
-                    if (binding.purpose === 'inspectCodeDataFigure'){
-                        binding.result = {};
-                        binding.result.type = 'figure',
-                        binding.result.value = scope.figures.selected;
-                        binding.dataset = {
-                            file: scope.datafile.path.split('/').pop(),
-                            columns: getSelectedColumns(),
-                            rows: scope.slider.minValue + "-" + scope.slider.maxValue
-                        }        
-                    }else if(binding.purpose === 'manipulateFigure'){
-                        binding.result = {};
-                        binding.result.type = 'figure',
-                        binding.result.value = scope.figures.selected;
-                        binding.code.parameter = scope.variable.selected;
-                        binding.code.parameter.widget = getWidget();
-                    }
                     console.log(binding)
                     httpRequests.listAllCompendia().then(function(data){
                         let port = getNumber(data.data.results, erc.id);
@@ -434,13 +371,12 @@
 
             function showToast(status){
                 if (status == 'OK'){
-                    var text = 'Saved bundle successfully. Please click UPDATE';
+                    var text = 'Saved binding successfully. Please click UPDATE';
                     var toastClass = 'creationProcess-success-toast';
                 }else{
-                    var text = 'Could not save output bundle';
+                    var text = 'Could not save output binding';
                     var toastClass = 'creationProcess-failure-toast';
-                }
-                        
+                }   
                 $mdToast.show(
                     $mdToast
                         .simple()
@@ -496,13 +432,8 @@
                 return selectedColumns;
             }
 
-            function tempFunc(title, figure) {     
-
-            }
-
             //////////////////
             function resetAll(){
-                resetPurpose();
                 resetFigures();
                 resetMarkCode();
                 resetData();
@@ -511,11 +442,6 @@
                 scope.readyForSubmission = false;
                 getHeader(scope.datafile);
             }            
-
-            function resetPurpose(){
-                scope.purposes.show = true;
-                scope.purposes.selected = null;
-            }
 
             function resetFigures(){
                 scope.figures.selected = null;
@@ -539,9 +465,6 @@
 
             function resetWidgets(){
                 scope.widgets.slider.show = false;
-                scope.widgets.showButton = true;
-                scope.widgets.type = null;
-                scope.widgets.disable = true;
                 scope.widgets.min_value = null;
                 scope.widgets.max_value = null;
                 scope.widgets.step_size = null;

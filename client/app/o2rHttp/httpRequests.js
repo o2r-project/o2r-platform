@@ -324,7 +324,7 @@
 		}
 
 		function sendBinding(binding){
-			return $http.post(env.api + '/bindings/' + binding.purpose, binding);
+			return $http.post(env.api + '/bindings/binding', binding);
 		}
 
 		function runManipulationService(binding){
