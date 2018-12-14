@@ -1,7 +1,12 @@
+---
+sudo: required
 language: node_js
+services:
+  - docker
 node_js:
-  - "8"
+  - "9"
 before_script:
   - npm install -g bower
 script:
   - bower install
+  - docker build --pull .
