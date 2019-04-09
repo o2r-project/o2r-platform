@@ -12,31 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM nginx:stable-alpine
+FROM nginx:stable-alpine as builder
 
 RUN apk add --no-cache \
-    nodejs \
-    # needed for installing dependencies from source:
+    npm \
     git \
   && npm install -g bower \
   && echo '{ "allow_root": true }' > /root/.bowerrc
 
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-
 WORKDIR /etc/nginx/html
-
 COPY client .
 COPY bower.json bower.json
+RUN bower install \
+  && rm bower.json
+
+
+FROM nginx:stable-alpine
+WORKDIR /etc/nginx/html
+COPY --from=builder /etc/nginx/html/ /etc/nginx/html
+
 COPY docker/browserconfig.xml browserconfig.xml
-
-RUN bower install
-
-RUN rm bower.json \
-  && npm uninstall -g bower \
-  && apk del \
-    git \
-    nodejs \
-  && rm -rf /var/cache/apk
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 # Metadata params provided with docker build command
 ARG VERSION=dev
