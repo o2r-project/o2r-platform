@@ -1,16 +1,14 @@
 (function(){
     'use strict';
-    
     angular
         .module('starter')
         .controller('ManipulateController', ManipulateController);
-    
     ManipulateController.$inject = ['$scope', '$log', 'erc', 'httpRequests'];
     function ManipulateController($scope, $log, erc, httpRequests){
         var manipulate = erc.metadata.o2r.interaction;
         var vm = this;
-        vm.selectedTab = 0;
         vm.threshold = null;
+        vm.selectedTab = 0;
         vm.query = "";
 
         vm.manipulations = [];
