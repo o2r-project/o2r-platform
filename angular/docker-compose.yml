@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+
+  something-clever:
+    container_name: something-clever
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '4200:4200'
