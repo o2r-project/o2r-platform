@@ -1,3 +1,9 @@
+# ⚠️ Project discontinued ⚠️
+
+See https://github.com/o2r-project/o2r-UI for the successor.
+
+------
+
 # The o2r platform
 
 _Leveraging reproducible research_ by providing a powerful user interface for the [o2r Web API](https://o2r.info/api/).
